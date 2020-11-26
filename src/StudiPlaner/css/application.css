@@ -1,0 +1,38 @@
+/* FX-Variables for StudiPlaner-Application */
+
+* {
+    -accent-color: lightgrey;
+    -font-color: black;
+}
+
+/* Menu-Bar-Preferences */
+
+.menu-bc {
+
+}
+
+.menu-bar {
+    -fx-background-color: -accent-color;
+}
+
+.menu-main-button {
+    -fx-alignment: CENTER;
+}
+
+.menu-button:hover {
+    -fx-background-color: -accent-color;
+}
+
+.menu-button:showing {
+    -fx-background-color: -accent-color;
+}
+
+.menu-button .label {
+    -fx-text-fill: -font-color;
+}
+
+/* Footer-Preferences */
+
+.footer {
+    -fx-background-color: lightgrey;
+}

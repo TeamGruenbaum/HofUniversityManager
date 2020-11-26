@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="692.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER_RIGHT" maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-main-button">
+              <menus>
+                <Menu mnemonicParsing="false" text="Menu">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label nodeOrientation="LEFT_TO_RIGHT" styleClass="menu-title" text="StudiPlaner">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label styleClass="menu-bc" text="Breadcrumbs" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <Pane BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
