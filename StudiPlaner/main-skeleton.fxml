@@ -9,7 +9,7 @@
    <top>
       <HBox alignment="CENTER_RIGHT" maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-main-button">
+            <MenuBar maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-main-button" >
               <menus>
                 <Menu mnemonicParsing="false" fx:id="mb">
                   <items>
