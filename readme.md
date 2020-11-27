@@ -1,3 +1,3 @@
-##StudiPlaner
+## StudiPlaner
 
 StudiPlaner-Anwendung
