@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class ViewController implements Initializable {
     @FXML
     private MenuItem mb;
 
@@ -21,11 +21,11 @@ public class Controller implements Initializable {
     public void editMenuButton() {
         // Menu-Button with Image
         Image openIcon = new Image(getClass().getResourceAsStream("img/dots-menu.png"));
-        ImageView view = new ImageView(openIcon);
-        view.setFitHeight(30);
-        view.setPreserveRatio(true);
+        ImageView openIconView = new ImageView(openIcon);
+        openIconView.setFitHeight(30);
+        openIconView.setPreserveRatio(true);
 
-        mb.setGraphic(view);
+        mb.setGraphic(openIconView);
     }
 
     public void setTheme(Boolean themeStatus) {
