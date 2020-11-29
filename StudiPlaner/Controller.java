@@ -29,7 +29,7 @@ public class Controller implements Initializable {
     }
 
     public void setTheme(Boolean themeStatus) {
-        if(themeStatus==true) {
+        if(themeStatus) {
             // Edit elements for changing color while using dark mode
         }
     }
