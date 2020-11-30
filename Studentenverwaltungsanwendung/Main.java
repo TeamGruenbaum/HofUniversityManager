@@ -1,4 +1,4 @@
-package StudiPlaner;
+package Studentenverwaltungsanwendung;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

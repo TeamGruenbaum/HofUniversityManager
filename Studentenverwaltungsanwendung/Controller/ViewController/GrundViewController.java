@@ -1,4 +1,4 @@
-package StudiPlaner.Controller.ViewController;
+package Studentenverwaltungsanwendung.Controller.ViewController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
