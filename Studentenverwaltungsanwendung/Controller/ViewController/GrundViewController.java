@@ -31,16 +31,6 @@ public class GrundViewController implements Initializable {
     @FXML
     public void menuOeffnen()
     {
-        /*try
-        {
-            GridPane root = (GridPane) FXMLLoader.load(getClass().getResource("../View/Menu.fxml"));
-        }
-        catch (Exception e)
-        {
-            return;
-        }*/
-
-        
         GridPane gridPane=new GridPane();
         gridPane.setStyle("-fx-background-color: black;");
         gridPane.setMinSize(200, 200);
