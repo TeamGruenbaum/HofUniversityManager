@@ -41,7 +41,7 @@
             <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER" />
          </bottom>
          <center>
-            <Pane BorderPane.alignment="CENTER" />
+            <Pane fx:id="pane" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>
