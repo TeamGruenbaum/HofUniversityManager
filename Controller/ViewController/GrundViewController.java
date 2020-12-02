@@ -1,20 +1,25 @@
 package Controller.ViewController;
 
+import javafx.animation.FadeTransition;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class GrundViewController implements Initializable {
 
@@ -27,31 +32,67 @@ public class GrundViewController implements Initializable {
     @FXML
     private Label ort;
 
+    @FXML
+    private Button menuHauptButton;
+
     private GridPane gridPane;
     private AnchorPane anchorPane;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        _setHauptButton();
         _initialisiereMenue(70,
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Moodle_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"));
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"));
         _setTheme(true);
     }
 
     @FXML
     public void menuOeffnen()
     {
+        _fadeTransitionStandard(anchorPane, 300, true);
         stackPane.getChildren().add(anchorPane);
+    }
+
+    private void _fadeTransitionStandard(Node node, int dauer, Boolean io) {
+        FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
+        if(io)
+        {
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+        }
+        else
+        {
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+        }
+        ft.play();
+    }
+
+    private void _setHauptButton()
+    {
+        ImageView view = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
+        view.setFitHeight(35);
+        view.setPreserveRatio(true);
+
+        menuHauptButton.setGraphic(view);
     }
 
     private void _initialisiereMenue(int menuepunktHoeheBreite, _MenuepunktInformationen... menuepunktInformationen)
     {
+
         //GridPane initialisieren
         gridPane=new GridPane();
+        gridPane.getStyleClass().add("icon-menu");
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setMinWidth(menuepunktHoeheBreite);
         columnConstraints.setMaxWidth(menuepunktHoeheBreite);
@@ -78,7 +119,7 @@ public class GrundViewController implements Initializable {
             }
 
             ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+menuepunktInformationen[i].iconDateiname)));
-            imageView.setFitHeight(menuepunktHoeheBreite-20);
+            imageView.setFitHeight(menuepunktHoeheBreite-30);
             imageView.setPreserveRatio(true);
 
             Button button=new Button();
@@ -92,16 +133,18 @@ public class GrundViewController implements Initializable {
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             button.setGraphic(imageView);
+            button.getStyleClass().add("icon-menu-button");
 
             gridPane.add(button, i%3, k);
         }
 
         //AnchorPane initialisieren
         anchorPane=new AnchorPane();
-        AnchorPane.setTopAnchor(gridPane, 60.0);
+        AnchorPane.setTopAnchor(gridPane, 70.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         anchorPane.getChildren().add(gridPane);
         anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
+            _fadeTransitionStandard(anchorPane, 300, false);
             stackPane.getChildren().remove(anchorPane);
         });
     }
@@ -111,6 +154,7 @@ public class GrundViewController implements Initializable {
         try
         {
             borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+FXMLDateiname)));
+            stackPane.getChildren().remove(anchorPane);
         }
         catch(Exception e){
             e.printStackTrace();
