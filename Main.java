@@ -1,5 +1,3 @@
-package Controller;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,10 +8,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("View/GrundView.fxml"));
         primaryStage.setTitle("StudiPlaner");
         primaryStage.setScene(new Scene(root, 1000, 700));
-        root.getStylesheets().add(getClass().getResource("../View/css/application.css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource("View/css/application.css").toExternalForm());
         primaryStage.show();
     }
 
