@@ -30,6 +30,11 @@ import java.util.function.Predicate;
 
 public class GrundViewController implements Initializable {
 
+    //Attribute auf welche durch mehrere Methoden zugegriffen wird
+    private GridPane gridPane;
+    private AnchorPane anchorPane;
+
+    //Methoden und Attribute für den Zugriff auf die View
     @FXML
     private BorderPane borderPane;
 
@@ -42,26 +47,23 @@ public class GrundViewController implements Initializable {
     @FXML
     private Button menuHauptButton;
 
-    private GridPane gridPane;
-    private AnchorPane anchorPane;
-
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         _setHauptButton();
 
-        _initialisiereMenue(70,
-                new _MenuepunktInformationen(Anwendung.STUNDENPLAN,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.MENSAPLAN,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.STUDIENGANG,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.MOODLE,"Moodle_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen(Anwendung.PANOPTO,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.NEXTCLOUD,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.CAMPUSSPORT,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.TREFFPUNKTE,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen(Anwendung.PRIMUSS,"Platzhalter_Icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.EINSTELLUNGEN,"Platzhalter_Icon.png", "Platzhalter.fxml"));
+        _initialisiereMenue(90,
+                new _MenuepunktInformationen(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.MENSAPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.NEXTCLOUD,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.TREFFPUNKTE,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen(Anwendung.PRIMUSS,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.EINSTELLUNGEN,"platzhalter-icon.png", "Platzhalter.fxml"));
 
         _setTheme(true);
     }
@@ -73,21 +75,7 @@ public class GrundViewController implements Initializable {
         stackPane.getChildren().add(anchorPane);
     }
 
-    private void _fadeTransitionStandard(Node node, int dauer, Boolean io) {
-        FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
-        if(io)
-        {
-            ft.setFromValue(0.0);
-            ft.setToValue(1.0);
-        }
-        else
-        {
-            ft.setFromValue(1.0);
-            ft.setToValue(0.0);
-        }
-        ft.play();
-    }
-
+    //Methoden zur Initalisierung von Layoutelementen
     private void _setHauptButton()
     {
         ImageView view = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
@@ -101,7 +89,6 @@ public class GrundViewController implements Initializable {
 
     private void _initialisiereMenue(int menuepunktHoeheBreite, _MenuepunktInformationen... menuepunktInformationen)
     {
-
         //GridPane initialisieren
         gridPane=new GridPane();
         gridPane.getStyleClass().add("icon-menu");
@@ -140,7 +127,7 @@ public class GrundViewController implements Initializable {
                 {
                     Haupt.setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
                     ort.setText(_großschreiben(menuepunktInformationen[finalI].anwendung.toString()));
-                    __ladeScene(menuepunktInformationen[finalI].fxmlDateiname);
+                    _ladeScene(menuepunktInformationen[finalI].fxmlDateiname);
                 });
             button.setTooltip(new Tooltip(_großschreiben(menuepunktInformationen[i].anwendung.toString())));
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -164,32 +151,13 @@ public class GrundViewController implements Initializable {
         });
     }
 
-
-    private void _hoverIconsEffect(Node button, ImageView imageView) {
-        button.setOnMouseMoved((MouseEvent) -> {
-            ColorAdjust aufhellen = new ColorAdjust();
-            aufhellen.setBrightness(0.3);
-
-            imageView.setEffect(aufhellen);
-            imageView.setCache(true);
-            imageView.setCacheHint(CacheHint.SPEED);
-        });
-
-        button.setOnMouseExited((MouseEvent) -> {
-            ColorAdjust abdunkeln = new ColorAdjust();
-            abdunkeln.setBrightness(-0.3);
-
-            imageView.setEffect(abdunkeln);
-            imageView.setCache(true);
-            imageView.setCacheHint(CacheHint.SPEED);
-        });
-
+    //Hilfsmethoden und Hilfsklasse allgemeiner Art
     private String _großschreiben(String wort)
     {
         return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
     }
 
-    private void __ladeScene(String FXMLDateiname)
+    private void _ladeScene(String FXMLDateiname)
     {
         try
         {
@@ -215,9 +183,44 @@ public class GrundViewController implements Initializable {
         }
     }
 
+    //Hilfsmethoden für visuelle Effekte
+    private void _fadeTransitionStandard(Node node, int dauer, Boolean io) {
+        FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
+        if(io)
+        {
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+        }
+        else
+        {
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+        }
+        ft.play();
+    }
 
+    private void _hoverIconsEffect(Node button, ImageView imageView)
+    {
+        button.setOnMouseMoved((MouseEvent) -> {
+            ColorAdjust aufhellen = new ColorAdjust();
+            aufhellen.setBrightness(0.3);
 
-    public void _setTheme(Boolean themaStatus) {
+            imageView.setEffect(aufhellen);
+            imageView.setCache(true);
+            imageView.setCacheHint(CacheHint.SPEED);
+        });
+
+        button.setOnMouseExited((MouseEvent) -> {
+            ColorAdjust abdunkeln = new ColorAdjust();
+            abdunkeln.setBrightness(-0.3);
+
+            imageView.setEffect(abdunkeln);
+            imageView.setCache(true);
+            imageView.setCacheHint(CacheHint.SPEED);
+        });
+    }
+
+    private void _setTheme(Boolean themaStatus) {
         if(themaStatus) {
             // Edit elements for changing color while using dark mode
         }
