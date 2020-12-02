@@ -19,10 +19,13 @@ import java.util.ResourceBundle;
 public class GrundViewController implements Initializable {
 
     @FXML
-    private Pane pane;
+    private BorderPane borderPane;
 
     @FXML
     private StackPane stackPane;
+
+    @FXML
+    private Label ort;
 
     private GridPane gridPane;
     private AnchorPane anchorPane;
@@ -32,10 +35,10 @@ public class GrundViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources)
     {
         _initialisiereMenue(70,
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "GrundView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "GrundView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "GrundView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "GrundView.fxml"));
+                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","Moodle_Icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"));
         _setTheme(true);
     }
 
@@ -44,8 +47,6 @@ public class GrundViewController implements Initializable {
     {
         stackPane.getChildren().add(anchorPane);
     }
-
-
 
     private void _initialisiereMenue(int menuepunktHoeheBreite, _MenuepunktInformationen... menuepunktInformationen)
     {
@@ -82,7 +83,11 @@ public class GrundViewController implements Initializable {
 
             Button button=new Button();
             int finalI=i;
-            button.setOnAction((actionEvent)->{__ladeScene(menuepunktInformationen[finalI].fxmlDateiname);});
+            button.setOnAction((actionEvent)->
+                {
+                    __ladeScene(menuepunktInformationen[finalI].fxmlDateiname);
+                    ort.setText(menuepunktInformationen[finalI].label);
+                });
             button.setTooltip(new Tooltip(menuepunktInformationen[i].label));
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -105,10 +110,11 @@ public class GrundViewController implements Initializable {
     {
         try
         {
-            pane.getChildren().clear();
-            pane.getChildren().add(FXMLLoader.load(getClass().getResource("../../View/"+FXMLDateiname)));
+            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+FXMLDateiname)));
         }
-        catch(Exception e){}
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     static class _MenuepunktInformationen

@@ -13,7 +13,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
         primaryStage.setTitle("StudiPlaner");
         primaryStage.setScene(new Scene(root, 1000, 700));
-        root.getStylesheets().add(getClass().getResource("../View/css/application.css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
         primaryStage.show();
     }
 

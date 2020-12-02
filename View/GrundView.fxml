@@ -12,7 +12,7 @@
 
 <StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.GrundViewController">
    <children>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+      <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
          <top>
             <HBox alignment="CENTER_RIGHT" maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
                <children>
@@ -26,7 +26,7 @@
                                     <Font name="Helvetica" size="24.0" />
                                  </font>
                               </Label>
-                              <Label styleClass="menu-bc" text="Home &gt; Stundenplan" />
+                              <Label fx:id="ort" styleClass="menu-bc" text="Home &gt; Stundenplan" />
                            </children>
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -41,7 +41,7 @@
             <HBox maxHeight="100.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER" />
          </bottom>
          <center>
-            <Pane fx:id="pane" BorderPane.alignment="CENTER" />
+            <Pane BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>
