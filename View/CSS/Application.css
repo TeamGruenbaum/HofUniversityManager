@@ -4,12 +4,24 @@
     -accent-color: white;
     -accent-color-dark: #3c3c3c;
     -font-color: black;
+    -fx-font-family: 'Montserrat';
 }
 
 /* Menu-Bar-Preferences */
 
 #menuHauptButton {
     -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.menu-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #0072a0;
+}
+
+.menu-bc {
+    -fx-text-transform: darkgrey;
+    -fx-font-weight: normal;
 }
 
 .icon-menu {
@@ -20,6 +32,10 @@
 
 .icon-menu-button {
     -fx-background-color: transparent;
+}
+
+.icon-menu-button:hover {
+    -fx-cursor: hand;
 }
 
 .menu-bar {

@@ -5,9 +5,11 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -42,17 +44,16 @@ public class GrundViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources)
     {
         _setHauptButton();
-        _initialisiereMenue(70,
+        _initialisiereMenue(90,
                 new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","bayernfahrplan-icon.png", "QuicklinksView.fxml"));
+                new _MenuepunktInformationen("Nextcloud","nextcloud-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Primuss","primuss-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Moodle","moodle-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Mensaplan","mensaplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Stundenplan","stundenplan-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Studiengang","studiengang-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Treffpunkte","treffpunkt-icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen("Einstellungen","einstellungen-icon.png", "QuicklinksView.fxml"));
         _setTheme(true);
     }
 
@@ -85,6 +86,8 @@ public class GrundViewController implements Initializable {
         view.setPreserveRatio(true);
 
         menuHauptButton.setGraphic(view);
+
+        _hoverIconsEffect(menuHauptButton, view);
     }
 
     private void _initialisiereMenue(int menuepunktHoeheBreite, _MenuepunktInformationen... menuepunktInformationen)
@@ -119,7 +122,7 @@ public class GrundViewController implements Initializable {
             }
 
             ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+menuepunktInformationen[i].iconDateiname)));
-            imageView.setFitHeight(menuepunktHoeheBreite-30);
+            imageView.setFitHeight(menuepunktHoeheBreite-55);
             imageView.setPreserveRatio(true);
 
             Button button=new Button();
@@ -135,6 +138,8 @@ public class GrundViewController implements Initializable {
             button.setGraphic(imageView);
             button.getStyleClass().add("icon-menu-button");
 
+            _hoverIconsEffect(button, imageView);
+
             gridPane.add(button, i%3, k);
         }
 
@@ -144,8 +149,28 @@ public class GrundViewController implements Initializable {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         anchorPane.getChildren().add(gridPane);
         anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
-            _fadeTransitionStandard(anchorPane, 300, false);
+            // _fadeTransitionStandard(anchorPane, 300, false); // geht nicht, liegt am remove, das wohl zu schnell geht... ANSCHAUEN
             stackPane.getChildren().remove(anchorPane);
+        });
+    }
+
+    private void _hoverIconsEffect(Node button, ImageView imageView) {
+        button.setOnMouseMoved((MouseEvent) -> {
+            ColorAdjust aufhellen = new ColorAdjust();
+            aufhellen.setBrightness(0.3);
+
+            imageView.setEffect(aufhellen);
+            imageView.setCache(true);
+            imageView.setCacheHint(CacheHint.SPEED);
+        });
+
+        button.setOnMouseExited((MouseEvent) -> {
+            ColorAdjust abdunkeln = new ColorAdjust();
+            abdunkeln.setBrightness(-0.3);
+
+            imageView.setEffect(abdunkeln);
+            imageView.setCache(true);
+            imageView.setCacheHint(CacheHint.SPEED);
         });
     }
 

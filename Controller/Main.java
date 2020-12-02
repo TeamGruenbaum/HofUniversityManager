@@ -14,6 +14,8 @@ public class Main extends Application {
         primaryStage.setTitle("StudiPlaner");
         primaryStage.setScene(new Scene(root, 1000, 700));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
+        root.getStylesheets().add("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
         primaryStage.show();
     }
 
