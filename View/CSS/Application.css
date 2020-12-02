@@ -1,19 +1,46 @@
 /* FX-Variables for StudiPlaner-Application */
 
 * {
-    -accent-color: lightgrey;
+    -accent-color: white;
     -accent-color-dark: #3c3c3c;
     -font-color: black;
+    -fx-font-family: 'Montserrat';
 }
 
 /* Menu-Bar-Preferences */
 
-.menu-bc {
+#menuHauptButton {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
 
+.menu-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #0072a0;
+}
+
+.menu-bc {
+    -fx-text-transform: darkgrey;
+    -fx-font-weight: normal;
+}
+
+.icon-menu {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
+}
+
+.icon-menu-button {
+    -fx-background-color: transparent;
+}
+
+.icon-menu-button:hover {
+    -fx-cursor: hand;
 }
 
 .menu-bar {
     -fx-background-color: -accent-color;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
 }
 
 .menu-main-button {
@@ -35,5 +62,6 @@
 /* Footer-Preferences */
 
 .footer {
-    -fx-background-color: lightgrey;
+    -fx-background-color: -accent-color;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, -1);
 }
