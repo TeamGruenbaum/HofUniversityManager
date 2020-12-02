@@ -2,7 +2,7 @@ package Model.NutzerdatenModel;
 
 import Model.Anwendung;
 
-public class SpeicherHelfer
+public final class Haupt
 {
     private static Anwendung letzteGeoeffneteAnwendung;
 
@@ -11,8 +11,8 @@ public class SpeicherHelfer
         return letzteGeoeffneteAnwendung;
     }
 
-    public static void setLetzteGeoeffneteAnwendung(Anwendung letzteGeoeffneteAnwendung)
+    public static void setLetzteGeoeffneteAnwendung(Anwendung neuerWert)
     {
-        SpeicherHelfer.letzteGeoeffneteAnwendung = letzteGeoeffneteAnwendung;
+        letzteGeoeffneteAnwendung=neuerWert;
     }
 }

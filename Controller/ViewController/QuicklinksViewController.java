@@ -1,6 +1,7 @@
 package Controller.ViewController;
 
-import Model.QuicklinksModel.QuicklinksModel;
+import Model.NutzerdatenModel.Haupt;
+import Model.QuicklinksModel.Quicklinks;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,11 +22,26 @@ public class QuicklinksViewController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         webEngine=webview.getEngine();
-        webEngine.load(QuicklinksModel.getOepnvLink());
+        webEngine.load(_linkWaehlen());
     }
 
+    @FXML
     public void zurueckGehen(ActionEvent actionEvent)
     {
         webEngine.executeScript("history.back()");
+    }
+
+    private String _linkWaehlen()
+    {
+        switch(Haupt.getLetzteGeoeffneteAnwendung())
+        {
+            case MOODLE: return Quicklinks.getMoodleLink();
+            case PANOPTO: return Quicklinks.getPanoptoLink();
+            case NEXTCLOUD: return Quicklinks.getNextcloudLink();
+            case CAMPUSSPORT: return Quicklinks.getCampusSportLink();
+            case BAYERNFAHRPLAN: return Quicklinks.getBayernfahrplanLink();
+            case PRIMUSS: return Quicklinks.getPrimussLink();
+            default: return Quicklinks.getBayernfahrplanLink();
+        }
     }
 }
