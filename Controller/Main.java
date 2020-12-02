@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
-        primaryStage.setTitle("StudiPlaner");
+        primaryStage.setTitle("Studentenverwaltungsanwendung");
         primaryStage.setScene(new Scene(root, 1000, 700));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
         primaryStage.show();

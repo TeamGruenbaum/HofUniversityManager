@@ -1,5 +1,7 @@
 package Controller.ViewController;
 
+import Model.Anwendung;
+import Model.NutzerdatenModel.Haupt;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,10 +37,17 @@ public class GrundViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources)
     {
         _initialisiereMenue(70,
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Moodle_Icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen("Bayernfahrplan","Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"));
+                new _MenuepunktInformationen(Anwendung.STUNDENPLAN,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.MENSAPLAN,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.STUDIENGANG,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.MOODLE,"Moodle_Icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen(Anwendung.PANOPTO,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.NEXTCLOUD,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.CAMPUSSPORT,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.TREFFPUNKTE,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"Bayern_Fahrplan_Icon.png", "QuicklinksView.fxml"),
+                new _MenuepunktInformationen(Anwendung.PRIMUSS,"Platzhalter_Icon.png", "Platzhalter.fxml"),
+                new _MenuepunktInformationen(Anwendung.EINSTELLUNGEN,"Platzhalter_Icon.png", "Platzhalter.fxml"));
         _setTheme(true);
     }
 
@@ -85,10 +94,11 @@ public class GrundViewController implements Initializable {
             int finalI=i;
             button.setOnAction((actionEvent)->
                 {
+                    Haupt.setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
+                    ort.setText(_großschreiben(menuepunktInformationen[finalI].anwendung.toString()));
                     __ladeScene(menuepunktInformationen[finalI].fxmlDateiname);
-                    ort.setText(menuepunktInformationen[finalI].label);
                 });
-            button.setTooltip(new Tooltip(menuepunktInformationen[i].label));
+            button.setTooltip(new Tooltip(_großschreiben(menuepunktInformationen[i].anwendung.toString())));
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             button.setGraphic(imageView);
@@ -106,6 +116,11 @@ public class GrundViewController implements Initializable {
         });
     }
 
+    private String _großschreiben(String wort)
+    {
+        return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
+    }
+
     private void __ladeScene(String FXMLDateiname)
     {
         try
@@ -119,13 +134,13 @@ public class GrundViewController implements Initializable {
 
     static class _MenuepunktInformationen
     {
-        private String label;
+        private Anwendung anwendung;
         private String iconDateiname;
         private String fxmlDateiname;
 
-        public _MenuepunktInformationen(String label, String iconDateiname, String fxmlDateiname)
+        public _MenuepunktInformationen(Anwendung anwendung, String iconDateiname, String fxmlDateiname)
         {
-            this.label=label;
+            this.anwendung=anwendung;
             this.iconDateiname=iconDateiname;
             this.fxmlDateiname=fxmlDateiname;
         }

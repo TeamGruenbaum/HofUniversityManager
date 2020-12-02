@@ -1,14 +1,17 @@
 package Model.QuicklinksModel;
 
-public class QuicklinksModel
+public final class Quicklinks
 {
     private static String nextcloudLink;
-    private static String moodleLink;
+    private static String moodleLink="https://moodle.hof-university.de/";
     private static String panoptoLink;
     private static String primussLink;
-    private static String oepnvLink="https://www.bayern-fahrplan.de/m5/de/#trips";
+    private static String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
     private static String campusSportLink;
     private static String campusSportPlanLink;
+
+
+    private Quicklinks(){}
 
     public static String getNextcloudLink()
     {
@@ -30,9 +33,9 @@ public class QuicklinksModel
         return primussLink;
     }
 
-    public static String getOepnvLink()
+    public static String getBayernfahrplanLink()
     {
-        return oepnvLink;
+        return bayernfahrplanLink;
     }
 
     public static String getCampusSportLink()
