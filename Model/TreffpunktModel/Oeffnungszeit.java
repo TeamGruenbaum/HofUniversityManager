@@ -1,4 +1,6 @@
 package Model.TreffpunktModel;
+import Model.Tag;
+import Model.Uhrzeit;
 
 public class Oeffnungszeit {
     private Tag tag;
