@@ -1,4 +1,4 @@
-package Model;
+package Model.NutzerdatenModel;
 
 public enum Anwendung
 {

@@ -1,7 +1,5 @@
 package Model.NutzerdatenModel;
 
-import Model.Anwendung;
-
 public final class Haupt
 {
     private static Anwendung letzteGeoeffneteAnwendung;

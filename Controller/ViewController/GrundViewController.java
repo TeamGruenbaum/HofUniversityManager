@@ -1,18 +1,17 @@
 package Controller.ViewController;
 
 
+import Model.OberflaechenModel.MenuepunktInformationen;
+import Model.NutzerdatenModel.Anwendung;
 import javafx.animation.FadeTransition;
 
-import Model.Anwendung;
 import Model.NutzerdatenModel.Haupt;
 
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -22,11 +21,9 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
+
+import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
 
 public class GrundViewController implements Initializable {
 
@@ -53,19 +50,21 @@ public class GrundViewController implements Initializable {
         _setHauptButton();
 
         _initialisiereMenue(90,
-                new _MenuepunktInformationen(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.MENSAPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.NEXTCLOUD,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.TREFFPUNKTE,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new _MenuepunktInformationen(Anwendung.PRIMUSS,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new _MenuepunktInformationen(Anwendung.EINSTELLUNGEN,"platzhalter-icon.png", "Platzhalter.fxml"));
+                new MenuepunktInformationen(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.MENSAPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformationen(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.NEXTCLOUD,"nextcloud-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformationen(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.TREFFPUNKTE,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformationen(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformationen(EINSTELLUNGEN,"platzhalter-icon.png", "Platzhalter.fxml"));
 
         _setTheme(true);
+
+        _oeffneLetzteScene();
     }
 
     @FXML
@@ -87,7 +86,7 @@ public class GrundViewController implements Initializable {
         _hoverIconsEffect(menuHauptButton, view);
     }
 
-    private void _initialisiereMenue(int menuepunktHoeheBreite, _MenuepunktInformationen... menuepunktInformationen)
+    private void _initialisiereMenue(int menuepunktHoeheBreite, MenuepunktInformationen... menuepunktInformationen)
     {
         //GridPane initialisieren
         gridPane=new GridPane();
@@ -126,10 +125,10 @@ public class GrundViewController implements Initializable {
             button.setOnAction((actionEvent)->
                 {
                     Haupt.setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
-                    ort.setText(_großschreiben(menuepunktInformationen[finalI].anwendung.toString()));
-                    _ladeScene(menuepunktInformationen[finalI].fxmlDateiname);
+
+                    _ladeScene(menuepunktInformationen[finalI]);
                 });
-            button.setTooltip(new Tooltip(_großschreiben(menuepunktInformationen[i].anwendung.toString())));
+            button.setTooltip(new Tooltip(_grossschreiben(menuepunktInformationen[i].anwendung.toString())));
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             button.setGraphic(imageView);
@@ -151,35 +150,49 @@ public class GrundViewController implements Initializable {
         });
     }
 
+    private void _setTheme(Boolean themaStatus) {
+        if(themaStatus) {
+            // Edit elements for changing color while using dark mode
+        }
+    }
+
+    private void _oeffneLetzteScene()
+    {
+        /*switch(STUNDENPLAN)
+        {
+            case STUNDENPLAN: _ladeScene("Platzhalter.fxml"); break;
+            case MENSAPLAN: _ladeScene("Platzhalter.fxml"); break;
+            case STUDIENGANG: _ladeScene("Platzhalter.fxml"); break;
+            case MOODLE: _ladeScene("QuicklinksView.fxml"); break;
+            case PANOPTO: _ladeScene("Platzhalter.fxml"); break;
+            case NEXTCLOUD: _ladeScene("QuicklinksView.fxml"); break;
+            case CAMPUSSPORT: _ladeScene("Platzhalter.fxml"); break;
+            case TREFFPUNKTE: _ladeScene("Platzhalter.fxml"); break;
+            case BAYERNFAHRPLAN: _ladeScene("QuicklinksView.fxml"); break;
+            case PRIMUSS: _ladeScene("QuicklinksView.fxml"); break;
+            case EINSTELLUNGEN: _ladeScene("Platzhalter.fxml"); break;
+            default: _ladeScene("Platzhalter.fxml"); break;
+        }*/
+    }
+
     //Hilfsmethoden und Hilfsklasse allgemeiner Art
-    private String _großschreiben(String wort)
+    private String _grossschreiben(String wort)
     {
         return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
     }
 
-    private void _ladeScene(String FXMLDateiname)
+    private void _ladeScene(MenuepunktInformationen wert)
     {
         try
         {
-            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+FXMLDateiname)));
+            ort.setText(_grossschreiben(wert.anwendung.toString()));
+
+            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+wert.fxmlDateiname)));
+            borderPane.getCenter().setViewOrder(0);
             stackPane.getChildren().remove(anchorPane);
         }
         catch(Exception e){
             e.printStackTrace();
-        }
-    }
-
-    static class _MenuepunktInformationen
-    {
-        private Anwendung anwendung;
-        private String iconDateiname;
-        private String fxmlDateiname;
-
-        public _MenuepunktInformationen(Anwendung anwendung, String iconDateiname, String fxmlDateiname)
-        {
-            this.anwendung=anwendung;
-            this.iconDateiname=iconDateiname;
-            this.fxmlDateiname=fxmlDateiname;
         }
     }
 
@@ -218,11 +231,5 @@ public class GrundViewController implements Initializable {
             imageView.setCache(true);
             imageView.setCacheHint(CacheHint.SPEED);
         });
-    }
-
-    private void _setTheme(Boolean themaStatus) {
-        if(themaStatus) {
-            // Edit elements for changing color while using dark mode
-        }
     }
 }
