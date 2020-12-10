@@ -60,7 +60,7 @@ public class GrundViewController implements Initializable {
                 new MenuepunktInformationen(Anwendung.TREFFPUNKTE,"platzhalter-icon.png", "Platzhalter.fxml"),
                 new MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformationen(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(EINSTELLUNGEN,"platzhalter-icon.png", "Platzhalter.fxml"));
+                new MenuepunktInformationen(EINSTELLUNGEN,"platzhalter-icon.png", "EinstellungenView.fxml"));
 
         _setTheme(true);
 
