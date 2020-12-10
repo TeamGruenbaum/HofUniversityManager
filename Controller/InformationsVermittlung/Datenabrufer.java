@@ -7,7 +7,12 @@ import org.jsoup.nodes.Document;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Datenabrufer {
 
@@ -21,7 +26,22 @@ public class Datenabrufer {
     }
 
     public static File mensaplanAbrufen(){
-        return "";
+
+        String[] daten = new String[6];
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+
+        for(int i=0; i<6; i++){
+
+            daten[i] = sdf.format(cal.getTime());
+            cal.add(Calendar.DATE, 1);
+
+
+        }
+
+
     }
 
 }
