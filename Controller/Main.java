@@ -8,9 +8,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static Parent root;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
+        root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
         primaryStage.setTitle("Studentenverwaltungsanwendung");
         primaryStage.setScene(new Scene(root, 1000, 700));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
@@ -19,6 +21,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    public static Parent getRoot() {
+        return root;
+    }
 
     public static void main(String[] args) {
         launch(args);

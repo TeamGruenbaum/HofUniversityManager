@@ -1,13 +1,10 @@
 /* FX-Variables for StudiPlaner-Application */
 
-.root {
-    -accent-color: white;
-    -font-color: black;
-}
-
 * {
+    -accent-color: red;
+    -accent-color-dark: #3c3c3c;
+    -font-color: black;
     -fx-font-family: 'Rubik';
-    -fx-text-fill: -font-color;
 }
 
 /* Menu-Bar-Preferences */

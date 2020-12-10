@@ -2,9 +2,7 @@ package Controller.ViewController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -14,22 +12,41 @@ import java.util.ResourceBundle;
 public class EinstellungenViewController implements Initializable
 {
     @FXML
-    TextField tfBenutzername;
+    private TextField tfBenutzername;
 
     @FXML
-    PasswordField pfPasswort;
+    private PasswordField pfPasswort;
 
     @FXML
-    ChoiceBox cbStudiengang;
+    private ChoiceBox cbStudiengang;
 
     @FXML
-    ChoiceBox cbSemester;
+    private ChoiceBox cbSemester;
 
     @FXML
-    AnchorPane aP;
+    private AnchorPane aP;
+
+    @FXML
+    private CheckBox cbDarkMode;
 
     public void initialize(URL location, ResourceBundle resources)
     {
         // Listener für Klick in leere Fläche -> defokussieren
+        // Get Status of the Setting Dark Mode!
+        // Set ChckboxText from Model-Info!
+
+        cbDarkMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!oldValue && newValue) {
+                System.out.println("DARKMODE AKTIV GESETZT");
+                cbDarkMode.setText("aktiv");
+                GrundViewController._setTheme(true);
+                // Übertragung der Information an das Model, um dann bei Neustart im Initialize anzufragen (und bei Neuaufruf)
+            }
+            if(oldValue && !newValue) {
+                System.out.println("DARKMODE INAKTIV GESETZT");
+                cbDarkMode.setText("inaktiv");
+                GrundViewController._setTheme(false);
+            }
+        });
     }
 }
