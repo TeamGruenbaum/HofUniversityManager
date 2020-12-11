@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.GrundViewController">
+<StackPane fx:id="stackPane" styleClass="mainWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.GrundViewController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
          <top>
@@ -33,7 +33,14 @@
             </HBox>
          </top>
          <bottom>
-            <HBox maxHeight="20.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER" />
+            <HBox maxHeight="20.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="© 2020" textFill="#424242">
+                     <padding>
+                        <Insets bottom="14.0" left="28.0" right="28.0" top="14.0" />
+                     </padding>
+                  </Label>
+               </children></HBox>
          </bottom>
          <center>
             <Pane BorderPane.alignment="CENTER" />

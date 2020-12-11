@@ -1,13 +1,24 @@
 /* FX-Variables for StudiPlaner-Application */
 
 .root {
-    -accent-color: white;
+    -menubar-color: white;
     -font-color: black;
+    -anwendung-bgr: lightgrey;
+    -accent-color: #0072a0;
 }
 
 * {
     -fx-font-family: 'Rubik';
     -fx-text-fill: -font-color;
+}
+
+.mainWindow {
+    -fx-background-color: -anwendung-bgr;
+    -fx-text-fill: -font-color;
+}
+
+.breadcrumb-menu {
+    -fx-text-fill: white;
 }
 
 /* Menu-Bar-Preferences */
@@ -19,7 +30,7 @@
 
 .menu-title {
     -fx-font-weight: bold;
-    -fx-text-fill: #0072a0;
+    -fx-text-fill: -accent-color;
 }
 
 .menu-bc {
@@ -28,7 +39,7 @@
 }
 
 .icon-menu {
-    -fx-background-color: -accent-color;
+    -fx-background-color: -menubar-color;
     -fx-background-radius: 5px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
 }
@@ -42,7 +53,7 @@
 }
 
 .menu-bar {
-    -fx-background-color: -accent-color;
+    -fx-background-color: -menubar-color;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
 }
 
@@ -51,11 +62,11 @@
 }
 
 .menu-button:hover {
-    -fx-background-color: -accent-color;
+    -fx-background-color: -menubar-color;
 }
 
 .menu-button:showing {
-    -fx-background-color: -accent-color;
+    -fx-background-color: -menubar-color;
 }
 
 .menu-button .label {
@@ -65,6 +76,6 @@
 /* Footer-Preferences */
 
 .footer {
-    -fx-background-color: -accent-color;
+    -fx-background-color: -menubar-color;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, -1);
 }
