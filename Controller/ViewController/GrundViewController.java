@@ -1,23 +1,29 @@
 package Controller.ViewController;
 
 
+import Controller.Main;
 import Model.OberflaechenModel.MenuepunktInformationen;
 import Model.NutzerdatenModel.Anwendung;
 import javafx.animation.FadeTransition;
 
 import Model.NutzerdatenModel.Haupt;
 
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -44,6 +50,9 @@ public class GrundViewController implements Initializable {
     @FXML
     private Button menuHauptButton;
 
+    public GrundViewController() {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -60,9 +69,7 @@ public class GrundViewController implements Initializable {
                 new MenuepunktInformationen(Anwendung.TREFFPUNKTE,"platzhalter-icon.png", "Platzhalter.fxml"),
                 new MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformationen(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(EINSTELLUNGEN,"platzhalter-icon.png", "Platzhalter.fxml"));
-
-        _setTheme(true);
+                new MenuepunktInformationen(EINSTELLUNGEN,"platzhalter-icon.png", "EinstellungenView.fxml"));
 
         _oeffneLetzteScene();
     }
@@ -150,9 +157,15 @@ public class GrundViewController implements Initializable {
         });
     }
 
-    private void _setTheme(Boolean themaStatus) {
+    public static void _setTheme(Boolean themaStatus)
+    {
         if(themaStatus) {
-            // Edit elements for changing color while using dark mode
+            // Main.root.getStylesheets().set(0, "../../../View/CSS/darkApplication.css");
+            Main.getRoot().setStyle("-accent-color: darkgrey;" +
+                    "-font-color: white;");
+            System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
+        } else {
+            System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
         }
     }
 
