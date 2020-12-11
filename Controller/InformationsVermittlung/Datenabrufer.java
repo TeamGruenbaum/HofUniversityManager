@@ -17,13 +17,16 @@ import java.util.Locale;
 
 public class Datenabrufer {
 
-    public static ArrayList<Document> studiengangAbrufen(String studienJahr, int studienSemester) throws IOException {
-        Document doc = Jsoup.connect("https://www.hof-university.de/studierende/info-service/modulhandbuecher.html").get();
+   /* public static ArrayList<Document> studiengangAbrufen(String studienJahr, int studienSemester) throws IOException {
 
     }
 
-    public static File treffpunkteAbrufen(){
+    */
 
+
+
+    public static String treffpunkteAbrufen(){
+        return "www.Stevenswebsite.de/irgendwas.json";
     }
 
     public static ArrayList<Document> mensaplanAbrufen() throws IOException {
