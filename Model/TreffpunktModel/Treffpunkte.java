@@ -1,19 +1,24 @@
 package Model.TreffpunktModel;
 
+import Controller.Speicher.SchreiberLeser;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public final class Treffpunkte {
-    private static ArrayList<Treffpunkt> treffpunkte;
+public class Treffpunkte implements Serializable
+{
+    private ArrayList<Treffpunkt> treffpunkte;
 
-    private Treffpunkte(){
+    private Treffpunkte()
+    {
 
     }
 
-    public static void set(ArrayList<Treffpunkt> treffpunkte){
-        Treffpunkte.treffpunkte = treffpunkte;
+    public void set(ArrayList<Treffpunkt> treffpunkte){
+        this.treffpunkte = treffpunkte;
     }
 
-    public static ArrayList<Treffpunkt> getTreffpunkte() {
+    public ArrayList<Treffpunkt> getTreffpunkte() {
         return treffpunkte;
     }
 }
