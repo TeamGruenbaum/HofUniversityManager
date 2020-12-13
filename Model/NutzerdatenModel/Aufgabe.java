@@ -15,6 +15,8 @@ public class Aufgabe {
         this.zeit=zeit;
     }
 
+
+
     public String getInhalt() {
         return inhalt;
     }

@@ -6,7 +6,7 @@ import Model.OberflaechenModel.MenuepunktInformationen;
 import Model.NutzerdatenModel.Anwendung;
 import javafx.animation.FadeTransition;
 
-import Model.NutzerdatenModel.Haupt;
+import Model.NutzerdatenModel.Nutzerdaten;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -131,7 +131,7 @@ public class GrundViewController implements Initializable {
             int finalI=i;
             button.setOnAction((actionEvent)->
                 {
-                    Haupt.setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
+                    Nutzerdaten.setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
 
                     _ladeScene(menuepunktInformationen[finalI]);
                 });
