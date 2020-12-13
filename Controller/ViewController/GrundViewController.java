@@ -66,10 +66,10 @@ public class GrundViewController implements Initializable {
                 new MenuepunktInformationen(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
                 new MenuepunktInformationen(Anwendung.NEXTCLOUD,"nextcloud-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformationen(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformationen(Anwendung.TREFFPUNKTE,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformationen(Anwendung.TREFFPUNKTE,"treffpunkt-icon.png", "TreffpunktView.fxml"),
                 new MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformationen(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(EINSTELLUNGEN,"platzhalter-icon.png", "EinstellungenView.fxml"));
+                new MenuepunktInformationen(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
 
         _oeffneLetzteScene();
     }
@@ -136,6 +136,7 @@ public class GrundViewController implements Initializable {
                     _ladeScene(menuepunktInformationen[finalI]);
                 });
             button.setTooltip(new Tooltip(_grossschreiben(menuepunktInformationen[i].anwendung.toString())));
+            button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             button.setGraphic(imageView);
@@ -160,12 +161,18 @@ public class GrundViewController implements Initializable {
     public static void _setTheme(Boolean themaStatus)
     {
         if(themaStatus) {
-            // Main.root.getStylesheets().set(0, "../../../View/CSS/darkApplication.css");
-            Main.getRoot().setStyle("-accent-color: darkgrey;" +
-                    "-font-color: white;");
-            System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
+            Main.getRoot().setStyle("-menubar-color: darkgrey;" +
+                    "-font-color: white;" +
+                    "-anwendung-bgr: #434343;" +
+                    "-accent-color: #003c54");
+            //System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
         } else {
-            System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
+            Main.getRoot().setStyle("-menubar-color: white;" +
+                    "-font-color: black;" +
+                    "-anwendung-bgr: lightgrey;" +
+                    "-accent-color: #0072a0;");
+
+            //System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
         }
     }
 

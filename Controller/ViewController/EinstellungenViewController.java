@@ -37,13 +37,13 @@ public class EinstellungenViewController implements Initializable
 
         cbDarkMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(!oldValue && newValue) {
-                System.out.println("DARKMODE AKTIV GESETZT");
+                //System.out.println("DARKMODE AKTIV GESETZT");
                 cbDarkMode.setText("aktiv");
                 GrundViewController._setTheme(true);
                 // Übertragung der Information an das Model, um dann bei Neustart im Initialize anzufragen (und bei Neuaufruf)
             }
             if(oldValue && !newValue) {
-                System.out.println("DARKMODE INAKTIV GESETZT");
+                //System.out.println("DARKMODE INAKTIV GESETZT");
                 cbDarkMode.setText("inaktiv");
                 GrundViewController._setTheme(false);
             }
