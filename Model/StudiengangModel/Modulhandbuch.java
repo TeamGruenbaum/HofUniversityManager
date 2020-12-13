@@ -7,7 +7,7 @@ public final class Modulhandbuch {
 
     public Modulhandbuch(){}
 
-    public ModulhandbuchFach getFach (int index){
-        return faecher.get(index);
+    public ArrayList<ModulhandbuchFach> getFaecher(){
+        return faecher;
     }
 }
