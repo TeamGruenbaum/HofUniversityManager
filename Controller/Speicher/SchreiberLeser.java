@@ -4,15 +4,13 @@ import Model.MensaplanModel.Mensaplan;
 import Model.NutzerdatenModel.Nutzerdaten;
 import Model.QuicklinksModel.Quicklinks;
 import Model.StudiengangModel.StudiengangInformationen;
+import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
 import java.io.*;
 
 public class SchreiberLeser
 {
-    private static Quicklinks quicklinks;
-    private static String quicklinksDateiname="Quicklinks.sva";
-
     private static StudiengangInformationen studiengangInformationen;
     private static String studiengangInformationenDateiname="StudiengangInformationen.sva";
 
@@ -26,23 +24,6 @@ public class SchreiberLeser
     private static String nutzerdatenDateiname="Nutzerdaten.sva";
 
 
-    //Quicklinks
-    public static void quicklinksLaden()
-    {
-        quicklinks=SchreiberLeser.<Quicklinks>_lesen(quicklinksDateiname);
-    }
-
-    public static Quicklinks getQuicklinks()
-    {
-        return quicklinks;
-    }
-
-    public static void quicklinksSetzen()
-    {
-        SchreiberLeser.<Quicklinks>_schreiben(quicklinks, quicklinksDateiname);
-    }
-
-
     //StudiengangInformationen
     public static void studiengangInformationenLaden()
     {
@@ -54,8 +35,9 @@ public class SchreiberLeser
         return studiengangInformationen;
     }
 
-    public static void studiengangInformationenSetzen()
+    public static void studiengangInformationenSetzen(StudiengangInformationen neuerWert)
     {
+        studiengangInformationen=neuerWert;
         SchreiberLeser.<StudiengangInformationen>_schreiben(studiengangInformationen, studiengangInformationenDateiname);
     }
 
@@ -71,8 +53,9 @@ public class SchreiberLeser
         return treffpunkte;
     }
 
-    public static void treffpunkteSpeichern()
+    public static void treffpunkteSpeichern(Treffpunkte neuerWert)
     {
+        treffpunkte=neuerWert;
         SchreiberLeser.<Treffpunkte>_schreiben(treffpunkte, treffpunkteDateiname);
     }
 
@@ -88,8 +71,9 @@ public class SchreiberLeser
         return mensaplan;
     }
 
-    public static void mensaplanSpeichern()
+    public static void mensaplanSpeichern(Mensaplan neuerWert)
     {
+        mensaplan=neuerWert;
         SchreiberLeser.<Mensaplan>_schreiben(mensaplan, mensaplanDateiname);
     }
 
@@ -105,8 +89,9 @@ public class SchreiberLeser
         return nutzerdaten;
     }
 
-    public static void nutzerdatenSpeichern()
+    public static void nutzerdatenSpeichern(Nutzerdaten neuerWert)
     {
+        nutzerdaten=neuerWert;
         SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, mensaplanDateiname);
     }
 

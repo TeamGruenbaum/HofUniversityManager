@@ -2,12 +2,14 @@ package Model.TreffpunktModel;
 import Model.Tag;
 import Model.Uhrzeit;
 
-public class Oeffnungszeit {
+public class OeffnungszeitNOT
+{
     private Tag tag;
     private Uhrzeit beginn;
     private Uhrzeit ende;
 
-    public Oeffnungszeit(Tag tag, Uhrzeit beginn, Uhrzeit ende) {
+    public OeffnungszeitNOT(Tag tag, Uhrzeit beginn, Uhrzeit ende)
+    {
         this.tag = tag;
         this.beginn = beginn;
         this.ende = ende;

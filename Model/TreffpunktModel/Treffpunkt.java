@@ -1,24 +1,21 @@
 package Model.TreffpunktModel;
 
-public abstract class Treffpunkt {
-    public String treffpunktName;
-    public String ort;
-    public boolean wetterunabhaengig;
-    public Oeffnungszeit[] oeffnungszeit;
-    public String information;
-    public int bewertung;
+public abstract class Treffpunkt
+{
+    private String name;
+    private String ort;
+    private boolean wetterunabhaengig;
+    private String information;
 
-    public Treffpunkt(String treffpunktName, String ort, boolean wetterunabhaengig, Oeffnungszeit[] oeffnungszeit, String information, int bewertung) {
-        this.treffpunktName = treffpunktName;
+    protected Treffpunkt(String name, String ort, boolean wetterunabhaengig, String information) {
+        this.name = name;
         this.ort = ort;
         this.wetterunabhaengig = wetterunabhaengig;
-        this.oeffnungszeit = oeffnungszeit;
         this.information = information;
-        this.bewertung = bewertung;
     }
 
-    public String getTreffpunktName() {
-        return treffpunktName;
+    public String getName() {
+        return name;
     }
 
     public String getOrt() {
@@ -29,15 +26,7 @@ public abstract class Treffpunkt {
         return wetterunabhaengig;
     }
 
-    public Oeffnungszeit[] getOeffnungszeit() {
-        return oeffnungszeit;
-    }
-
     public String getInformation() {
         return information;
-    }
-
-    public int getBewertung() {
-        return bewertung;
     }
 }

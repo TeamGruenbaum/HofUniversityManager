@@ -4,37 +4,33 @@ import java.io.Serializable;
 
 public final class StudiengangInformationen implements Serializable
 {
-    private static String studiengangLeiter;
-    private static String studiengangTyp;
-    private static String spoDataURL;
-    private static Modulhandbuch modulhandbuch;
+    private String studiengangLeiter;
+    private String studiengangTyp;
+    private String spoDataURL;
+    private Modulhandbuch modulhandbuch;
 
 
-    private StudiengangInformationen() {
-
+    private StudiengangInformationen(String studiengangLeiter, String studiengangTyp, String spoDataURL, Modulhandbuch modulhandbuch)
+    {
+        this.studiengangLeiter = studiengangLeiter;
+        this.studiengangTyp = studiengangTyp;
+        this.spoDataURL = spoDataURL;
+        this.modulhandbuch = modulhandbuch;
     }
 
-    public static void set(String studiengangLeiter, String studiengangTyp, String spoDataURL, Modulhandbuch modulhandbuch){
-        StudiengangInformationen.studiengangLeiter = studiengangLeiter;
-        StudiengangInformationen.studiengangTyp = studiengangTyp;
-        StudiengangInformationen.spoDataURL = spoDataURL;
-        StudiengangInformationen.modulhandbuch = modulhandbuch;
-    }
-
-    public static String getStudiengangLeiter() {
+    public String getStudiengangLeiter() {
         return studiengangLeiter;
     }
 
-    public static String getStudiengangTyp() {
+    public String getStudiengangTyp() {
         return studiengangTyp;
     }
 
-    public static String getSPO() {
+    public String getSPO() {
         return spoDataURL;
     }
 
-    public static Modulhandbuch getModulhandbuch() {
+    public Modulhandbuch getModulhandbuch() {
         return modulhandbuch;
     }
-
 }
