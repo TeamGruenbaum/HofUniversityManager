@@ -22,7 +22,7 @@ public abstract class Treffpunkt
         return ort;
     }
 
-    public boolean isWetterunabhaengig() {
+    public boolean getWetterunabhaengig() {
         return wetterunabhaengig;
     }
 
