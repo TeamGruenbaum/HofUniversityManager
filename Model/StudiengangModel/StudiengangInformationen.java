@@ -1,21 +1,22 @@
 package Model.StudiengangModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public final class StudiengangInformationen implements Serializable
 {
     private String studiengangLeiter;
     private String studiengangTyp;
     private String spoDataURL;
-    private Modulhandbuch modulhandbuch;
+    private ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
 
 
-    private StudiengangInformationen(String studiengangLeiter, String studiengangTyp, String spoDataURL, Modulhandbuch modulhandbuch)
+    public StudiengangInformationen(String studiengangLeiter, String studiengangTyp, String spoDataURL, ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
     {
         this.studiengangLeiter = studiengangLeiter;
         this.studiengangTyp = studiengangTyp;
         this.spoDataURL = spoDataURL;
-        this.modulhandbuch = modulhandbuch;
+        this.modulhandbuchFaecher = modulhandbuchFaecher;
     }
 
     public String getStudiengangLeiter() {
@@ -30,7 +31,7 @@ public final class StudiengangInformationen implements Serializable
         return spoDataURL;
     }
 
-    public Modulhandbuch getModulhandbuch() {
-        return modulhandbuch;
+    public ArrayList<ModulhandbuchFach> getModulhandbuch() {
+        return modulhandbuchFaecher;
     }
 }

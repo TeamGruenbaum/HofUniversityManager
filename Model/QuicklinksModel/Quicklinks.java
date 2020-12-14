@@ -19,7 +19,7 @@ public final class Quicklinks
         return nextcloudLink;
     }
 
-    public String getMoodleLink()
+    public static String getMoodleLink()
     {
         return moodleLink;
     }

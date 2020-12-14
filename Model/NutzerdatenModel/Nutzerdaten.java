@@ -51,4 +51,9 @@ public class Nutzerdaten implements Serializable
     {
         return letzteGeoeffneteAnwendung;
     }
+
+    public void setLetzteGeoeffneteAnwendung(Anwendung anwendung)
+    {
+        letzteGeoeffneteAnwendung=anwendung;
+    }
 }

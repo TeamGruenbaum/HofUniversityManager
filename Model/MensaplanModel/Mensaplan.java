@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public final class Mensaplan implements Serializable
 {
-    private ArrayList<Tagesplan> wochenPlan;
+    private ArrayList<Tagesplan> wochenplan;
 
-    public Mensaplan(ArrayList<Tagesplan> wochenPlan)
+    public Mensaplan(ArrayList<Tagesplan> wochenplan)
     {
-        this.wochenPlan = wochenPlan;
+        this.wochenplan = wochenplan;
     }
 
-    public ArrayList<Tagesplan> getWochenPlan()
+    public ArrayList<Tagesplan> getWochenplan()
     {
-        return wochenPlan;
+        return wochenplan;
     }
 }

@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.Speicher.SchreiberLeser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +20,9 @@ public class Main extends Application {
         root.getStylesheets().add("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
         primaryStage.show();
+
+
+        SchreiberLeser.datenZuruecksetzen();
     }
 
     public static Parent getRoot() {

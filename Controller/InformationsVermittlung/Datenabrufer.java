@@ -67,14 +67,14 @@ public class Datenabrufer {
 
     public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
     {
-        Treffpunkte treffpunkte=new Treffpunkte();
+        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
 
         JSONArray restaurants=jsonObject.getJSONArray("restaurants");
         for(int i=0; i<restaurants.length(); i++)
         {
             JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
 
-            treffpunkte.getTreffpunkte().add(
+            treffpunkte.add(
                     new Restaurant
                             (
                                     aktuellesJsonObject.getString("name"),
@@ -92,7 +92,7 @@ public class Datenabrufer {
         {
             JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
 
-            treffpunkte.getTreffpunkte().add(
+            treffpunkte.add(
                     new Freizeitaktivitaet
                             (
                                     aktuellesJsonObject.getString("name"),
@@ -104,7 +104,7 @@ public class Datenabrufer {
             );
         }
 
-        return treffpunkte;
+        return new Treffpunkte(treffpunkte);
     }
 
     public static ArrayList<Document> mensaplanAbrufen() throws IOException {

@@ -2,7 +2,8 @@ package Controller.ViewController;
 
 
 import Controller.Main;
-import Model.OberflaechenModel.MenuepunktInformationen;
+import Controller.Speicher.SchreiberLeser;
+import Model.OberflaechenModel.MenuepunktInformation;
 import Model.NutzerdatenModel.Anwendung;
 import javafx.animation.FadeTransition;
 
@@ -59,17 +60,17 @@ public class GrundViewController implements Initializable {
         _setHauptButton();
 
         _initialisiereMenue(90,
-                new MenuepunktInformationen(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformationen(Anwendung.MENSAPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformationen(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformationen(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformationen(Anwendung.NEXTCLOUD,"nextcloud-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformationen(Anwendung.TREFFPUNKTE,"treffpunkt-icon.png", "TreffpunktView.fxml"),
-                new MenuepunktInformationen(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
-                new MenuepunktInformationen(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
+                new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.MENSAPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.NEXTCLOUD,"nextcloud-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.TREFFPUNKTE,"treffpunkt-icon.png", "TreffpunktView.fxml"),
+                new MenuepunktInformation(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
 
         _oeffneLetzteScene();
     }
@@ -93,7 +94,7 @@ public class GrundViewController implements Initializable {
         _hoverIconsEffect(menuHauptButton, view);
     }
 
-    private void _initialisiereMenue(int menuepunktHoeheBreite, MenuepunktInformationen... menuepunktInformationen)
+    private void _initialisiereMenue(int menuepunktHoeheBreite, MenuepunktInformation... menuepunktInformationen)
     {
         //GridPane initialisieren
         gridPane=new GridPane();
@@ -131,7 +132,7 @@ public class GrundViewController implements Initializable {
             int finalI=i;
             button.setOnAction((actionEvent)->
                 {
-                    Nutzerdaten.setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
+                    SchreiberLeser.getNutzerdaten().setLetzteGeoeffneteAnwendung(menuepunktInformationen[finalI].anwendung);
 
                     _ladeScene(menuepunktInformationen[finalI]);
                 });
@@ -201,7 +202,7 @@ public class GrundViewController implements Initializable {
         return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
     }
 
-    private void _ladeScene(MenuepunktInformationen wert)
+    private void _ladeScene(MenuepunktInformation wert)
     {
         try
         {

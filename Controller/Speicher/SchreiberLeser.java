@@ -1,13 +1,15 @@
 package Controller.Speicher;
 
 import Model.MensaplanModel.Mensaplan;
-import Model.NutzerdatenModel.Nutzerdaten;
-import Model.QuicklinksModel.Quicklinks;
+import Model.MensaplanModel.Tagesplan;
+import Model.NutzerdatenModel.*;
+import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class SchreiberLeser
 {
@@ -23,6 +25,30 @@ public class SchreiberLeser
     private static Nutzerdaten nutzerdaten;
     private static String nutzerdatenDateiname="Nutzerdaten.sva";
 
+    public static boolean isErsterStart()
+    {
+        File file = new File(__getSpeicherPfad()+"notFirstStart");
+        boolean firstRun = false;
+
+        try
+        {
+            if(!file.exists())
+            {
+                firstRun = true;
+                file.createNewFile();
+            }
+        }catch(Exception e){}
+
+        return firstRun;
+    }
+
+    public static void datenZuruecksetzen()
+    {
+        studiengangInformationen=new StudiengangInformationen("","","", new ArrayList<ModulhandbuchFach>());
+        treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
+        mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
+        nutzerdaten=new Nutzerdaten(0, new ArrayList<Fach>(), new Login("", ""), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
+    }
 
     //StudiengangInformationen
     public static void studiengangInformationenLaden()

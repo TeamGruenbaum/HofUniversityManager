@@ -9,9 +9,9 @@ public final class Treffpunkte implements Serializable
 {
     private ArrayList<Treffpunkt> treffpunkte;
 
-    public Treffpunkte()
+    public Treffpunkte(ArrayList<Treffpunkt> treffpunkte)
     {
-
+        this.treffpunkte=treffpunkte;
     }
 
     public ArrayList<Treffpunkt> getTreffpunkte() {
