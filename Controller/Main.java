@@ -1,6 +1,9 @@
 package Controller;
 
 import Controller.Speicher.SchreiberLeser;
+import Model.TreffpunktModel.Freizeitaktivitaet;
+import Model.TreffpunktModel.Restaurant;
+import Model.TreffpunktModel.Treffpunkt;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,8 +24,13 @@ public class Main extends Application {
 
         primaryStage.show();
 
-
         SchreiberLeser.datenZuruecksetzen();
+
+        // Testroutine für TreffpunkteView
+        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));
+        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname02R", "Testort", true, "Info", "Art", "Italienisch", true));
+        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname03F", "Testort", true, "Info", "Ambiente"));
+        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname04R", "Testort", true, "Info", "Art", "Italienisch", true));
     }
 
     public static Parent getRoot() {
