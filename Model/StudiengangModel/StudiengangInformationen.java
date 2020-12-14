@@ -1,6 +1,9 @@
 package Model.StudiengangModel;
 
-public final class StudiengangInformationen {
+import java.io.Serializable;
+
+public final class StudiengangInformationen implements Serializable
+{
     private static String studiengangLeiter;
     private static String studiengangTyp;
     private static String spoDataURL;

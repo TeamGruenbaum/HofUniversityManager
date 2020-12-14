@@ -1,17 +1,18 @@
 package Model.MensaplanModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public final class Mensaplan
+public final class Mensaplan implements Serializable
 {
-    private static ArrayList<Tagesplan> wochenPlan;
+    private ArrayList<Tagesplan> wochenPlan;
 
-    private Mensaplan()
+    public Mensaplan(ArrayList<Tagesplan> wochenPlan)
     {
-
+        this.wochenPlan = wochenPlan;
     }
 
-    public static ArrayList<Tagesplan> getWochenPlan()
+    public ArrayList<Tagesplan> getWochenPlan()
     {
         return wochenPlan;
     }
