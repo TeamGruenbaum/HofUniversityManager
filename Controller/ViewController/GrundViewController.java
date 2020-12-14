@@ -61,7 +61,7 @@ public class GrundViewController implements Initializable {
 
         _initialisiereMenue(90,
                 new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
-                new MenuepunktInformation(Anwendung.MENSAPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaPlanView.fxml"),
                 new MenuepunktInformation(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
                 new MenuepunktInformation(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformation(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),

@@ -9,13 +9,16 @@
    <children>
       <BorderPane>
          <center>
-            <VBox spacing="14.0">
+            <VBox spacing="14.0" fx:id="contentVBox">
                <BorderPane.margin>
                   <Insets bottom="28.0" left="28.0" right="28.0" />
                </BorderPane.margin>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <children>
+                  <ChoiceBox fx:id="cbTreffpunktTyp" prefWidth="150.0" />
+               </children>
             </VBox>
          </center>
          <top>
