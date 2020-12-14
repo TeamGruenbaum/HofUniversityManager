@@ -35,9 +35,8 @@ public class SchreiberLeser
         return studiengangInformationen;
     }
 
-    public static void studiengangInformationenSetzen(StudiengangInformationen neuerWert)
+    public static void studiengangInformationenSpeichern()
     {
-        studiengangInformationen=neuerWert;
         SchreiberLeser.<StudiengangInformationen>_schreiben(studiengangInformationen, studiengangInformationenDateiname);
     }
 
@@ -71,9 +70,8 @@ public class SchreiberLeser
         return mensaplan;
     }
 
-    public static void mensaplanSpeichern(Mensaplan neuerWert)
+    public static void mensaplanSpeichern()
     {
-        mensaplan=neuerWert;
         SchreiberLeser.<Mensaplan>_schreiben(mensaplan, mensaplanDateiname);
     }
 
