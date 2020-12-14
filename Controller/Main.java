@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Speicher.SchreiberLeser;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
@@ -27,10 +28,12 @@ public class Main extends Application {
         SchreiberLeser.datenZuruecksetzen();
 
         // Testroutine für TreffpunkteView
-        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));
+/*        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname02R", "Testort", true, "Info", "Art", "Italienisch", true));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname03F", "Testort", true, "Info", "Ambiente"));
-        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname04R", "Testort", true, "Info", "Art", "Italienisch", true));
+        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname04R", "Testort", true, "Info", "Art", "Italienisch", true));*/
+
+        Datenabrufer.treffpunkteAbrufen();
     }
 
     public static Parent getRoot() {

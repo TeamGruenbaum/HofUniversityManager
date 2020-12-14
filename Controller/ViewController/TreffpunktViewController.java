@@ -4,7 +4,6 @@ import Controller.Speicher.SchreiberLeser;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
-import Model.TreffpunktModel.Treffpunkte;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -74,7 +73,7 @@ public class TreffpunktViewController implements Initializable
             aL.add(new Label("Information: " + obj.getInformation()));
             aL.add(new Label("Art: " + ((Restaurant) obj).getArt()));
             aL.add(new Label("Nationalität: " + ((Restaurant) obj).getNationalitaet()));
-            aL.add(new Label((obj.getWetterunabhaengig())?"Wetterabhängig: ja":"Wetterabhängig: nein"));
+            aL.add(new Label((obj.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
             aL.add(new Label((((Restaurant) obj).getLieferdienst())?"Liefert: ja":"Liefert: nein"));
             ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
 
@@ -96,7 +95,7 @@ public class TreffpunktViewController implements Initializable
             aL.add(new Label("Ort: " + obj.getOrt()));
             aL.add(new Label("Information: " + obj.getInformation()));
             aL.add(new Label("Ambiente: " + ((Freizeitaktivitaet) obj).getAmbiente()));
-            aL.add(new Label((obj.getWetterunabhaengig())?"Wetterabhängig: ja":"Wetterabhängig: nein"));
+            aL.add(new Label((obj.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
             ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
 
             vB.getChildren().addAll(oaL);
