@@ -1,6 +1,7 @@
 package Controller.InformationsVermittlung;
 
 import Controller.Speicher.SchreiberLeser;
+import Model.Datum;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
@@ -107,9 +108,9 @@ public class Datenabrufer {
         return new Treffpunkte(treffpunkte);
     }
 
-    public static ArrayList<Document> mensaplanAbrufen() throws IOException {
+    public static MensaplanDokumente mensaplanAbrufen() throws IOException {
 
-        ArrayList<Document> websites = new ArrayList<>();
+        ArrayList<MensaTag> mensatage = new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
@@ -122,13 +123,19 @@ public class Datenabrufer {
 
             Document doc = Jsoup.connect(url).get();
 
-            websites.add(doc);
+            Datum datum = new Datum(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+
+            MensaTag thisTag = new MensaTag(doc, datum);
+
+            mensatage.add(thisTag);
 
             cal.add(Calendar.DATE, 1);
 
         }
 
-        return websites;
+        MensaplanDokumente mensaplanDerWoche = new MensaplanDokumente(mensatage);
+
+        return mensaplanDerWoche;
 
     }
 
