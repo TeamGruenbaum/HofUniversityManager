@@ -47,7 +47,7 @@
                            </font>
                         </Label>
                         <TextField promptText="Benutzername" GridPane.columnIndex="1" fx:id="tfBenutzername"/>
-                        <PasswordField promptText="Passswort" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="pfPasswort"/>
+                        <PasswordField promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="pfPasswort"/>
                         <ChoiceBox prefHeight="27.0" prefWidth="535.0" GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="cbStudiengang"/>
                         <ChoiceBox prefHeight="27.0" prefWidth="533.0" GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="cbSemester"/>
                      </children>
