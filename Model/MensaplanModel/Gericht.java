@@ -4,9 +4,9 @@ public class Gericht {
     private String kategorie;
     private String name;
     private String beschreibung;
-    private int preis;
+    private float preis;
 
-    public Gericht (String kategorie, String name, String beschreibung, int preis)
+    public Gericht (String kategorie, String name, String beschreibung, float preis)
     {
         this.kategorie=kategorie;
         this.name=name;
@@ -22,7 +22,7 @@ public class Gericht {
         return beschreibung;
     }
 
-    public int getPreis() {
+    public float getPreis() {
         return preis;
     }
 

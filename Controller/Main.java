@@ -34,6 +34,7 @@ public class Main extends Application {
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname04R", "Testort", true, "Info", "Art", "Italienisch", true));*/
 
         Datenabrufer.treffpunkteAbrufen();
+        Datenabrufer.mensaplanAbrufen();
     }
 
     public static Parent getRoot() {
