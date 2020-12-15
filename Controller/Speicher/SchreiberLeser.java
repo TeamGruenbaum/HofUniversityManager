@@ -61,6 +61,12 @@ public class SchreiberLeser
         return studiengangInformationen;
     }
 
+    public static void studiengangInformationenNeuSetzenUndSpeichern(StudiengangInformationen neuerWert)
+    {
+        studiengangInformationen=neuerWert;
+        studiengangInformationenSpeichern();
+    }
+
     public static void studiengangInformationenSpeichern()
     {
         SchreiberLeser.<StudiengangInformationen>_schreiben(studiengangInformationen, studiengangInformationenDateiname);
@@ -78,9 +84,14 @@ public class SchreiberLeser
         return treffpunkte;
     }
 
-    public static void treffpunkteSpeichern(Treffpunkte neuerWert)
+    public static void treffpunkteNeuSetzenUndSpeichern(Treffpunkte neuerWert)
     {
         treffpunkte=neuerWert;
+        treffpunkteSpeichern();
+    }
+
+    public static void treffpunkteSpeichern()
+    {
         SchreiberLeser.<Treffpunkte>_schreiben(treffpunkte, treffpunkteDateiname);
     }
 
@@ -94,6 +105,12 @@ public class SchreiberLeser
     public static Mensaplan getMensaplan()
     {
         return mensaplan;
+    }
+
+    public static void mensaplanNeuSetzenUndSpeichern(Mensaplan neuerWert)
+    {
+        mensaplan=neuerWert;
+        mensaplanSpeichern();
     }
 
     public static void mensaplanSpeichern()
@@ -113,9 +130,14 @@ public class SchreiberLeser
         return nutzerdaten;
     }
 
-    public static void nutzerdatenSpeichern(Nutzerdaten neuerWert)
+    public static void nutzerdatenNeuSetzenUndSpeichern(Nutzerdaten neuerWert)
     {
         nutzerdaten=neuerWert;
+        nutzerdatenSpeichern();
+    }
+
+    public static void nutzerdatenSpeichern()
+    {
         SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, mensaplanDateiname);
     }
 

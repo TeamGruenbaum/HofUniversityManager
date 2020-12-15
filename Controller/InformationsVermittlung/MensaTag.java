@@ -8,7 +8,8 @@ public class MensaTag
     private Document tag;
     private Datum datum;
 
-    public MensaTag(Document tag, Datum datum){
+    public MensaTag(Document tag, Datum datum)
+    {
         this.tag = tag;
         this.datum = datum;
     }

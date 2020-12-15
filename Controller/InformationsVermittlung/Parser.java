@@ -113,33 +113,6 @@ public class Parser
         return new Treffpunkte(treffpunkte);
     }
 
-    private static ModulhandbuchFach _getModulhandbuchFach(Document dokument)
-    {
-        Element tabelle=dokument.getElementsByTag("tbody").first();
-
-        return new ModulhandbuchFach(
-            dokument.select("h2:not([class])").text(),
-            tabelle.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(),
-            Integer.parseInt(tabelle.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text()),
-            tabelle.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(),
-            Integer.parseInt(tabelle.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()),
-            Integer.parseInt(tabelle.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text()),
-            Integer.parseInt(tabelle.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text()),
-            Integer.parseInt(tabelle.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text()),
-            tabelle.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(12).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(13).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(14).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(15).getElementsByTag("td").get(1).text(),
-            tabelle.getElementsByTag("tr").get(16).getElementsByTag("td").get(1).text()
-        );
-    }
-
-
     //Mensaplan parsen
     public static Mensaplan mensaplanParsen(MensaplanDokumente mensaplanDokumente)
     {
@@ -153,6 +126,32 @@ public class Parser
         ArrayList<Tagesplan> wochenplan=new ArrayList<Tagesplan>();
         wochenplan.addAll(Arrays.asList(montagsplan, dienstagsplan, mittwochsplan, donnerstagsplan, freitagsplan, samstagsplan));
         return new Mensaplan(wochenplan);
+    }
+
+    private static ModulhandbuchFach _getModulhandbuchFach(Document dokument)
+    {
+        Element tabelle=dokument.getElementsByTag("tbody").first();
+
+        return new ModulhandbuchFach(
+                dokument.select("h2:not([class])").text(),
+                tabelle.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(),
+                Integer.parseInt(tabelle.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text()),
+                tabelle.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(),
+                Integer.parseInt(tabelle.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()),
+                Integer.parseInt(tabelle.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text()),
+                Integer.parseInt(tabelle.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text()),
+                Integer.parseInt(tabelle.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text()),
+                tabelle.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(12).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(13).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(14).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(15).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(16).getElementsByTag("td").get(1).text()
+        );
     }
 
     private static Tagesplan _getTagesplan(Document dokument, Tag tag, Datum datum)

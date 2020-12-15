@@ -14,6 +14,7 @@ import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
@@ -26,11 +27,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.CountDownLatch;
 
-public class Datenabrufer {
-
-
-    //Main-Methods
-
+public class Datenabrufer
+{
     public static void studiengangAbrufen(int studienJahr, int studienSemester, int studienfach) throws IOException {
 
         WebView webView = new WebView();
@@ -43,65 +41,24 @@ public class Datenabrufer {
 
             if (newState == Worker.State.SUCCEEDED) {
                 // new page has loaded, process:
-                fetchData(we, studienfach, studienJahr,studienSemester);
+                _fetchData(we, studienfach, studienJahr,studienSemester);
             }
         });
 
-
+        //SchreiberLeser.studiengangInformationenNeuSetzenUndSpeichern(...);
     }
 
     public static void treffpunkteAbrufen()
     {
         try
         {
-            SchreiberLeser.treffpunkteSpeichern(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), Charset.forName("UTF-8")))));
+            SchreiberLeser.treffpunkteNeuSetzenUndSpeichern(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), Charset.forName("UTF-8")))));
+
         }
         catch(Exception e){}
     }
 
-    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
-    {
-        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
-
-        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
-        for(int i=0; i<restaurants.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
-
-            treffpunkte.add(
-                    new Restaurant
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("art"),
-                                    aktuellesJsonObject.getString("nationalitaet"),
-                                    aktuellesJsonObject.getBoolean("lieferdienst"))
-            );
-        }
-
-        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
-        for(int i=0; i<freizeitaktivitaeten.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
-
-            treffpunkte.add(
-                    new Freizeitaktivitaet
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("ambiente")
-                            )
-            );
-        }
-
-        return new Treffpunkte(treffpunkte);
-    }
-
-    public static MensaplanDokumente mensaplanAbrufen() throws IOException {
+    public static void mensaplanAbrufen() throws IOException {
         ArrayList<MensaTag> mensatage = new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -125,20 +82,12 @@ public class Datenabrufer {
 
         }
 
-        MensaplanDokumente mensaplanDerWoche = new MensaplanDokumente(mensatage);
-
-        return mensaplanDerWoche;
+        SchreiberLeser.mensaplanNeuSetzenUndSpeichern(Parser.mensaplanParsen(new MensaplanDokumente(mensatage)));
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //In-depth Methods
-
-
-    private static void fetchData(WebEngine we, int segment, int year, int sem) {
-
-
-       selectOption(we, "class_change", segment);                                                   //Loaded first segment
+    private static void _fetchData(WebEngine we, int segment, int year, int sem)
+    {
+       __selectOption(we, "class_change", segment);    //Loaded first segment
 
         CountDownLatch latch = new CountDownLatch(3);
 
@@ -149,7 +98,7 @@ public class Datenabrufer {
                     Thread.sleep(500);
 
                     Platform.runLater(() -> {
-                        selectOption(we,"year_change", year);
+                        __selectOption(we,"year_change", year);
                     });
 
 
@@ -166,7 +115,7 @@ public class Datenabrufer {
                 try {
                     Thread.sleep(1000);
                     Platform.runLater(() -> {
-                        selectOption(we, "sem_change", sem);
+                        __selectOption(we, "sem_change", sem);
                     });
 
 
@@ -187,15 +136,7 @@ public class Datenabrufer {
 
     }
 
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-
-    //Small Methods
-
-
-
-    public static void selectOption(WebEngine we, String id, int intid){
+    private static void __selectOption(WebEngine we, String id, int intid){
 
         we.executeScript(" document.getElementById(\"" + id + "\").childNodes[" + intid + "].selected=\"selected\";");
 
@@ -209,5 +150,4 @@ public class Datenabrufer {
 
 
     }
-
 }
