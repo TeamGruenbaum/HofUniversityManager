@@ -1,33 +1,22 @@
 package Controller.InformationsVermittlung;
 
 import Controller.Speicher.SchreiberLeser;
-import Model.TreffpunktModel.Freizeitaktivitaet;
-import Model.TreffpunktModel.Restaurant;
-import Model.TreffpunktModel.Treffpunkt;
-import Model.TreffpunktModel.Treffpunkte;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 public class Datenabrufer {
@@ -54,57 +43,13 @@ public class Datenabrufer {
 
     }
 
-
-
     public static void treffpunkteAbrufen()
     {
         try
         {
-            SchreiberLeser.treffpunkteSpeichern(treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), Charset.forName("UTF-8")))));
+            SchreiberLeser.treffpunkteSpeichern(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), Charset.forName("UTF-8")))));
         }
         catch(Exception e){}
-    }
-
-    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
-    {
-        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
-
-        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
-        for(int i=0; i<restaurants.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
-
-            treffpunkte.add(
-                    new Restaurant
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("art"),
-                                    aktuellesJsonObject.getString("nationalitaet"),
-                                    aktuellesJsonObject.getBoolean("lieferdienst"))
-            );
-        }
-
-        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
-        for(int i=0; i<freizeitaktivitaeten.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
-
-            treffpunkte.add(
-                    new Freizeitaktivitaet
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("ambiente")
-                            )
-            );
-        }
-
-        return new Treffpunkte(treffpunkte);
     }
 
     public static ArrayList<Document> mensaplanAbrufen() throws IOException {

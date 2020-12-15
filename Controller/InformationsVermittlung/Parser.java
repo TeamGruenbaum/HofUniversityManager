@@ -1,13 +1,19 @@
-package Controller;
+package Controller.InformationsVermittlung;
 
 import Model.Datum;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
-import Model.StudiengangModel.Modulhandbuch;
+import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
 import Model.Tag;
+import Model.TreffpunktModel.Freizeitaktivitaet;
+import Model.TreffpunktModel.Restaurant;
+import Model.TreffpunktModel.Treffpunkt;
+import Model.TreffpunktModel.Treffpunkte;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -61,8 +67,50 @@ public class Parser
             faecher.add(_getModulhandbuchFach(faecherDokumente.get(i)));
         }
 
-        StudiengangInformationen studiengangInformationen=new StudiengangInformationen(studiengangLeiter, spoDataURL, new Modulhandbuch(faecher);
+        StudiengangInformationen studiengangInformationen=new StudiengangInformationen(studiengangLeiter, "Bachelor/Master", spoDataURL, faecher);
         return studiengangInformationen;
+    }
+
+    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
+    {
+        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
+
+        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
+        for(int i=0; i<restaurants.length(); i++)
+        {
+            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
+
+            treffpunkte.add(
+                    new Restaurant
+                            (
+                                    aktuellesJsonObject.getString("name"),
+                                    aktuellesJsonObject.getString("ort"),
+                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                                    aktuellesJsonObject.getString("information"),
+                                    aktuellesJsonObject.getString("art"),
+                                    aktuellesJsonObject.getString("nationalitaet"),
+                                    aktuellesJsonObject.getBoolean("lieferdienst"))
+            );
+        }
+
+        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
+        for(int i=0; i<freizeitaktivitaeten.length(); i++)
+        {
+            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
+
+            treffpunkte.add(
+                    new Freizeitaktivitaet
+                            (
+                                    aktuellesJsonObject.getString("name"),
+                                    aktuellesJsonObject.getString("ort"),
+                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                                    aktuellesJsonObject.getString("information"),
+                                    aktuellesJsonObject.getString("ambiente")
+                            )
+            );
+        }
+
+        return new Treffpunkte(treffpunkte);
     }
 
     private static ModulhandbuchFach _getModulhandbuchFach(Document dokument)

@@ -21,7 +21,7 @@ public class ModulhandbuchFach {
     private String fachMedienformen;
     private String fachHaeufigkeit;
 
-    public ModulhandbuchFach(String fachName, String fachDozent, String fachPruefer, String fachZweitPruefer, int fachStudienjahr, String fachArt, int fachECTS, int fachSWS, int fachPraesenzZeit, int fachPruefungsVorbereitung, String fachSprache, String fachLehrinhalte, String fachLernziel, String fachVoraussetzung, String fachLiteraturliste, String fachPruefungsdurchfuehrung, String fachHilfsmittel, String fachMedienformen, String fachHaeufigkeit) {
+    public ModulhandbuchFach(String fachName, String fachDozent, String fachZweitPruefer, int fachStudienjahr, String fachArt, int fachECTS, int fachSWS, int fachPraesenzZeit, int fachPruefungsVorbereitung, String fachSprache, String fachLehrinhalte, String fachLernziel, String fachVoraussetzung, String fachLiteraturliste, String fachPruefungsdurchfuehrung, String fachHilfsmittel, String fachMedienformen, String fachHaeufigkeit) {
         this.fachName = fachName;
         this.fachDozent = fachDozent;
         this.fachZweitPruefer = fachZweitPruefer;
