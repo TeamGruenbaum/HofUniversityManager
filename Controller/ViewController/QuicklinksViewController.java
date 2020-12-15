@@ -1,5 +1,6 @@
 package Controller.ViewController;
 
+import Controller.Speicher.SchreiberLeser;
 import Model.NutzerdatenModel.Nutzerdaten;
 import Model.QuicklinksModel.Quicklinks;
 import javafx.beans.value.ChangeListener;
@@ -25,7 +26,7 @@ public class QuicklinksViewController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         webEngine=webview.getEngine();
-        switch(Nutzerdaten.getLetzteGeoeffneteAnwendung())
+        switch(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung())
         {
             case MOODLE:
                 {

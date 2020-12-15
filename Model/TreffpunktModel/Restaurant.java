@@ -1,11 +1,14 @@
 package Model.TreffpunktModel;
 
-public class Restaurant {
-    public String art;
-    public String nationalitaet;
-    public boolean lieferdienst;
+public class Restaurant extends Treffpunkt
+{
+    private String art;
+    private String nationalitaet;
+    private boolean lieferdienst;
 
-    public Restaurant(String art, String nationalitaet, boolean lieferdienst) {
+    public Restaurant(String name, String ort, boolean wetterunabhaengig, String information, String art, String nationalitaet, boolean lieferdienst)
+    {
+        super(name, ort, wetterunabhaengig, information);
         this.art = art;
         this.nationalitaet = nationalitaet;
         this.lieferdienst = lieferdienst;
@@ -19,7 +22,7 @@ public class Restaurant {
         return nationalitaet;
     }
 
-    public boolean isLieferdienst() {
+    public boolean getLieferdienst() {
         return lieferdienst;
     }
 }

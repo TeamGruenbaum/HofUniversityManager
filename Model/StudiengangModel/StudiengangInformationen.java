@@ -1,40 +1,37 @@
 package Model.StudiengangModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public final class StudiengangInformationen implements Serializable
 {
-    private static String studiengangLeiter;
-    private static String studiengangTyp;
-    private static String spoDataURL;
-    private static Modulhandbuch modulhandbuch;
+    private String studiengangLeiter;
+    private String studiengangTyp;
+    private String spoDataURL;
+    private ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
 
 
-    private StudiengangInformationen() {
-
+    public StudiengangInformationen(String studiengangLeiter, String studiengangTyp, String spoDataURL, ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
+    {
+        this.studiengangLeiter = studiengangLeiter;
+        this.studiengangTyp = studiengangTyp;
+        this.spoDataURL = spoDataURL;
+        this.modulhandbuchFaecher = modulhandbuchFaecher;
     }
 
-    public static void set(String studiengangLeiter, String studiengangTyp, String spoDataURL, Modulhandbuch modulhandbuch){
-        StudiengangInformationen.studiengangLeiter = studiengangLeiter;
-        StudiengangInformationen.studiengangTyp = studiengangTyp;
-        StudiengangInformationen.spoDataURL = spoDataURL;
-        StudiengangInformationen.modulhandbuch = modulhandbuch;
-    }
-
-    public static String getStudiengangLeiter() {
+    public String getStudiengangLeiter() {
         return studiengangLeiter;
     }
 
-    public static String getStudiengangTyp() {
+    public String getStudiengangTyp() {
         return studiengangTyp;
     }
 
-    public static String getSPO() {
+    public String getSPO() {
         return spoDataURL;
     }
 
-    public static Modulhandbuch getModulhandbuch() {
-        return modulhandbuch;
+    public ArrayList<ModulhandbuchFach> getModulhandbuch() {
+        return modulhandbuchFaecher;
     }
-
 }

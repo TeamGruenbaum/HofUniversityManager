@@ -2,49 +2,49 @@ package Model.QuicklinksModel;
 
 import java.io.Serializable;
 
-public final class Quicklinks implements Serializable
+public final class Quicklinks
 {
-    private String nextcloudLink="https://nextcloud.hof-university.de/apps/user_saml/saml/login";
-    private String moodleLink="https://moodle.hof-university.de/auth/shibboleth/index.php";
-    private String panoptoLink="";
-    private String primussLink="https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh";
-    private String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
-    private String campusSportLink="https://sport.aiv.hfoed.de";
-    private String campusSportPlanLink="";
+    private static String nextcloudLink="https://nextcloud.hof-university.de/apps/user_saml/saml/login";
+    private static String moodleLink="https://moodle.hof-university.de/auth/shibboleth/index.php";
+    private static String panoptoLink="";
+    private static String primussLink="https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh";
+    private static String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
+    private static String campusSportLink="https://sport.aiv.hfoed.de";
+    private static String campusSportPlanLink="";
 
     private Quicklinks(){}
 
-    public String getNextcloudLink()
+    public static String getNextcloudLink()
     {
         return nextcloudLink;
     }
 
-    public String getMoodleLink()
+    public static String getMoodleLink()
     {
         return moodleLink;
     }
 
-    public String getPanoptoLink()
+    public static String getPanoptoLink()
     {
         return panoptoLink;
     }
 
-    public String getPrimussLink()
+    public static String getPrimussLink()
     {
         return primussLink;
     }
 
-    public String getBayernfahrplanLink()
+    public static String getBayernfahrplanLink()
     {
         return bayernfahrplanLink;
     }
 
-    public String getCampusSportLink()
+    public static String getCampusSportLink()
     {
         return campusSportLink;
     }
 
-    public String getCampusSportPlanLink()
+    public static String getCampusSportPlanLink()
     {
         return campusSportPlanLink;
     }

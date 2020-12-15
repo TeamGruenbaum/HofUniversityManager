@@ -15,14 +15,17 @@ public class Fach
     private ArrayList<Notiz> notizen;
     private ArrayList<Note> noten;
 
-    public Fach (String name, String dozent, Uhrzeit beginn, Uhrzeit ende, String zusatzinfo, String raum)
+    public Fach(String name, String dozent, Uhrzeit beginn, Uhrzeit ende, String zusatzinfo, String raum, ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notizen, ArrayList<Note> noten)
     {
-        this.name=name;
-        this.dozent=dozent;
-        this.beginn=beginn;
-        this.ende=ende;
-        this.zusatzinfo=zusatzinfo;
-        this.raum=raum;
+        this.name = name;
+        this.dozent = dozent;
+        this.beginn = beginn;
+        this.ende = ende;
+        this.zusatzinfo = zusatzinfo;
+        this.raum = raum;
+        this.aufgaben = aufgaben;
+        this.notizen = notizen;
+        this.noten = noten;
     }
 
     public String getName() {
@@ -73,5 +76,33 @@ public class Fach
         this.raum = raum;
     }
 
+    public ArrayList<Aufgabe> getAufgaben()
+    {
+        return aufgaben;
+    }
 
+    public void setAufgaben(ArrayList<Aufgabe> aufgaben)
+    {
+        this.aufgaben = aufgaben;
+    }
+
+    public ArrayList<Notiz> getNotizen()
+    {
+        return notizen;
+    }
+
+    public void setNotizen(ArrayList<Notiz> notizen)
+    {
+        this.notizen = notizen;
+    }
+
+    public ArrayList<Note> getNoten()
+    {
+        return noten;
+    }
+
+    public void setNoten(ArrayList<Note> noten)
+    {
+        this.noten = noten;
+    }
 }

@@ -1,18 +1,18 @@
 package Controller.Speicher;
 
 import Model.MensaplanModel.Mensaplan;
-import Model.NutzerdatenModel.Nutzerdaten;
-import Model.QuicklinksModel.Quicklinks;
+import Model.MensaplanModel.Tagesplan;
+import Model.NutzerdatenModel.*;
+import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
+import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class SchreiberLeser
 {
-    private static Quicklinks quicklinks;
-    private static String quicklinksDateiname="Quicklinks.sva";
-
     private static StudiengangInformationen studiengangInformationen;
     private static String studiengangInformationenDateiname="StudiengangInformationen.sva";
 
@@ -25,23 +25,30 @@ public class SchreiberLeser
     private static Nutzerdaten nutzerdaten;
     private static String nutzerdatenDateiname="Nutzerdaten.sva";
 
-
-    //Quicklinks
-    public static void quicklinksLaden()
+    public static boolean isErsterStart()
     {
-        quicklinks=SchreiberLeser.<Quicklinks>_lesen(quicklinksDateiname);
+        File file = new File(__getSpeicherPfad()+"notFirstStart");
+        boolean firstRun = false;
+
+        try
+        {
+            if(!file.exists())
+            {
+                firstRun = true;
+                file.createNewFile();
+            }
+        }catch(Exception e){}
+
+        return firstRun;
     }
 
-    public static Quicklinks getQuicklinks()
+    public static void datenZuruecksetzen()
     {
-        return quicklinks;
+        studiengangInformationen=new StudiengangInformationen("","","", new ArrayList<ModulhandbuchFach>());
+        treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
+        mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
+        nutzerdaten=new Nutzerdaten(0, new ArrayList<Fach>(), new Login("", ""), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
     }
-
-    public static void quicklinksSetzen()
-    {
-        SchreiberLeser.<Quicklinks>_schreiben(quicklinks, quicklinksDateiname);
-    }
-
 
     //StudiengangInformationen
     public static void studiengangInformationenLaden()
@@ -54,7 +61,7 @@ public class SchreiberLeser
         return studiengangInformationen;
     }
 
-    public static void studiengangInformationenSetzen()
+    public static void studiengangInformationenSpeichern()
     {
         SchreiberLeser.<StudiengangInformationen>_schreiben(studiengangInformationen, studiengangInformationenDateiname);
     }
@@ -71,8 +78,9 @@ public class SchreiberLeser
         return treffpunkte;
     }
 
-    public static void treffpunkteSpeichern()
+    public static void treffpunkteSpeichern(Treffpunkte neuerWert)
     {
+        treffpunkte=neuerWert;
         SchreiberLeser.<Treffpunkte>_schreiben(treffpunkte, treffpunkteDateiname);
     }
 
@@ -105,8 +113,9 @@ public class SchreiberLeser
         return nutzerdaten;
     }
 
-    public static void nutzerdatenSpeichern()
+    public static void nutzerdatenSpeichern(Nutzerdaten neuerWert)
     {
+        nutzerdaten=neuerWert;
         SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, mensaplanDateiname);
     }
 
