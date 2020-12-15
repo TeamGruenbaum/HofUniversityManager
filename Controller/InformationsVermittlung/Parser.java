@@ -159,51 +159,64 @@ public class Parser
         ArrayList<Gericht> gerichte=new ArrayList<Gericht>();
 
         //Hauptgerichte
-        for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr")).size(); i++)
+        if (dokument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").size()!=0)
         {
-            Element gericht=dokument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr").get(i);
-            gerichte.add(
-                    new Gericht("Hauptgericht",
-                    gericht.getElementsByTag("td").get(0).ownText(),
-                    _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
-                    Integer.parseInt(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6)))
-            );
+            for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr")).size(); i++)
+            {
+                Element gericht=dokument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr").get(i);
+                gerichte.add(
+                        new Gericht("Hauptgericht",
+                                gericht.getElementsByTag("td").get(0).ownText(),
+                                _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
+                                Float.parseFloat(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
+                );
+            }
         }
 
         //Beilagen
-        for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr")).size(); i++)
+        if (dokument.select("div.tx-bwrkspeiseplan__beilagen").size()!=0)
         {
-            Element gericht=dokument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr").get(i);
-            gerichte.add(
-                    new Gericht("Beilage",
-                    gericht.getElementsByTag("td").get(0).ownText(),
-                    _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
-                    Integer.parseInt(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6)))
-            );
+            for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr")).size(); i++)
+            {
+                Element gericht=dokument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr").get(i);
+                gerichte.add(
+                        new Gericht("Beilage",
+                                gericht.getElementsByTag("td").get(0).ownText(),
+                                _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
+                                Float.parseFloat(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
+                );
+            }
         }
 
+
         //Nachspeisen
-        for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr")).size(); i++)
+        if (dokument.select("div.tx-bwrkspeiseplan__desserts").size()!=0)
         {
-            Element gericht=dokument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr").get(i);
-            gerichte.add(
-                    new Gericht("Nachspeise",
-                    gericht.getElementsByTag("td").get(0).ownText(),
-                    _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
-                    Integer.parseInt(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6)))
-            );
+            for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr")).size(); i++)
+            {
+                Element gericht=dokument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr").get(i);
+                gerichte.add(
+                        new Gericht("Nachspeise",
+                                gericht.getElementsByTag("td").get(0).ownText(),
+                                _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
+                                Float.parseFloat(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
+                );
+            }
         }
 
         //Snacks, Salate
-        for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr")).size(); i++)
+        if (dokument.select("div.tx-bwrkspeiseplan__salatsuppen").size()!=0)
         {
-            Element gericht=dokument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr").get(i);
-            gerichte.add(
-                    new Gericht("Snack, Salat",
-                    gericht.getElementsByTag("td").get(0).ownText(),
-                    _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
-                    Integer.parseInt(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6)))
-            );
+            for(int i=0; i<(dokument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr")).size(); i++)
+            {
+                Element gericht=dokument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr").get(i);
+                gerichte.add(
+                        new Gericht("Snack, Salat",
+                        gericht.getElementsByTag("td").get(0).ownText(),
+                        _getBeschreibung(dokument,gericht.getElementsByTag("td").get(2)),
+                        Float.parseFloat(gericht.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
+                );
+            }
         }
 
         return new Tagesplan(gerichte, tag, datum);
@@ -216,7 +229,7 @@ public class Parser
         for(int i=0; i<icon.childrenSize(); i++)
         {
             if ((icon.getElementsByTag("span")).size() != 0) {
-                if (icon.getElementsByTag("span").get(i).attr("[class]").equals("icon__not-veggie"))
+                if (icon.getElementsByTag("span").get(i).attr("class").equals("icon__not-veggie"))
                 {
                     beschreibung += "Tier (Lab/Gelatine/Honig)";
                 }

@@ -64,7 +64,7 @@ public class SchreiberLeser
     public static void studiengangInformationenNeuSetzenUndSpeichern(StudiengangInformationen neuerWert)
     {
         studiengangInformationen=neuerWert;
-        studiengangInformationenSpeichern();
+        //studiengangInformationenSpeichern();
     }
 
     public static void studiengangInformationenSpeichern()
@@ -87,7 +87,7 @@ public class SchreiberLeser
     public static void treffpunkteNeuSetzenUndSpeichern(Treffpunkte neuerWert)
     {
         treffpunkte=neuerWert;
-        treffpunkteSpeichern();
+        //treffpunkteSpeichern();
     }
 
     public static void treffpunkteSpeichern()
@@ -110,7 +110,7 @@ public class SchreiberLeser
     public static void mensaplanNeuSetzenUndSpeichern(Mensaplan neuerWert)
     {
         mensaplan=neuerWert;
-        mensaplanSpeichern();
+        //mensaplanSpeichern();
     }
 
     public static void mensaplanSpeichern()
@@ -133,7 +133,7 @@ public class SchreiberLeser
     public static void nutzerdatenNeuSetzenUndSpeichern(Nutzerdaten neuerWert)
     {
         nutzerdaten=neuerWert;
-        nutzerdatenSpeichern();
+        //nutzerdatenSpeichern();
     }
 
     public static void nutzerdatenSpeichern()
