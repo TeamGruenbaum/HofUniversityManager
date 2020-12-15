@@ -1,6 +1,13 @@
 package Controller.InformationsVermittlung;
 
 import Controller.Speicher.SchreiberLeser;
+
+import Model.Datum;
+import Model.TreffpunktModel.Freizeitaktivitaet;
+import Model.TreffpunktModel.Restaurant;
+import Model.TreffpunktModel.Treffpunkt;
+import Model.TreffpunktModel.Treffpunkte;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -52,9 +59,50 @@ public class Datenabrufer {
         catch(Exception e){}
     }
 
-    public static ArrayList<Document> mensaplanAbrufen() throws IOException {
+    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
+    {
+        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
 
-        ArrayList<Document> websites = new ArrayList<>();
+        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
+        for(int i=0; i<restaurants.length(); i++)
+        {
+            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
+
+            treffpunkte.add(
+                    new Restaurant
+                            (
+                                    aktuellesJsonObject.getString("name"),
+                                    aktuellesJsonObject.getString("ort"),
+                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                                    aktuellesJsonObject.getString("information"),
+                                    aktuellesJsonObject.getString("art"),
+                                    aktuellesJsonObject.getString("nationalitaet"),
+                                    aktuellesJsonObject.getBoolean("lieferdienst"))
+            );
+        }
+
+        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
+        for(int i=0; i<freizeitaktivitaeten.length(); i++)
+        {
+            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
+
+            treffpunkte.add(
+                    new Freizeitaktivitaet
+                            (
+                                    aktuellesJsonObject.getString("name"),
+                                    aktuellesJsonObject.getString("ort"),
+                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                                    aktuellesJsonObject.getString("information"),
+                                    aktuellesJsonObject.getString("ambiente")
+                            )
+            );
+        }
+
+        return new Treffpunkte(treffpunkte);
+    }
+
+    public static MensaplanDokumente mensaplanAbrufen() throws IOException {
+        ArrayList<MensaTag> mensatage = new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
@@ -67,14 +115,19 @@ public class Datenabrufer {
 
             Document doc = Jsoup.connect(url).get();
 
-            websites.add(doc);
+            Datum datum = new Datum(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+
+            MensaTag thisTag = new MensaTag(doc, datum);
+
+            mensatage.add(thisTag);
 
             cal.add(Calendar.DATE, 1);
 
         }
 
-        return websites;
+        MensaplanDokumente mensaplanDerWoche = new MensaplanDokumente(mensatage);
 
+        return mensaplanDerWoche;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
