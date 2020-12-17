@@ -2,7 +2,9 @@ package Model.TreffpunktModel;
 import Model.Tag;
 import Model.Uhrzeit;
 
-public class OeffnungszeitNOT
+import java.io.Serializable;
+
+public class OeffnungszeitNOT implements Serializable
 {
     private Tag tag;
     private Uhrzeit beginn;

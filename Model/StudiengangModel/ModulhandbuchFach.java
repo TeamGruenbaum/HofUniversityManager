@@ -1,6 +1,9 @@
 package Model.StudiengangModel;
 
-public class ModulhandbuchFach {
+import java.io.Serializable;
+
+public class ModulhandbuchFach implements Serializable
+{
 
     private String fachName;
     private String fachDozent;

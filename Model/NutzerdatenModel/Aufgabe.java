@@ -3,7 +3,10 @@ package Model.NutzerdatenModel;
 import Model.Datum;
 import Model.Uhrzeit;
 
-public class Aufgabe {
+import java.io.Serializable;
+
+public class Aufgabe implements Serializable
+{
     private String inhalt;
     private Datum datum;
     private Uhrzeit zeit;

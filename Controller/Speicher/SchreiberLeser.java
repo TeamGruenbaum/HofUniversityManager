@@ -27,7 +27,8 @@ public class SchreiberLeser
 
     public static boolean isErsterStart()
     {
-        File file = new File(__getSpeicherPfad()+"notFirstStart");
+        File file = new File(__getSpeicherPfad() ,"notFirstStart");
+
         boolean firstRun = false;
 
         try
@@ -35,12 +36,14 @@ public class SchreiberLeser
             if(!file.exists())
             {
                 firstRun = true;
+                file.getParentFile().mkdirs();
                 file.createNewFile();
             }
-        }catch(Exception e){}
+        }catch(Exception e){e.printStackTrace();}
 
         return firstRun;
     }
+
 
     public static void datenZuruecksetzen()
     {
@@ -64,7 +67,7 @@ public class SchreiberLeser
     public static void studiengangInformationenNeuSetzenUndSpeichern(StudiengangInformationen neuerWert)
     {
         studiengangInformationen=neuerWert;
-        //studiengangInformationenSpeichern();
+        studiengangInformationenSpeichern();
     }
 
     public static void studiengangInformationenSpeichern()
@@ -87,7 +90,7 @@ public class SchreiberLeser
     public static void treffpunkteNeuSetzenUndSpeichern(Treffpunkte neuerWert)
     {
         treffpunkte=neuerWert;
-        //treffpunkteSpeichern();
+        treffpunkteSpeichern();
     }
 
     public static void treffpunkteSpeichern()
@@ -110,7 +113,7 @@ public class SchreiberLeser
     public static void mensaplanNeuSetzenUndSpeichern(Mensaplan neuerWert)
     {
         mensaplan=neuerWert;
-        //mensaplanSpeichern();
+        mensaplanSpeichern();
     }
 
     public static void mensaplanSpeichern()
@@ -133,7 +136,7 @@ public class SchreiberLeser
     public static void nutzerdatenNeuSetzenUndSpeichern(Nutzerdaten neuerWert)
     {
         nutzerdaten=neuerWert;
-        //nutzerdatenSpeichern();
+        nutzerdatenSpeichern();
     }
 
     public static void nutzerdatenSpeichern()
@@ -157,15 +160,19 @@ public class SchreiberLeser
 
             objectInputStream.close();
             fileInputStream.close();
-        }
-        catch (Exception exception){}
+        }catch (Exception e){}
+
+
 
         return transferred;
     }
 
+
+
     private static <T extends Serializable> void _schreiben(T objekt, String dateiname)
     {
         File file=new File(__getSpeicherPfad()+dateiname);
+        file.getParentFile().mkdirs();
 
         try
         {
@@ -183,12 +190,13 @@ public class SchreiberLeser
 
     private static String __getSpeicherPfad()
     {
-        String nutzerPfad=System.getProperty("os.home");
+        String nutzerPfad=System.getProperty("user.home");
+        String OS = System.getProperty("os.name");
         String speicherPfad;
 
-        if(nutzerPfad.contains("Windows"))
+        if(OS.contains("Windows"))
         {
-            speicherPfad="/Studentenverwaltungsanwendung/";
+            speicherPfad= "\\Studentenverwaltungsanwendung\\";
         }
         else
         {

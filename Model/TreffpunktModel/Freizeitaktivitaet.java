@@ -1,6 +1,8 @@
 package Model.TreffpunktModel;
 
-public class Freizeitaktivitaet extends Treffpunkt
+import java.io.Serializable;
+
+public class Freizeitaktivitaet extends Treffpunkt implements Serializable
 {
     private String ambiente;
 

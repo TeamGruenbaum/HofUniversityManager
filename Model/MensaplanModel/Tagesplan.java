@@ -2,9 +2,12 @@ package Model.MensaplanModel;
 
 import Model.Tag;
 import Model.Datum;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tagesplan {
+public class Tagesplan implements Serializable
+{
     private ArrayList<Gericht> gerichte;
     private Tag tag;
     private Datum datum;

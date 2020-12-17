@@ -1,9 +1,11 @@
 package Model.NutzerdatenModel;
 
 import Model.Uhrzeit;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Fach
+public class Fach implements Serializable
 {
     private String name;
     private String dozent;

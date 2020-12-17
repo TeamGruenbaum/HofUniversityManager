@@ -1,6 +1,8 @@
 package Model.TreffpunktModel;
 
-public abstract class Treffpunkt
+import java.io.Serializable;
+
+public abstract class Treffpunkt implements Serializable
 {
     private String name;
     private String ort;
