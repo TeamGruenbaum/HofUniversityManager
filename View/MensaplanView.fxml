@@ -24,7 +24,7 @@
             <top>
                 <VBox>
                     <children>
-                        <Label text="Mensaplan">
+                        <Label text="Mensaplan" fx:id="mpTitel">
                             <font>
                                 <Font size="20.0" />
                             </font>

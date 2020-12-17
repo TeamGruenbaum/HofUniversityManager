@@ -63,6 +63,9 @@ public class Datenabrufer
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
+        if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){  //Gibt bei Samstag/Sonntag die nächste Woche aus
+            cal.add(Calendar.WEEK_OF_YEAR, 1);
+        }
         cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
 
         for(int i=0; i<6; i++){
