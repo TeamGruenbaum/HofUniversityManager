@@ -34,6 +34,9 @@ public class MensaplanViewController implements Initializable
     @FXML
     private Label mpTitel;
 
+    @FXML
+    private VBox contentVBox;
+
     public void initialize(URL location, ResourceBundle resources)
     {
         ArrayList<String> listOriginal = new ArrayList<>();
@@ -92,19 +95,45 @@ public class MensaplanViewController implements Initializable
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
+        // Liste mit den Gericht-Kategorien
+        List<String> kategorien = gerichte.stream()
+                .map(Gericht::getKategorie)
+                .distinct()
+                .collect(Collectors.toList());
+
+        Accordion contentAccordion = new Accordion();
+        contentAccordion.setPrefWidth(500);
+        contentVBox.getChildren().add(contentAccordion);
+
+        kategorien.forEach((objName) -> {
+            VBox vB = new VBox();
+            //vB.setId(objName);
+            TitledPane tP = new TitledPane(objName, vB);
+            contentAccordion.getPanes().add(tP);
+        });
+
+        /*gerichte.forEach((obj) -> {
+            VBox aktuelleVB = (VBox) contentVBox.lookup("#Hauptgericht");
+            ArrayList<Label> aL = new ArrayList<>();
+            aL.add(new Label("Preis: " + obj.getPreis()));
+            ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
+
+            aktuelleVB.getChildren().addAll(oaL);
+        });*/
+
         gerichte.forEach((obj) -> System.out.println(obj.getName()));
     }
 
     private int getRichtigeKalenderwoche(){
-        Date date = new Date();
+        Date datum = new Date();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int weekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
+        calendar.setTime(datum);
+        int wochenNummer = calendar.get(Calendar.WEEK_OF_YEAR);
 
         if((LocalDate.now().getDayOfWeek() == DayOfWeek.SATURDAY) || (LocalDate.now().getDayOfWeek() == DayOfWeek.SUNDAY)) {
-            return weekNumber+1;
+            return wochenNummer+1;
         }
-        return weekNumber;
+        return wochenNummer;
     }
 }
