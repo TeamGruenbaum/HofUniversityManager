@@ -1,6 +1,8 @@
 package Model.NutzerdatenModel;
 
-public enum Thema
+import java.io.Serializable;
+
+public enum Thema implements Serializable
 {
     HELL, DUNKEL;
 }

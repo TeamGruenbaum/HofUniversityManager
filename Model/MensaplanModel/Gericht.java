@@ -1,6 +1,9 @@
 package Model.MensaplanModel;
 
-public class Gericht {
+import java.io.Serializable;
+
+public class Gericht implements Serializable
+{
     private String kategorie;
     private String name;
     private String beschreibung;

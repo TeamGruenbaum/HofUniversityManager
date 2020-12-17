@@ -1,6 +1,9 @@
 package Model;
 
-public class Uhrzeit {
+import java.io.Serializable;
+
+public class Uhrzeit implements Serializable
+{
     private int stunde;
     private int minute;
     private int sekunde;

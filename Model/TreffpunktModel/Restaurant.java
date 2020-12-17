@@ -1,6 +1,8 @@
 package Model.TreffpunktModel;
 
-public class Restaurant extends Treffpunkt
+import java.io.Serializable;
+
+public class Restaurant extends Treffpunkt implements Serializable
 {
     private String art;
     private String nationalitaet;

@@ -1,6 +1,8 @@
 package Model.NutzerdatenModel;
 
-public class Notiz
+import java.io.Serializable;
+
+public class Notiz implements Serializable
 {
     private String ueberschrift;
     private String inhalt;

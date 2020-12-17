@@ -1,6 +1,9 @@
 package Model.NutzerdatenModel;
 
-public class Login {
+import java.io.Serializable;
+
+public class Login implements Serializable
+{
     private String benutzername;
     private String passwort;
 
