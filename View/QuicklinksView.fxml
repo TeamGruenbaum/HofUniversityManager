@@ -7,12 +7,15 @@
 <?import javafx.scene.web.WebView?>
 
 
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 <StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.QuicklinksViewController">
     <children>
         <WebView fx:id="webview" prefHeight="50" prefWidth="50"/>
         <AnchorPane pickOnBounds="false">
             <children>
                 <Button onAction="#zurueckGehen" mnemonicParsing="false" text="Zurück" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+                <ProgressIndicator fx:id="progressIndicator" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0"></ProgressIndicator>
             </children>
         </AnchorPane>
     </children>

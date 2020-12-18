@@ -9,6 +9,8 @@ import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -20,46 +22,92 @@ public class QuicklinksViewController implements Initializable
     @FXML
     private WebView webview;
 
+    @FXML
+    private ProgressIndicator progressIndicator;
+
     private WebEngine webEngine;
+    private boolean ersterLoginVersuch=true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         webEngine=webview.getEngine();
+
+        progressIndicator.progressProperty().bind(webEngine.getLoadWorker().progressProperty());
+
+        webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
+        {
+            if(newValue==Worker.State.SUCCEEDED)
+            {
+                progressIndicator.setVisible(false);
+            }
+            else
+            {
+                progressIndicator.setVisible(true);
+            }
+        }));
+
         switch(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung())
         {
             case MOODLE:
-                {
-                    final boolean[] ersterVersuch = {true};
-
-                    webEngine.load(Quicklinks.getMoodleLink());
-
-                    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
-                        {
-                            @Override
-                            public void changed(ObservableValue<? extends Worker.State> observable,Worker.State oldValue, Worker.State newValue )
-                            {
-                                if( newValue != Worker.State.SUCCEEDED ) {
-                                    return;
-                                }
-
-                                if(ersterVersuch[0])
-                                {
-                                    webEngine.executeScript("document.getElementById('username').value='mmustermann'; document.getElementById('password').value='';");
-                                    ersterVersuch[0] =false;
-                                }
-                            }
-                        });
-
-
-                } break;
-            case PANOPTO: webEngine.load(Quicklinks.getPanoptoLink()); break;
-            case NEXTCLOUD: webEngine.load(Quicklinks.getNextcloudLink()); break;
-            case CAMPUSSPORT: webEngine.load(Quicklinks.getCampusSportLink()); break;
-            case BAYERNFAHRPLAN: webEngine.load(Quicklinks.getBayernfahrplanLink());; break;
-            case PRIMUSS: webEngine.load(Quicklinks.getPrimussLink()); break;
-            default: Quicklinks.getBayernfahrplanLink(); break;
+            {
+                webEngine.load(Quicklinks.getMoodleLink());
+                loginSSO();
+            } break;
+            case PANOPTO:
+            {
+                webEngine.load(Quicklinks.getPanoptoLink());
+                loginSSO();
+            } break;
+            case NEXTCLOUD:
+            {
+                webEngine.load(Quicklinks.getNextcloudLink());
+                loginSSO();
+            } break;
+            case CAMPUSSPORT:
+            {
+                webEngine.load(Quicklinks.getCampusSportLink());
+            } break;
+            case BAYERNFAHRPLAN:
+            {
+                webEngine.load(Quicklinks.getBayernfahrplanLink());
+            } break;
+            case PRIMUSS:
+            {
+                webEngine.load(Quicklinks.getPrimussLink());
+                loginSSO();
+            } break;
+            default:
+            {
+                webEngine.loadContent
+                (
+                    "<html>" +
+                        "<header>" +
+                        "</header>" +
+                        "<body>" +
+                            "<p>Es gab einen Fehler beim Laden der Website</p>" +
+                        "</body>" +
+                    "</html>"
+                );
+            } break;
         }
+    }
+
+    private void loginSSO()
+    {
+        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue)->
+        {
+            if(ersterLoginVersuch && newValue==Worker.State.SUCCEEDED)
+            {
+                try
+                {
+                    webEngine.executeScript("document.getElementById('username').value='mmustermann'");
+                    webEngine.executeScript("document.getElementById('password').value=''");
+                    webEngine.executeScript("document.getElementsByName('_eventId_proceed')[0].click()");
+                }catch(Exception exception){}
+                ersterLoginVersuch=false;
+            }
+        });
     }
 
     @FXML
