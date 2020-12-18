@@ -6,14 +6,18 @@ import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.URL;
+
 public class Main extends Application {
 
     public static Parent root;
+    private static HostServices hostServices;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -35,6 +39,13 @@ public class Main extends Application {
 
         Datenabrufer.treffpunkteAbrufen();
         Datenabrufer.mensaplanAbrufen();
+
+        hostServices=getHostServices();
+    }
+
+    public static void oeffneLinkInBrowser(String url)
+    {
+        hostServices.showDocument(url);
     }
 
     public static Parent getRoot() {

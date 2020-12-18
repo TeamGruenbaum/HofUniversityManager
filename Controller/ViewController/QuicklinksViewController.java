@@ -1,5 +1,6 @@
 package Controller.ViewController;
 
+import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.NutzerdatenModel.Nutzerdaten;
 import Model.QuicklinksModel.Quicklinks;
@@ -13,7 +14,10 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import org.codefx.libfx.control.webview.WebViewHyperlinkListener;
+import org.codefx.libfx.control.webview.WebViews;
 
+import javax.swing.event.HyperlinkEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,6 +30,7 @@ public class QuicklinksViewController implements Initializable
     private ProgressIndicator progressIndicator;
 
     private WebEngine webEngine;
+    private String letztGeklickteURL;
     private boolean ersterLoginVersuch=true;
 
     @Override
@@ -33,17 +38,42 @@ public class QuicklinksViewController implements Initializable
     {
         webEngine=webview.getEngine();
 
+        WebViews.addHyperlinkListener(webview, (event) ->
+        {
+            try
+            {
+                letztGeklickteURL=event.getURL().toString();
+            }
+            catch(Exception exception)
+            {
+                letztGeklickteURL=null;
+            }
+            return false;
+        }, HyperlinkEvent.EventType.ACTIVATED);
+        
         progressIndicator.progressProperty().bind(webEngine.getLoadWorker().progressProperty());
-
         webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
         {
+            System.out.println(oldValue+"->"+newValue);
+
             if(newValue==Worker.State.SUCCEEDED)
             {
                 progressIndicator.setVisible(false);
             }
             else
             {
-                progressIndicator.setVisible(true);
+                if(newValue==Worker.State.CANCELLED)
+                {
+                    if(letztGeklickteURL!=null)
+                    {
+                        Main.oeffneLinkInBrowser(letztGeklickteURL);
+                    }
+                    progressIndicator.setVisible(false);
+                }
+                else
+                {
+                    progressIndicator.setVisible(true);
+                }
             }
         }));
 

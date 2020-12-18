@@ -1,12 +1,33 @@
 package Model.OberflaechenModel;
 
+import Model.NutzerdatenModel.Anwendung;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
 
 public final class Menue
 {
-    private ArrayList<MenuepunktInformation> menuepunkte;
+    private static ArrayList<MenuepunktInformation> menuepunkte=new ArrayList<MenuepunktInformation>(
+            List.of(
+                new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaPlanView.fxml"),
+                new MenuepunktInformation(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(Anwendung.PANOPTO,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.NEXTCLOUD,"nextcloud-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(Anwendung.CAMPUSSPORT,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.TREFFPUNKTE,"treffpunkt-icon.png", "TreffpunktView.fxml"),
+                new MenuepunktInformation(Anwendung.BAYERNFAHRPLAN,"bayernfahrplan-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(Anwendung.PRIMUSS,"primuss-icon.png", "QuicklinksView.fxml"),
+                new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml")
+            )
+    );
 
-    public ArrayList<MenuepunktInformation> getMenuepunkte()
+    private Menue(){}
+
+    public static ArrayList<MenuepunktInformation> getMenuepunkte()
     {
         return menuepunkte;
     }
