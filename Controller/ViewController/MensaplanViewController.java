@@ -5,9 +5,6 @@ import Model.Datum;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
 import Model.Tag;
-import Model.TreffpunktModel.Freizeitaktivitaet;
-import Model.TreffpunktModel.Restaurant;
-import Model.TreffpunktModel.Treffpunkt;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,12 +16,11 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MensaplanViewController implements Initializable
 {
@@ -48,7 +44,7 @@ public class MensaplanViewController implements Initializable
         ObservableList<String> list = FXCollections.observableArrayList(listOriginal);
         cbWochentag.setItems(list);
 
-        mpTitel.setText("Mensaplan für die KW " + getRichtigeKalenderwoche());
+        mpTitel.setText("Mensaplan für die KW " + _getRichtigeKalenderwoche());
 
         cbWochentag.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             switch((int) newValue) {
@@ -70,61 +66,62 @@ public class MensaplanViewController implements Initializable
             default -> cbWochentag.getSelectionModel().select(0);
         }
 
-        //Tag aktuellerTag = _datumZuTag(new Datum((LocalDate.now().getDayOfMonth()-1), LocalDate.now().getMonthValue(), LocalDate.now().getYear()));
-        // Tag testtag = _datumZuTag(new Datum(17-1, 12, 2020)); // Testroutine, wenn ich die gerichte des 17.12. haben möchte
-
-        //generiereSpeiseplan(Tag.MONTAG);
+        /* //Testroutine
+        Tag aktuellerTag = _datumZuTag(new Datum((LocalDate.now().getDayOfMonth()-1), LocalDate.now().getMonthValue(), LocalDate.now().getYear()));
+        Tag testtag = _datumZuTag(new Datum(17-1, 12, 2020)); // Testroutine, wenn ich die gerichte des 17.12. haben möchte
+        generiereSpeiseplan(Tag.MONTAG); */
     }
 
-    private Tag _datumZuTag(Datum datum)
+    /*private Tag _datumZuTag(Datum datum)
     {
         Calendar c = GregorianCalendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"), new Locale("de", "DE"));
         c.set(datum.getJahr(), datum.getMonat()-1, datum.getTag());
         return Tag.values()[c.get(Calendar.DAY_OF_WEEK)-1];
-    }
+    }*/
 
     private void generiereSpeiseplan(Tag tag) {
-        // Liste mit den Tagen (einer, und zwar der heutige!), die Gericht-Liste beinhaltet erzeugen
-        List<List<Gericht>> listeListeGerichte = SchreiberLeser.getMensaplan().getWochenplan().stream()
-                .filter((obj) -> obj.getTag().equals(tag))
-                .map(Tagesplan::getGerichte)
-                .collect(Collectors.toList());
+        List<Gericht> gerichte = _getGerichteListe(tag);
+        List<String> kategorien = _getKategorienListe(tag);
 
-        // Liste nur noch mit den Gerichten erzeugen
-        List<Gericht> gerichte = listeListeGerichte.stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-
-        // Liste mit den Gericht-Kategorien
-        List<String> kategorien = gerichte.stream()
-                .map(Gericht::getKategorie)
-                .distinct()
-                .collect(Collectors.toList());
-
+        // Erstelle ContentAccordion
         Accordion contentAccordion = new Accordion();
         contentAccordion.setPrefWidth(500);
-        contentVBox.getChildren().add(contentAccordion);
+        contentVBox.getChildren().add(1, contentAccordion);
 
-        kategorien.forEach((objName) -> {
-            VBox vB = new VBox();
-            //vB.setId(objName);
-            TitledPane tP = new TitledPane(objName, vB);
-            contentAccordion.getPanes().add(tP);
-        });
+        // Entferne das überschüssige Accordion, aber nur, wenn nicht 1. Aufruf
+        if(contentVBox.getChildren().size() > 2) contentVBox.getChildren().remove(2);
 
-        /*gerichte.forEach((obj) -> {
-            VBox aktuelleVB = (VBox) contentVBox.lookup("#Hauptgericht");
-            ArrayList<Label> aL = new ArrayList<>();
-            aL.add(new Label("Preis: " + obj.getPreis()));
-            ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
+        if(!gerichte.isEmpty()) {
+            kategorien.forEach((objName) -> {
+                VBox vB = new VBox();
+                vB.setSpacing(10);
+                TitledPane tP = new TitledPane(objName, vB);
+                contentAccordion.getPanes().add(tP);
 
-            aktuelleVB.getChildren().addAll(oaL);
-        });*/
+                gerichte.stream().filter((ger) -> ger.getKategorie() == objName).forEach((ger) -> {
+                    ArrayList<Label> aL = new ArrayList<>();
+                    VBox vbGericht = new VBox();
+                    aL.add(new Label(ger.getName()));
+                    aL.add(new Label(ger.getBeschreibung()));
+                    aL.add(new Label(_formatierePreis(ger.getPreis())));
+                    aL.forEach((lbl) -> lbl.setWrapText(true));
 
-        gerichte.forEach((obj) -> System.out.println(obj.getName()));
+                    ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
+                    vbGericht.getChildren().addAll(oaL);
+                    vB.getChildren().add(vbGericht);
+                });
+            });
+        } else {
+            contentVBox.getChildren().add(1, new Label("An diesem Tag stehen leider keine Gerichte zur Verfügung."));
+        }
     }
 
-    private int getRichtigeKalenderwoche(){
+    private String _formatierePreis(float number) {
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+        return format.format(number);
+    }
+
+    private int _getRichtigeKalenderwoche(){
         Date datum = new Date();
 
         Calendar calendar = Calendar.getInstance();
@@ -135,5 +132,26 @@ public class MensaplanViewController implements Initializable
             return wochenNummer+1;
         }
         return wochenNummer;
+    }
+
+    private List<Gericht> _getGerichteListe(Tag tag) {
+        // Liste mit den Tagen (einer, und zwar der heutige!), die Gericht-Liste beinhaltet erzeugen
+        List<List<Gericht>> listeListeGerichte = SchreiberLeser.getMensaplan().getWochenplan().stream()
+                .filter((obj) -> obj.getTag().equals(tag))
+                .map(Tagesplan::getGerichte)
+                .collect(Collectors.toList());
+
+        // Liste nur noch mit den Gerichten erzeugen
+        return listeListeGerichte.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> _getKategorienListe(Tag tag) {
+        // Liste mit den Gericht-Kategorien
+        return _getGerichteListe(tag).stream()
+                .map(Gericht::getKategorie)
+                .distinct()
+                .collect(Collectors.toList());
     }
 }
