@@ -11,6 +11,7 @@ import Model.TreffpunktModel.Treffpunkte;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import javafx.fxml.FXML;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.commons.io.IOUtils;
@@ -29,7 +30,14 @@ import java.util.concurrent.CountDownLatch;
 
 public class Datenabrufer
 {
-    public static void studiengangAbrufen(int studienJahr, int studienSemester, int studienfach) throws IOException {
+    @FXML
+
+    private static long start, end;
+
+    public static void studiengangAbrufen(int studienJahr, int studienSemester, int studienfach) throws IOException
+    {
+
+
 
         WebView webView = new WebView();
 
@@ -86,6 +94,59 @@ public class Datenabrufer
         }
 
         SchreiberLeser.mensaplanNeuSetzenUndSpeichern(Parser.mensaplanParsen(new MensaplanDokumente(mensatage)));
+    }
+
+    public static void stundenplanAbrufen()
+    {
+        WebEngine webEngine=new WebEngine();
+
+        start=System.nanoTime();
+        webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
+
+        System.out.println("Hallooooo");
+        webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
+        {
+            if(newValue== Worker.State.SUCCEEDED)
+            {
+                end=System.nanoTime();
+
+                System.out.println((end-start)/1000000);
+
+                Task<Void> task = new Task<Void>()
+                {
+                    @Override
+                    protected Void call() throws Exception
+                    {
+                        Platform.runLater(() -> {
+                            webEngine.executeScript(
+                                    "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
+                                            "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
+                        });
+
+                        Thread.sleep(((end-start)/1000000)/2);
+
+                        Platform.runLater(() -> {
+                            webEngine.executeScript(
+                                    "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
+                                            "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
+                        });
+
+                        super.succeeded();
+                        return null;
+                    }
+                };
+
+                task.stateProperty().addListener(((observable1, oldValue1, newValue1) ->
+                {
+                    if(newValue1== Worker.State.SUCCEEDED)
+                    {
+                        System.out.println("FERTIG");
+                        //SchreiberLeser...
+                    }
+                }));
+
+                new Thread(task).start();
+            }}));
     }
 
     private static void _fetchData(WebEngine we, int segment, int year, int sem)

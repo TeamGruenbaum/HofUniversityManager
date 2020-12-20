@@ -32,6 +32,7 @@ public class QuicklinksViewController implements Initializable
     private WebEngine webEngine;
     private String letztGeklickteURL;
     private boolean ersterLoginVersuch=true;
+    private boolean ersterKlick=true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -82,16 +83,6 @@ public class QuicklinksViewController implements Initializable
             case MOODLE:
             {
                 webEngine.load(Quicklinks.getMoodleLink());
-                loginSSO();
-            } break;
-            case PANOPTO:
-            {
-                webEngine.load(Quicklinks.getPanoptoLink());
-                loginSSO();
-            } break;
-            case NEXTCLOUD:
-            {
-                webEngine.load(Quicklinks.getNextcloudLink());
                 loginSSO();
             } break;
             case CAMPUSSPORT:

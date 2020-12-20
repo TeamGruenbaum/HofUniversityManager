@@ -6,6 +6,7 @@ import Controller.Speicher.SchreiberLeser;
 import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 import Model.NutzerdatenModel.Anwendung;
+import Model.QuicklinksModel.Quicklinks;
 import javafx.animation.FadeTransition;
 
 import Model.NutzerdatenModel.Nutzerdaten;
@@ -195,6 +196,18 @@ public class GrundViewController implements Initializable {
 
     private void _ladeScene(MenuepunktInformation wert)
     {
+        if(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung()==Anwendung.NEXTCLOUD)
+        {
+            Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
+            return;
+        }
+
+        if(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung()==Anwendung.PANOPTO)
+        {
+            Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
+            return;
+        }
+
         try
         {
             ort.setText(_grossschreiben(wert.anwendung.toString()));
