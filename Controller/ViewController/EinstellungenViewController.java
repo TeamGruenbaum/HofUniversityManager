@@ -1,5 +1,13 @@
 package Controller.ViewController;
 
+import Controller.Speicher.SchreiberLeser;
+import Model.NutzerdatenModel.Thema;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -32,20 +40,38 @@ public class EinstellungenViewController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         // Listener für Klick in leere Fläche -> defokussieren
-        // Get Status of the Setting Dark Mode!
-        // Set ChckboxText from Model-Info!
 
+        // Erster Abruf des Values
+        tfBenutzername.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getName());
+        pfPasswort.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort());
+
+        // Listener für die Änderung und direkte Speicherung
+        tfBenutzername.textProperty().addListener((observable, oldValue, newValue) -> {
+            SchreiberLeser.getNutzerdaten().getSsoLogin().setName(newValue);
+        });
+
+        pfPasswort.textProperty().addListener((observable, oldValue, newValue) -> {
+            SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort(newValue);
+        });
+
+        // Im ersten Durchlauf -> setze Checkbox auf richtigen Wert
+        cbDarkMode.selectedProperty().setValue(SchreiberLeser.getNutzerdaten().getAktuellesThema().equals(Thema.DUNKEL));
+
+        // Binding fuer den beistehenden Text
+        cbDarkMode.textProperty().bind(Bindings
+                .when(cbDarkMode.selectedProperty())
+                .then("aktiv")
+                .otherwise("inaktiv"));
+
+        // Auf Userinteraktion hoeren und entsprechende Aktion durchfuehren
         cbDarkMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!oldValue && newValue) {
-                //System.out.println("DARKMODE AKTIV GESETZT");
-                cbDarkMode.setText("aktiv");
-                GrundViewController._setTheme(true);
-                // Übertragung der Information an das Model, um dann bei Neustart im Initialize anzufragen (und bei Neuaufruf)
+            if(!newValue) {
+                GrundViewController._setTheme(Thema.HELL);
+                SchreiberLeser.getNutzerdaten().setAktuellesThema(Thema.HELL);
             }
-            if(oldValue && !newValue) {
-                //System.out.println("DARKMODE INAKTIV GESETZT");
-                cbDarkMode.setText("inaktiv");
-                GrundViewController._setTheme(false);
+            if(newValue) {
+                GrundViewController._setTheme(Thema.DUNKEL);
+                SchreiberLeser.getNutzerdaten().setAktuellesThema(Thema.DUNKEL);
             }
         });
     }

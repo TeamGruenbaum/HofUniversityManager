@@ -40,6 +40,11 @@ public class Nutzerdaten implements Serializable
         return aktuellesThema;
     }
 
+    public void setAktuellesThema(Thema thema)
+    {
+        aktuellesThema = thema;
+    }
+
     public Anwendung getLetzteGeoeffneteAnwendung()
     {
         return letzteGeoeffneteAnwendung;
