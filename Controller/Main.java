@@ -2,6 +2,8 @@ package Controller;
 
 import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Speicher.SchreiberLeser;
+import Controller.ViewController.GrundViewController;
+import Model.NutzerdatenModel.Thema;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
@@ -32,13 +34,20 @@ public class Main extends Application {
         SchreiberLeser.datenZuruecksetzen();
 
         // Testroutine für TreffpunkteView
-/*        SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));
+        /*SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname02R", "Testort", true, "Info", "Art", "Italienisch", true));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname03F", "Testort", true, "Info", "Ambiente"));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname04R", "Testort", true, "Info", "Art", "Italienisch", true));*/
 
         Datenabrufer.treffpunkteAbrufen();
         Datenabrufer.mensaplanAbrufen();
+
+        // Testroutine für instellungenView
+        /*SchreiberLeser.getNutzerdaten().getSsoLogin().setName("Hans-Dieter");
+        SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort("1234");
+        SchreiberLeser.getNutzerdaten().setAktuellesThema(Thema.DUNKEL);*/
+
+        GrundViewController._setTheme(SchreiberLeser.getNutzerdaten().getAktuellesThema());
 
         hostServices=getHostServices();
     }
