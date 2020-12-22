@@ -6,18 +6,16 @@ import java.util.ArrayList;
 public class Nutzerdaten implements Serializable
 {
     private int studiensemester;
-    private ArrayList<Fach> faecher;
+    private ArrayList<Doppelstunde> doppelstunden;
     private Login ssoLogin;
-    private Login campusSportLogin;
     private Thema aktuellesThema;
     private Anwendung letzteGeoeffneteAnwendung;
 
-    public Nutzerdaten(int studiensemester, ArrayList<Fach> faecher, Login ssoLogin, Login campusSportLogin, Thema aktuellesThema, Anwendung letzteGeoeffneteAnwendung)
+    public Nutzerdaten(int studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, Anwendung letzteGeoeffneteAnwendung)
     {
         this.studiensemester = studiensemester;
-        this.faecher = faecher;
+        this.doppelstunden = doppelstunden;
         this.ssoLogin = ssoLogin;
-        this.campusSportLogin = campusSportLogin;
         this.aktuellesThema = aktuellesThema;
         this.letzteGeoeffneteAnwendung = letzteGeoeffneteAnwendung;
     }
@@ -27,9 +25,9 @@ public class Nutzerdaten implements Serializable
         return studiensemester;
     }
 
-    public ArrayList<Fach> getFaecher()
+    public ArrayList<Doppelstunde> getDoppelstunden()
     {
-        return faecher;
+        return doppelstunden;
     }
 
     public Login getSsoLogin()
@@ -37,14 +35,14 @@ public class Nutzerdaten implements Serializable
         return ssoLogin;
     }
 
-    public Login getCampusSportLogin()
-    {
-        return campusSportLogin;
-    }
-
     public Thema getAktuellesThema()
     {
         return aktuellesThema;
+    }
+
+    public void setAktuellesThema(Thema thema)
+    {
+        aktuellesThema = thema;
     }
 
     public Anwendung getLetzteGeoeffneteAnwendung()

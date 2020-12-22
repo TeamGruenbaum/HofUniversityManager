@@ -4,6 +4,7 @@ import Model.Datum;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
+import Model.NutzerdatenModel.Doppelstunde;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
@@ -12,10 +13,12 @@ import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
+import Model.Uhrzeit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,63 +74,6 @@ public class Parser
         return studiengangInformationen;
     }
 
-    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
-    {
-        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
-
-        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
-        for(int i=0; i<restaurants.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
-
-            treffpunkte.add(
-                    new Restaurant
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("art"),
-                                    aktuellesJsonObject.getString("nationalitaet"),
-                                    aktuellesJsonObject.getBoolean("lieferdienst"))
-            );
-        }
-
-        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
-        for(int i=0; i<freizeitaktivitaeten.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
-
-            treffpunkte.add(
-                    new Freizeitaktivitaet
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("ambiente")
-                            )
-            );
-        }
-
-        return new Treffpunkte(treffpunkte);
-    }
-
-    //Mensaplan parsen
-    public static Mensaplan mensaplanParsen(MensaplanDokumente mensaplanDokumente)
-    {
-        Tagesplan montagsplan=_getTagesplan(mensaplanDokumente.getMontag().getDokument(), Tag.MONTAG, mensaplanDokumente.getMontag().getDatum());
-        Tagesplan dienstagsplan=_getTagesplan(mensaplanDokumente.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanDokumente.getDienstag().getDatum());
-        Tagesplan mittwochsplan=_getTagesplan(mensaplanDokumente.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanDokumente.getMittwoch().getDatum());
-        Tagesplan donnerstagsplan=_getTagesplan(mensaplanDokumente.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanDokumente.getDonnerstag().getDatum());
-        Tagesplan freitagsplan=_getTagesplan(mensaplanDokumente.getFreitag().getDokument(), Tag.FREITAG, mensaplanDokumente.getFreitag().getDatum());
-        Tagesplan samstagsplan=_getTagesplan(mensaplanDokumente.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanDokumente.getSamstag().getDatum());
-
-        ArrayList<Tagesplan> wochenplan=new ArrayList<Tagesplan>();
-        wochenplan.addAll(Arrays.asList(montagsplan, dienstagsplan, mittwochsplan, donnerstagsplan, freitagsplan, samstagsplan));
-        return new Mensaplan(wochenplan);
-    }
-
     private static ModulhandbuchFach _getModulhandbuchFach(Document dokument)
     {
         Element tabelle=dokument.getElementsByTag("tbody").first();
@@ -152,6 +98,21 @@ public class Parser
                 tabelle.getElementsByTag("tr").get(15).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(16).getElementsByTag("td").get(1).text()
         );
+    }
+
+    //Mensaplan parsen
+    public static Mensaplan mensaplanParsen(MensaplanDokumente mensaplanDokumente)
+    {
+        Tagesplan montagsplan=_getTagesplan(mensaplanDokumente.getMontag().getDokument(), Tag.MONTAG, mensaplanDokumente.getMontag().getDatum());
+        Tagesplan dienstagsplan=_getTagesplan(mensaplanDokumente.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanDokumente.getDienstag().getDatum());
+        Tagesplan mittwochsplan=_getTagesplan(mensaplanDokumente.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanDokumente.getMittwoch().getDatum());
+        Tagesplan donnerstagsplan=_getTagesplan(mensaplanDokumente.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanDokumente.getDonnerstag().getDatum());
+        Tagesplan freitagsplan=_getTagesplan(mensaplanDokumente.getFreitag().getDokument(), Tag.FREITAG, mensaplanDokumente.getFreitag().getDatum());
+        Tagesplan samstagsplan=_getTagesplan(mensaplanDokumente.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanDokumente.getSamstag().getDatum());
+
+        ArrayList<Tagesplan> wochenplan=new ArrayList<Tagesplan>();
+        wochenplan.addAll(Arrays.asList(montagsplan, dienstagsplan, mittwochsplan, donnerstagsplan, freitagsplan, samstagsplan));
+        return new Mensaplan(wochenplan);
     }
 
     private static Tagesplan _getTagesplan(Document dokument, Tag tag, Datum datum)
@@ -290,5 +251,139 @@ public class Parser
         }
 
         return beschreibung;
+    }
+
+    //Treffpunkte parsen
+    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
+    {
+        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
+
+        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
+        for(int i=0; i<restaurants.length(); i++)
+        {
+            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
+
+            treffpunkte.add(
+                    new Restaurant
+                            (
+                                    aktuellesJsonObject.getString("name"),
+                                    aktuellesJsonObject.getString("ort"),
+                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                                    aktuellesJsonObject.getString("information"),
+                                    aktuellesJsonObject.getString("art"),
+                                    aktuellesJsonObject.getString("nationalitaet"),
+                                    aktuellesJsonObject.getBoolean("lieferdienst"))
+            );
+        }
+
+        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
+        for(int i=0; i<freizeitaktivitaeten.length(); i++)
+        {
+            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
+
+            treffpunkte.add(
+                    new Freizeitaktivitaet
+                            (
+                                    aktuellesJsonObject.getString("name"),
+                                    aktuellesJsonObject.getString("ort"),
+                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                                    aktuellesJsonObject.getString("information"),
+                                    aktuellesJsonObject.getString("ambiente")
+                            )
+            );
+        }
+
+        return new Treffpunkte(treffpunkte);
+    }
+
+    //Stundenplan parsen
+    public static ArrayList<Doppelstunde> stundenplanParsen(Document stundenplanDokument)
+    {
+        ArrayList<Doppelstunde> doppelstunden=new ArrayList<Doppelstunde>();
+
+        Element current=null;
+
+        for(int i=0;i<stundenplanDokument.getElementsByTag("table").size();i++)
+        {
+            switch(stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().ownText())
+            {
+                case "Montag":
+                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
+                    {
+                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                        doppelstunden.add(new Doppelstunde
+                        (
+                                current.getElementsByTag("td").get(3).text(),
+                                current.getElementsByTag("td").get(4).text(),
+                                current.getElementsByTag("td").get(6).text(),
+                                Tag.MONTAG,
+                                new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                        ));
+                    };
+                    break;
+                case "Dienstag":
+                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
+                    {
+                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                        doppelstunden.add(new Doppelstunde
+                                (
+                                        current.getElementsByTag("td").get(3).text(),
+                                        current.getElementsByTag("td").get(4).text(),
+                                        current.getElementsByTag("td").get(6).text(),
+                                        Tag.DIENSTAG,
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                ));
+                    };
+                    break;
+                case "Mittwoch":
+                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
+                    {
+                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                        doppelstunden.add(new Doppelstunde
+                                (
+                                        current.getElementsByTag("td").get(3).text(),
+                                        current.getElementsByTag("td").get(4).text(),
+                                        current.getElementsByTag("td").get(6).text(),
+                                        Tag.MITTWOCH,
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                ));
+                    };
+                    break;
+                case "Donnerstag":
+                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
+                    {
+                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                        doppelstunden.add(new Doppelstunde
+                                (
+                                        current.getElementsByTag("td").get(3).text(),
+                                        current.getElementsByTag("td").get(4).text(),
+                                        current.getElementsByTag("td").get(6).text(),
+                                        Tag.DONNERSTAG,
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                ));
+                    };
+                    break;
+                case "Freitag":
+                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
+                    {
+                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                        doppelstunden.add(new Doppelstunde
+                                (
+                                        current.getElementsByTag("td").get(3).text(),
+                                        current.getElementsByTag("td").get(4).text(),
+                                        current.getElementsByTag("td").get(6).text(),
+                                        Tag.FREITAG,
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                ));
+                    };
+                    break;
+            }
+        }
+        return doppelstunden;
     }
 }

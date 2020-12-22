@@ -50,7 +50,7 @@ public class SchreiberLeser
         studiengangInformationen=new StudiengangInformationen("","","", new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
-        nutzerdaten=new Nutzerdaten(0, new ArrayList<Fach>(), new Login("", ""), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
+        nutzerdaten=new Nutzerdaten(0, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
     }
 
     //StudiengangInformationen

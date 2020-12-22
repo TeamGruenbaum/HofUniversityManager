@@ -2,9 +2,9 @@ package Model.QuicklinksModel;
 
 public final class Quicklinks
 {
-    private static String nextcloudLink="https://nextcloud.hof-university.de/apps/user_saml/saml/login";
+    private static String nextcloudLink="https://nextcloud.hof-university.de";
     private static String moodleLink="https://moodle.hof-university.de/auth/shibboleth/index.php";
-    private static String panoptoLink="https://panopto.hof-university.de/";
+    private static String panoptoLink="https://panopto.hof-university.de";
     private static String primussLink="https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh";
     private static String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
     private static String campusSportLink="https://sport.aiv.hfoed.de";

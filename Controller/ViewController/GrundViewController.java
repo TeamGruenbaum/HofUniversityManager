@@ -3,6 +3,7 @@ package Controller.ViewController;
 
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
+import Model.NutzerdatenModel.Thema;
 import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 import Model.NutzerdatenModel.Anwendung;
@@ -159,9 +160,9 @@ public class GrundViewController implements Initializable {
         });
     }
 
-    public static void _setTheme(Boolean themaStatus)
+    public static void _setTheme(Thema thema)
     {
-        if(themaStatus) {
+        if(thema == Thema.DUNKEL) {
             Main.getRoot().setStyle("-menubar-color: darkgrey;" +
                     "-font-color: white;" +
                     "-anwendung-bgr: #434343;" +
