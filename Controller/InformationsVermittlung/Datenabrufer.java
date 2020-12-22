@@ -158,6 +158,67 @@ public class Datenabrufer
         });
     }
 
+    public static void dropdownAbrufen()
+    {
+        Platform.runLater(()->
+        {
+            WebEngine webEngine= GrundViewController.getUglyWebview().getEngine();
+
+            webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
+            {
+                System.out.println(observable);
+
+                if(newValue== Worker.State.SUCCEEDED)
+                {
+                    end=System.nanoTime();
+
+                    System.out.println((end-start)/1000000);
+
+                    Task<Void> task = new Task<Void>()
+                    {
+                        @Override
+                        protected Void call() throws Exception
+                        {
+                            Platform.runLater(() -> {
+                                System.out.println(1);
+                                webEngine.executeScript(
+                                        "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
+                                                "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
+                            });
+
+                            Thread.sleep(((end-start)/1000000)/2);
+
+                            Platform.runLater(() -> {
+                                System.out.println(2);
+                                webEngine.executeScript(
+                                        "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
+                                                "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
+                            });
+
+                            Thread.sleep(((end-start)/1000000)/2);
+
+                            return null;
+                        }
+                    };
+
+                    task.stateProperty().addListener(((observable1, oldValue1, newValue1) ->
+                    {
+                        if(newValue1== Worker.State.SUCCEEDED)
+                        {
+                            SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
+                            SchreiberLeser.nutzerdatenSpeichern();
+                        }
+                    }));
+
+                    new Thread(task).start();
+                }
+            }));
+
+            start=System.nanoTime();
+            webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
+        });
+    }
+
     private static void _fetchData(WebEngine we, int segment, int year, int sem)
     {
        __selectOption(we, "class_change", segment);    //Loaded first segment
