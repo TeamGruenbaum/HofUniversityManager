@@ -141,7 +141,7 @@ public class SchreiberLeser
 
     public static void nutzerdatenSpeichern()
     {
-        SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, mensaplanDateiname);
+        SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, nutzerdatenDateiname);
     }
 
 

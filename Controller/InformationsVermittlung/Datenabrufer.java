@@ -5,6 +5,7 @@ import Controller.Speicher.SchreiberLeser;
 
 import Controller.ViewController.GrundViewController;
 import Model.Datum;
+import Model.NutzerdatenModel.Doppelstunde;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
@@ -143,7 +144,6 @@ public class Datenabrufer
                     {
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
-                            //System.out.println((String) webEngine.executeScript("document.documentElement.outerHTML"));
                             SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
                             SchreiberLeser.nutzerdatenSpeichern();
                         }
