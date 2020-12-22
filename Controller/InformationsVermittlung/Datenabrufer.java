@@ -1,13 +1,18 @@
 package Controller.InformationsVermittlung;
 
+import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 
+import Controller.ViewController.GrundViewController;
 import Model.Datum;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -28,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.CountDownLatch;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 public class Datenabrufer
 {
     @FXML
@@ -36,9 +43,6 @@ public class Datenabrufer
 
     public static void studiengangAbrufen(int studienJahr, int studienSemester, int studienfach) throws IOException
     {
-
-
-
         WebView webView = new WebView();
 
         final WebEngine we = webView.getEngine();
@@ -98,55 +102,60 @@ public class Datenabrufer
 
     public static void stundenplanAbrufen()
     {
-        WebEngine webEngine=new WebEngine();
-
-        start=System.nanoTime();
-        webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
-
-        System.out.println("Hallooooo");
-        webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
+        Platform.runLater(()->
         {
-            if(newValue== Worker.State.SUCCEEDED)
+            WebEngine webEngine= GrundViewController.getUglyWebview().getEngine();
+
+            webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
             {
-                end=System.nanoTime();
+                System.out.println(observable);
 
-                System.out.println((end-start)/1000000);
-
-                Task<Void> task = new Task<Void>()
+                if(newValue== Worker.State.SUCCEEDED)
                 {
-                    @Override
-                    protected Void call() throws Exception
+                    end=System.nanoTime();
+
+                    System.out.println((end-start)/1000000);
+
+                    Task<Void> task = new Task<Void>()
                     {
-                        Platform.runLater(() -> {
-                            webEngine.executeScript(
-                                    "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
-                                            "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
-                        });
+                        @Override
+                        protected Void call() throws Exception
+                        {
+                            Platform.runLater(() -> {
+                                webEngine.executeScript(
+                                        "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
+                                                "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
+                            });
 
-                        Thread.sleep(((end-start)/1000000)/2);
+                            Thread.sleep(((end-start)/1000000)/2);
 
-                        Platform.runLater(() -> {
-                            webEngine.executeScript(
-                                    "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
-                                            "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
-                        });
+                            Platform.runLater(() -> {
+                                webEngine.executeScript(
+                                        "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
+                                                "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
+                            });
 
-                        super.succeeded();
-                        return null;
-                    }
-                };
+                            super.succeeded();
+                            return null;
+                        }
+                    };
 
-                task.stateProperty().addListener(((observable1, oldValue1, newValue1) ->
-                {
-                    if(newValue1== Worker.State.SUCCEEDED)
+                    task.stateProperty().addListener(((observable1, oldValue1, newValue1) ->
                     {
-                        System.out.println("FERTIG");
-                        //SchreiberLeser...
-                    }
-                }));
+                        if(newValue1== Worker.State.SUCCEEDED)
+                        {
+                            System.out.println("FERTIG");
+                            //SchreiberLeser.getNutzerdaten().
+                        }
+                    }));
 
-                new Thread(task).start();
-            }}));
+                    new Thread(task).start();
+                }
+            }));
+
+            start=System.nanoTime();
+            webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
+        });
     }
 
     private static void _fetchData(WebEngine we, int segment, int year, int sem)

@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.web.WebView;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
@@ -54,6 +55,11 @@ public class GrundViewController implements Initializable {
     @FXML
     private Button menuHauptButton;
 
+    @FXML
+    private WebView webView;
+
+    private static WebView webView2;
+
     public GrundViewController() {
     }
 
@@ -65,6 +71,8 @@ public class GrundViewController implements Initializable {
         _initialisiereMenue(90, Menue.getMenuepunkte());
 
         _oeffneLetzteScene();
+
+        webView2=webView;
     }
 
     @FXML
@@ -256,5 +264,10 @@ public class GrundViewController implements Initializable {
             imageView.setCache(true);
             imageView.setCacheHint(CacheHint.SPEED);
         });
+    }
+
+    public static WebView getUglyWebview()
+    {
+        return webView2;
     }
 }

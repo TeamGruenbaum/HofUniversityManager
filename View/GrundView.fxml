@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.web.WebView?>
 <StackPane fx:id="stackPane" styleClass="mainWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.GrundViewController">
    <children>
       <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
@@ -46,5 +47,6 @@
             <Pane BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
+      <WebView fx:id="webView" visible="false"></WebView>
    </children>
 </StackPane>

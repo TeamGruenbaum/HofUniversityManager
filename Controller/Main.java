@@ -39,6 +39,7 @@ public class Main extends Application {
 
         Datenabrufer.treffpunkteAbrufen();
         Datenabrufer.mensaplanAbrufen();
+        //Datenabrufer.stundenplanAbrufen();
 
         hostServices=getHostServices();
     }
