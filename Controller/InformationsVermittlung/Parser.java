@@ -20,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -303,86 +304,95 @@ public class Parser
 
         Element current=null;
 
-        for(int i=0;i<stundenplanDokument.getElementsByTag("table").size();i++)
+        for(int i=0;i<stundenplanDokument.getElementsByTag("table").size()-1;i++)
         {
-            switch(stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().ownText())
+            try
             {
-                case "Montag":
-                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
-                    {
-                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
-                        doppelstunden.add(new Doppelstunde
-                        (
-                                current.getElementsByTag("td").get(3).text(),
-                                current.getElementsByTag("td").get(4).text(),
-                                current.getElementsByTag("td").get(6).text(),
-                                Tag.MONTAG,
-                                new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
-                                new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
-                        ));
-                    };
-                    break;
-                case "Dienstag":
-                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
-                    {
-                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
-                        doppelstunden.add(new Doppelstunde
-                                (
-                                        current.getElementsByTag("td").get(3).text(),
-                                        current.getElementsByTag("td").get(4).text(),
-                                        current.getElementsByTag("td").get(6).text(),
-                                        Tag.DIENSTAG,
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
-                                ));
-                    };
-                    break;
-                case "Mittwoch":
-                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
-                    {
-                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
-                        doppelstunden.add(new Doppelstunde
-                                (
-                                        current.getElementsByTag("td").get(3).text(),
-                                        current.getElementsByTag("td").get(4).text(),
-                                        current.getElementsByTag("td").get(6).text(),
-                                        Tag.MITTWOCH,
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
-                                ));
-                    };
-                    break;
-                case "Donnerstag":
-                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
-                    {
-                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
-                        doppelstunden.add(new Doppelstunde
-                                (
-                                        current.getElementsByTag("td").get(3).text(),
-                                        current.getElementsByTag("td").get(4).text(),
-                                        current.getElementsByTag("td").get(6).text(),
-                                        Tag.DONNERSTAG,
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
-                                ));
-                    };
-                    break;
-                case "Freitag":
-                    for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
-                    {
-                        current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
-                        doppelstunden.add(new Doppelstunde
-                                (
-                                        current.getElementsByTag("td").get(3).text(),
-                                        current.getElementsByTag("td").get(4).text(),
-                                        current.getElementsByTag("td").get(6).text(),
-                                        Tag.FREITAG,
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
-                                        new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
-                                ));
-                    };
-                    break;
-            }
+                switch(stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().text())
+                {
+                    case "Montag":
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        {
+                            current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                            doppelstunden.add(new Doppelstunde
+                                    (
+                                            current.getElementsByTag("td").get(3).text(),
+                                            current.getElementsByTag("td").get(4).text(),
+                                            current.getElementsByTag("td").get(6).text(),
+                                            Tag.MONTAG,
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                    ));
+
+                            System.out.println("Fach "+j + ": "+current.getElementsByTag("td").get(3).text());
+                        };
+                        break;
+                    case "Dienstag":
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        {
+                            current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                            doppelstunden.add(new Doppelstunde
+                                    (
+                                            current.getElementsByTag("td").get(3).text(),
+                                            current.getElementsByTag("td").get(4).text(),
+                                            current.getElementsByTag("td").get(6).text(),
+                                            Tag.DIENSTAG,
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                    ));
+                            System.out.println("Fach "+j + ": "+current.getElementsByTag("td").get(3).text());
+                        };
+                        break;
+                    case "Mittwoch":
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        {
+                            current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                            doppelstunden.add(new Doppelstunde
+                                    (
+                                            current.getElementsByTag("td").get(3).text(),
+                                            current.getElementsByTag("td").get(4).text(),
+                                            current.getElementsByTag("td").get(6).text(),
+                                            Tag.MITTWOCH,
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                    ));
+                            System.out.println("Fach "+j + ": "+current.getElementsByTag("td").get(3).text());
+                        };
+                        break;
+                    case "Donnerstag":
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        {
+                            current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                            doppelstunden.add(new Doppelstunde
+                                    (
+                                            current.getElementsByTag("td").get(3).text(),
+                                            current.getElementsByTag("td").get(4).text(),
+                                            current.getElementsByTag("td").get(6).text(),
+                                            Tag.DONNERSTAG,
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                    ));
+                            System.out.println("Fach "+j + ": "+current.getElementsByTag("td").get(3).text());
+                        };
+                        break;
+                    case "Freitag":
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        {
+                            current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
+                            doppelstunden.add(new Doppelstunde
+                                    (
+                                            current.getElementsByTag("td").get(3).text(),
+                                            current.getElementsByTag("td").get(4).text(),
+                                            current.getElementsByTag("td").get(6).text(),
+                                            Tag.FREITAG,
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(1).text().substring(3,5)), 0),
+                                            new Uhrzeit(Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(current.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                                    ));
+                            System.out.println("Fach "+j + ": "+current.getElementsByTag("td").get(3).text());
+                        };
+                        break;
+                }
+            }catch(Exception e){e.printStackTrace();}
         }
         return doppelstunden;
     }

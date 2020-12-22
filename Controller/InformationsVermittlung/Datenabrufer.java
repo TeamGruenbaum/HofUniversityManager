@@ -122,6 +122,7 @@ public class Datenabrufer
                         protected Void call() throws Exception
                         {
                             Platform.runLater(() -> {
+                                System.out.println(1);
                                 webEngine.executeScript(
                                         "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
                                                 "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
@@ -130,12 +131,14 @@ public class Datenabrufer
                             Thread.sleep(((end-start)/1000000)/2);
 
                             Platform.runLater(() -> {
+                                System.out.println(2);
                                 webEngine.executeScript(
                                         "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
                                                 "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
                             });
 
-                            super.succeeded();
+                            Thread.sleep(((end-start)/1000000)/2);
+
                             return null;
                         }
                     };
@@ -144,8 +147,8 @@ public class Datenabrufer
                     {
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
-                            System.out.println("FERTIG");
-                            //SchreiberLeser.getNutzerdaten().
+                            //System.out.println((String) webEngine.executeScript("document.documentElement.outerHTML"));
+                            SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
                         }
                     }));
 

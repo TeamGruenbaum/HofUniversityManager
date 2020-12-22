@@ -30,6 +30,11 @@ public class Nutzerdaten implements Serializable
         return doppelstunden;
     }
 
+    public void setDoppelstunden(ArrayList<Doppelstunde> neuerWert)
+    {
+        doppelstunden=neuerWert;
+    }
+
     public Login getSsoLogin()
     {
         return ssoLogin;
