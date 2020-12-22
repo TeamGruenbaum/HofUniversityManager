@@ -304,14 +304,14 @@ public class Parser
 
         Element current=null;
 
-        for(int i=0;i<stundenplanDokument.getElementsByTag("table").size()-1;i++)
+        for(int i=0;i<stundenplanDokument.getElementsByTag("table").size();i++)
         {
             try
             {
                 switch(stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().text())
                 {
                     case "Montag":
-                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
                         {
                             current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
                             doppelstunden.add(new Doppelstunde
@@ -328,7 +328,7 @@ public class Parser
                         };
                         break;
                     case "Dienstag":
-                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
                         {
                             current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
                             doppelstunden.add(new Doppelstunde
@@ -344,7 +344,7 @@ public class Parser
                         };
                         break;
                     case "Mittwoch":
-                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
                         {
                             current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
                             doppelstunden.add(new Doppelstunde
@@ -360,7 +360,7 @@ public class Parser
                         };
                         break;
                     case "Donnerstag":
-                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
                         {
                             current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
                             doppelstunden.add(new Doppelstunde
@@ -376,7 +376,7 @@ public class Parser
                         };
                         break;
                     case "Freitag":
-                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size()-1;j++)
+                        for(int j=0;j<stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").size();j++)
                         {
                             current=stundenplanDokument.getElementsByTag("table").get(i).select("tbody>tr").get(j);
                             doppelstunden.add(new Doppelstunde
@@ -393,6 +393,11 @@ public class Parser
                         break;
                 }
             }catch(Exception e){e.printStackTrace();}
+
+            if(stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().text().compareTo("Freitag")==0)
+            {
+                break;
+            }
         }
         return doppelstunden;
     }

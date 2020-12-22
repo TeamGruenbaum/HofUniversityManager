@@ -10,9 +10,6 @@ import Model.TreffpunktModel.Restaurant;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
-import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.engine.EngineOptions;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -33,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.CountDownLatch;
 
-import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 
 public class Datenabrufer
 {
@@ -149,6 +145,7 @@ public class Datenabrufer
                         {
                             //System.out.println((String) webEngine.executeScript("document.documentElement.outerHTML"));
                             SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
+                            SchreiberLeser.nutzerdatenSpeichern();
                         }
                     }));
 
