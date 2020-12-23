@@ -1,0 +1,29 @@
+package Model.DropdownModel;
+
+import java.util.ArrayList;
+
+public class Studiengang
+{
+    private String name;
+    private String kuerzel;
+    private ArrayList<Studiensemester> studiensemester;
+
+    public Studiengang(String name, String kuerzel, ArrayList<Studiensemester> studiensemester)
+    {
+        this.name=name;
+        this.kuerzel=kuerzel;
+        this.studiensemester=studiensemester;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getKuerzel() {
+        return kuerzel;
+    }
+
+    public ArrayList<Studiensemester> getStudiensemester() {
+        return studiensemester;
+    }
+}
