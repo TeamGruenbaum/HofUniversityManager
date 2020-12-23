@@ -158,7 +158,7 @@ public class Datenabrufer
         });
     }
 
-    public static void dropdownAbrufen()
+    public static void dropdownMenueAbrufen()
     {
         Platform.runLater(()->
         {
@@ -188,15 +188,6 @@ public class Datenabrufer
 
                             Thread.sleep(((end-start)/1000000)/2);
 
-                            Platform.runLater(() -> {
-                                System.out.println(2);
-                                webEngine.executeScript(
-                                        "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
-                                                "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
-                            });
-
-                            Thread.sleep(((end-start)/1000000)/2);
-
                             return null;
                         }
                     };
@@ -205,8 +196,7 @@ public class Datenabrufer
                     {
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
-                            SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
-                            SchreiberLeser.nutzerdatenSpeichern();
+                            //SchreiberLeser.studiengangDropdownNeuSetzenUndSpeichern(Parser.stundenplanDropdownParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
                         }
                     }));
 
