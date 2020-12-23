@@ -367,7 +367,7 @@ public class Parser
             studiengangkuerzel=kuerzelDokumentPaare.get(i).getStudiengangKuerzel();
 
             ArrayList<Studiensemester> studiensemester=new ArrayList<Studiensemester>();
-            for(int j=0;j<stundenplanDokument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().size();j++)
+            for(int j=1;j<stundenplanDokument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().size();j++)
             {
                 studiensemester.add(new Studiensemester
                 (

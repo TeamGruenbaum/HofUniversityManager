@@ -33,15 +33,21 @@ public class Main extends Application {
 
         SchreiberLeser.datenZuruecksetzen();
 
+        SchreiberLeser.dropdownMenueLaden();
+        SchreiberLeser.getDropdownMenue().getEintraege().stream().forEach((item)->
+        {
+            System.out.println(item.getName()+":");
+            item.getStudiensemester().stream().forEach((item1)->
+            {
+                System.out.println(item1.getName());
+            });
+        });
+
         // Testroutine für TreffpunkteView
         /*SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname02R", "Testort", true, "Info", "Art", "Italienisch", true));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname03F", "Testort", true, "Info", "Ambiente"));
         SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Restaurant("Testname04R", "Testort", true, "Info", "Art", "Italienisch", true));*/
-
-        Datenabrufer.treffpunkteAbrufen();
-        Datenabrufer.mensaplanAbrufen();
-        Datenabrufer.stundenplanAbrufen();
 
         // Testroutine für instellungenView
         /*SchreiberLeser.getNutzerdaten().getSsoLogin().setName("Hans-Dieter");

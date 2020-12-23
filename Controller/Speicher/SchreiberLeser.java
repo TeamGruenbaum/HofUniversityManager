@@ -1,5 +1,6 @@
 package Controller.Speicher;
 
+import Model.DropdownModel.DropdownMenue;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
@@ -24,6 +25,9 @@ public class SchreiberLeser
 
     private static Nutzerdaten nutzerdaten;
     private static String nutzerdatenDateiname="Nutzerdaten.sva";
+
+    private static DropdownMenue dropdownMenue;
+    private static String dropdownMenueDateiname="Dropdownmenue.sva";
 
     public static boolean isErsterStart()
     {
@@ -142,6 +146,28 @@ public class SchreiberLeser
     public static void nutzerdatenSpeichern()
     {
         SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, nutzerdatenDateiname);
+    }
+
+    //DropdownMenue
+    public static void dropdownMenueLaden()
+    {
+        dropdownMenue=SchreiberLeser.<DropdownMenue>_lesen(dropdownMenueDateiname);
+    }
+
+    public static DropdownMenue getDropdownMenue()
+    {
+        return dropdownMenue;
+    }
+
+    public static void dropdownMenueNeuSetzenUndSpeichern(DropdownMenue neuerWert)
+    {
+        dropdownMenue=neuerWert;
+        dropdownMenueSpeichern();
+    }
+
+    public static void dropdownMenueSpeichern()
+    {
+        SchreiberLeser.<DropdownMenue>_schreiben(dropdownMenue, dropdownMenueDateiname);
     }
 
 

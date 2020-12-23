@@ -1,8 +1,9 @@
 package Model.DropdownModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Studiengang
+public class Studiengang implements Serializable
 {
     private String name;
     private String kuerzel;

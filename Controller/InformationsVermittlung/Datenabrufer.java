@@ -29,6 +29,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -105,13 +106,9 @@ public class Datenabrufer
 
             webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
             {
-                System.out.println(observable);
-
                 if(newValue== Worker.State.SUCCEEDED)
                 {
                     end=System.nanoTime();
-
-                    System.out.println((end-start)/1000000);
 
                     Task<Void> task = new Task<Void>()
                     {
@@ -119,7 +116,6 @@ public class Datenabrufer
                         protected Void call() throws Exception
                         {
                             Platform.runLater(() -> {
-                                System.out.println(1);
                                 webEngine.executeScript(
                                         "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
                                                 "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
@@ -128,7 +124,6 @@ public class Datenabrufer
                             Thread.sleep(((end-start)/1000000)/2);
 
                             Platform.runLater(() -> {
-                                System.out.println(2);
                                 webEngine.executeScript(
                                         "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].children[4].selected=true;" +
                                                 "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
@@ -162,31 +157,54 @@ public class Datenabrufer
     {
         Platform.runLater(()->
         {
-            WebEngine webEngine= GrundViewController.getUglyWebview().getEngine();
+            ArrayList<KuerzelDokumentPaar> arrayList=new ArrayList<KuerzelDokumentPaar>();
+
+            WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
             webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
             {
-                System.out.println(observable);
-
                 if(newValue== Worker.State.SUCCEEDED)
                 {
                     end=System.nanoTime();
 
-                    System.out.println((end-start)/1000000);
-
-                    Task<Void> task = new Task<Void>()
+                    Task<Void> task=new Task<Void>()
                     {
                         @Override
-                        protected Void call() throws Exception
+                        protected Void call()
                         {
-                            Platform.runLater(() -> {
-                                System.out.println(1);
-                                webEngine.executeScript(
-                                        "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='MI';" +
-                                                "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
-                            });
+                            int laenge=0;
 
-                            Thread.sleep(((end-start)/1000000)/2);
+                            try
+                            {
+                               laenge= Jsoup.connect("https://www.hof-university.de/studierende/info-service/stundenplaene.html").get().select("[name='tx_stundenplan_stundenplan[studiengang]']").get(0).childNodeSize();
+                            }catch (Exception e){}
+
+                            System.out.println(laenge);
+
+                            for(int i = 1; i<laenge; i++)
+                            {
+                                int finalI = i;
+                                Platform.runLater(()->
+                                {
+                                    webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+ finalI +"].selected='selected';"+
+                                            "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
+                                });
+
+                                try{Thread.sleep(((end-start)/1000000)/2);}catch(Exception e){}
+
+                                Platform.runLater(()->
+                                {
+                                    arrayList.add(
+                                        new KuerzelDokumentPaar
+                                                (
+                                                        (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0][" + finalI + "].innerText;"),
+                                                        (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0][" + finalI + "].value;"),
+                                                        Datenabrufer._webengineZuJSoupDocument(webEngine)
+                                                )
+                                    );
+                                });
+                            }
+
 
                             return null;
                         }
@@ -196,7 +214,7 @@ public class Datenabrufer
                     {
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
-                            //SchreiberLeser.studiengangDropdownNeuSetzenUndSpeichern(Parser.stundenplanDropdownParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
+                            SchreiberLeser.dropdownMenueNeuSetzenUndSpeichern(Parser.dropdownMenueParsen(new DropdownMenueDokumente(arrayList)));
                         }
                     }));
 
@@ -273,5 +291,10 @@ public class Datenabrufer
                 "                    document.getElementById(\"" + id + "\").fireEvent(\"onchange\");");
 
 
+    }
+
+    private static Document _webengineZuJSoupDocument(WebEngine webEngine)
+    {
+        return Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"));
     }
 }
