@@ -4,13 +4,20 @@ import org.jsoup.nodes.Document;
 
 public class KuerzelDokumentPaar
 {
+    private String studiengangName;
     private String studiengangKuerzel;
     private Document stundenplanDokument;
 
-    public KuerzelDokumentPaar(String studiengangKuerzel, Document stundenplanDokument)
+    public KuerzelDokumentPaar(String studiengangName, String studiengangKuerzel, Document stundenplanDokument)
     {
-        this.studiengangKuerzel = studiengangKuerzel;
-        this.stundenplanDokument = stundenplanDokument;
+        this.studiengangName=studiengangName;
+        this.studiengangKuerzel=studiengangKuerzel;
+        this.stundenplanDokument=stundenplanDokument;
+    }
+
+    public String getStudiengangName()
+    {
+        return studiengangName;
     }
 
     public String getStudiengangKuerzel()

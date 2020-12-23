@@ -1,6 +1,9 @@
 package Controller.InformationsVermittlung;
 
 import Model.Datum;
+import Model.DropdownModel.DropdownMenue;
+import Model.DropdownModel.Studiengang;
+import Model.DropdownModel.Studiensemester;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
@@ -343,5 +346,42 @@ public class Parser
                             new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)), 0)
                     ));
         };
+    }
+
+    //DropdownMenue parsen
+    public static DropdownMenue dropdownMenueParsen(DropdownMenueDokumente dropdownMenueDokumente)
+    {
+        ArrayList<KuerzelDokumentPaar> kuerzelDokumentPaare= dropdownMenueDokumente.getKuerzelDokumentePaare();
+
+        //Hilfsvariablen
+        Document stundenplanDokument=null;
+        String studiengangkuerzel="";
+        String studiengangname="";
+
+        ArrayList<Studiengang> eintraege=new ArrayList<Studiengang>();
+
+        for(int i=0;i<kuerzelDokumentPaare.size();i++)
+        {
+            stundenplanDokument=kuerzelDokumentPaare.get(i).getStundenplanDokument();
+            studiengangname=kuerzelDokumentPaare.get(i).getStudiengangName();
+            studiengangkuerzel=kuerzelDokumentPaare.get(i).getStudiengangKuerzel();
+
+            ArrayList<Studiensemester> studiensemester=new ArrayList<Studiensemester>();
+            for(int j=0;j<stundenplanDokument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().size();j++)
+            {
+                studiensemester.add(new Studiensemester
+                (
+                    stundenplanDokument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().get(j).text(),
+                    stundenplanDokument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().get(j).attr("value")
+                ));
+            }
+
+            eintraege.add(new Studiengang
+            (
+                studiengangname, studiengangkuerzel, studiensemester
+            ));
+        }
+
+        return new DropdownMenue(eintraege);
     }
 }
