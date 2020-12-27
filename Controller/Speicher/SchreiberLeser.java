@@ -1,6 +1,7 @@
 package Controller.Speicher;
 
 import Model.DropdownModel.DropdownMenue;
+import Model.DropdownModel.Studiensemester;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
@@ -54,7 +55,7 @@ public class SchreiberLeser
         studiengangInformationen=new StudiengangInformationen("","","", new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
-        nutzerdaten=new Nutzerdaten(0, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
+        nutzerdaten=new Nutzerdaten(new Studiensemester("Medieninformatik","MI"), new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
     }
 
     //StudiengangInformationen

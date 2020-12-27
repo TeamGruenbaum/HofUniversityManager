@@ -34,14 +34,14 @@ public class Main extends Application {
         SchreiberLeser.datenZuruecksetzen();
 
         SchreiberLeser.dropdownMenueLaden();
-        SchreiberLeser.getDropdownMenue().getEintraege().stream().forEach((item)->
+        /*SchreiberLeser.getDropdownMenue().getEintraege().stream().forEach((item)->
         {
             System.out.println(item.getName()+":");
             item.getStudiensemester().stream().forEach((item1)->
             {
                 System.out.println(item1.getName());
             });
-        });
+        });*/
 
         // Testroutine für TreffpunkteView
         /*SchreiberLeser.getTreffpunkte().getTreffpunkte().add(new Freizeitaktivitaet("Testname01F", "Testort", true, "Info", "Ambiente"));

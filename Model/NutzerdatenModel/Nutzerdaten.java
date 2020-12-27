@@ -1,17 +1,21 @@
 package Model.NutzerdatenModel;
 
+import Model.DropdownModel.Studiengang;
+import Model.DropdownModel.Studiensemester;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Nutzerdaten implements Serializable
 {
-    private int studiensemester;
+    private Studiensemester studiensemester;
     private ArrayList<Doppelstunde> doppelstunden;
     private Login ssoLogin;
     private Thema aktuellesThema;
     private Anwendung letzteGeoeffneteAnwendung;
+    private Studiengang studiengang;
 
-    public Nutzerdaten(int studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, Anwendung letzteGeoeffneteAnwendung)
+    public Nutzerdaten(Studiensemester studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, Anwendung letzteGeoeffneteAnwendung)
     {
         this.studiensemester = studiensemester;
         this.doppelstunden = doppelstunden;
@@ -20,9 +24,21 @@ public class Nutzerdaten implements Serializable
         this.letzteGeoeffneteAnwendung = letzteGeoeffneteAnwendung;
     }
 
-    public int getStudiensemester()
+    public Studiensemester getStudiensemester()
     {
         return studiensemester;
+    }
+
+    public void setStudiensemester(Studiensemester studiensemester) {
+        this.studiensemester = studiensemester;
+    }
+
+    public Studiengang getStudiengang() {
+        return studiengang;
+    }
+
+    public void setStudiengang(Studiengang studiengang) {
+        this.studiengang = studiengang;
     }
 
     public ArrayList<Doppelstunde> getDoppelstunden()
