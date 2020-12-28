@@ -1,26 +1,17 @@
 package Controller.ViewController;
 
 import Controller.Speicher.SchreiberLeser;
-import Model.DropdownModel.DropdownMenue;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
-import Model.MensaplanModel.Gericht;
-import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.Thema;
-import Model.StudiengangModel.StudiengangInformationen;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
 import java.net.URL;
@@ -38,10 +29,10 @@ public class EinstellungenViewController implements Initializable
     private PasswordField pfPasswort;
 
     @FXML
-    private ChoiceBox<Studiengang> cbStudiengang;
+    private ComboBox<Studiengang> cbStudiengang;
 
     @FXML
-    private ChoiceBox<Studiensemester> cbSemester;
+    private ComboBox<Studiensemester> cbSemester;
 
     @FXML
     private AnchorPane aP;
@@ -53,55 +44,50 @@ public class EinstellungenViewController implements Initializable
     {
         // Listener für Klick in leere Fläche -> defokussieren
 
-        // ACHTUNG TO-DO: Aktuell Abruf des Semesters bei jedem Rrefesh des Studiengangs -> in Binding eines Attributes überführen; zudem Datenaktualisierung im Model und Abruf der Auswahl zu Anwendungsbeginn
-
-        // Items des Studiengangs setzen
-        ObservableList<Studiengang> studiengangList = FXCollections.observableArrayList(SchreiberLeser.getDropdownMenue().getEintraege());
-        cbStudiengang.setItems(studiengangList);
-
-        // Converter für ChoiceBox setzen und richtigen Wert bei erstem Start wählen
-        cbStudiengang.setConverter(stringConverterErzeugen());
-        cbStudiengang.setValue(SchreiberLeser.getNutzerdaten().getStudiengang());
-
-        // Erfassung der Benutzereingabe
-        cbStudiengang.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            SchreiberLeser.getNutzerdaten().setStudiengang(newValue);
-            List<List<Studiensemester>> listeListeSemester = SchreiberLeser.getDropdownMenue().getEintraege().stream()
-                    .filter((eintrag) -> eintrag.equals(newValue))
-                    .map(Studiengang::getStudiensemester)
-                    .collect(Collectors.toList());
-
-            List<Studiensemester> listeSemester = listeListeSemester.stream()
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-
-            cbSemester.setConverter(stringConverterErzeugenS());
-            cbSemester.setItems(FXCollections.observableArrayList(listeSemester));
-        });
-
-        // Erster Abruf des Values
+        // Textfeld fuer den Benutzernamen initialisieren, Listener für Änderungen und direkte Speicherung
         tfBenutzername.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getName());
-        pfPasswort.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort());
-
-        // Listener für die Änderung und direkte Speicherung
         tfBenutzername.textProperty().addListener((observable, oldValue, newValue) -> {
             SchreiberLeser.getNutzerdaten().getSsoLogin().setName(newValue);
         });
 
+        // Textfeld fuer das Passwort initialisieren, Listener für Änderungen und direkte Speicherung
+        pfPasswort.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort());
         pfPasswort.textProperty().addListener((observable, oldValue, newValue) -> {
             SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort(newValue);
         });
 
-        // Im ersten Durchlauf -> setze Checkbox auf richtigen Wert
-        cbDarkMode.selectedProperty().setValue(SchreiberLeser.getNutzerdaten().getAktuellesThema().equals(Thema.DUNKEL));
+        // ChoiceBox fuer den Studiengang initialisieren, Listener für Änderungen und direkte Speicherung
+        cbStudiengang.setConverter(erzeugeStringConverterStudiengang());
+        cbStudiengang.setPromptText("Studiengang auswählen");
+        cbStudiengang.setItems(FXCollections.observableArrayList(SchreiberLeser.getDropdownMenue().getEintraege()));
+        cbStudiengang.setValue(SchreiberLeser.getNutzerdaten().getStudiengang());
+        cbStudiengang.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            SchreiberLeser.getNutzerdaten().setStudiengang(newValue);
+            cbSemester.setItems(erzeugeSemesterListe(newValue));
+            cbSemester.getSelectionModel().select(0); // Bestätigter Bug: PromptText wird nicht mehr angezeigt => deshalb PreSelection
+        });
 
-        // Binding fuer den beistehenden Text
+        // ChoiceBox fuer das Semester initialisieren, Listener für Änderungen und direkte Speicherung
+        cbSemester.disableProperty().bind(cbStudiengang.getSelectionModel().selectedItemProperty().isNull());
+        cbSemester.promptTextProperty().bind(Bindings
+                .when(cbStudiengang.getSelectionModel().selectedItemProperty().isNull())
+                .then("Bitte erst Studiengang wählen")
+                .otherwise("Studiensemester wählen"));
+        cbSemester.setConverter(erzeugeStringConverterStudiensemester());
+        cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang()));
+        if(!(SchreiberLeser.getNutzerdaten().getStudiensemester().getName().equals(""))) {
+            cbSemester.setValue(SchreiberLeser.getNutzerdaten().getStudiensemester());
+        }
+        cbSemester.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            SchreiberLeser.getNutzerdaten().setStudiensemester(newValue);
+        });
+
+        // Checkbox fuer darkmode initialisieren, Listener für Änderungen und direkte Speicherung
+        cbDarkMode.selectedProperty().setValue(SchreiberLeser.getNutzerdaten().getAktuellesThema().equals(Thema.DUNKEL));
         cbDarkMode.textProperty().bind(Bindings
                 .when(cbDarkMode.selectedProperty())
                 .then("aktiv")
                 .otherwise("inaktiv"));
-
-        // Auf Userinteraktion hoeren und entsprechende Aktion durchfuehren
         cbDarkMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue) {
                 GrundViewController._setTheme(Thema.HELL);
@@ -114,7 +100,18 @@ public class EinstellungenViewController implements Initializable
         });
     }
 
-    private StringConverter<Studiengang> stringConverterErzeugen() {
+    private ObservableList<Studiensemester> erzeugeSemesterListe(Studiengang studiengang) {
+        List<List<Studiensemester>> listeListeSemester = SchreiberLeser.getDropdownMenue().getEintraege().stream()
+                .filter((obj) -> obj.equals(studiengang))
+                .map(Studiengang::getStudiensemester)
+                .collect(Collectors.toList());
+
+        return FXCollections.observableList(listeListeSemester.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList()));
+    }
+
+    private StringConverter<Studiengang> erzeugeStringConverterStudiengang() {
         return (new StringConverter<Studiengang>() {
             @Override
             public String toString(Studiengang object) {
@@ -128,7 +125,7 @@ public class EinstellungenViewController implements Initializable
         });
     }
 
-    private StringConverter<Studiensemester> stringConverterErzeugenS() {
+    private StringConverter<Studiensemester> erzeugeStringConverterStudiensemester() {
         return (new StringConverter<Studiensemester>() {
             @Override
             public String toString(Studiensemester object) {
