@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController" fx:id="aP" styleClass="anwendungsWindow">
+<AnchorPane fx:id="aP" styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
    <children>
       <BorderPane>
          <center>
@@ -46,10 +46,10 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <TextField promptText="Benutzername" GridPane.columnIndex="1" fx:id="tfBenutzername"/>
-                        <PasswordField promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="pfPasswort"/>
-                        <ChoiceBox prefHeight="27.0" prefWidth="535.0" GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="cbStudiengang"/>
-                        <ChoiceBox prefHeight="27.0" prefWidth="533.0" GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="cbSemester"/>
+                        <TextField fx:id="tfBenutzername" promptText="Benutzername" GridPane.columnIndex="1" />
+                        <PasswordField fx:id="pfPasswort" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="cbStudiengang" prefHeight="27.0" prefWidth="535.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="cbSemester" prefHeight="27.0" prefWidth="533.0" promptText="Studiengang wählen" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                    <GridPane hgap="5.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0">
@@ -66,7 +66,7 @@
                                    <Font name="System Bold" size="12.0" />
                                </font>
                            </Label>
-                        <CheckBox mnemonicParsing="false" text="inaktiv" GridPane.columnIndex="1" fx:id="cbDarkMode" />
+                        <CheckBox fx:id="cbDarkMode" mnemonicParsing="false" text="inaktiv" GridPane.columnIndex="1" />
                        </children>
                    </GridPane>
                </children>
