@@ -7,9 +7,11 @@ import Model.NutzerdatenModel.Thema;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
@@ -43,6 +45,7 @@ public class EinstellungenViewController implements Initializable
     public void initialize(URL location, ResourceBundle resources)
     {
         // Listener für Klick in leere Fläche -> defokussieren
+        aP.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> aP.requestFocus());
 
         // Textfeld fuer den Benutzernamen initialisieren, Listener für Änderungen und direkte Speicherung
         tfBenutzername.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getName());
