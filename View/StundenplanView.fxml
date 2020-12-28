@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StundenplanViewController">
+    <children>
+        <BorderPane>
+            <center>
+                <VBox spacing="14.0">
+                    <BorderPane.margin>
+                        <Insets bottom="28.0" left="28.0" right="28.0" />
+                    </BorderPane.margin>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <children>
+                  <TabPane prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Stundenplan">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                      <Tab text="Änderungen">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                      <Tab text="To Do">
+                        <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                    </children>
+                </VBox>
+            </center>
+            <top>
+                <VBox>
+                    <children>
+                        <Label text="Stundenplan">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets bottom="14.0" left="28.0" right="28.0" top="28.0" />
+                            </padding>
+                        </Label>
+                        <Label text="In diesem Bereich ist der Stundenplan zu Deinem Fach hinterlegt." textOverrun="CLIP">
+                            <padding>
+                                <Insets bottom="14.0" left="28.0" />
+                            </padding>
+                        </Label>
+                  <Button mnemonicParsing="false" onAction="#stundenplanAbrufen" text="Stundenplan abrufen">
+                     <VBox.margin>
+                        <Insets bottom="14.0" left="28.0" />
+                     </VBox.margin>
+                  </Button>
+                    </children>
+                </VBox>
+            </top>
+        </BorderPane>
+    </children>
+</AnchorPane>

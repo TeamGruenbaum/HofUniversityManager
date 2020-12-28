@@ -11,7 +11,7 @@ public final class Menue
 {
     private static ArrayList<MenuepunktInformation> menuepunkte=new ArrayList<MenuepunktInformation>(
             List.of(
-                new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"),
+                new MenuepunktInformation(Anwendung.STUNDENPLAN,"stundenplan-icon.png", "StundenplanView.fxml"),
                 new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaPlanView.fxml"),
                 new MenuepunktInformation(Anwendung.STUDIENGANG,"platzhalter-icon.png", "Platzhalter.fxml"),
                 new MenuepunktInformation(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
