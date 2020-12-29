@@ -3,6 +3,7 @@ package Controller.InformationsVermittlung;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 
+import Controller.ViewController.EinstellungenViewController;
 import Controller.ViewController.GrundViewController;
 import Model.Datum;
 import Model.NutzerdatenModel.Doppelstunde;
@@ -15,6 +16,8 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.commons.io.IOUtils;
@@ -35,9 +38,13 @@ import java.util.concurrent.CountDownLatch;
 
 public class Datenabrufer
 {
-    @FXML
-
+    private static ProgressIndicator progressIndicator;
     private static long start, end;
+
+    public static void setProgressIndicator(ProgressIndicator neuerWert)
+    {
+        progressIndicator=neuerWert;
+    }
 
     public static void studiengangAbrufen(int studienJahr, int studienSemester, int studienfach) throws IOException
     {
@@ -62,13 +69,14 @@ public class Datenabrufer
     {
         try
         {
-            SchreiberLeser.treffpunkteNeuSetzenUndSpeichern(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), Charset.forName("UTF-8")))));
-
+            SchreiberLeser.treffpunkteNeuSetzen(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), Charset.forName("UTF-8")))));
+            Platform.runLater(()->{progressIndicator.setProgress(1);});
         }
         catch(Exception e){}
     }
 
-    public static void mensaplanAbrufen() throws IOException {
+    public static void mensaplanAbrufen()
+    {
         ArrayList<MensaTag> mensatage = new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -79,11 +87,18 @@ public class Datenabrufer
         cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
 
         for(int i=0; i<6; i++){
-
+            int finalI = i;
+            Platform.runLater(()->{progressIndicator.setProgress(((double) finalI)/5);});
 
             String url = "https://www.studentenwerk-oberfranken.de/essen/speiseplaene/hof/" + sdf.format(cal.getTime()) + ".html";
 
-            Document doc = Jsoup.connect(url).get();
+            Document doc=null;
+
+            try
+            {
+                doc = Jsoup.connect(url).get();
+            }
+            catch (Exception e){}
 
             Datum datum = new Datum(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 
@@ -95,7 +110,7 @@ public class Datenabrufer
 
         }
 
-        SchreiberLeser.mensaplanNeuSetzenUndSpeichern(Parser.mensaplanParsen(new MensaplanDokumente(mensatage)));
+        SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanDokumente(mensatage)));
     }
 
     public static void stundenplanAbrufen()
@@ -140,7 +155,6 @@ public class Datenabrufer
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
                             SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
-                            SchreiberLeser.nutzerdatenSpeichern();
                         }
                     }));
 
@@ -183,7 +197,10 @@ public class Datenabrufer
 
                             for(int i = 1; i<laenge; i++)
                             {
+                                updateProgress(i, laenge);
+
                                 int finalI = i;
+
                                 Platform.runLater(()->
                                 {
                                     webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+ finalI +"].selected='selected';"+
@@ -210,11 +227,13 @@ public class Datenabrufer
                         }
                     };
 
+                    //EinstellungenViewController.getStudiengangAktualisierungsProgressBar().progressProperty().bind(task.progressProperty());
+
                     task.stateProperty().addListener(((observable1, oldValue1, newValue1) ->
                     {
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
-                            SchreiberLeser.dropdownMenueNeuSetzenUndSpeichern(Parser.dropdownMenueParsen(new DropdownMenueDokumente(arrayList)));
+                            SchreiberLeser.dropdownMenueNeuSetzen(Parser.dropdownMenueParsen(new DropdownMenueDokumente(arrayList)));
                         }
                     }));
 

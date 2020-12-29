@@ -78,7 +78,7 @@ public class QuicklinksViewController implements Initializable
             }
         }));
 
-        switch(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung())
+        switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
         {
             case MOODLE:
             {
