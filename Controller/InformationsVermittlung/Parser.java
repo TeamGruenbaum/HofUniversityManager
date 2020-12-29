@@ -11,6 +11,9 @@ import Model.NutzerdatenModel.Doppelstunde;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
+import Model.StundenplanaenderungModel.Stundenplanaenderung;
+import Model.StundenplanaenderungModel.Stundenplanaenderungen;
+import Model.StundenplanaenderungModel.Termin;
 import Model.Tag;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
@@ -26,6 +29,8 @@ import org.jsoup.nodes.Node;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Parser
@@ -342,8 +347,8 @@ public class Parser
                             aktueller.getElementsByTag("td").get(4).text(),
                             aktueller.getElementsByTag("td").get(6).text(),
                             Tag.FREITAG,
-                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(3,5)), 0),
-                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)), 0)
+                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(3,5)), 00),
+                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)), 00)
                     ));
         };
     }
@@ -383,5 +388,48 @@ public class Parser
         }
 
         return new DropdownMenue(eintraege);
+    }
+
+    //Stundenplanaenderungen parsen
+    public static Stundenplanaenderungen stundenplanaenderungenParsen(Document stundenplanaenderungenDokument)
+    {
+        ArrayList<Stundenplanaenderung> aenderungen=new ArrayList<Stundenplanaenderung>();
+
+        Element tabelle=stundenplanaenderungenDokument.getElementsByTag("table").get(0);
+        Element zeile=null;
+
+        if(tabelle.getElementsByTag("tbody").size()!=0)
+        {
+            for(int i=0; i<tabelle.select("tbody>tr").size(); i++)
+            {
+                zeile=tabelle.select("tbody>tr").get(i);
+                aenderungen.add(new Stundenplanaenderung
+                (
+                        zeile.getElementsByTag("td").get(1).text(),
+                        zeile.getElementsByTag("td").get(2).text(),
+                        _getTermin(zeile.getElementsByTag("td").get(3).text()),
+                        _getTermin(zeile.getElementsByTag("td").get(4).text())
+                ));
+            }
+        }
+        return new Stundenplanaenderungen(aenderungen);
+    }
+
+    private static Termin _getTermin(String termintext)
+    {
+        Pattern pattern=Pattern.compile("(^\\d{2}.\\d{2}.\\d{4}\\n)(\\d{2}:\\d{2}\\sUhr\\n)(.+)");
+        Matcher matcher=pattern.matcher(termintext);
+        Termin termin=null;
+
+        if(matcher.matches())
+        {
+            termin=new Termin
+            (
+                new Datum(Integer.parseInt(matcher.group(1).substring(0,2)),Integer.parseInt(matcher.group(1).substring(3,5)),Integer.parseInt(matcher.group(1).substring(6,10))),
+                new Uhrzeit(Integer.parseInt(matcher.group(2).substring(0,2)),Integer.parseInt(matcher.group(2).substring(3,5)),00),
+                matcher.group(3)
+            );
+        }
+        return termin;
     }
 }
