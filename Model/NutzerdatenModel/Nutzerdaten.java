@@ -1,5 +1,8 @@
 package Model.NutzerdatenModel;
 
+import Model.OberflaechenModel.Menue;
+import Model.OberflaechenModel.MenuepunktInformation;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -9,15 +12,15 @@ public class Nutzerdaten implements Serializable
     private ArrayList<Doppelstunde> doppelstunden;
     private Login ssoLogin;
     private Thema aktuellesThema;
-    private Anwendung letzteGeoeffneteAnwendung;
+    private MenuepunktInformation letzterGeoeffneterMenuepunkt;
 
-    public Nutzerdaten(int studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, Anwendung letzteGeoeffneteAnwendung)
+    public Nutzerdaten(int studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
     {
         this.studiensemester = studiensemester;
         this.doppelstunden = doppelstunden;
         this.ssoLogin = ssoLogin;
         this.aktuellesThema = aktuellesThema;
-        this.letzteGeoeffneteAnwendung = letzteGeoeffneteAnwendung;
+        this.letzterGeoeffneterMenuepunkt = letzterGeoeffneterMenuepunkt;
     }
 
     public int getStudiensemester()
@@ -50,13 +53,13 @@ public class Nutzerdaten implements Serializable
         aktuellesThema = thema;
     }
 
-    public Anwendung getLetzteGeoeffneteAnwendung()
+    public MenuepunktInformation getLetzterGeoeffneterMenuepunkt()
     {
-        return letzteGeoeffneteAnwendung;
+        return letzterGeoeffneterMenuepunkt;
     }
 
-    public void setLetzteGeoeffneteAnwendung(Anwendung anwendung)
+    public void setLetzterGeoeffneterMenuepunkt(MenuepunktInformation neuerWert)
     {
-        letzteGeoeffneteAnwendung=anwendung;
+        letzterGeoeffneterMenuepunkt=neuerWert;
     }
 }

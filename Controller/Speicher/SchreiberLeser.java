@@ -4,6 +4,7 @@ import Model.DropdownModel.DropdownMenue;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
+import Model.OberflaechenModel.MenuepunktInformation;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
 import Model.TreffpunktModel.Treffpunkt;
@@ -11,6 +12,7 @@ import Model.TreffpunktModel.Treffpunkte;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SchreiberLeser
 {
@@ -31,21 +33,21 @@ public class SchreiberLeser
 
     public static boolean isErsterStart()
     {
-        File file = new File(__getSpeicherPfad() ,"notFirstStart");
+        File file = new File(__getSpeicherPfad() ,"nichtErsterStart");
 
-        boolean firstRun = false;
+        boolean ersterStart = false;
 
         try
         {
             if(!file.exists())
             {
-                firstRun = true;
+                ersterStart = true;
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
         }catch(Exception e){e.printStackTrace();}
 
-        return firstRun;
+        return ersterStart;
     }
 
 
@@ -54,7 +56,27 @@ public class SchreiberLeser
         studiengangInformationen=new StudiengangInformationen("","","", new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
-        nutzerdaten=new Nutzerdaten(0, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, Anwendung.EINSTELLUNGEN);
+        nutzerdaten=new Nutzerdaten(0, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"));
+
+        alleSpeichern();
+    }
+
+    public static void alleLaden()
+    {
+        studiengangInformationenLaden();
+        treffpunkteLaden();
+        mensaplanLaden();
+        nutzerdatenLaden();
+        dropdownMenueLaden();
+    }
+
+    public static void alleSpeichern()
+    {
+        studiengangInformationenSpeichern();
+        treffpunkteSpeichern();
+        mensaplanSpeichern();
+        nutzerdatenSpeichern();
+        dropdownMenueSpeichern();
     }
 
     //StudiengangInformationen
@@ -68,10 +90,9 @@ public class SchreiberLeser
         return studiengangInformationen;
     }
 
-    public static void studiengangInformationenNeuSetzenUndSpeichern(StudiengangInformationen neuerWert)
+    public static void studiengangInformationenNeuSetzen(StudiengangInformationen neuerWert)
     {
         studiengangInformationen=neuerWert;
-        studiengangInformationenSpeichern();
     }
 
     public static void studiengangInformationenSpeichern()
@@ -91,10 +112,9 @@ public class SchreiberLeser
         return treffpunkte;
     }
 
-    public static void treffpunkteNeuSetzenUndSpeichern(Treffpunkte neuerWert)
+    public static void treffpunkteNeuSetzen(Treffpunkte neuerWert)
     {
         treffpunkte=neuerWert;
-        treffpunkteSpeichern();
     }
 
     public static void treffpunkteSpeichern()
@@ -114,10 +134,9 @@ public class SchreiberLeser
         return mensaplan;
     }
 
-    public static void mensaplanNeuSetzenUndSpeichern(Mensaplan neuerWert)
+    public static void mensaplanNeuSetzen(Mensaplan neuerWert)
     {
         mensaplan=neuerWert;
-        mensaplanSpeichern();
     }
 
     public static void mensaplanSpeichern()
@@ -137,10 +156,9 @@ public class SchreiberLeser
         return nutzerdaten;
     }
 
-    public static void nutzerdatenNeuSetzenUndSpeichern(Nutzerdaten neuerWert)
+    public static void nutzerdatenNeuSetzen(Nutzerdaten neuerWert)
     {
         nutzerdaten=neuerWert;
-        nutzerdatenSpeichern();
     }
 
     public static void nutzerdatenSpeichern()
@@ -159,10 +177,9 @@ public class SchreiberLeser
         return dropdownMenue;
     }
 
-    public static void dropdownMenueNeuSetzenUndSpeichern(DropdownMenue neuerWert)
+    public static void dropdownMenueNeuSetzen(DropdownMenue neuerWert)
     {
         dropdownMenue=neuerWert;
-        dropdownMenueSpeichern();
     }
 
     public static void dropdownMenueSpeichern()

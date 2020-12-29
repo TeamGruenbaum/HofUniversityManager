@@ -1,6 +1,7 @@
 package Controller.ViewController;
 
 
+import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.NutzerdatenModel.Thema;
@@ -13,11 +14,17 @@ import javafx.animation.FadeTransition;
 import Model.NutzerdatenModel.Nutzerdaten;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -35,7 +42,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
+import static Model.NutzerdatenModel.Anwendung.*;
 
 public class GrundViewController implements Initializable {
 
@@ -59,44 +66,30 @@ public class GrundViewController implements Initializable {
     @FXML
     private WebView webView;
 
-    private static WebView webView2;
+    private boolean mensaplanEinmalHeruntergeladen, studiengangEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
 
-    public GrundViewController() {
-    }
+    private static WebView uglyWebView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        _setHauptButton();
+        mensaplanEinmalHeruntergeladen=false;
+        studiengangEinmalHeruntergeladen=false;
+        treffpunkteEinmalHeruntergeladen=false;
 
-        _initialisiereMenue(90, Menue.getMenuepunkte());
-
-        _oeffneLetzteScene();
-
-        webView2=webView;
-    }
-
-    @FXML
-    public void menuOeffnen()
-    {
-        _fadeTransitionStandard(anchorPane, 300, true);
-        stackPane.getChildren().add(anchorPane);
-    }
-
-    //Methoden zur Initalisierung von Layoutelementen
-    private void _setHauptButton()
-    {
+        //Initialisieren des Hauptmenuebuttons
         ImageView view = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
         view.setFitHeight(35);
         view.setPreserveRatio(true);
 
         menuHauptButton.setGraphic(view);
 
-        _hoverIconsEffect(menuHauptButton, view);
-    }
+        hoverIconsEffect(menuHauptButton, view);
 
-    private void _initialisiereMenue(int menuepunktHoeheBreite, ArrayList<MenuepunktInformation> menuepunktInformationen)
-    {
+
+        //Initialisieren des Hauptmenues
+        int menuepunktHoeheBreite=90;
+
         //GridPane initialisieren
         gridPane=new GridPane();
         gridPane.getStyleClass().add("icon-menu");
@@ -110,7 +103,7 @@ public class GrundViewController implements Initializable {
 
         //Buttons erstellen und initialisieren
         int k=0;
-        for(int i=0; i<menuepunktInformationen.size(); i++)
+        for(int i=0; i<Menue.getMenuepunkte().size(); i++)
         {
             if(i%3==0)
             {
@@ -125,26 +118,26 @@ public class GrundViewController implements Initializable {
                 gridPane.getRowConstraints().add(rowConstraints);
             }
 
-            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+menuepunktInformationen.get(i).iconDateiname)));
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+Menue.getMenuepunkte().get(i).getIconDateiname())));
             imageView.setFitHeight(menuepunktHoeheBreite-55);
             imageView.setPreserveRatio(true);
 
             Button button=new Button();
             int finalI=i;
             button.setOnAction((actionEvent)->
-                {
-                    SchreiberLeser.getNutzerdaten().setLetzteGeoeffneteAnwendung(menuepunktInformationen.get(finalI).anwendung);
+            {
+                SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(Menue.getMenuepunkte().get(finalI));
 
-                    _ladeScene(menuepunktInformationen.get(finalI));
-                });
-            button.setTooltip(new Tooltip(_grossschreiben(menuepunktInformationen.get(i).anwendung.toString())));
+                oeffneScene();
+            });
+            button.setTooltip(new Tooltip(grossschreiben(Menue.getMenuepunkte().get(i).getAnwendung().toString())));
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
             button.setGraphic(imageView);
             button.getStyleClass().add("icon-menu-button");
 
-            _hoverIconsEffect(button, imageView);
+            hoverIconsEffect(button, imageView);
 
             gridPane.add(button, i%3, k);
         }
@@ -155,12 +148,23 @@ public class GrundViewController implements Initializable {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         anchorPane.getChildren().add(gridPane);
         anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
-            // _fadeTransitionStandard(anchorPane, 300, false); // geht nicht, liegt am remove, das wohl zu schnell geht... ANSCHAUEN
+            // fadeTransitionStandard(anchorPane, 300, false); // geht nicht, liegt am remove, das wohl zu schnell geht... ANSCHAUEN
             stackPane.getChildren().remove(anchorPane);
         });
+
+        oeffneScene();
+
+        uglyWebView=webView;
     }
 
-    public static void _setTheme(Thema thema)
+    @FXML
+    public void menuOeffnen()
+    {
+        fadeTransitionStandard(anchorPane, 300, true);
+        stackPane.getChildren().add(anchorPane);
+    }
+
+    public static void setThema(Thema thema)
     {
         if(thema == Thema.DUNKEL) {
             Main.getRoot().setStyle("-menubar-color: darkgrey;" +
@@ -178,60 +182,137 @@ public class GrundViewController implements Initializable {
         }
     }
 
-    private void _oeffneLetzteScene()
-    {
-        /*switch(STUNDENPLAN)
-        {
-            case STUNDENPLAN: _ladeScene("Platzhalter.fxml"); break;
-            case MENSAPLAN: _ladeScene("Platzhalter.fxml"); break;
-            case STUDIENGANG: _ladeScene("Platzhalter.fxml"); break;
-            case MOODLE: _ladeScene("QuicklinksView.fxml"); break;
-            case PANOPTO: _ladeScene("Platzhalter.fxml"); break;
-            case NEXTCLOUD: _ladeScene("QuicklinksView.fxml"); break;
-            case CAMPUSSPORT: _ladeScene("Platzhalter.fxml"); break;
-            case TREFFPUNKTE: _ladeScene("Platzhalter.fxml"); break;
-            case BAYERNFAHRPLAN: _ladeScene("QuicklinksView.fxml"); break;
-            case PRIMUSS: _ladeScene("QuicklinksView.fxml"); break;
-            case EINSTELLUNGEN: _ladeScene("Platzhalter.fxml"); break;
-            default: _ladeScene("Platzhalter.fxml"); break;
-        }*/
-    }
-
     //Hilfsmethoden und Hilfsklasse allgemeiner Art
-    private String _grossschreiben(String wort)
+    private void oeffneScene()
     {
-        return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
+        ort.setText(grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
+
+        switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
+        {
+            case MENSAPLAN:
+            {
+                ladeLadenScene();
+                hauptmenueSchließen();
+
+                if(mensaplanEinmalHeruntergeladen)
+                {
+                    ladeScene();
+                }
+                else
+                {
+                    Task task=new Task<Void>()
+                    {
+                        @Override
+                        protected Void call() throws Exception
+                        {
+                            menuHauptButton.setDisable(true);
+                            Datenabrufer.mensaplanAbrufen();
+                            return null;
+                        }
+                    };
+
+                    task.stateProperty().addListener(((observable, oldValue, newValue) ->
+                    {
+                        if(newValue== Worker.State.SUCCEEDED)
+                        {
+                            ladeScene();
+                            menuHauptButton.setDisable(false);
+                            mensaplanEinmalHeruntergeladen=true;
+                        }
+                    }));
+
+                    new Thread(task).start();
+                }
+            } break;
+            case STUDIENGANG:
+            {
+                ladeScene();
+            }break;
+            case PANOPTO:
+            {
+                Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
+            }break;
+            case NEXTCLOUD:
+            {
+                Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
+            }break;
+            case TREFFPUNKTE:
+            {
+                ladeLadenScene();
+                hauptmenueSchließen();
+
+                if(treffpunkteEinmalHeruntergeladen)
+                {
+                    ladeScene();
+                }
+                else
+                {
+                    Task task=new Task<Void>()
+                    {
+                        @Override
+                        protected Void call() throws Exception
+                        {
+                            menuHauptButton.setDisable(true);
+                            Datenabrufer.treffpunkteAbrufen();
+                            return null;
+                        }
+                    };
+
+                    task.stateProperty().addListener(((observable, oldValue, newValue) ->
+                    {
+                        if(newValue== Worker.State.SUCCEEDED)
+                        {
+                            ladeScene();
+                            menuHauptButton.setDisable(false);
+                            treffpunkteEinmalHeruntergeladen=true;
+                        }
+                    }));
+
+                    new Thread(task).start();
+                }
+            }break;
+            default:
+            {
+                ladeScene();
+            }
+        }
     }
 
-    private void _ladeScene(MenuepunktInformation wert)
+    private void hauptmenueSchließen()
     {
-        if(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung()==Anwendung.NEXTCLOUD)
-        {
-            Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
-            return;
-        }
+        stackPane.getChildren().remove(anchorPane);
+    }
 
-        if(SchreiberLeser.getNutzerdaten().getLetzteGeoeffneteAnwendung()==Anwendung.PANOPTO)
-        {
-            Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
-            return;
-        }
-
+    private void ladeScene()
+    {
         try
         {
-            ort.setText(_grossschreiben(wert.anwendung.toString()));
-
-            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+wert.fxmlDateiname)));
+            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.getCenter().setViewOrder(0);
-            stackPane.getChildren().remove(anchorPane);
+            hauptmenueSchließen();
         }
         catch(Exception e){
             e.printStackTrace();
         }
     }
 
+    private void ladeLadenScene()
+    {
+        BorderPane borderPane=new BorderPane();
+        borderPane.setMinHeight(Double.MIN_VALUE);
+        borderPane.setMinWidth(Double.MIN_VALUE);
+
+        ProgressBar progressBar=new ProgressBar();
+        progressBar.setMinWidth(100);
+
+        borderPane.setCenter(progressBar);
+        this.borderPane.setCenter(borderPane);
+
+        Datenabrufer.setProgressIndicator(progressBar);
+    }
+
     //Hilfsmethoden für visuelle Effekte
-    private void _fadeTransitionStandard(Node node, int dauer, Boolean io) {
+    private void fadeTransitionStandard(Node node, int dauer, Boolean io) {
         FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
         if(io)
         {
@@ -246,7 +327,7 @@ public class GrundViewController implements Initializable {
         ft.play();
     }
 
-    private void _hoverIconsEffect(Node button, ImageView imageView)
+    private void hoverIconsEffect(Node button, ImageView imageView)
     {
         button.setOnMouseMoved((MouseEvent) -> {
             ColorAdjust aufhellen = new ColorAdjust();
@@ -267,8 +348,14 @@ public class GrundViewController implements Initializable {
         });
     }
 
+    //Weitere
+    private String grossschreiben(String wort)
+    {
+        return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
+    }
+
     public static WebView getUglyWebview()
     {
-        return webView2;
+        return uglyWebView;
     }
 }

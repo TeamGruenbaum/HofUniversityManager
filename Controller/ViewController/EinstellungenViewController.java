@@ -66,11 +66,11 @@ public class EinstellungenViewController implements Initializable
         // Auf Userinteraktion hoeren und entsprechende Aktion durchfuehren
         cbDarkMode.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue) {
-                GrundViewController._setTheme(Thema.HELL);
+                GrundViewController.setThema(Thema.HELL);
                 SchreiberLeser.getNutzerdaten().setAktuellesThema(Thema.HELL);
             }
             if(newValue) {
-                GrundViewController._setTheme(Thema.DUNKEL);
+                GrundViewController.setThema(Thema.DUNKEL);
                 SchreiberLeser.getNutzerdaten().setAktuellesThema(Thema.DUNKEL);
             }
         });

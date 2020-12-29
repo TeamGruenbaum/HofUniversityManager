@@ -2,12 +2,13 @@ package Model.OberflaechenModel;
 
 import Model.NutzerdatenModel.Anwendung;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
 
-public final class Menue
+public final class Menue implements Serializable
 {
     private static ArrayList<MenuepunktInformation> menuepunkte=new ArrayList<MenuepunktInformation>(
             List.of(
