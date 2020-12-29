@@ -45,5 +45,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="commons-io-2.8.0" level="project" />
+    <orderEntry type="library" name="javafx-swt" level="project" />
+    <orderEntry type="library" name="jsoup-1.13.1" level="project" />
   </component>
 </module>

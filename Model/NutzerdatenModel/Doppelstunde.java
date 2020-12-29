@@ -4,7 +4,6 @@ import Model.Tag;
 import Model.Uhrzeit;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Doppelstunde implements Serializable
 {
@@ -81,4 +80,5 @@ public class Doppelstunde implements Serializable
     public void setEnde(Uhrzeit ende) {
         this.ende = ende;
     }
+
 }
