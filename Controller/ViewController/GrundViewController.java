@@ -47,7 +47,7 @@ import static Model.NutzerdatenModel.Anwendung.*;
 public class GrundViewController implements Initializable {
 
     //Attribute auf welche durch mehrere Methoden zugegriffen wird
-    private GridPane gridPane;
+    private static GridPane gridPane;
     private AnchorPane anchorPane;
 
     //Methoden und Attribute für den Zugriff auf die View
@@ -85,7 +85,6 @@ public class GrundViewController implements Initializable {
         menuHauptButton.setGraphic(view);
 
         hoverIconsEffect(menuHauptButton, view);
-
 
         //Initialisieren des Hauptmenues
         int menuepunktHoeheBreite=90;
@@ -134,7 +133,12 @@ public class GrundViewController implements Initializable {
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
+            //Region icon = new Region();
+            //icon.getStyleClass().add("icon");
+
+            //button.setGraphic(icon);
             button.setGraphic(imageView);
+            //button.getStyleClass().add("icon-button");
             button.getStyleClass().add("icon-menu-button");
 
             hoverIconsEffect(button, imageView);
@@ -166,19 +170,31 @@ public class GrundViewController implements Initializable {
 
     public static void setThema(Thema thema)
     {
+        gridPane.getChildren().forEach((obj) -> {
+            ColorAdjust farbwechsel = new ColorAdjust();
+            farbwechsel.setBrightness((thema == Thema.HELL)?0:1);
+            obj.setEffect(farbwechsel);
+        });
+
+        //ColorAdjust aufhellen = new ColorAdjust();
+        //aufhellen.setBrightness((thema == Thema.HELL)?0:1);
+        //menuHauptButton.setEffect(aufhellen);
+
         if(thema == Thema.DUNKEL) {
-            Main.getRoot().setStyle("-menubar-color: darkgrey;" +
-                    "-font-color: white;" +
-                    "-anwendung-bgr: #434343;" +
-                    "-accent-color: #003c54;" +
-                    "-warn-color: #ff3e3e;");
+            Main.getRoot().setStyle("-menubar-color: #404040;" +
+                    "-font-color: #262626;" +
+                    "-anwendung-bgr: #a2a2a2;" +
+                    "-accent-color: #45cbff;" +
+                    "-warn-color: #691c1c;" +
+                    "-menubar-text-color: white");
             //System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
-                    "-font-color: black;" +
+                    "-font-color: #262626;" +
                     "-anwendung-bgr: lightgrey;" +
                     "-accent-color: #0072a0;" +
-                    "-warn-color: #8a2828");
+                    "-warn-color: #8a2828;" +
+                    "-menubar-text-color: black");
 
             //System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
         }
@@ -294,6 +310,7 @@ public class GrundViewController implements Initializable {
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
+            //borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.getCenter().setViewOrder(0);
             hauptmenueSchließen();
         }
@@ -335,6 +352,8 @@ public class GrundViewController implements Initializable {
 
     private void hoverIconsEffect(Node button, ImageView imageView)
     {
+        Thema aktuellesThema = SchreiberLeser.getNutzerdaten().getAktuellesThema();
+
         button.setOnMouseMoved((MouseEvent) -> {
             ColorAdjust aufhellen = new ColorAdjust();
             aufhellen.setBrightness(0.3);

@@ -21,10 +21,7 @@
             <top>
                 <VBox>
                     <children>
-                        <Label fx:id="studiengangTitel" text="Studiengang">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
+                        <Label fx:id="studiengangTitel" text="Studiengang" styleClass="ueberschrift">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>

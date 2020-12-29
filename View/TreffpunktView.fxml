@@ -24,10 +24,7 @@
          <top>
             <VBox>
                <children>
-                  <Label text="Treffpunkte">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
+                  <Label text="Treffpunkte" styleClass="ueberschrift">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
