@@ -7,9 +7,9 @@
 
 <AnchorPane styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StudiengangViewController">
     <children>
-        <BorderPane>
+        <BorderPane minWidth="-Infinity" prefWidth="1000.0">
             <center>
-                <VBox spacing="14.0">
+                <VBox fx:id="vbContent" spacing="14.0">
                     <BorderPane.margin>
                         <Insets bottom="28.0" left="28.0" right="28.0" />
                     </BorderPane.margin>
@@ -19,9 +19,9 @@
                 </VBox>
             </center>
             <top>
-                <VBox fx:id="vbContent">
+                <VBox>
                     <children>
-                        <Label text="Studiengang">
+                        <Label fx:id="studiengangTitel" text="Studiengang">
                             <font>
                                 <Font size="20.0" />
                             </font>

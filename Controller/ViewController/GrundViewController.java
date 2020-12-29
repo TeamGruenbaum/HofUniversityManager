@@ -166,13 +166,15 @@ public class GrundViewController implements Initializable {
             Main.getRoot().setStyle("-menubar-color: darkgrey;" +
                     "-font-color: white;" +
                     "-anwendung-bgr: #434343;" +
-                    "-accent-color: #003c54");
+                    "-accent-color: #003c54;" +
+                    "-warn-color: #ff3e3e;");
             //System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
                     "-font-color: black;" +
                     "-anwendung-bgr: lightgrey;" +
-                    "-accent-color: #0072a0;");
+                    "-accent-color: #0072a0;" +
+                    "-warn-color: #8a2828");
 
             //System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
         }
@@ -221,7 +223,11 @@ public class GrundViewController implements Initializable {
         {
             ort.setText(_grossschreiben(wert.anwendung.toString()));
 
-            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+wert.fxmlDateiname)));
+            ScrollPane sp = new ScrollPane();
+            sp.setPrefViewportHeight(300);
+            sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+wert.fxmlDateiname)));
+            borderPane.setCenter(sp);
             borderPane.getCenter().setViewOrder(0);
             stackPane.getChildren().remove(anchorPane);
         }
