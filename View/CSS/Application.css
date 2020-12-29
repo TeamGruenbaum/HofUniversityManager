@@ -5,6 +5,7 @@
     -font-color: black;
     -anwendung-bgr: lightgrey;
     -accent-color: #0072a0;
+    -warn-color: #8a2828;
 }
 
 * {
@@ -71,6 +72,10 @@
 
 .menu-button .label {
     -fx-text-fill: -font-color;
+}
+
+.warnhinweis {
+    -fx-text-fill: -warn-color;
 }
 
 /* Footer-Preferences */

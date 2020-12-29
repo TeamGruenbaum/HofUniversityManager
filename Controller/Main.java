@@ -34,6 +34,7 @@ public class Main extends Application {
         SchreiberLeser.datenZuruecksetzen();
 
         SchreiberLeser.dropdownMenueLaden();
+
         /*SchreiberLeser.getDropdownMenue().getEintraege().stream().forEach((item)->
         {
             System.out.println(item.getName()+":");

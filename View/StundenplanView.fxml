@@ -7,7 +7,7 @@
 
 <AnchorPane styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StundenplanViewController">
     <children>
-        <BorderPane>
+        <BorderPane prefWidth="1000.0">
             <center>
                 <VBox spacing="14.0">
                     <BorderPane.margin>
