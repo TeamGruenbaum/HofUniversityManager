@@ -141,43 +141,51 @@ public class StudiengangViewController implements Initializable {
             contentAccordion.setPrefWidth(500);
             vbContent.getChildren().add(contentAccordion);
 
-            testStudiengangInformation.getModulhandbuch().forEach((objName) -> {
+            testStudiengangInformation.getModulhandbuch().forEach((fach) -> {
                 VBox vB = new VBox();
                 vB.setSpacing(10);
-                TitledPane tP = new TitledPane(objName.getFachName(), vB);
+                TitledPane tP = new TitledPane(fach.getFachName(), vB);
                 contentAccordion.getPanes().add(tP);
 
-                testStudiengangInformation.getModulhandbuch().stream().filter((fach) -> fach.getFachName() == objName.getFachName()).forEach((fach) -> {
-                    ArrayList<Label> aL = new ArrayList<>();
-                    VBox vbGericht = new VBox();
-                    aL.add(new Label("Dozent: " + fach.getFachDozent()));
-                    aL.add(new Label("Zweitprüfer: " + fach.getFachZweitPruefer()));
-                    aL.add(new Label("Studienjahr: " + fach.getFachStudienjahr()));
-                    aL.add(new Label("Art: " + fach.getFachArt()));
-                    aL.add(new Label("ECTS: " + fach.getFachECTS()));
-                    aL.add(new Label("SWS: " + fach.getFachSWS()));
-                    aL.add(new Label("Präsenzzeit: " + fach.getFachPraesenzZeit()));
-                    aL.add(new Label("Prüfungsvorbereitung: " + fach.getFachPruefungsVorbereitung()));
-                    aL.add(new Label("Sprache: " + fach.getFachSprache()));
-                    aL.add(new Label("Lehrinhalte: " + fach.getFachLehrinhalte()));
-                    aL.add(new Label("Lernziel: " + fach.getFachLernziel()));
-                    aL.add(new Label("Voraussetzung: " + fach.getFachVoraussetzung()));
-                    aL.add(new Label("Literaturliste: " + fach.getFachLiteraturliste()));
-                    aL.add(new Label("Prüfungsdurchführung: " + fach.getFachPruefungsdurchfuehrung()));
-                    aL.add(new Label("Hilfsmittel: " + fach.getFachHilfsmittel()));
-                    aL.add(new Label("Medienformen: " + fach.getFachMedienformen()));
-                    aL.add(new Label("Häufigkeit: " + fach.getFachHaeufigkeit()));
-                    aL.forEach((lbl) -> lbl.setWrapText(true));
+                ArrayList<Label> aL = new ArrayList<>();
+                VBox vbGericht = new VBox();
+                aL.add(new Label("Dozent: " + fach.getFachDozent()));
+                aL.add(new Label("Zweitprüfer: " + fach.getFachZweitPruefer()));
+                aL.add(new Label("Studienjahr: " + fach.getFachStudienjahr()));
+                aL.add(new Label("Art: " + fach.getFachArt()));
+                aL.add(new Label("ECTS: " + fach.getFachECTS()));
+                aL.add(new Label("SWS: " + fach.getFachSWS()));
+                aL.add(new Label("Präsenzzeit: " + fach.getFachPraesenzZeit()));
+                aL.add(new Label("Prüfungsvorbereitung: " + fach.getFachPruefungsVorbereitung()));
+                aL.add(new Label("Sprache: " + fach.getFachSprache()));
+                aL.add(new Label("Lehrinhalte: " + fach.getFachLehrinhalte()));
+                aL.add(new Label("Lernziel: " + fach.getFachLernziel()));
+                aL.add(new Label("Voraussetzung: " + fach.getFachVoraussetzung()));
+                aL.add(new Label("Literaturliste: " + fach.getFachLiteraturliste()));
+                aL.add(new Label("Prüfungsdurchführung: " + fach.getFachPruefungsdurchfuehrung()));
+                aL.add(new Label("Hilfsmittel: " + fach.getFachHilfsmittel()));
+                aL.add(new Label("Medienformen: " + fach.getFachMedienformen()));
+                aL.add(new Label("Häufigkeit: " + fach.getFachHaeufigkeit()));
+                aL.forEach((lbl) -> lbl.setWrapText(true));
 
-                    ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
-                    vbGericht.getChildren().addAll(oaL);
-                    vB.getChildren().add(vbGericht);
-                });
+                ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
+                vbGericht.getChildren().addAll(oaL);
+                vB.getChildren().add(vbGericht);
             });
 
-            for(int i=0; i<20; i++) {
-                vbContent.getChildren().add(new Label("Blabla"));
-            }
+            Button btn = new Button();
+            btn.getStyleClass().add("icon-button");
+            btn.setPickOnBounds(true);
+
+            Region icon = new Region();
+            icon.getStyleClass().add("icon");
+            btn.setGraphic(icon);
+
+            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            btn.getStyleClass().add("icon-menu-button");
+
+            vbContent.getChildren().add(btn);
+
         }
     }
 }

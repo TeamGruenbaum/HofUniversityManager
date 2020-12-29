@@ -10,7 +10,7 @@
    <children>
       <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
          <top>
-            <HBox alignment="CENTER_RIGHT" maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_RIGHT" maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-bar" BorderPane.alignment="CENTER" fx:id="hbTop">
                <children>
                   <Button fx:id="menuHauptButton" mnemonicParsing="false" onAction="#menuOeffnen" />
                   <HBox nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
@@ -36,7 +36,7 @@
          <bottom>
             <HBox maxHeight="20.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="© 2020" textFill="#424242">
+                  <Label styleClass="footerText" text="© 2020">
                      <padding>
                         <Insets bottom="14.0" left="28.0" right="28.0" top="14.0" />
                      </padding>

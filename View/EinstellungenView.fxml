@@ -27,24 +27,12 @@
                     </rowConstraints>
                      <children>
                         <Label text="Benutzername">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
                         </Label>
                         <Label text="Passwort" GridPane.rowIndex="1">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
                         </Label>
                         <Label text="Studiengang" GridPane.rowIndex="2">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
                         </Label>
                          <Label text="Semester" GridPane.rowIndex="3">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
                         </Label>
                         <TextField fx:id="tfBenutzername" prefWidth="500.0" promptText="Benutzername" GridPane.columnIndex="1" />
                         <PasswordField fx:id="pfPasswort" prefWidth="500.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -62,9 +50,6 @@
                        </rowConstraints>
                        <children>
                            <Label text="Dark-Mode">
-                               <font>
-                                   <Font name="System Bold" size="12.0" />
-                               </font>
                            </Label>
                         <CheckBox fx:id="cbDarkMode" mnemonicParsing="false" text="inaktiv" GridPane.columnIndex="1" />
                        </children>
@@ -78,10 +63,7 @@
          <top>
             <VBox>
                <children>
-                  <Label text="Persönliche Einstellungen">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
+                  <Label text="Persönliche Einstellungen" styleClass="ueberschrift">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

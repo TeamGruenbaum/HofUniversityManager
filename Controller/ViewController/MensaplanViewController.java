@@ -112,7 +112,9 @@ public class MensaplanViewController implements Initializable
                 });
             });
         } else {
-            contentVBox.getChildren().add(1, new Label("An diesem Tag stehen leider keine Gerichte zur Verfügung."));
+            Label hinweisLeer = new Label("An diesem Tag stehen leider keine Gerichte zur Verfügung.");
+            hinweisLeer.getStyleClass().add("warnhinweis");
+            contentVBox.getChildren().add(1, hinweisLeer);
         }
     }
 
