@@ -54,7 +54,7 @@ public class SchreiberLeser
 
     public static void datenZuruecksetzen()
     {
-        studiengangInformationen=new StudiengangInformationen("","","", new ArrayList<ModulhandbuchFach>());
+        studiengangInformationen=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
         nutzerdaten=new Nutzerdaten(new Studiensemester("",""), new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"));

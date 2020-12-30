@@ -38,39 +38,6 @@ public class Parser
     //Studiengang parsen
     public static StudiengangInformationen studiengangParsen(StudiengangDokumente studiengangDokumente)
     {
-        Document studiengangDokument=studiengangDokumente.getStudiengangDokument();
-
-        //Studiengangleiter parsen
-        String studiengangLeiter="";
-        for(int i=0; i<(studiengangDokument.select("div.pers.bg")).size(); i++)
-        {
-            for(int j=0; j<(studiengangDokument.select("div.pers.bg").get(i).select("p")).size();j++)
-            {
-                if (studiengangDokument.select("div.pers.bg").get(i).select("p").get(j).text().contains("Studiengangleit"))
-                {
-                    studiengangLeiter=studiengangDokument.select("div.pers.bg").get(i).select("h4").text();
-                    break;
-                }
-            }
-        }
-        //Ausnahmebehandlung für Studiengänge mit unklarer Angabe des Studiengangleiters
-        if (studiengangLeiter.equals(""))
-        {
-            switch(studiengangDokument.getElementsByTag("h1").html())
-            {
-                case "Verwaltungsinformatik (Dipl.)":studiengangLeiter="Prof. Dr. Thomas Schaller"; break;
-                case "Master Informatik (M.Sc.)":studiengangLeiter="Prof. Dr. René Peinl"; break;
-                case "Berufsbegleitender Bachelor Digitale Verwaltung (B.A.)":studiengangLeiter="Prof. Dr. Thomas Meuche"; break;
-                case "Sustainable Textiles (M.Eng.)":studiengangLeiter="Prof. Dr. Michael Rauch"; break;
-                case "Vollzeitmaster Software Engineering for Industrial Applications (M.Eng.)":studiengangLeiter="Prof. Dr. Jürgen Heym"; break;
-                default:studiengangLeiter="Prof. Dr. Friedwart Lender"; break;
-            }
-        }
-
-        //SPO-Link parsen
-        //Bisher wird hier nur der Link zur allgemeinen Seite aller SPOs geliefert
-        String spoDataURL="https://www.hof-university.de"+studiengangDokument.select("a[href*=spo-studien-und-pruefungsordnungen]").attr("href");
-
         ArrayList<Document> faecherDokumente=studiengangDokumente.getFaecherDokumente();
         //Modulhandbuch parsen
         ArrayList<ModulhandbuchFach> faecher=new ArrayList<>();
@@ -79,7 +46,7 @@ public class Parser
             faecher.add(_getModulhandbuchFach(faecherDokumente.get(i)));
         }
 
-        StudiengangInformationen studiengangInformationen=new StudiengangInformationen(studiengangLeiter, "Bachelor/Master", spoDataURL, faecher);
+        StudiengangInformationen studiengangInformationen=new StudiengangInformationen(faecher);
         return studiengangInformationen;
     }
 

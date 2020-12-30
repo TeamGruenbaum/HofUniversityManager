@@ -6,20 +6,14 @@ import java.util.ArrayList;
 
 public class StudiengangDokumente
 {
-    Document studiengangDokument;
     ArrayList<Document> faecherDokumente;
     // int i = 0;
 
-    public StudiengangDokumente(Document studiengangDokument, ArrayList<Document> faecherDokumente) throws IOException
+    public StudiengangDokumente(ArrayList<Document> faecherDokumente) throws IOException
     {
         this.faecherDokumente = faecherDokumente;
-        this.studiengangDokument = studiengangDokument;
     }
 
-    public Document getStudiengangDokument()
-    {
-        return studiengangDokument;
-    }
     public ArrayList<Document> getFaecherDokumente()
     {
         return faecherDokumente;
