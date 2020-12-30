@@ -40,7 +40,7 @@ public class StudiengangViewController implements Initializable {
     @FXML
     Label studiengangTitel;
 
-    StudiengangInformationen testStudiengangInformation=new StudiengangInformationen
+    /*StudiengangInformationen testStudiengangInformation=new StudiengangInformationen
             (
                     "Buhl",
                     "Bachelor",
@@ -108,7 +108,7 @@ public class StudiengangViewController implements Initializable {
                             )
                             )
                     )
-            );
+            );*/
 
     public void initialize(URL location, ResourceBundle resources) {
         if((SchreiberLeser.getNutzerdaten().getStudiengang() == null) || (SchreiberLeser.getNutzerdaten().getStudiensemester() == null)) {
@@ -126,14 +126,14 @@ public class StudiengangViewController implements Initializable {
             columnConstraints.setMinWidth(250);
             gpInfo.getColumnConstraints().addAll(columnConstraints, columnConstraints);
             gpInfo.add(new Label("Studiengangleiter:"), 0, 0);
-            gpInfo.add(new Label(testStudiengangInformation.getStudiengangLeiter()), 1, 0);
+            gpInfo.add(new Label("NEIN"), 1, 0);
             gpInfo.add(new Label("Studiengangtyp:"), 0, 1);
-            gpInfo.add(new Label(testStudiengangInformation.getStudiengangTyp()), 1, 1);
+            gpInfo.add(new Label("NEIN"), 1, 1);
             gpInfo.add(new Label("Studien- & Prüfungsordnung:"), 0, 2);
             vbContent.getChildren().add(gpInfo);
 
             Hyperlink spoLink = new Hyperlink("Link zur SPO");
-            spoLink.setOnAction(event -> Main.oeffneLinkInBrowser(testStudiengangInformation.getSPO()));
+            spoLink.setOnAction(event -> Main.oeffneLinkInBrowser("NEIN"));
             gpInfo.add(spoLink, 1, 2);
 
             // Erstelle Accordion mit Fächern
@@ -141,13 +141,13 @@ public class StudiengangViewController implements Initializable {
             contentAccordion.setPrefWidth(500);
             vbContent.getChildren().add(contentAccordion);
 
-            testStudiengangInformation.getModulhandbuch().forEach((objName) -> {
+            SchreiberLeser.getStudiengangInformationen().getModulhandbuch().forEach((objName) -> {
                 VBox vB = new VBox();
                 vB.setSpacing(10);
                 TitledPane tP = new TitledPane(objName.getFachName(), vB);
                 contentAccordion.getPanes().add(tP);
 
-                testStudiengangInformation.getModulhandbuch().stream().filter((fach) -> fach.getFachName() == objName.getFachName()).forEach((fach) -> {
+                SchreiberLeser.getStudiengangInformationen().getModulhandbuch().stream().filter((fach) -> fach.getFachName() == objName.getFachName()).forEach((fach) -> {
                     ArrayList<Label> aL = new ArrayList<>();
                     VBox vbGericht = new VBox();
                     aL.add(new Label("Dozent: " + fach.getFachDozent()));

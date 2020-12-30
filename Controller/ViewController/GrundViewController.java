@@ -191,6 +191,10 @@ public class GrundViewController implements Initializable {
 
         switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
         {
+            case STUNDENPLAN:
+            {
+                ladeSceneMitScrollPane();
+            }break;
             case MENSAPLAN:
             {
                 ladeLadenScene();
@@ -198,7 +202,7 @@ public class GrundViewController implements Initializable {
 
                 if(mensaplanEinmalHeruntergeladen)
                 {
-                    ladeScene();
+                    ladeSceneMitScrollPane();
                 }
                 else
                 {
@@ -217,7 +221,7 @@ public class GrundViewController implements Initializable {
                     {
                         if(newValue== Worker.State.SUCCEEDED)
                         {
-                            ladeScene();
+                            ladeSceneMitScrollPane();
                             menuHauptButton.setDisable(false);
                             mensaplanEinmalHeruntergeladen=true;
                         }
@@ -228,7 +232,12 @@ public class GrundViewController implements Initializable {
             } break;
             case STUDIENGANG:
             {
-                ladeScene();
+                Datenabrufer.studiengangAbrufen();
+                ladeSceneMitScrollPane();
+            }break;
+            case MOODLE:
+            {
+                ladeSceneOhneScrollPane();
             }break;
             case PANOPTO:
             {
@@ -238,6 +247,10 @@ public class GrundViewController implements Initializable {
             {
                 Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
             }break;
+            case CAMPUSSPORT:
+            {
+                ladeSceneOhneScrollPane();
+            }break;
             case TREFFPUNKTE:
             {
                 ladeLadenScene();
@@ -245,7 +258,7 @@ public class GrundViewController implements Initializable {
 
                 if(treffpunkteEinmalHeruntergeladen)
                 {
-                    ladeScene();
+                    ladeSceneMitScrollPane();
                 }
                 else
                 {
@@ -264,7 +277,7 @@ public class GrundViewController implements Initializable {
                     {
                         if(newValue== Worker.State.SUCCEEDED)
                         {
-                            ladeScene();
+                            ladeSceneMitScrollPane();
                             menuHauptButton.setDisable(false);
                             treffpunkteEinmalHeruntergeladen=true;
                         }
@@ -273,9 +286,21 @@ public class GrundViewController implements Initializable {
                     new Thread(task).start();
                 }
             }break;
+            case BAYERNFAHRPLAN:
+            {
+                ladeSceneOhneScrollPane();
+            }break;
+            case PRIMUSS:
+            {
+                ladeSceneOhneScrollPane();
+            }break;
+            case EINSTELLUNGEN:
+            {
+                ladeSceneMitScrollPane();
+            }break;
             default:
             {
-                ladeScene();
+                ladeSceneMitScrollPane();
             }
         }
     }
@@ -285,7 +310,7 @@ public class GrundViewController implements Initializable {
         stackPane.getChildren().remove(anchorPane);
     }
 
-    private void ladeScene()
+    private void ladeSceneMitScrollPane()
     {
         try
         {
@@ -294,6 +319,19 @@ public class GrundViewController implements Initializable {
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
+            borderPane.getCenter().setViewOrder(0);
+            hauptmenueSchließen();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void ladeSceneOhneScrollPane()
+    {
+        try
+        {
+            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.getCenter().setViewOrder(0);
             hauptmenueSchließen();
         }

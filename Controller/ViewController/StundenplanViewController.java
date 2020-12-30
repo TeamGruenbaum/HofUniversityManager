@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 public class StundenplanViewController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
-        Datenabrufer.stundenplanAbrufen();
+        /*Datenabrufer.stundenplanAbrufen("Mi",);
         SchreiberLeser.getNutzerdaten().getDoppelstunden().stream()
                 .map(Doppelstunde::getName)
-                .forEach(System.out::println);
+                .forEach(System.out::println);*/
     }
 
     @FXML
