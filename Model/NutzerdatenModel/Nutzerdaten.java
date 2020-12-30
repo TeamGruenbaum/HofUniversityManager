@@ -17,8 +17,9 @@ public class Nutzerdaten implements Serializable
     private MenuepunktInformation letzterGeoeffneterMenuepunkt;
     private Studiengang studiengang;
 
-    public Nutzerdaten(Studiensemester studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
+    public Nutzerdaten(Studiengang studiengang, Studiensemester studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
     {
+        this.studiengang=studiengang;
         this.studiensemester = studiensemester;
         this.doppelstunden = doppelstunden;
         this.ssoLogin = ssoLogin;

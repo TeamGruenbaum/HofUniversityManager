@@ -57,7 +57,7 @@ public class SchreiberLeser
         studiengangInformationen=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
-        nutzerdaten=new Nutzerdaten(new Studiensemester("",""), new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"));
+        nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"));
 
         alleSpeichern();
     }
