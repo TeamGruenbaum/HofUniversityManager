@@ -69,6 +69,7 @@ public class GrundViewController implements Initializable {
     private boolean mensaplanEinmalHeruntergeladen, studiengangEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
 
     private static WebView uglyWebView;
+    private static Button uglyMenuHauptButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -159,6 +160,7 @@ public class GrundViewController implements Initializable {
         oeffneScene();
 
         uglyWebView=webView;
+        uglyMenuHauptButton=menuHauptButton;
     }
 
     @FXML
@@ -170,15 +172,7 @@ public class GrundViewController implements Initializable {
 
     public static void setThema(Thema thema)
     {
-        gridPane.getChildren().forEach((obj) -> {
-            ColorAdjust farbwechsel = new ColorAdjust();
-            farbwechsel.setBrightness((thema == Thema.HELL)?0:1);
-            obj.setEffect(farbwechsel);
-        });
-
-        //ColorAdjust aufhellen = new ColorAdjust();
-        //aufhellen.setBrightness((thema == Thema.HELL)?0:1);
-        //menuHauptButton.setEffect(aufhellen);
+        ColorAdjust farbwechsel = new ColorAdjust();
 
         if(thema == Thema.DUNKEL) {
             Main.getRoot().setStyle("-menubar-color: #404040;" +
@@ -187,7 +181,7 @@ public class GrundViewController implements Initializable {
                     "-accent-color: #45cbff;" +
                     "-warn-color: #691c1c;" +
                     "-menubar-text-color: white");
-            //System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
+            farbwechsel.setBrightness(1);
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
                     "-font-color: #262626;" +
@@ -195,9 +189,14 @@ public class GrundViewController implements Initializable {
                     "-accent-color: #0072a0;" +
                     "-warn-color: #8a2828;" +
                     "-menubar-text-color: black");
-
-            //System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
+            farbwechsel.setBrightness(0);
         }
+
+        gridPane.getChildren().forEach((obj) -> {
+            obj.setEffect(farbwechsel);
+        });
+
+        getUglyMenuHauptButton().setEffect(farbwechsel);
     }
 
     //Hilfsmethoden und Hilfsklasse allgemeiner Art
@@ -390,24 +389,12 @@ public class GrundViewController implements Initializable {
 
     private void hoverIconsEffect(Node button, ImageView imageView)
     {
-        Thema aktuellesThema = SchreiberLeser.getNutzerdaten().getAktuellesThema();
-
         button.setOnMouseMoved((MouseEvent) -> {
-            ColorAdjust aufhellen = new ColorAdjust();
-            aufhellen.setBrightness(0.3);
-
-            imageView.setEffect(aufhellen);
-            imageView.setCache(true);
-            imageView.setCacheHint(CacheHint.SPEED);
+            imageView.setOpacity(0.8);
         });
 
         button.setOnMouseExited((MouseEvent) -> {
-            ColorAdjust abdunkeln = new ColorAdjust();
-            abdunkeln.setBrightness(-0.3);
-
-            imageView.setEffect(abdunkeln);
-            imageView.setCache(true);
-            imageView.setCacheHint(CacheHint.SPEED);
+            imageView.setOpacity(1.0);
         });
     }
 
@@ -420,5 +407,10 @@ public class GrundViewController implements Initializable {
     public static WebView getUglyWebview()
     {
         return uglyWebView;
+    }
+
+    public static Button getUglyMenuHauptButton()
+    {
+        return uglyMenuHauptButton;
     }
 }
