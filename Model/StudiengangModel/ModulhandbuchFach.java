@@ -4,16 +4,15 @@ import java.io.Serializable;
 
 public class ModulhandbuchFach implements Serializable
 {
-
     private String fachName;
     private String fachDozent;
     private String fachZweitPruefer;
-    private int fachStudienjahr;
+    private String fachStudienjahr;
     private String fachArt;
-    private int fachECTS;
-    private int fachSWS;
-    private int fachPraesenzZeit;
-    private int fachPruefungsVorbereitung;
+    private String fachECTS;
+    private String fachSWS;
+    private String fachPraesenzZeit;
+    private String fachPruefungsVorbereitung;
     private String fachSprache;
     private String fachLehrinhalte;
     private String fachLernziel;
@@ -24,7 +23,7 @@ public class ModulhandbuchFach implements Serializable
     private String fachMedienformen;
     private String fachHaeufigkeit;
 
-    public ModulhandbuchFach(String fachName, String fachDozent, String fachZweitPruefer, int fachStudienjahr, String fachArt, int fachECTS, int fachSWS, int fachPraesenzZeit, int fachPruefungsVorbereitung, String fachSprache, String fachLehrinhalte, String fachLernziel, String fachVoraussetzung, String fachLiteraturliste, String fachPruefungsdurchfuehrung, String fachHilfsmittel, String fachMedienformen, String fachHaeufigkeit) {
+    public ModulhandbuchFach(String fachName, String fachDozent, String fachZweitPruefer, String fachStudienjahr, String fachArt, String fachECTS, String fachSWS, String fachPraesenzZeit, String fachPruefungsVorbereitung, String fachSprache, String fachLehrinhalte, String fachLernziel, String fachVoraussetzung, String fachLiteraturliste, String fachPruefungsdurchfuehrung, String fachHilfsmittel, String fachMedienformen, String fachHaeufigkeit) {
         this.fachName = fachName;
         this.fachDozent = fachDozent;
         this.fachZweitPruefer = fachZweitPruefer;
@@ -57,7 +56,7 @@ public class ModulhandbuchFach implements Serializable
         return fachZweitPruefer;
     }
 
-    public int getFachStudienjahr() {
+    public String getFachStudienjahr() {
         return fachStudienjahr;
     }
 
@@ -65,19 +64,19 @@ public class ModulhandbuchFach implements Serializable
         return fachArt;
     }
 
-    public int getFachECTS() {
+    public String getFachECTS() {
         return fachECTS;
     }
 
-    public int getFachSWS() {
+    public String getFachSWS() {
         return fachSWS;
     }
 
-    public int getFachPraesenzZeit() {
+    public String getFachPraesenzZeit() {
         return fachPraesenzZeit;
     }
 
-    public int getFachPruefungsVorbereitung() {
+    public String getFachPruefungsVorbereitung() {
         return fachPruefungsVorbereitung;
     }
 

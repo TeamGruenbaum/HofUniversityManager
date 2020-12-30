@@ -59,12 +59,12 @@ public class Parser
                 dokument.select("h2:not([class])").text(),
                 tabelle.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(),
-                Integer.parseInt(tabelle.getElementsByTag("tr").get(2).select("td>p").get(0).text()),
+                tabelle.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(),
-                Integer.parseInt(tabelle.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()),
-                Integer.parseInt(tabelle.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text()),
-                Integer.parseInt(tabelle.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text()),
-                Integer.parseInt(tabelle.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text()),
+                tabelle.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text(),
+                tabelle.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text(),
@@ -315,8 +315,8 @@ public class Parser
                             aktueller.getElementsByTag("td").get(4).text(),
                             aktueller.getElementsByTag("td").get(6).text(),
                             Tag.FREITAG,
-                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(3,5)), 00),
-                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)), 00)
+                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(3,5))),
+                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)))
                     ));
         };
     }
@@ -394,7 +394,7 @@ public class Parser
             termin=new Termin
             (
                 new Datum(Integer.parseInt(matcher.group(1).substring(0,2)),Integer.parseInt(matcher.group(1).substring(3,5)),Integer.parseInt(matcher.group(1).substring(6,10))),
-                new Uhrzeit(Integer.parseInt(matcher.group(2).substring(0,2)),Integer.parseInt(matcher.group(2).substring(3,5)),00),
+                new Uhrzeit(Integer.parseInt(matcher.group(2).substring(0,2)),Integer.parseInt(matcher.group(2).substring(3,5))),
                 matcher.group(3)
             );
         }

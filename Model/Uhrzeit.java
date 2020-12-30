@@ -6,13 +6,11 @@ public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
 {
     private int stunde;
     private int minute;
-    private int sekunde;
 
-    public Uhrzeit(int stunde, int minute, int sekunde)
+    public Uhrzeit(int stunde, int minute)
     {
         this.stunde=stunde;
         this.minute=minute;
-        this.sekunde=sekunde;
     }
 
     public int getStunde() {
@@ -31,14 +29,6 @@ public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
         this.minute = minute;
     }
 
-    public int getSekunde() {
-        return sekunde;
-    }
-
-    public void setSekunde(int sekunde) {
-        this.sekunde = sekunde;
-    }
-
     @Override
     public int compareTo(Uhrzeit comparingTime)
     {
@@ -51,13 +41,6 @@ public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
     @Override
     public String toString()
     {
-        //String tempStunde,
-
-        if(stunde<10)
-        {
-
-        }
-
-        return stunde+":"+minute;
+        return (stunde<10?"0"+stunde:String.valueOf(stunde))+":"+(minute<10?"0"+minute:String.valueOf(minute));
     }
 }

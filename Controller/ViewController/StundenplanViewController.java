@@ -88,9 +88,9 @@ public class StundenplanViewController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         ArrayList<Doppelstunde> testDoppelstunden = new ArrayList<>(List.of(
-                new Doppelstunde("WA", "Trapp","FB009", DIENSTAG, new Uhrzeit(9,0,0),new Uhrzeit(9,45,0)),
-                new Doppelstunde("OOP1", "Ashauer","FB009", DIENSTAG, new Uhrzeit(8,0,0),new Uhrzeit(9,45,0)),
-                new Doppelstunde("DM", "Schaller","FB009", Tag.MITTWOCH, new Uhrzeit(9,0,0),new Uhrzeit(9,45,0))
+                new Doppelstunde("WA", "Trapp","FB009", DIENSTAG, new Uhrzeit(9,0),new Uhrzeit(9,45)),
+                new Doppelstunde("OOP1", "Ashauer","FB009", DIENSTAG, new Uhrzeit(8,0),new Uhrzeit(9,45)),
+                new Doppelstunde("DM", "Schaller","FB009", Tag.MITTWOCH, new Uhrzeit(9,0),new Uhrzeit(9,45))
         ));
 
         montagObservableList=FXCollections.observableArrayList();
@@ -596,7 +596,7 @@ public class StundenplanViewController implements Initializable
                 alert2.showAndWait();
             }else {
 
-                Aufgabe neueAufgabe = new Aufgabe(inhalt.getText(), new Datum(datum.getValue().getDayOfMonth(), datum.getValue().getMonthValue(), datum.getValue().getYear()), new Uhrzeit(Integer.parseInt(stunden.getText()), Integer.parseInt(minuten.getText()), Integer.parseInt(sekunden.getText())));
+                Aufgabe neueAufgabe = new Aufgabe(inhalt.getText(), new Datum(datum.getValue().getDayOfMonth(), datum.getValue().getMonthValue(), datum.getValue().getYear()), new Uhrzeit(Integer.parseInt(stunden.getText()), Integer.parseInt(minuten.getText())));
                 a.getAufgaben().add(neueAufgabe);
                 aufgabenTabelle.getItems().add(neueAufgabe);
             }
