@@ -95,7 +95,7 @@ public class GrundViewController implements Initializable {
 
         //GridPane initialisieren
         gridPane=new GridPane();
-        gridPane.getStyleClass().add("icon-menu");
+        gridPane.getStyleClass().add("icon-menu-karte");
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setMinWidth(menuepunktHoeheBreite);
         columnConstraints.setMaxWidth(menuepunktHoeheBreite);

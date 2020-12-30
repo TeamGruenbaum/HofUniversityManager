@@ -1,5 +1,4 @@
-/* FX-Variables for StudiPlaner-Application */
-
+/* FX-Variablen für die Anwendung und variable Änderung je nach Thema */
 .root {
     -menubar-color: white;
     -font-color: #262626;
@@ -9,6 +8,7 @@
     -menubar-text-color: black;
 }
 
+/* Allgemein */
 * {
     -fx-font-family: 'Rubik';
     -fx-text-fill: -font-color;
@@ -19,19 +19,13 @@
     -fx-text-fill: -font-color;
 }
 
-.breadcrumb-menu {
-    -fx-text-fill: white;
-}
-
-/* Menu-Bar-Preferences */
-
+/* Menü-Leiste */
 #menuHauptButton {
     -fx-background-color: transparent;
     -fx-cursor: hand;
 }
 
 .menu-title {
-    -fx-font-weight: bold;
     -fx-text-fill: -accent-color;
 }
 
@@ -41,7 +35,13 @@
     -fx-text-fill: -menubar-text-color;
 }
 
-.icon-menu {
+.menu-bar {
+    -fx-background-color: -menubar-color;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
+}
+
+/* Einstellungen Menü-Karte */
+.icon-menu-karte {
     -fx-background-color: -menubar-color;
     -fx-background-radius: 5px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
@@ -55,27 +55,7 @@
     -fx-cursor: hand;
 }
 
-.menu-bar {
-    -fx-background-color: -menubar-color;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 1);
-}
-
-.menu-main-button {
-    -fx-alignment: CENTER;
-}
-
-.menu-button:hover {
-    -fx-background-color: -menubar-color;
-}
-
-.menu-button:showing {
-    -fx-background-color: -menubar-color;
-}
-
-.menu-button .label {
-    -fx-text-fill: -font-color;
-}
-
+/* Weitere Textformatierungen */
 .warnhinweis {
     -fx-text-fill: -warn-color;
 }
@@ -84,6 +64,7 @@
     -fx-font-size: 20px;
 }
 
+/* Generelles ScrollPane */
 .scroll-pane{
     -fx-background-color: transparent;
 }
@@ -92,8 +73,7 @@
     -fx-background-color: transparent;
 }
 
-/* Footer-Preferences */
-
+/* Footer-Leiste */
 .footer {
     -fx-background-color: -menubar-color;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, -1);
@@ -102,21 +82,3 @@
 .footerText {
     -fx-text-fill: -menubar-text-color;
 }
-
-/*
-.icon-menu-button .icon {
-    -fx-background-color: -icon-paint;
-    -size: 40;
-    -fx-min-height: -size;
-    -fx-min-width: -size;
-    -fx-max-height: -size;
-    -fx-max-width: -size;
-
-    -fx-shape: "M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"
-}
-
-.icon-menu-button {
-    -fx-background-color: transparent;
-    -fx-content-display: graphic-only;
-    -icon-paint: -font-color;
-}*/
