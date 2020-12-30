@@ -55,6 +55,10 @@
     -fx-cursor: hand;
 }
 
+.tooltip {
+    -fx-text-fill: white;
+}
+
 /* Weitere Textformatierungen */
 .warnhinweis {
     -fx-text-fill: -warn-color;
