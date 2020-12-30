@@ -59,7 +59,7 @@ public class Parser
                 dokument.select("h2:not([class])").text(),
                 tabelle.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(),
                 tabelle.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(),
-                Integer.parseInt(tabelle.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text()),
+                Integer.parseInt(tabelle.getElementsByTag("tr").get(2).select("td>p").get(0).text()),
                 tabelle.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(),
                 Integer.parseInt(tabelle.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text()),
                 Integer.parseInt(tabelle.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text()),
