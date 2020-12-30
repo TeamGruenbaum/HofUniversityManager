@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class StundenplanViewController implements Initializable {
@@ -73,6 +74,9 @@ public class StundenplanViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        fachdaten = new ArrayList<>();
+        fachdaten.add(new FachDatensatz("Margeding", new ArrayList<Aufgabe>(List.of(new Aufgabe("Hausi", new Datum(5, 16, 200)))), new ArrayList<Notiz>(), new ArrayList<Note>()));
+
         stundenRefresh(nutzer);
 
 
@@ -85,7 +89,12 @@ public class StundenplanViewController implements Initializable {
 
         fachdaten.forEach(this::erzeugeAkkordion);
 
+        stundenPlanErzeugen();
 
+
+    }
+
+    private void stundenPlanErzeugen() {
 
     }
 
