@@ -277,7 +277,7 @@ public class GrundViewController implements Initializable {
                 }
                 else
                 {
-                    ladeLadenScene();
+                    ProgressIndicator progressIndicator=ladeLadenScene();
                     hauptmenueSchließen();
 
                     if(treffpunkteEinmalHeruntergeladen)
@@ -297,9 +297,9 @@ public class GrundViewController implements Initializable {
                             }
                         };
 
-                        task.stateProperty().addListener(((observable, oldValue, newValue) ->
+                        progressIndicator.progressProperty().addListener(((observable, oldValue, newValue) ->
                         {
-                            if (newValue == Worker.State.SUCCEEDED)
+                            if (newValue.doubleValue() == 1)
                             {
                                 ladeSceneMitScrollPane();
                                 menuHauptButton.setDisable(false);
@@ -425,7 +425,7 @@ public class GrundViewController implements Initializable {
         }
     }
 
-    private void ladeLadenScene()
+    private ProgressIndicator ladeLadenScene()
     {
         BorderPane borderPane=new BorderPane();
         borderPane.setMinHeight(Double.MIN_VALUE);
@@ -438,6 +438,8 @@ public class GrundViewController implements Initializable {
         this.borderPane.setCenter(borderPane);
 
         Datenabrufer.setProgressIndicator(progressBar);
+
+        return progressBar;
     }
 
     //Hilfsmethoden für visuelle Effekte

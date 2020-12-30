@@ -37,6 +37,8 @@ public class Datenabrufer
     {
         Platform.runLater(()->
         {
+            progressIndicator.setProgress(0.1);
+
             WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
             webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
@@ -58,26 +60,17 @@ public class Datenabrufer
                                                 "document.getElementById('class_change').dispatchEvent(new Event('change'));");
                             });
 
-                            Thread.sleep(((end-start)/1000000)/2);
+                            Platform.runLater(()->progressIndicator.setProgress(0.1));
 
-                            String semester;
-                            if((Calendar.getInstance().get(Calendar.MONTH)==2 && Calendar.getInstance().get(Calendar.DATE)>=15)
-                                    || (Calendar.getInstance().get(Calendar.MONTH)>=3 && Calendar.getInstance().get(Calendar.MONTH)<=7))
-                            {
-                                semester="SS "+Calendar.getInstance().get(Calendar.YEAR);
-                            }
-                            else
-                            {
-                                semester="WS "+Calendar.getInstance().get(Calendar.YEAR);
-                            }
+                            Thread.sleep(((end-start)/1000000)/2);
 
                             Platform.runLater(() -> {
                                 webEngine.executeScript(
-                                        "document.getElementById('year_change').value='"+semester+"';" +
+                                        "document.getElementById('year_change').value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel().substring(2, 9).replace('#', ' ')+"';" +
                                                 "document.getElementById('year_change').dispatchEvent(new Event('change'));");
                             });
 
-
+                            Platform.runLater(()->progressIndicator.setProgress(0.2));
 
                            Thread.sleep(((end-start)/1000000)/2);
 
@@ -88,6 +81,8 @@ public class Datenabrufer
                            });
 
                            Thread.sleep(((end-start)/1000000)/2);
+
+                            Platform.runLater(()->progressIndicator.setProgress(0.3));
 
                            Platform.runLater(()->
                            {
@@ -104,6 +99,15 @@ public class Datenabrufer
                                        catch(Exception ignored){
                                            ignored.printStackTrace();
                                        }
+
+
+
+                                       int finalI = i;
+                                       Platform.runLater(()->
+                                       {
+                                           System.out.println(0.3 + (((double) finalI) / (dokument.select("tbody>tr").size()-1))*0.6);
+                                           progressIndicator.setProgress(0.3 + (((double) finalI) / (dokument.select("tbody>tr").size()-1))*0.6);
+                                       });
                                    }
                                 }
                             });
@@ -123,6 +127,8 @@ public class Datenabrufer
                             {
                                 e.printStackTrace();
                             }
+
+                            Platform.runLater(()->progressIndicator.setProgress(1));
                         }
                     }));
 
