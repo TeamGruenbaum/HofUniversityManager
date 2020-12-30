@@ -45,6 +45,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="commons-io-2.8.0" level="project" />
-    <orderEntry type="library" name="jxbrowser-javafx-7.12.1" level="project" />
+    <orderEntry type="library" name="json-20201115" level="project" />
+    <orderEntry type="library" name="commons-io-2.8.01" level="project" />
   </component>
 </module>

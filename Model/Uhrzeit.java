@@ -2,7 +2,7 @@ package Model;
 
 import java.io.Serializable;
 
-public class Uhrzeit implements Serializable
+public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
 {
     private int stunde;
     private int minute;
@@ -37,5 +37,27 @@ public class Uhrzeit implements Serializable
 
     public void setSekunde(int sekunde) {
         this.sekunde = sekunde;
+    }
+
+    @Override
+    public int compareTo(Uhrzeit comparingTime)
+    {
+        if ((stunde - comparingTime.stunde) == 0) {
+            return (minute - comparingTime.minute);
+        }
+        return (stunde - comparingTime.stunde);
+    }
+
+    @Override
+    public String toString()
+    {
+        //String tempStunde,
+
+        if(stunde<10)
+        {
+
+        }
+
+        return stunde+":"+minute;
     }
 }
