@@ -5,10 +5,6 @@ import Controller.Speicher.SchreiberLeser;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,29 +12,23 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
-public class Main extends Application {
-
-    public static Parent root;
+public class Main extends Application
+{
+    private static Parent root;
     private static HostServices hostServices;
-
-    public Main()
-    {
-    }
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         if(SchreiberLeser.isErsterStart())
         {
-            SchreiberLeser.datenZuruecksetzen();
+            SchreiberLeser.alleZuruecksetzen();
         }
         else
         {
             SchreiberLeser.alleLaden();
         }
-
-        SchreiberLeser.datenZuruecksetzen();
 
         hostServices=getHostServices();
 
@@ -58,24 +48,18 @@ public class Main extends Application {
                 System.exit(0);
             }
         });
-
+        Main.primaryStage=primaryStage;
         primaryStage.show();
+    }
 
-        /*SchreiberLeser.getDropdownMenue().getEintraege().stream().forEach((item)->
-        {
-            System.out.println(item.getName()+":");
-            item.getStudiensemester().stream().forEach((item1)->
-            {
-                System.out.println(item1.getName());
-            });
-        });*/
+    public static Stage getPrimaryStage()
+    {
+        return primaryStage;
+    }
 
-        // Testroutine für instellungenView
-        /*SchreiberLeser.getNutzerdaten().getSsoLogin().setName("Hans-Dieter");
-        SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort("1234");
-        SchreiberLeser.getNutzerdaten().setAktuellesThema(Thema.DUNKEL);*/
-
-        //GrundViewController._setTheme(SchreiberLeser.getNutzerdaten().getAktuellesThema());
+    public static Parent getRoot()
+    {
+        return root;
     }
 
     public static void oeffneLinkInBrowser(String url)
@@ -83,11 +67,8 @@ public class Main extends Application {
         hostServices.showDocument(url);
     }
 
-    public static Parent getRoot() {
-        return root;
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }

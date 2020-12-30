@@ -64,7 +64,10 @@ public class EinstellungenViewController implements Initializable
         cbStudiengang.setConverter(erzeugeStringConverterStudiengang());
         cbStudiengang.setPromptText("Studiengang auswählen");
         cbStudiengang.setItems(FXCollections.observableArrayList(SchreiberLeser.getDropdownMenue().getEintraege()));
-        cbStudiengang.setValue(SchreiberLeser.getNutzerdaten().getStudiengang());
+        if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null)
+        {
+            cbStudiengang.setValue(SchreiberLeser.getNutzerdaten().getStudiengang());
+        }
         cbStudiengang.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             SchreiberLeser.getNutzerdaten().setStudiengang(newValue);
             cbSemester.setItems(erzeugeSemesterListe(newValue));
@@ -79,7 +82,9 @@ public class EinstellungenViewController implements Initializable
                 .otherwise("Studiensemester wählen"));
         cbSemester.setConverter(erzeugeStringConverterStudiensemester());
         cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang()));
-        if(!(SchreiberLeser.getNutzerdaten().getStudiensemester() == null)) {
+
+        if(SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
+        {
             cbSemester.setValue(SchreiberLeser.getNutzerdaten().getStudiensemester());
         }
         cbSemester.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

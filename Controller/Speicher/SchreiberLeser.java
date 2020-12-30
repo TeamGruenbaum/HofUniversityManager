@@ -5,6 +5,7 @@ import Model.DropdownModel.Studiensemester;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
+import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
@@ -12,6 +13,7 @@ import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
 import java.io.*;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class SchreiberLeser
 
     public static boolean isErsterStart()
     {
-        File file = new File(__getSpeicherPfad() ,"nichtErsterStart");
+        File file = new File(getSpeicherPfad() ,"nichtErsterStart");
 
         boolean ersterStart = false;
 
@@ -51,15 +53,15 @@ public class SchreiberLeser
         return ersterStart;
     }
 
-
-    public static void datenZuruecksetzen()
+    public static void alleZuruecksetzen()
     {
         studiengangInformationen=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
-        nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, new MenuepunktInformation(Anwendung.STUNDENPLAN,"platzhalter-icon.png", "Platzhalter.fxml"));
+        nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, Menue.getMenuepunkte().get(Menue.getMenuepunkte().size()-1));
 
-        alleSpeichern();
+        kopieren(new File(SchreiberLeser.class.getResource("../../Ressourcen/Andere/Dropdownmenue.sva").getPath()), "Dropdownmenue.sva");
+        dropdownMenueLaden();
     }
 
     public static void alleLaden()
@@ -83,7 +85,7 @@ public class SchreiberLeser
     //StudiengangInformationen
     public static void studiengangInformationenLaden()
     {
-        studiengangInformationen=SchreiberLeser.<StudiengangInformationen>_lesen(studiengangInformationenDateiname);
+        studiengangInformationen=SchreiberLeser.<StudiengangInformationen>lesen(studiengangInformationenDateiname);
     }
 
     public static StudiengangInformationen getStudiengangInformationen()
@@ -98,14 +100,14 @@ public class SchreiberLeser
 
     public static void studiengangInformationenSpeichern()
     {
-        SchreiberLeser.<StudiengangInformationen>_schreiben(studiengangInformationen, studiengangInformationenDateiname);
+        SchreiberLeser.<StudiengangInformationen>schreiben(studiengangInformationen, studiengangInformationenDateiname);
     }
 
 
     //Treffpunkt
     public static void treffpunkteLaden()
     {
-        treffpunkte=SchreiberLeser.<Treffpunkte>_lesen(treffpunkteDateiname);
+        treffpunkte=SchreiberLeser.<Treffpunkte>lesen(treffpunkteDateiname);
     }
 
     public static Treffpunkte getTreffpunkte()
@@ -120,14 +122,14 @@ public class SchreiberLeser
 
     public static void treffpunkteSpeichern()
     {
-        SchreiberLeser.<Treffpunkte>_schreiben(treffpunkte, treffpunkteDateiname);
+        SchreiberLeser.<Treffpunkte>schreiben(treffpunkte, treffpunkteDateiname);
     }
 
 
     //Mensaplan
     public static void mensaplanLaden()
     {
-        mensaplan=SchreiberLeser.<Mensaplan>_lesen(mensaplanDateiname);
+        mensaplan=SchreiberLeser.<Mensaplan>lesen(mensaplanDateiname);
     }
 
     public static Mensaplan getMensaplan()
@@ -142,14 +144,14 @@ public class SchreiberLeser
 
     public static void mensaplanSpeichern()
     {
-        SchreiberLeser.<Mensaplan>_schreiben(mensaplan, mensaplanDateiname);
+        SchreiberLeser.<Mensaplan>schreiben(mensaplan, mensaplanDateiname);
     }
 
 
     //Nutzerdaten
     public static void nutzerdatenLaden()
     {
-        nutzerdaten=SchreiberLeser.<Nutzerdaten>_lesen(nutzerdatenDateiname);
+        nutzerdaten=SchreiberLeser.<Nutzerdaten>lesen(nutzerdatenDateiname);
     }
 
     public static Nutzerdaten getNutzerdaten()
@@ -164,13 +166,13 @@ public class SchreiberLeser
 
     public static void nutzerdatenSpeichern()
     {
-        SchreiberLeser.<Nutzerdaten>_schreiben(nutzerdaten, nutzerdatenDateiname);
+        SchreiberLeser.<Nutzerdaten>schreiben(nutzerdaten, nutzerdatenDateiname);
     }
 
     //DropdownMenue
     public static void dropdownMenueLaden()
     {
-        dropdownMenue=SchreiberLeser.<DropdownMenue>_lesen(dropdownMenueDateiname);
+        dropdownMenue=SchreiberLeser.<DropdownMenue>lesen(dropdownMenueDateiname);
     }
 
     public static DropdownMenue getDropdownMenue()
@@ -185,16 +187,16 @@ public class SchreiberLeser
 
     public static void dropdownMenueSpeichern()
     {
-        SchreiberLeser.<DropdownMenue>_schreiben(dropdownMenue, dropdownMenueDateiname);
+        SchreiberLeser.<DropdownMenue>schreiben(dropdownMenue, dropdownMenueDateiname);
     }
 
 
     //Allgemeines Speichern und Lesen
-    private static <T extends Serializable> T _lesen(String dateiname)
+    private static <T extends Serializable> T lesen(String dateiname)
     {
         T transferred=null;
 
-        File file=new File(__getSpeicherPfad()+dateiname);
+        File file=new File(getSpeicherPfad()+dateiname);
 
         try
         {
@@ -213,9 +215,9 @@ public class SchreiberLeser
 
 
 
-    private static <T extends Serializable> void _schreiben(T objekt, String dateiname)
+    private static <T extends Serializable> void schreiben(T objekt, String dateiname)
     {
-        File file=new File(__getSpeicherPfad()+dateiname);
+        File file=new File(getSpeicherPfad()+dateiname);
         file.getParentFile().mkdirs();
 
         try
@@ -232,7 +234,49 @@ public class SchreiberLeser
         catch (Exception e){}
     }
 
-    private static String __getSpeicherPfad()
+    private static void kopieren(File von, String dateiname)
+    {
+        File zu=new File(getSpeicherPfad()+dateiname);
+        zu.getParentFile().mkdirs();
+
+        FileChannel eingang = null;
+        FileChannel ausgang = null;
+
+        try
+        {
+            eingang = new FileInputStream(von).getChannel();
+            ausgang = new FileOutputStream(zu).getChannel();
+            eingang.transferTo(0, eingang.size(), ausgang);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(eingang != null)
+        {
+            try
+            {
+                eingang.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        if(ausgang != null)
+        {
+            try
+            {
+                ausgang.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static String getSpeicherPfad()
     {
         String nutzerPfad=System.getProperty("user.home");
         String OS = System.getProperty("os.name");
