@@ -5,6 +5,7 @@ import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.NutzerdatenModel.Thema;
+import Model.OberflaechenModel.Blende;
 import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 import Model.NutzerdatenModel.Anwendung;
@@ -13,6 +14,8 @@ import javafx.animation.FadeTransition;
 
 import Model.NutzerdatenModel.Nutzerdaten;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -134,12 +137,7 @@ public class GrundViewController implements Initializable {
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-            //Region icon = new Region();
-            //icon.getStyleClass().add("icon");
-
-            //button.setGraphic(icon);
             button.setGraphic(imageView);
-            //button.getStyleClass().add("icon-button");
             button.getStyleClass().add("icon-menu-button");
 
             hoverIconsEffect(button, imageView);
@@ -153,8 +151,7 @@ public class GrundViewController implements Initializable {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         anchorPane.getChildren().add(gridPane);
         anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
-            // fadeTransitionStandard(anchorPane, 300, false); // geht nicht, liegt am remove, das wohl zu schnell geht... ANSCHAUEN
-            stackPane.getChildren().remove(anchorPane);
+            hauptmenueSchließen();
         });
 
         oeffneScene();
@@ -166,7 +163,7 @@ public class GrundViewController implements Initializable {
     @FXML
     public void menuOeffnen()
     {
-        fadeTransitionStandard(anchorPane, 300, true);
+        fadeTransitionStandard(anchorPane, 300, Blende.EINBLENDEN);
         stackPane.getChildren().add(anchorPane);
     }
 
@@ -322,7 +319,11 @@ public class GrundViewController implements Initializable {
 
     private void hauptmenueSchließen()
     {
-        stackPane.getChildren().remove(anchorPane);
+        Timeline ablauf = new Timeline(
+                new KeyFrame(Duration.ZERO, event -> fadeTransitionStandard(anchorPane, 300, Blende.AUSBLENDEN)),
+                new KeyFrame(Duration.millis(300), event -> stackPane.getChildren().remove(anchorPane))
+        );
+        ablauf.play();
     }
 
     private void ladeSceneMitScrollPane()
@@ -334,7 +335,6 @@ public class GrundViewController implements Initializable {
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
-            //borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.getCenter().setViewOrder(0);
             hauptmenueSchließen();
         }
@@ -372,9 +372,9 @@ public class GrundViewController implements Initializable {
     }
 
     //Hilfsmethoden für visuelle Effekte
-    private void fadeTransitionStandard(Node node, int dauer, Boolean io) {
+    private void fadeTransitionStandard(Node node, int dauer, Blende blende) {
         FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
-        if(io)
+        if(blende == Blende.EINBLENDEN)
         {
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
@@ -389,12 +389,20 @@ public class GrundViewController implements Initializable {
 
     private void hoverIconsEffect(Node button, ImageView imageView)
     {
-        button.setOnMouseMoved((MouseEvent) -> {
-            imageView.setOpacity(0.8);
+        FadeTransition ftHoverEnter = new FadeTransition(Duration.millis(180), imageView);
+        ftHoverEnter.setFromValue(1.0);
+        ftHoverEnter.setToValue(0.7);
+
+        FadeTransition ftHoverExit = new FadeTransition(Duration.millis(180), imageView);
+        ftHoverExit.setFromValue(0.7);
+        ftHoverExit.setToValue(1.0);
+
+        button.setOnMouseEntered((MouseEvent) -> {
+            ftHoverEnter.play();
         });
 
         button.setOnMouseExited((MouseEvent) -> {
-            imageView.setOpacity(1.0);
+            ftHoverExit.play();
         });
     }
 
