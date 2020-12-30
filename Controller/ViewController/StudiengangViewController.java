@@ -1,36 +1,16 @@
 package Controller.ViewController;
 
-import Controller.InformationsVermittlung.Datenabrufer;
-import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
-import Model.DropdownModel.Studiengang;
-import Model.DropdownModel.Studiensemester;
-import Model.NutzerdatenModel.Doppelstunde;
-import Model.NutzerdatenModel.Thema;
-import Model.StudiengangModel.ModulhandbuchFach;
-import Model.StudiengangModel.StudiengangInformationen;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class StudiengangViewController implements Initializable {
 
@@ -40,76 +20,6 @@ public class StudiengangViewController implements Initializable {
     @FXML
     Label studiengangTitel;
 
-    /*StudiengangInformationen testStudiengangInformation=new StudiengangInformationen
-            (
-                    "Buhl",
-                    "Bachelor",
-                    "https://www.hof-university.de/fileadmin/user_upload/studienbuero/Studien-_und_Pruefungsordnungen/Informatik/MI/SPO_MI_2021.pdf",
-                    new ArrayList<ModulhandbuchFach>(List.of(
-                            new ModulhandbuchFach(
-                                    "Marketing",
-                                    "Iiina",
-                                    "Torsten Stapel",
-                                    3,
-                                    "SÜ, Ü",
-                                    5,
-                                    4,
-                                    45,
-                                    105,
-                                    "deutsch",
-                                    "Gaaanz viel Marketing",
-                                    "Die studierenden sollen tolle dinge lernen",
-                                    "kein",
-                                    "Grundgesetz, Bürgerliches Gesetzbuch",
-                                    "schrP 90",
-                                    "Selbstbeschriebens Blatt",
-                                    "Beamer, Tafel",
-                                    "WS"
-                            ),
-                            new ModulhandbuchFach(
-                                    "Fach2",
-                                    "Seeeebi",
-                                    "Torsten Stapel",
-                                    3,
-                                    "SÜ, Ü",
-                                    5,
-                                    4,
-                                    45,
-                                    105,
-                                    "deutsch",
-                                    "Gaaanz viel Marketing",
-                                    "Die studierenden sollen tolle dinge lernen",
-                                    "kein",
-                                    "Grundgesetz, Bürgerliches Gesetzbuch",
-                                    "schrP 90",
-                                    "Selbstbeschriebens Blatt",
-                                    "Beamer, Tafel",
-                                    "WS"
-                            ),
-                            new ModulhandbuchFach(
-                                    "Fach3",
-                                    "Lage",
-                                    "Torsten Stapel",
-                                    3,
-                                    "SÜ, Ü",
-                                    5,
-                                    4,
-                                    45,
-                                    105,
-                                    "deutsch",
-                                    "Gaaanz viel Marketing",
-                                    "Die studierenden sollen tolle dinge lernen",
-                                    "kein",
-                                    "Grundgesetz, Bürgerliches Gesetzbuch",
-                                    "schrP 90",
-                                    "Selbstbeschriebens Blatt",
-                                    "Beamer, Tafel",
-                                    "WS"
-                            )
-                            )
-                    )
-            );*/
-
     public void initialize(URL location, ResourceBundle resources) {
         if((SchreiberLeser.getNutzerdaten().getStudiengang() == null) || (SchreiberLeser.getNutzerdaten().getStudiensemester() == null)) {
             Label fehlendeInformation = new Label("Leider hast Du in den Einstellungen keinen Studiengang definiert. Bitte definiere Deinen Studiengang!");
@@ -117,76 +27,71 @@ public class StudiengangViewController implements Initializable {
             fehlendeInformation.getStyleClass().add("warnhinweis");
             vbContent.getChildren().add(fehlendeInformation);
         } else {
-            studiengangTitel.setText("Studiengang: " + SchreiberLeser.getNutzerdaten().getStudiengang().getName() + " (" + SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel() + ")");
+            studiengangTitel.setText("Studiengang: " + SchreiberLeser.getNutzerdaten().getStudiengang().getName() + " (" + SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel() + ", " + SchreiberLeser.getNutzerdaten().getStudiensemester().getName() + ")");
             studiengangTitel.setWrapText(true);
-
-            // Erstelle GridPane mit allgemeinen Infos
-            GridPane gpInfo = new GridPane();
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setMinWidth(250);
-            gpInfo.getColumnConstraints().addAll(columnConstraints, columnConstraints);
-            gpInfo.add(new Label("Studiengangleiter:"), 0, 0);
-            gpInfo.add(new Label("NEIN"), 1, 0);
-            gpInfo.add(new Label("Studiengangtyp:"), 0, 1);
-            gpInfo.add(new Label("NEIN"), 1, 1);
-            gpInfo.add(new Label("Studien- & Prüfungsordnung:"), 0, 2);
-            vbContent.getChildren().add(gpInfo);
-
-            Hyperlink spoLink = new Hyperlink("Link zur SPO");
-            spoLink.setOnAction(event -> Main.oeffneLinkInBrowser("NEIN"));
-            gpInfo.add(spoLink, 1, 2);
 
             // Erstelle Accordion mit Fächern
             Accordion contentAccordion = new Accordion();
             contentAccordion.setPrefWidth(500);
             vbContent.getChildren().add(contentAccordion);
 
-
             SchreiberLeser.getStudiengangInformationen().getModulhandbuch().forEach((fach) -> {
-                VBox vB = new VBox();
-                vB.setSpacing(10);
-                TitledPane tP = new TitledPane(fach.getFachName(), vB);
+                GridPane gpFachInfos = new GridPane();
+                gpFachInfos.setVgap(5);
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setMinWidth(250);
+                gpFachInfos.getColumnConstraints().addAll(columnConstraints, columnConstraints);
+
+                TitledPane tP = new TitledPane(fach.getFachName(), gpFachInfos);
                 contentAccordion.getPanes().add(tP);
 
-                ArrayList<Label> aL = new ArrayList<>();
-                VBox vbGericht = new VBox();
-                aL.add(new Label("Dozent: " + fach.getFachDozent()));
-                aL.add(new Label("Zweitprüfer: " + fach.getFachZweitPruefer()));
-                aL.add(new Label("Studienjahr: " + fach.getFachStudienjahr()));
-                aL.add(new Label("Art: " + fach.getFachArt()));
-                aL.add(new Label("ECTS: " + fach.getFachECTS()));
-                aL.add(new Label("SWS: " + fach.getFachSWS()));
-                aL.add(new Label("Präsenzzeit: " + fach.getFachPraesenzZeit()));
-                aL.add(new Label("Prüfungsvorbereitung: " + fach.getFachPruefungsVorbereitung()));
-                aL.add(new Label("Sprache: " + fach.getFachSprache()));
-                aL.add(new Label("Lehrinhalte: " + fach.getFachLehrinhalte()));
-                aL.add(new Label("Lernziel: " + fach.getFachLernziel()));
-                aL.add(new Label("Voraussetzung: " + fach.getFachVoraussetzung()));
-                aL.add(new Label("Literaturliste: " + fach.getFachLiteraturliste()));
-                aL.add(new Label("Prüfungsdurchführung: " + fach.getFachPruefungsdurchfuehrung()));
-                aL.add(new Label("Hilfsmittel: " + fach.getFachHilfsmittel()));
-                aL.add(new Label("Medienformen: " + fach.getFachMedienformen()));
-                aL.add(new Label("Häufigkeit: " + fach.getFachHaeufigkeit()));
-                aL.forEach((lbl) -> lbl.setWrapText(true));
+                ObservableList<Label> alBezeichnung = FXCollections.observableArrayList(List.of(
+                        new Label("Dozent: "),
+                        new Label("Zweitprüfer: "),
+                        new Label("Studienjahr: "),
+                        new Label("Art: "),
+                        new Label("ECTS: "),
+                        new Label("SWS: "),
+                        new Label("Präsenzzeit: "),
+                        new Label("Prüfungsvorbereitung: "),
+                        new Label("Sprache: "),
+                        new Label("Lehrinhalte: "),
+                        new Label("Lernziel: "),
+                        new Label("Voraussetzung: "),
+                        new Label("Literaturliste: "),
+                        new Label("Prüfungsdurchführung: "),
+                        new Label("Hilfsmittel: "),
+                        new Label("Medienformen: "),
+                        new Label("Häufigkeit: ")
+                ));
 
-                ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
-                vbGericht.getChildren().addAll(oaL);
-                vB.getChildren().add(vbGericht);
+                ObservableList<Label> alInfo = FXCollections.observableArrayList(List.of(
+                        new Label(fach.getFachDozent()),
+                        new Label(fach.getFachZweitPruefer()),
+                        new Label(String.valueOf(fach.getFachStudienjahr())),
+                        new Label(fach.getFachArt()),
+                        new Label(String.valueOf(fach.getFachECTS())),
+                        new Label(String.valueOf(fach.getFachSWS())),
+                        new Label(String.valueOf(fach.getFachPraesenzZeit())),
+                        new Label(String.valueOf(fach.getFachPruefungsVorbereitung())),
+                        new Label(fach.getFachSprache()),
+                        new Label(fach.getFachLehrinhalte()),
+                        new Label(fach.getFachLernziel()),
+                        new Label(fach.getFachVoraussetzung()),
+                        new Label(fach.getFachLiteraturliste()),
+                        new Label(fach.getFachPruefungsdurchfuehrung()),
+                        new Label(fach.getFachHilfsmittel()),
+                        new Label(fach.getFachMedienformen()),
+                        new Label(fach.getFachHaeufigkeit())
+                ));
+
+                for(int i=0; i<alBezeichnung.size(); i++) {
+                    alBezeichnung.get(i).setWrapText(true);
+                    alInfo.get(i).setWrapText(true);
+                    gpFachInfos.add(alBezeichnung.get(i), 0, i);
+                    gpFachInfos.add(alInfo.get(i), 1, i);
+                }
             });
-
-            Button btn = new Button();
-            btn.getStyleClass().add("icon-button");
-            btn.setPickOnBounds(true);
-
-            Region icon = new Region();
-            icon.getStyleClass().add("icon");
-            btn.setGraphic(icon);
-
-            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            btn.getStyleClass().add("icon-menu-button");
-
-            vbContent.getChildren().add(btn);
-
         }
     }
 }
