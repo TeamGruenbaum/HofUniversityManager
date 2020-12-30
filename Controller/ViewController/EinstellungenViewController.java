@@ -79,7 +79,7 @@ public class EinstellungenViewController implements Initializable
                 .otherwise("Studiensemester wählen"));
         cbSemester.setConverter(erzeugeStringConverterStudiensemester());
         cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang()));
-        if(!(SchreiberLeser.getNutzerdaten().getStudiensemester().getName().equals(""))) {
+        if(!(SchreiberLeser.getNutzerdaten().getStudiensemester() == null)) {
             cbSemester.setValue(SchreiberLeser.getNutzerdaten().getStudiensemester());
         }
         cbSemester.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

@@ -5,6 +5,7 @@ import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.NutzerdatenModel.Thema;
+import Model.OberflaechenModel.Blende;
 import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 import Model.NutzerdatenModel.Anwendung;
@@ -13,6 +14,8 @@ import javafx.animation.FadeTransition;
 
 import Model.NutzerdatenModel.Nutzerdaten;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -69,6 +72,7 @@ public class GrundViewController implements Initializable {
     private boolean mensaplanEinmalHeruntergeladen, studiengangEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
 
     private static WebView uglyWebView;
+    private static Button uglyMenuHauptButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -133,12 +137,7 @@ public class GrundViewController implements Initializable {
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-            //Region icon = new Region();
-            //icon.getStyleClass().add("icon");
-
-            //button.setGraphic(icon);
             button.setGraphic(imageView);
-            //button.getStyleClass().add("icon-button");
             button.getStyleClass().add("icon-menu-button");
 
             hoverIconsEffect(button, imageView);
@@ -152,33 +151,25 @@ public class GrundViewController implements Initializable {
         AnchorPane.setRightAnchor(gridPane, 10.0);
         anchorPane.getChildren().add(gridPane);
         anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
-            // fadeTransitionStandard(anchorPane, 300, false); // geht nicht, liegt am remove, das wohl zu schnell geht... ANSCHAUEN
-            stackPane.getChildren().remove(anchorPane);
+            hauptmenueSchließen();
         });
 
         oeffneScene();
 
         uglyWebView=webView;
+        uglyMenuHauptButton=menuHauptButton;
     }
 
     @FXML
     public void menuOeffnen()
     {
-        fadeTransitionStandard(anchorPane, 300, true);
+        fadeTransitionStandard(anchorPane, 300, Blende.EINBLENDEN);
         stackPane.getChildren().add(anchorPane);
     }
 
     public static void setThema(Thema thema)
     {
-        gridPane.getChildren().forEach((obj) -> {
-            ColorAdjust farbwechsel = new ColorAdjust();
-            farbwechsel.setBrightness((thema == Thema.HELL)?0:1);
-            obj.setEffect(farbwechsel);
-        });
-
-        //ColorAdjust aufhellen = new ColorAdjust();
-        //aufhellen.setBrightness((thema == Thema.HELL)?0:1);
-        //menuHauptButton.setEffect(aufhellen);
+        ColorAdjust farbwechsel = new ColorAdjust();
 
         if(thema == Thema.DUNKEL) {
             Main.getRoot().setStyle("-menubar-color: #404040;" +
@@ -187,7 +178,7 @@ public class GrundViewController implements Initializable {
                     "-accent-color: #45cbff;" +
                     "-warn-color: #691c1c;" +
                     "-menubar-text-color: white");
-            //System.out.println("Übergabe, dass nun auf Darkmode geschaltet werden soll");
+            farbwechsel.setBrightness(1);
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
                     "-font-color: #262626;" +
@@ -195,9 +186,14 @@ public class GrundViewController implements Initializable {
                     "-accent-color: #0072a0;" +
                     "-warn-color: #8a2828;" +
                     "-menubar-text-color: black");
-
-            //System.out.println("Übergabe, dass auf LightMode geschaltet werden soll");
+            farbwechsel.setBrightness(0);
         }
+
+        gridPane.getChildren().forEach((obj) -> {
+            obj.setEffect(farbwechsel);
+        });
+
+        getUglyMenuHauptButton().setEffect(farbwechsel);
     }
 
     //Hilfsmethoden und Hilfsklasse allgemeiner Art
@@ -323,7 +319,11 @@ public class GrundViewController implements Initializable {
 
     private void hauptmenueSchließen()
     {
-        stackPane.getChildren().remove(anchorPane);
+        Timeline ablauf = new Timeline(
+                new KeyFrame(Duration.ZERO, event -> fadeTransitionStandard(anchorPane, 300, Blende.AUSBLENDEN)),
+                new KeyFrame(Duration.millis(300), event -> stackPane.getChildren().remove(anchorPane))
+        );
+        ablauf.play();
     }
 
     private void ladeSceneMitScrollPane()
@@ -335,7 +335,6 @@ public class GrundViewController implements Initializable {
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
-            //borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.getCenter().setViewOrder(0);
             hauptmenueSchließen();
         }
@@ -373,9 +372,9 @@ public class GrundViewController implements Initializable {
     }
 
     //Hilfsmethoden für visuelle Effekte
-    private void fadeTransitionStandard(Node node, int dauer, Boolean io) {
+    private void fadeTransitionStandard(Node node, int dauer, Blende blende) {
         FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
-        if(io)
+        if(blende == Blende.EINBLENDEN)
         {
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
@@ -390,24 +389,20 @@ public class GrundViewController implements Initializable {
 
     private void hoverIconsEffect(Node button, ImageView imageView)
     {
-        Thema aktuellesThema = SchreiberLeser.getNutzerdaten().getAktuellesThema();
+        FadeTransition ftHoverEnter = new FadeTransition(Duration.millis(180), imageView);
+        ftHoverEnter.setFromValue(1.0);
+        ftHoverEnter.setToValue(0.7);
 
-        button.setOnMouseMoved((MouseEvent) -> {
-            ColorAdjust aufhellen = new ColorAdjust();
-            aufhellen.setBrightness(0.3);
+        FadeTransition ftHoverExit = new FadeTransition(Duration.millis(180), imageView);
+        ftHoverExit.setFromValue(0.7);
+        ftHoverExit.setToValue(1.0);
 
-            imageView.setEffect(aufhellen);
-            imageView.setCache(true);
-            imageView.setCacheHint(CacheHint.SPEED);
+        button.setOnMouseEntered((MouseEvent) -> {
+            ftHoverEnter.play();
         });
 
         button.setOnMouseExited((MouseEvent) -> {
-            ColorAdjust abdunkeln = new ColorAdjust();
-            abdunkeln.setBrightness(-0.3);
-
-            imageView.setEffect(abdunkeln);
-            imageView.setCache(true);
-            imageView.setCacheHint(CacheHint.SPEED);
+            ftHoverExit.play();
         });
     }
 
@@ -420,5 +415,10 @@ public class GrundViewController implements Initializable {
     public static WebView getUglyWebview()
     {
         return uglyWebView;
+    }
+
+    public static Button getUglyMenuHauptButton()
+    {
+        return uglyMenuHauptButton;
     }
 }
