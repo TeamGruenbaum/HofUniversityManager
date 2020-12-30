@@ -1,12 +1,16 @@
 package Controller.ViewController;
 
+import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Speicher.SchreiberLeser;
 import Model.Datum;
 import Model.NutzerdatenModel.*;
 import Model.Tag;
 import Model.Uhrzeit;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,87 +20,266 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
+import javax.swing.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class StundenplanViewController implements Initializable {
+import static Model.Tag.*;
 
-
-    ObservableList<Doppelstunde> MontagStunden, DienstagStunden, MittwochStunden, DonnerstagStunden, FreitagStunden;
-
-    Nutzerdaten nutzer = SchreiberLeser.getNutzerdaten();
-
-    ArrayList<FachDatensatz> fachdaten;
+public class StundenplanViewController implements Initializable
+{
+    ObservableList<Doppelstunde> montagObservableList, dienstagObservableList, mittwochObservableList, donnerstagObservableList, freitagObservableList;
 
     @FXML
-    TableColumn<GridPane, GridPane> montagCol;
+    private TableView<Doppelstunde> montagTableView;
 
     @FXML
-    TableColumn<GridPane, GridPane> dienstagCol;
+    private TableColumn<Doppelstunde, String> montagTableColumn;
+
 
     @FXML
-    TableColumn<GridPane, GridPane> mittwochCol;
+    private TableView<Doppelstunde> dienstagTableView;
 
     @FXML
-    TableColumn<GridPane, GridPane> donnerstagCol;
+    public TableColumn<Doppelstunde, String> dienstagTableColumn;
+
 
     @FXML
-    TableColumn<GridPane, GridPane> freitagCol;
+    private TableView<Doppelstunde> mittwochTableView;
+
+    @FXML
+    private TableColumn<Doppelstunde, String> mittwochTableColumn;
+
+
+    @FXML
+    private TableView<Doppelstunde> donnerstagTableView;
+
+    @FXML
+    private TableColumn<Doppelstunde, String> donnerstagTableColumn;
+
+
+    @FXML
+    private TableView<Doppelstunde> freitagTableView;
+
+    @FXML
+    private TableColumn<Doppelstunde, String> freitagTableColumn;
+
 
     @FXML
     Accordion faecherSelect;
-
     @FXML
-    TableColumn<Aufgabe, Datum> datumCol;
-
+    TableColumn<Aufgabe, Datum> datumTableColumn;
     @FXML
-    TableColumn<Aufgabe, Uhrzeit> uhrzeitCol;
-
+    TableColumn<Aufgabe, Uhrzeit> uhrzeitTableColumn;
     @FXML
     TableColumn<Aufgabe, String> inhaltCol;
-
     @FXML
     TableColumn<Notiz, String> notizenCol;
-
     @FXML
     TableColumn<Note, String> artCol;
-
     @FXML
     TableColumn<Note, Integer> notenCol;
 
-    @FXML
-    Button fachHinzu;
-
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        ArrayList<Doppelstunde> testDoppelstunden = new ArrayList<>(List.of(
+                new Doppelstunde("WA", "Trapp","FB009", DIENSTAG, new Uhrzeit(9,0,0),new Uhrzeit(9,45,0)),
+                new Doppelstunde("OOP1", "Ashauer","FB009", DIENSTAG, new Uhrzeit(8,0,0),new Uhrzeit(9,45,0)),
+                new Doppelstunde("DM", "Schaller","FB009", Tag.MITTWOCH, new Uhrzeit(9,0,0),new Uhrzeit(9,45,0))
+        ));
 
-        fachdaten = new ArrayList<>();
-        fachdaten.add(new FachDatensatz("Margeding", new ArrayList<Aufgabe>(List.of(new Aufgabe("Hausi", new Datum(5, 16, 200)))), new ArrayList<Notiz>(), new ArrayList<Note>()));
+        montagObservableList=FXCollections.observableArrayList();
+        dienstagObservableList=FXCollections.observableArrayList();
+        mittwochObservableList=FXCollections.observableArrayList();
+        donnerstagObservableList=FXCollections.observableArrayList();
+        freitagObservableList=FXCollections.observableArrayList();
 
-        stundenRefresh(nutzer);
+        stundenplanAktualisieren(testDoppelstunden);
+
+        Callback<TableColumn.CellDataFeatures<Doppelstunde,String>,ObservableValue<String>> cellValueFactory = cellData ->
+        {
+            return new SimpleStringProperty(
+                    cellData.getValue().getBeginn()+"-"+cellData.getValue().getEnde()+", "+cellData.getValue().getRaum()+"\n"+
+                            cellData.getValue().getName()+"\n"+
+                            cellData.getValue().getDozent());
+        };
+
+
+        montagTableView.setItems(montagObservableList);
+        montagTableColumn.setCellValueFactory(cellValueFactory);
+
+        dienstagTableView.setItems(dienstagObservableList);
+        dienstagTableColumn.setCellValueFactory(cellValueFactory);
+
+        mittwochTableView.setItems(mittwochObservableList);
+        mittwochTableColumn.setCellValueFactory(cellValueFactory);
+
+        donnerstagTableView.setItems(donnerstagObservableList);
+        donnerstagTableColumn.setCellValueFactory(cellValueFactory);
+
+        freitagTableView.setItems(freitagObservableList);
+        freitagTableColumn.setCellValueFactory(cellValueFactory);
 
 
 
-        nutzer.getDoppelstunden().forEach(a ->{
+
+        //Datenabrufer.stundenplanAbrufen();
+
+        //SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(System.out::println);
+
+        /*fachdaten = new ArrayList<>();
+        fachdaten.add(new FachDatensatz("Margeding", new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>()));*/
+
+        /*nutzer.getDoppelstunden().forEach(a ->{
             if(!fachdaten.contains(a.getFachDatensatz())){
                 fachdaten.add(a.getFachDatensatz());
             }
         });
 
-        fachdaten.forEach(this::erzeugeAkkordion);
-
-        stundenPlanErzeugen();
-
-
+        fachdaten.forEach(this::erzeugeAkkordion);*/
     }
 
-    private void stundenPlanErzeugen() {
+    private void stundenplanAktualisieren(ArrayList<Doppelstunde> alleStunden) {
+        //ArrayList<Doppelstunde> alleStunden = SchreiberLeser.getNutzerdaten().getDoppelstunden();
 
+        Comparator<Doppelstunde> doppelstundeComparator=new Comparator<Doppelstunde>()
+        {
+            @Override
+            public int compare(Doppelstunde o1, Doppelstunde o2)
+            {
+                return o1.getBeginn().compareTo(o2.getBeginn());
+            }
+        };
+
+        alleStunden.forEach(item -> {
+            switch(item.getTag())
+            {
+                case MONTAG:
+                {
+                    montagObservableList.add(item);
+                    montagObservableList.sort(doppelstundeComparator);
+                } break;
+                case DIENSTAG:
+                {
+                    dienstagObservableList.add(item);
+                    dienstagObservableList.sort(doppelstundeComparator);
+                } break;
+                case MITTWOCH:
+                {
+                    mittwochObservableList.add(item);
+                    mittwochObservableList.sort(doppelstundeComparator);
+                } break;
+                case DONNERSTAG:
+                {
+                    donnerstagObservableList.add(item);
+                    donnerstagObservableList.sort(doppelstundeComparator);
+                } break;
+                case FREITAG:
+                {
+                    freitagObservableList.add(item);
+                    freitagObservableList.sort(doppelstundeComparator);
+                } break;
+            }
+        });
     }
+
+    @FXML
+    public void doppelstundeHinzufuegen(ActionEvent actionEvent)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(8);
+
+        //Name
+        gridPane.add(new Label("Name"), 0, 0);
+        TextField nameTextField = new TextField();
+        gridPane.add(nameTextField, 1, 0);
+
+        //Dozent
+        gridPane.add(new Label("Dozent"), 0, 1);
+        TextField dozentTextField = new TextField();
+        gridPane.add(dozentTextField, 1, 1);
+
+        //Tag
+        gridPane.add(new Label("Tag"), 0, 5);
+        ChoiceBox<Tag> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll(Tag.MONTAG, DIENSTAG, Tag.MITTWOCH, Tag.DONNERSTAG, Tag.FREITAG);
+        gridPane.add(choiceBox, 1, 3);
+
+        //Beginnzeit
+        Spinner<Integer> beginnStundeSpinner = new Spinner<>();
+        beginnStundeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        beginnStundeSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+        beginnStundeSpinner.setMaxWidth(70);
+
+        Spinner<Integer> beginnMinuteSpinner = new Spinner<>();
+        beginnMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, Calendar.getInstance().get(Calendar.MINUTE)));
+        beginnMinuteSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+        beginnMinuteSpinner.setMaxWidth(70);
+
+        HBox beginnHBox = new HBox();
+        beginnHBox.getChildren().addAll(beginnStundeSpinner, new Label(" : "),beginnMinuteSpinner);
+
+        gridPane.add(new Label("Beginn:"), 0, 4);
+        gridPane.add(beginnHBox, 1, 4);
+
+        //Ende Zeit
+        Spinner<Integer> endeStundeSpinner = new Spinner<>();
+        endeStundeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        endeStundeSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+        endeStundeSpinner.setMaxWidth(70);
+
+        Spinner<Integer> endeMinuteSpinner = new Spinner<>();
+        endeMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, Calendar.getInstance().get(Calendar.MINUTE)));
+        endeMinuteSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+        endeMinuteSpinner.setMaxWidth(70);
+
+        HBox endeHBox = new HBox();
+        beginnHBox.getChildren().addAll(endeStundeSpinner, new Label(" : "),endeMinuteSpinner);
+
+        gridPane.add(new Label ("Ende:"), 0, 5);
+        gridPane.add(endeHBox, 1, 5);
+
+        //Raum
+        gridPane.add(new Label("Raum:"), 0, 2);
+        TextField raumTextField = new TextField();
+        gridPane.add(raumTextField, 1, 6);
+
+
+
+
+
+
+        Button button = new Button("Speichern");
+        /*button.setOnAction(btn ->
+        {
+            if (!sekundenA.getText().matches("\\d*") || !minutenA.getText().matches("\\d*") || !stundenA.getText().matches("\\d*") || !sekundenB.getText().matches("\\d*") || !minutenB.getText().matches("\\d*") || !stundenB.getText().matches("\\d*")) {
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION, "Bitte nur numerische Zahlen als Zeiten!");
+                alert2.showAndWait();
+            }else {
+
+                Doppelstunde neueStunde = new Doppelstunde(name.getText(), dozent.getText(), raum.getText(), tag.getValue(), new Uhrzeit(Integer.parseInt(stundenA.getText()), Integer.parseInt(minutenA.getText()), Integer.parseInt(sekundenA.getText())), new Uhrzeit(Integer.parseInt(stundenB.getText()), Integer.parseInt(minutenB.getText()), Integer.parseInt(sekundenB.getText())));
+
+                nutzerdaten.getDoppelstunden().add(neueStunde);
+
+                doppelstundeZuordnen(neueStunde, neueStunde.getTag());
+
+            }
+        });*/
+        gridPane.add(button, 1, 6);
+
+        DialogPane dialogPane = new DialogPane();
+        dialogPane.setContent(gridPane);
+
+        Dialog dialog = new Dialog();
+        dialog.setDialogPane(dialogPane);
+        dialog.showAndWait();
+    }
+
 
     private void erzeugeAkkordion(FachDatensatz a) {
         ObservableList<Note> notenList = FXCollections.observableArrayList();
@@ -163,9 +346,9 @@ public class StundenplanViewController implements Initializable {
             newNote(a, notenTabelle);
         });
 
-        datumCol.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        datumTableColumn.setCellValueFactory(new PropertyValueFactory<>("datum"));
         inhaltCol.setCellValueFactory(new PropertyValueFactory<>("inhalt"));
-        uhrzeitCol.setCellValueFactory(new PropertyValueFactory<>("zeit"));
+        uhrzeitTableColumn.setCellValueFactory(new PropertyValueFactory<>("zeit"));
 
         notizenCol.setCellValueFactory(new PropertyValueFactory<>("ueberschrift"));
 
@@ -381,6 +564,8 @@ public class StundenplanViewController implements Initializable {
     }
 
     private void newAufgabe(FachDatensatz a, TableView<Aufgabe> aufgabenTabelle) {
+        System.out.println("Hesasdal");
+
         DialogPane pane = new DialogPane();
         GridPane grid = new GridPane();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -442,138 +627,4 @@ public class StundenplanViewController implements Initializable {
 
         alert.showAndWait();
     }
-
-    private void stundenRefresh(Nutzerdaten nutzer) {
-        ArrayList<Doppelstunde> alleStunden = nutzer.getDoppelstunden();
-        alleStunden.forEach(a -> {
-            fachEinfuegen(a, a.getTag());
-        });
-    }
-
-    private void fachEinfuegen(Doppelstunde doppelstunde, Tag tag){
-        boolean gefunden = false;
-        int index = 0;
-        ObservableList<Doppelstunde> list;
-        switch(tag){
-            case MONTAG: list = MontagStunden; break;
-            case DIENSTAG: list = DienstagStunden; break;
-            case MITTWOCH: list = MittwochStunden; break;
-            case DONNERSTAG: list = DonnerstagStunden; break;
-            case FREITAG: list = FreitagStunden; break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + tag);
-        }
-
-        while(!gefunden){
-            if(list.get(index) == null){
-                list.add(doppelstunde);
-            }else if(doppelstunde.getBeginn().compareTo(list.get(index).getBeginn()) > 0) {
-                index++;
-            }else{
-                list.add(index, doppelstunde);
-                gefunden = true;
-            }
-        }
-    }
-
-    private void neueDoppelstunde(Nutzerdaten nutzerdaten){
-
-
-        DialogPane pane = new DialogPane();
-        GridPane grid = new GridPane();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-
-
-        HBox uhrzeitA = new HBox();
-
-        TextField stundenA = new TextField();
-        stundenA.setPrefColumnCount(2);
-        TextField minutenA = new TextField();
-        minutenA.setPrefColumnCount(2);
-        TextField sekundenA = new TextField();
-        sekundenA.setPrefColumnCount(2);
-
-        uhrzeitA.getChildren().addAll(stundenA, minutenA, sekundenA);
-
-        HBox uhrzeitB = new HBox();
-
-        TextField stundenB = new TextField();
-        stundenB.setPrefColumnCount(2);
-        TextField minutenB = new TextField();
-        minutenB.setPrefColumnCount(2);
-        TextField sekundenB = new TextField();
-        sekundenB.setPrefColumnCount(2);
-
-        uhrzeitB.getChildren().addAll(stundenB, minutenB, sekundenB);
-
-        TextField name = new TextField();
-        TextField dozent = new TextField();
-        TextField raum = new TextField();
-
-        //TODO - TAG Einfügen
-        ChoiceBox<Tag> tag = new ChoiceBox<>();
-        tag.getItems().addAll(Tag.MONTAG, Tag.DIENSTAG, Tag.MITTWOCH, Tag.DONNERSTAG, Tag.FREITAG);
-
-        Label label1 = new Label("Name");
-        Label label2 = new Label("Dozent");
-        Label label3 = new Label("Raum:");
-        Label label4 = new Label("Beginn:");
-        Label label5 = new Label ("Ende:");
-        Label label6 = new Label("Tag");
-
-        Button button1 = new Button("Speichern");
-        button1.setOnAction(btn ->{
-            if (!sekundenA.getText().matches("\\d*") || !minutenA.getText().matches("\\d*") || !stundenA.getText().matches("\\d*") || !sekundenB.getText().matches("\\d*") || !minutenB.getText().matches("\\d*") || !stundenB.getText().matches("\\d*")) {
-                Alert alert2 = new Alert(Alert.AlertType.INFORMATION, "Bitte nur numerische Zahlen als Zeiten!");
-                alert2.showAndWait();
-            }else {
-
-                Doppelstunde neueStunde = new Doppelstunde(name.getText(), dozent.getText(), raum.getText(), tag.getValue(), new Uhrzeit(Integer.parseInt(stundenA.getText()), Integer.parseInt(minutenA.getText()), Integer.parseInt(sekundenA.getText())), new Uhrzeit(Integer.parseInt(stundenB.getText()), Integer.parseInt(minutenB.getText()), Integer.parseInt(sekundenB.getText())));
-
-                nutzerdaten.getDoppelstunden().add(neueStunde);
-
-                fachEinfuegen(neueStunde, neueStunde.getTag());
-
-            }
-        });
-
-        Button button2 = new Button("Zurück");
-        button2.setOnAction(btn ->{
-            alert.close();
-        });
-
-        grid.setHgap(10);
-        grid.setVgap(8);
-
-        grid.add(label1, 0, 0);
-        grid.add(label2, 0, 1);
-        grid.add(label3, 0, 2);
-        grid.add(label4, 0, 3);
-        grid.add(label5, 0, 4);
-        grid.add(label6, 0, 5);
-
-
-        grid.add(name, 1, 0);
-        grid.add(dozent, 1, 1);
-        grid.add(raum, 1, 2);
-        grid.add(uhrzeitA, 1, 3);
-        grid.add(uhrzeitB, 1, 4);
-        grid.add(tag, 1, 5);
-
-
-        grid.add(button1, 0, 6);
-        grid.add(button2, 1, 6);
-
-
-        pane.setContent(grid);
-
-        alert.setDialogPane(pane);
-
-        alert.showAndWait();
-
-
-    }
-
-
 }

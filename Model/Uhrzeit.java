@@ -47,4 +47,17 @@ public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
         }
         return (stunde - comparingTime.stunde);
     }
+
+    @Override
+    public String toString()
+    {
+        //String tempStunde,
+
+        if(stunde<10)
+        {
+
+        }
+
+        return stunde+":"+minute;
+    }
 }

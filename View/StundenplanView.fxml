@@ -34,41 +34,41 @@
                             <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
                           </rowConstraints>
                            <children>
-                              <TableView GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                              <TableView fx:id="montagTableView" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="montagCol" prefWidth="-1.0" sortable="false" text="Montag" />
+                                  <TableColumn fx:id="montagTableColumn" prefWidth="-1.0" sortable="false" text="Montag" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <TableView GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                              <TableView fx:id="dienstagTableView" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="dienstagCol" prefWidth="-1.0" text="Dienstag" />
+                                  <TableColumn fx:id="dienstagTableColumn" prefWidth="-1.0" text="Dienstag" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <TableView GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                              <TableView fx:id="mittwochTableView" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="mittwochCol" prefWidth="-1.0" text="Mittwoch" />
+                                  <TableColumn fx:id="mittwochTableColumn" prefWidth="-1.0" text="Mittwoch" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <TableView GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                              <TableView fx:id="donnerstagTableView" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="donnerstagCol" prefWidth="-1.0" text="Donnerstag" />
+                                  <TableColumn fx:id="donnerstagTableColumn" prefWidth="-1.0" text="Donnerstag" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <TableView GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                              <TableView fx:id="freitagTableView" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="freitagCol" prefWidth="-1.0" text="Freitag" />
+                                  <TableColumn fx:id="freitagTableColumn" prefWidth="-1.0" text="Freitag" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -81,7 +81,7 @@
                               <Button mnemonicParsing="false" text="Refresh" />
                               <AnchorPane prefHeight="25.0" prefWidth="543.0">
                                  <children>
-                                    <Button fx:id="fachHinzu" alignment="CENTER" mnemonicParsing="false" text="Fach hinzufügen" AnchorPane.rightAnchor="1.0" />
+                                    <Button onAction="#doppelstundeHinzufuegen" alignment="CENTER" mnemonicParsing="false" text="Fach hinzufügen" AnchorPane.rightAnchor="1.0" />
                                  </children>
                               </AnchorPane>
                            </children></HBox>
