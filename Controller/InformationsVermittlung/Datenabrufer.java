@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Datenabrufer
@@ -34,11 +35,9 @@ public class Datenabrufer
 
     public static void studiengangAbrufen()
     {
-
-
         Platform.runLater(()->
         {
-            WebEngine webEngine= GrundViewController.getUglyWebview().getEngine();
+            WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
             webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
             {
@@ -61,34 +60,53 @@ public class Datenabrufer
 
                             Thread.sleep(((end-start)/1000000)/2);
 
+                            String semester;
+                            if((Calendar.getInstance().get(Calendar.MONTH)==2 && Calendar.getInstance().get(Calendar.DATE)>=15)
+                                    || (Calendar.getInstance().get(Calendar.MONTH)>=3 && Calendar.getInstance().get(Calendar.MONTH)<=7))
+                            {
+                                semester="SS "+Calendar.getInstance().get(Calendar.YEAR);
+                            }
+                            else
+                            {
+                                semester="WS "+Calendar.getInstance().get(Calendar.YEAR);
+                            }
+
                             Platform.runLater(() -> {
                                 webEngine.executeScript(
-                                        "document.getElementById('year_change').value='"+Calendar.getInstance().get(Calendar.YEAR)+"';" +
+                                        "document.getElementById('year_change').value='"+semester+"';" +
                                                 "document.getElementById('year_change').dispatchEvent(new Event('change'));");
                             });
+
+
 
                            Thread.sleep(((end-start)/1000000)/2);
 
                            Platform.runLater(() -> {
                                webEngine.executeScript(
-                                       "document.getElementById('sem_change').value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel()+"';"  +
+                                       "document.getElementById('sem_change').value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel().charAt(0)+"';"  +
                                                "document.getElementById('sem_change').dispatchEvent(new Event('change'));");
                            });
 
                            Thread.sleep(((end-start)/1000000)/2);
 
-                           Document document=_webengineZuJSoupDocument(webEngine);
-
-                           if(document.select("tbody").size()!=0)
+                           Platform.runLater(()->
                            {
-                               for(int i=0; i<document.select("tbody>tr").size(); i++)
-                               {
-                                   try
+                                Document dokument=_webengineZuJSoupDocument(webEngine);
+
+                                if(dokument.select("tbody").size()!=0)
+                                {
+                                   for(int i=0; i<dokument.select("tbody>tr").size(); i++)
                                    {
-                                       arrayList.add(Jsoup.connect(document.select("tbody>tr").get(i).select("a[href]").get(0).text()).get());
-                                   }catch(Exception ignored){}
-                               }
-                           }
+                                       try
+                                       {
+                                           arrayList.add(Jsoup.connect("https://www.hof-university.de"+dokument.select("tbody>tr").get(i).select("a").get(0).attr("href")).get());
+                                       }
+                                       catch(Exception ignored){
+                                           ignored.printStackTrace();
+                                       }
+                                   }
+                                }
+                            });
 
                            return null;
                         }
@@ -113,7 +131,7 @@ public class Datenabrufer
             }));
 
             start=System.nanoTime();
-            webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
+            webEngine.load("https://www.hof-university.de/studierende/info-service/modulhandbuecher.html");
         });
     }
 
@@ -245,8 +263,6 @@ public class Datenabrufer
                             {
                                laenge= Jsoup.connect("https://www.hof-university.de/studierende/info-service/stundenplaene.html").get().select("[name='tx_stundenplan_stundenplan[studiengang]']").get(0).childNodeSize();
                             }catch (Exception e){}
-
-                            System.out.println(laenge);
 
                             for(int i = 1; i<laenge; i++)
                             {

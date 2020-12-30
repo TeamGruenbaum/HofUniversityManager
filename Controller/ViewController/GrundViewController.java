@@ -40,6 +40,7 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static Model.NutzerdatenModel.Anwendung.*;
@@ -205,11 +206,33 @@ public class GrundViewController implements Initializable {
     {
         ort.setText(grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
 
+        ButtonType zuEinstellungenButtonType=new ButtonType("Zu den Einstellungen", ButtonBar.ButtonData.OK_DONE);
+        Alert alert=new Alert(Alert.AlertType.INFORMATION, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst", zuEinstellungenButtonType);
+        alert.initOwner(Main.getPrimaryStage());
+        alert.setTitle("Studiengang und -semester setzen");
+        alert.setOnCloseRequest(event ->
+        {
+            SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
+            ladeSceneMitScrollPane();
+        });
+
+
         switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
         {
             case STUNDENPLAN:
             {
-                ladeSceneMitScrollPane();
+                if(isStudiengangGesetzt())
+                {
+                    if(alert.showAndWait().orElse(ButtonType.CANCEL).getButtonData()==ButtonBar.ButtonData.OK_DONE)
+                    {
+                        SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
+                        ladeSceneMitScrollPane();
+                    }
+                }
+                else
+                {
+                    ladeSceneMitScrollPane();
+                }
             }break;
             case MENSAPLAN:
             {
@@ -248,8 +271,49 @@ public class GrundViewController implements Initializable {
             } break;
             case STUDIENGANG:
             {
-                Datenabrufer.studiengangAbrufen();
-                ladeSceneMitScrollPane();
+                if(isStudiengangGesetzt())
+                {
+                    if(alert.showAndWait().orElse(ButtonType.CANCEL).getButtonData()==ButtonBar.ButtonData.OK_DONE)
+                    {
+                        SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
+                        ladeSceneMitScrollPane();
+                    }
+                }
+                else
+                {
+                    ladeLadenScene();
+                    hauptmenueSchließen();
+
+                    if(treffpunkteEinmalHeruntergeladen)
+                    {
+                        ladeSceneMitScrollPane();
+                    }
+                    else
+                    {
+                        Task task = new Task<Void>()
+                        {
+                            @Override
+                            protected Void call() throws Exception
+                            {
+                                menuHauptButton.setDisable(true);
+                                Datenabrufer.studiengangAbrufen();
+                                return null;
+                            }
+                        };
+
+                        task.stateProperty().addListener(((observable, oldValue, newValue) ->
+                        {
+                            if (newValue == Worker.State.SUCCEEDED)
+                            {
+                                ladeSceneMitScrollPane();
+                                menuHauptButton.setDisable(false);
+                                studiengangEinmalHeruntergeladen = true;
+                            }
+                        }));
+
+                        new Thread(task).start();
+                    }
+                }
             }break;
             case MOODLE:
             {
@@ -319,6 +383,11 @@ public class GrundViewController implements Initializable {
                 ladeSceneMitScrollPane();
             }
         }
+    }
+
+    private boolean isStudiengangGesetzt()
+    {
+        return (SchreiberLeser.getNutzerdaten().getStudiengang()==null || SchreiberLeser.getNutzerdaten().getStudiensemester()==null);
     }
 
     private void hauptmenueSchließen()

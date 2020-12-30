@@ -41,6 +41,7 @@ public class Parser
         ArrayList<Document> faecherDokumente=studiengangDokumente.getFaecherDokumente();
         //Modulhandbuch parsen
         ArrayList<ModulhandbuchFach> faecher=new ArrayList<>();
+
         for(int i=0; i<faecherDokumente.size(); i++)
         {
             faecher.add(_getModulhandbuchFach(faecherDokumente.get(i)));
