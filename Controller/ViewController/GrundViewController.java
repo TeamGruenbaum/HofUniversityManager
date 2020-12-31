@@ -400,6 +400,8 @@ public class GrundViewController implements Initializable {
         {
             ScrollPane sp = new ScrollPane();
             sp.setPrefViewportHeight(300);
+            sp.setFitToHeight(true);
+            sp.setFitToWidth(true);
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
