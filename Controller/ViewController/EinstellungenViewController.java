@@ -81,7 +81,8 @@ public class EinstellungenViewController implements Initializable
                 .then("Bitte erst Studiengang wählen")
                 .otherwise("Studiensemester wählen"));
         cbSemester.setConverter(erzeugeStringConverterStudiensemester());
-        cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang()));
+        cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang())); // hier legt der Fehler, wenn man das aber ändert => Fehler bei 1. Anwendungsstart!
+        // cbSemester.setItems(FXCollections.observableList(SchreiberLeser.getNutzerdaten().getStudiengang().getStudiensemester())); // => Alternative
 
         if(SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
         {
