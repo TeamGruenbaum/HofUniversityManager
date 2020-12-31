@@ -122,8 +122,8 @@ public class QuicklinksViewController implements Initializable
             {
                 try
                 {
-                    webEngine.executeScript("document.getElementById('username').value='mmustermann'");
-                    webEngine.executeScript("document.getElementById('password').value=''");
+                    webEngine.executeScript("document.getElementById('username').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getName()+"'");
+                    webEngine.executeScript("document.getElementById('password').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort()+"'");
                     webEngine.executeScript("document.getElementsByName('_eventId_proceed')[0].click()");
                 }catch(Exception exception){}
                 ersterLoginVersuch=false;

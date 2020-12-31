@@ -24,6 +24,7 @@ public class Main extends Application
         if(SchreiberLeser.isErsterStart())
         {
             SchreiberLeser.alleZuruecksetzen();
+            SchreiberLeser.alleSpeichern();
         }
         else
         {

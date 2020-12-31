@@ -225,8 +225,7 @@ public class SchreiberLeser
             FileOutputStream fileOutputStream = new FileOutputStream(file, false);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            T transferred=objekt;
-            objectOutputStream.writeObject(transferred);
+            objectOutputStream.writeObject(objekt);
 
             objectOutputStream.close();
             fileOutputStream.close();

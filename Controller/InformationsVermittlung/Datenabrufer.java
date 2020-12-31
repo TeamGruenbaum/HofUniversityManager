@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Datenabrufer
@@ -64,9 +66,17 @@ public class Datenabrufer
 
                             Thread.sleep(((end-start)/1000000)/2);
 
+                            Pattern pattern=Pattern.compile("(.*)(#)([A-Z]{2}#\\d{4})"); //1a#SS#2020
+
                             Platform.runLater(() -> {
+                                Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel());
+                                matcher.matches();
+
+                                System.out.println(matcher.group(3).replace('#', ' '));
+
+
                                 webEngine.executeScript(
-                                        "document.getElementById('year_change').value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel().substring(2, 9).replace('#', ' ')+"';" +
+                                        "document.getElementById('year_change').value='"+matcher.group(3).replace('#', ' ')+"';" +
                                                 "document.getElementById('year_change').dispatchEvent(new Event('change'));");
                             });
 
@@ -74,9 +84,15 @@ public class Datenabrufer
 
                            Thread.sleep(((end-start)/1000000)/2);
 
-                           Platform.runLater(() -> {
+                           Platform.runLater(() ->
+                           {
+                               Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel());
+                               matcher.matches();
+
+                               System.out.println(matcher.group(1));
+
                                webEngine.executeScript(
-                                       "document.getElementById('sem_change').value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel().charAt(0)+"';"  +
+                                       "document.getElementById('sem_change').value='"+matcher.group(1)+"';"  +
                                                "document.getElementById('sem_change').dispatchEvent(new Event('change'));");
                            });
 
@@ -90,14 +106,24 @@ public class Datenabrufer
 
                                 if(dokument.select("tbody").size()!=0)
                                 {
+
+                                    System.out.println(dokument.select("tbody>tr").size());
+
                                    for(int i=0; i<dokument.select("tbody>tr").size(); i++)
                                    {
                                        try
                                        {
-                                           arrayList.add(Jsoup.connect("https://www.hof-university.de"+dokument.select("tbody>tr").get(i).select("a").get(0).attr("href")).get());
+                                           //System.out.println("NUMMER"+i+": https://www.hof-university.de"+dokument.select("tbody>tr").get(i).
+                                             //      select("a").get(0).attr("href"));
+
+                                           //TODO BWL 1a
+                                           arrayList.add(Jsoup.connect("https://www.hof-university.de"+dokument.select("tbody>tr").get(i).
+                                                   select("a").get(0).attr("href")).get());
                                        }
-                                       catch(Exception ignored){
-                                           ignored.printStackTrace();
+                                       catch(Exception ignored)
+                                       {
+                                           Platform.runLater(()->progressIndicator.setProgress(1));
+                                           break;
                                        }
 
 

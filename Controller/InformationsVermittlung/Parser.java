@@ -387,6 +387,7 @@ public class Parser
     {
         Pattern pattern=Pattern.compile("(^\\d{2}.\\d{2}.\\d{4}\\n)(\\d{2}:\\d{2}\\sUhr\\n)(.+)");
         Matcher matcher=pattern.matcher(termintext);
+        matcher.matches();
         Termin termin=null;
 
         if(matcher.matches())

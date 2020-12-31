@@ -4,6 +4,8 @@ package Controller.ViewController;
 import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
+import Model.DropdownModel.Studiengang;
+import Model.DropdownModel.Studiensemester;
 import Model.NutzerdatenModel.Thema;
 import Model.OberflaechenModel.Blende;
 import Model.OberflaechenModel.Menue;
@@ -71,6 +73,8 @@ public class GrundViewController implements Initializable {
     private WebView webView;
 
     private boolean mensaplanEinmalHeruntergeladen, studiengangEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
+    private Studiengang letzterStudiengang;
+    private Studiensemester letztesStudiensemester;
 
     private static WebView uglyWebView;
     private static Button uglyMenuHauptButton;
@@ -217,18 +221,7 @@ public class GrundViewController implements Initializable {
         {
             case STUNDENPLAN:
             {
-                if(isStudiengangGesetzt())
-                {
-                    if(alert.showAndWait().orElse(ButtonType.CANCEL).getButtonData()==ButtonBar.ButtonData.OK_DONE)
-                    {
-                        SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
-                        ladeSceneMitScrollPane();
-                    }
-                }
-                else
-                {
-                    ladeSceneMitScrollPane();
-                }
+                ladeSceneMitScrollPane();
             }break;
             case MENSAPLAN:
             {
@@ -269,23 +262,16 @@ public class GrundViewController implements Initializable {
             {
                 if(isStudiengangGesetzt())
                 {
-                    if(alert.showAndWait().orElse(ButtonType.CANCEL).getButtonData()==ButtonBar.ButtonData.OK_DONE)
-                    {
-                        SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
-                        ladeSceneMitScrollPane();
-                    }
-                }
-                else
-                {
                     ProgressIndicator progressIndicator=ladeLadenScene();
                     hauptmenueSchließen();
 
-                    if(treffpunkteEinmalHeruntergeladen)
+                    if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang() && letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
                     {
                         ladeSceneMitScrollPane();
                     }
                     else
                     {
+
                         Task task = new Task<Void>()
                         {
                             @Override
@@ -301,6 +287,9 @@ public class GrundViewController implements Initializable {
                         {
                             if (newValue.doubleValue() == 1)
                             {
+                                letzterStudiengang=SchreiberLeser.getNutzerdaten().getStudiengang();
+                                letztesStudiensemester=SchreiberLeser.getNutzerdaten().getStudiensemester();
+
                                 ladeSceneMitScrollPane();
                                 menuHauptButton.setDisable(false);
                                 studiengangEinmalHeruntergeladen = true;
@@ -308,6 +297,14 @@ public class GrundViewController implements Initializable {
                         }));
 
                         new Thread(task).start();
+                    }
+                }
+                else
+                {
+                    if(alert.showAndWait().orElse(ButtonType.CANCEL).getButtonData()==ButtonBar.ButtonData.OK_DONE)
+                    {
+                        SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
+                        ladeSceneMitScrollPane();
                     }
                 }
             }break;
@@ -383,7 +380,7 @@ public class GrundViewController implements Initializable {
 
     private boolean isStudiengangGesetzt()
     {
-        return (SchreiberLeser.getNutzerdaten().getStudiengang()==null || SchreiberLeser.getNutzerdaten().getStudiensemester()==null);
+        return (SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null);
     }
 
     private void hauptmenueSchließen()
