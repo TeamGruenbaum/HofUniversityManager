@@ -241,6 +241,8 @@ public class Datenabrufer
 
                             Thread.sleep(((end-start)/1000000)/2);
 
+                            System.out.println(1);
+
                             Platform.runLater(() -> {
                                 webEngine.executeScript(
                                         "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel()+"';"  +
@@ -248,6 +250,8 @@ public class Datenabrufer
                             });
 
                             Thread.sleep(((end-start)/1000000)/2);
+
+                            System.out.println(2);
 
                             return null;
                         }
@@ -257,7 +261,11 @@ public class Datenabrufer
                     {
                         if(newValue1== Worker.State.SUCCEEDED)
                         {
+                            System.out.println(22);
+
                             SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
+
+                            System.out.println(3);
                         }
                     }));
 

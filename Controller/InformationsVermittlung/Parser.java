@@ -278,6 +278,8 @@ public class Parser
     {
         ArrayList<Doppelstunde> doppelstunden=new ArrayList<Doppelstunde>();
 
+        System.out.println("Tabel"+stundenplanDokument.getElementsByTag("table").text());
+
         for(int i=0;i<stundenplanDokument.getElementsByTag("table").size();i++)
         {
             String string=stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().text();
@@ -286,6 +288,8 @@ public class Parser
             {
                 switch(string)
                 {
+                    //TODO Samstagsenum und konkrete Datum (Attribut in Doppelstunde) und Doppelstunden ohne Wochentag
+
                     case "Montag":_doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MONTAG, i); break;
                     case "Dienstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DIENSTAG, i); break;
                     case "Mittwoch": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MITTWOCH, i); break;
@@ -314,7 +318,7 @@ public class Parser
                             aktueller.getElementsByTag("td").get(3).text(),
                             aktueller.getElementsByTag("td").get(4).text(),
                             aktueller.getElementsByTag("td").get(6).text(),
-                            Tag.FREITAG,
+                            tag,
                             new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(3,5))),
                             new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)))
                     ));

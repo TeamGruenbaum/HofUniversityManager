@@ -99,7 +99,8 @@ public class StundenplanViewController implements Initializable
         donnerstagObservableList=FXCollections.observableArrayList();
         freitagObservableList=FXCollections.observableArrayList();
 
-        stundenplanAktualisieren(testDoppelstunden);
+        Datenabrufer.stundenplanAbrufen();
+        stundenplanAktualisieren();
 
         Callback<TableColumn.CellDataFeatures<Doppelstunde,String>,ObservableValue<String>> cellValueFactory = cellData ->
         {
@@ -144,8 +145,8 @@ public class StundenplanViewController implements Initializable
         fachdaten.forEach(this::erzeugeAkkordion);*/
     }
 
-    private void stundenplanAktualisieren(ArrayList<Doppelstunde> alleStunden) {
-        //ArrayList<Doppelstunde> alleStunden = SchreiberLeser.getNutzerdaten().getDoppelstunden();
+    private void stundenplanAktualisieren() {
+        ArrayList<Doppelstunde> alleStunden = SchreiberLeser.getNutzerdaten().getDoppelstunden();
 
         Comparator<Doppelstunde> doppelstundeComparator=new Comparator<Doppelstunde>()
         {
@@ -188,10 +189,32 @@ public class StundenplanViewController implements Initializable
         });
     }
 
+
+
+    //###########################
+
+
+
     @FXML
     public void doppelstundeHinzufuegen(ActionEvent actionEvent)
     {
-        GridPane gridPane = new GridPane();
+        System.out.println("hi");
+
+        montagObservableList.clear();
+        dienstagObservableList.clear();
+        mittwochObservableList.clear();
+        donnerstagObservableList.clear();
+        freitagObservableList.clear();
+
+        montagTableView.refresh();
+        dienstagTableView.refresh();
+        mittwochTableView.refresh();
+        donnerstagTableView.refresh();
+        freitagTableView.refresh();
+
+        stundenplanAktualisieren();
+
+        /*GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(8);
 
@@ -270,7 +293,7 @@ public class StundenplanViewController implements Initializable
                 doppelstundeZuordnen(neueStunde, neueStunde.getTag());
 
             }
-        });*/
+        });
         gridPane.add(button, 1, 6);
 
         DialogPane dialogPane = new DialogPane();
@@ -278,7 +301,7 @@ public class StundenplanViewController implements Initializable
 
         Dialog dialog = new Dialog();
         dialog.setDialogPane(dialogPane);
-        dialog.showAndWait();
+        dialog.showAndWait();*/
     }
 
 
