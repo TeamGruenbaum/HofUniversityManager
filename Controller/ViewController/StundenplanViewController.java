@@ -108,6 +108,8 @@ public class StundenplanViewController implements Initializable
                             cellData.getValue().getDozent());
         };
 
+        addTooltipToColumnCells(montagTableColumn);
+
 
         montagTableView.setItems(montagObservableList);
         montagTableColumn.setCellValueFactory(cellValueFactory);
@@ -187,7 +189,21 @@ public class StundenplanViewController implements Initializable
         });
     }
 
+    private <T> void addTooltipToColumnCells(TableColumn<Doppelstunde,T> column) {
 
+        Callback<TableColumn<Doppelstunde, T>, TableCell<Doppelstunde,T>> existingCellFactory=column.getCellFactory();
+
+        column.setCellFactory(c->
+        {
+            TableCell<Doppelstunde, T> cell = existingCellFactory.call(c);
+
+            Tooltip tooltip = new Tooltip();
+            tooltip.textProperty().bind(cell.itemProperty().asString());
+
+            cell.setTooltip(tooltip);
+            return cell ;
+        });
+    }
 
     //###########################
 
