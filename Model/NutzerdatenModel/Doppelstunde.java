@@ -1,5 +1,6 @@
 package Model.NutzerdatenModel;
 
+import Model.Datum;
 import Model.Tag;
 import Model.Uhrzeit;
 
@@ -7,6 +8,7 @@ import java.io.Serializable;
 
 public class Doppelstunde implements Serializable
 {
+    private Datum datum;
     private String name;
     private String dozent;
     private String raum;
@@ -15,14 +17,25 @@ public class Doppelstunde implements Serializable
     private Uhrzeit beginn;
     private Uhrzeit ende;
 
-    public Doppelstunde(String name, String dozent, String raum, Tag tag, Uhrzeit beginn, Uhrzeit ende)
+    public Doppelstunde(Datum datum, String name, String dozent, String raum, Tag tag, Uhrzeit beginn, Uhrzeit ende)
     {
+        this.datum=datum;
         this.name=name;
         this.dozent=dozent;
         this.raum=raum;
         this.tag=tag;
         this.beginn=beginn;
         this.ende=ende;
+    }
+
+    public Datum getDatum()
+    {
+        return datum;
+    }
+
+    public void setDatum(Datum datum)
+    {
+        this.datum = datum;
     }
 
     public String getName() {

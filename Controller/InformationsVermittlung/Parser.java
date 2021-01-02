@@ -27,8 +27,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import java.sql.SQLOutput;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,16 +43,14 @@ public class Parser
     public static StudiengangInformationen studiengangParsen(StudiengangDokumente studiengangDokumente)
     {
         ArrayList<Document> faecherDokumente=studiengangDokumente.getFaecherDokumente();
-        //Modulhandbuch parsen
-        ArrayList<ModulhandbuchFach> faecher=new ArrayList<>();
 
+        ArrayList<ModulhandbuchFach> faecher=new ArrayList<>();
         for(int i=0; i<faecherDokumente.size(); i++)
         {
             faecher.add(_getModulhandbuchFach(faecherDokumente.get(i)));
         }
 
-        StudiengangInformationen studiengangInformationen=new StudiengangInformationen(faecher);
-        return studiengangInformationen;
+        return new StudiengangInformationen(faecher);
     }
 
     private static ModulhandbuchFach _getModulhandbuchFach(Document dokument)
@@ -240,16 +242,16 @@ public class Parser
         {
             JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
 
-            treffpunkte.add(
-                    new Restaurant
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("art"),
-                                    aktuellesJsonObject.getString("nationalitaet"),
-                                    aktuellesJsonObject.getBoolean("lieferdienst"))
+            treffpunkte.add(new Restaurant
+                    (
+                        aktuellesJsonObject.getString("name"),
+                        aktuellesJsonObject.getString("ort"),
+                        aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                        aktuellesJsonObject.getString("information"),
+                        aktuellesJsonObject.getString("art"),
+                        aktuellesJsonObject.getString("nationalitaet"),
+                        aktuellesJsonObject.getBoolean("lieferdienst")
+                    )
             );
         }
 
@@ -258,15 +260,14 @@ public class Parser
         {
             JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
 
-            treffpunkte.add(
-                    new Freizeitaktivitaet
-                            (
-                                    aktuellesJsonObject.getString("name"),
-                                    aktuellesJsonObject.getString("ort"),
-                                    aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                                    aktuellesJsonObject.getString("information"),
-                                    aktuellesJsonObject.getString("ambiente")
-                            )
+            treffpunkte.add(new Freizeitaktivitaet
+                    (
+                        aktuellesJsonObject.getString("name"),
+                        aktuellesJsonObject.getString("ort"),
+                        aktuellesJsonObject.getBoolean("wetterunabhaengig"),
+                        aktuellesJsonObject.getString("information"),
+                        aktuellesJsonObject.getString("ambiente")
+                    )
             );
         }
 
@@ -277,52 +278,126 @@ public class Parser
     public static ArrayList<Doppelstunde> stundenplanParsen(Document stundenplanDokument)
     {
         ArrayList<Doppelstunde> doppelstunden=new ArrayList<Doppelstunde>();
-
-        System.out.println("Tabel"+stundenplanDokument.getElementsByTag("table").text());
+        String wochentag="";
+        boolean letzteTabelle=false;
 
         for(int i=0;i<stundenplanDokument.getElementsByTag("table").size();i++)
         {
-            String string=stundenplanDokument.getElementsByTag("table").get(i).select("thead").first().text();
+            if(stundenplanDokument.getElementsByTag("table").get(i).select("thead").size()!=0)
+            {
+                wochentag=stundenplanDokument.getElementsByTag("table").get(i).select("thead").get(0).text();
+                System.out.println("Wochentag: "+wochentag);
+            }
+            else break;
 
             try
             {
-                switch(string)
+                switch(wochentag)
                 {
-                    //TODO Samstagsenum und konkrete Datum (Attribut in Doppelstunde) und Doppelstunden ohne Wochentag
-
+                    case "Tag Beginn Ende Veranstaltung Dozent Typ Raum":
+                        if(stundenplanDokument.getElementsByTag("table").get(i).select("tbody").size()==1)
+                        {
+                            _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, null, i);
+                            letzteTabelle=true;
+                        } break;
                     case "Montag":_doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MONTAG, i); break;
                     case "Dienstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DIENSTAG, i); break;
                     case "Mittwoch": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MITTWOCH, i); break;
                     case "Donnerstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DONNERSTAG, i); break;
                     case "Freitag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.FREITAG, i); break;
+                    case "Samstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.SAMSTAG, i); break;
+                    case "weitere Veranstaltungen": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, null, i); letzteTabelle=true; break;
                 }
-            }catch(Exception e){e.printStackTrace();}
+            }
+            catch(Exception e){e.printStackTrace();}
 
-            if(string.compareTo("Freitag")==0)
+            if((wochentag.compareTo("Freitag")==0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").size()!=0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("Samstag")!=0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0) ||
+                (wochentag.compareTo("Samstag")==0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").size()!=0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0) ||
+                letzteTabelle)
             {
+                System.out.println("abbrechen");
                 break;
             }
+
         }
         return doppelstunden;
     }
 
-    private static void _doppelstundeHinzufuegen(ArrayList<Doppelstunde> arrayList, Document dokument, Tag tag, int zaehler)
+    private static void _doppelstundeHinzufuegen(ArrayList<Doppelstunde> doppelstunden, Document dokument, Tag tag, int zaehler)
     {
-        Element aktueller=null;
+        //Hilfsvariablen anlegen
+        Element aktuelleDoppelstunde=null;
+        Datum datum=null;
+        Tag doppelstundenTag=tag;
 
         for(int j=0;j<dokument.getElementsByTag("table").get(zaehler).select("tbody>tr").size();j++)
         {
-            aktueller=dokument.getElementsByTag("table").get(zaehler).select("tbody>tr").get(j);
-            arrayList.add(new Doppelstunde
+            aktuelleDoppelstunde=dokument.getElementsByTag("table").get(zaehler).select("tbody>tr").get(j);
+            datum=_getDoppelstundenDatum(aktuelleDoppelstunde);
+
+            //Ermittle den Wochentag der Doppelstunde über ihr Datum; ignoriere hierbei "weitere Veranstaltungen", die kein Datum besitzen
+            if(tag==null && datum!=null)
+            {
+                switch(LocalDate.of(datum.getJahr(),datum.getMonat(),datum.getTag()).getDayOfWeek())
+                {
+                    case MONDAY:doppelstundenTag=Tag.MONTAG; break;
+                    case TUESDAY:doppelstundenTag=Tag.DIENSTAG; break;
+                    case WEDNESDAY:doppelstundenTag=Tag.MITTWOCH; break;
+                    case THURSDAY:doppelstundenTag=Tag.DONNERSTAG; break;
+                    case FRIDAY:doppelstundenTag=Tag.FREITAG; break;
+                    case SATURDAY:doppelstundenTag=Tag.SAMSTAG; break;
+                    case SUNDAY:doppelstundenTag=Tag.SONNTAG; break;
+                }
+            }
+
+            //Füge die Doppelstunde zur ArrayList hinzu
+            doppelstunden.add(new Doppelstunde
                     (
-                            aktueller.getElementsByTag("td").get(3).text(),
-                            aktueller.getElementsByTag("td").get(4).text(),
-                            aktueller.getElementsByTag("td").get(6).text(),
-                            tag,
-                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(1).text().substring(3,5))),
-                            new Uhrzeit(Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(0,2)), Integer.parseInt(aktueller.getElementsByTag("td").get(2).text().substring(3,5)))
-                    ));
+                            datum,
+                            aktuelleDoppelstunde.getElementsByTag("td").get(3).text(),
+                            aktuelleDoppelstunde.getElementsByTag("td").get(4).text(),
+                            aktuelleDoppelstunde.getElementsByTag("td").get(6).text(),
+                            doppelstundenTag,
+                            _getDoppelstundenUhrzeit(aktuelleDoppelstunde,1),
+                            _getDoppelstundenUhrzeit(aktuelleDoppelstunde,2)
+                    )
+            );
         };
+    }
+
+    //Gib das Datum einer Doppelstunde zurück, wenn vorhanden
+    private static Datum _getDoppelstundenDatum(Element aktuelleDoppelstunde)
+    {
+        Datum datum=null;
+
+        if(aktuelleDoppelstunde.getElementsByTag("td").get(0).text().compareTo("")!=0)
+        {
+            datum=new Datum
+            (
+                    Integer.parseInt(aktuelleDoppelstunde.getElementsByTag("td").get(0).text().substring(0,2)),
+                    Integer.parseInt(aktuelleDoppelstunde.getElementsByTag("td").get(0).text().substring(3,5)),
+                    Integer.parseInt(aktuelleDoppelstunde.getElementsByTag("td").get(0).text().substring(6,10))
+            );
+        }
+
+        return datum;
+    }
+
+    //Gib die Uhrzeit einer Doppelstunde zurück, wenn vorhanden
+    private static Uhrzeit _getDoppelstundenUhrzeit(Element aktuelleDoppelstunde, int index)
+    {
+        Uhrzeit uhrzeit=null;
+
+        if(aktuelleDoppelstunde.getElementsByTag("td").get(index).text().compareTo("")!=0)
+        {
+            uhrzeit=new Uhrzeit
+            (
+                    Integer.parseInt(aktuelleDoppelstunde.getElementsByTag("td").get(index).text().substring(0,2)),
+                    Integer.parseInt(aktuelleDoppelstunde.getElementsByTag("td").get(index).text().substring(3,5))
+            );
+        }
+
+        return uhrzeit;
     }
 
     //DropdownMenue parsen
@@ -330,7 +405,7 @@ public class Parser
     {
         ArrayList<KuerzelDokumentPaar> kuerzelDokumentPaare= dropdownMenueDokumente.getKuerzelDokumentePaare();
 
-        //Hilfsvariablen
+        //Hilfsvariablen anlegen
         Document stundenplanDokument=null;
         String studiengangkuerzel="";
         String studiengangname="";
@@ -367,6 +442,7 @@ public class Parser
     {
         ArrayList<Stundenplanaenderung> aenderungen=new ArrayList<Stundenplanaenderung>();
 
+        //Hilfsvariablen anlegen
         Element tabelle=stundenplanaenderungenDokument.getElementsByTag("table").get(0);
         Element zeile=null;
 
@@ -387,6 +463,7 @@ public class Parser
         return new Stundenplanaenderungen(aenderungen);
     }
 
+    //Gib einen Termin basierend auf einem String, der aus Datum, Uhrzeit und Raum besteht, zurück
     private static Termin _getTermin(String termintext)
     {
         Pattern pattern=Pattern.compile("(^\\d{2}.\\d{2}.\\d{4}\\n)(\\d{2}:\\d{2}\\sUhr\\n)(.+)");
