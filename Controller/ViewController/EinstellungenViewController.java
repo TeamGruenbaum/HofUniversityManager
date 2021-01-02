@@ -61,7 +61,17 @@ public class EinstellungenViewController implements Initializable
         });
 
         // ChoiceBox fuer den Studiengang initialisieren, Listener für Änderungen und direkte Speicherung
-        cbStudiengang.setConverter(erzeugeStringConverterStudiengang());
+        cbStudiengang.setConverter(new StringConverter<Studiengang>() {
+            @Override
+            public String toString(Studiengang object) {
+                return object.getName();
+            }
+
+            @Override
+            public Studiengang fromString(String string) {
+                return null;
+            }
+        });
         cbStudiengang.setPromptText("Studiengang auswählen");
         cbStudiengang.setItems(FXCollections.observableArrayList(SchreiberLeser.getDropdownMenue().getEintraege()));
         if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null)
@@ -80,7 +90,17 @@ public class EinstellungenViewController implements Initializable
                 .when(cbStudiengang.getSelectionModel().selectedItemProperty().isNull())
                 .then("Bitte erst Studiengang wählen")
                 .otherwise("Studiensemester wählen"));
-        cbSemester.setConverter(erzeugeStringConverterStudiensemester());
+        cbSemester.setConverter(new StringConverter<Studiensemester>() {
+            @Override
+            public String toString(Studiensemester object) {
+                return object.getName();
+            }
+
+            @Override
+            public Studiensemester fromString(String string) {
+                return null;
+            }
+        });
         cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang())); // hier legt der Fehler, wenn man das aber ändert => Fehler bei 1. Anwendungsstart!
         // cbSemester.setItems(FXCollections.observableList(SchreiberLeser.getNutzerdaten().getStudiengang().getStudiensemester())); // => Alternative
 
@@ -119,33 +139,5 @@ public class EinstellungenViewController implements Initializable
         return FXCollections.observableList(listeListeSemester.stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList()));
-    }
-
-    private StringConverter<Studiengang> erzeugeStringConverterStudiengang() {
-        return (new StringConverter<Studiengang>() {
-            @Override
-            public String toString(Studiengang object) {
-                return object.getName();
-            }
-
-            @Override
-            public Studiengang fromString(String string) {
-                return null;
-            }
-        });
-    }
-
-    private StringConverter<Studiensemester> erzeugeStringConverterStudiensemester() {
-        return (new StringConverter<Studiensemester>() {
-            @Override
-            public String toString(Studiensemester object) {
-                return object.getName();
-            }
-
-            @Override
-            public Studiensemester fromString(String string) {
-                return null;
-            }
-        });
     }
 }

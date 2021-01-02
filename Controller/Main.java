@@ -1,8 +1,6 @@
 package Controller;
 
-import Controller.InformationsVermittlung.Datenabrufer;
 import Controller.Speicher.SchreiberLeser;
-import Controller.ViewController.GrundViewController;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
@@ -40,6 +38,8 @@ public class Main extends Application
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
         root.getStylesheets().add("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
+        primaryStage.setMinHeight(900);
+        primaryStage.setMinWidth(1300);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t)

@@ -5,6 +5,7 @@ import Controller.ViewController.GrundViewController;
 import Model.Datum;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.scene.control.ProgressIndicator;
@@ -29,6 +30,7 @@ public class Datenabrufer
 {
     private static ProgressIndicator progressIndicator;
     private static long start, end;
+    private static ChangeListener<Worker.State> letzteListener=null;
 
     public static void setProgressIndicator(ProgressIndicator neuerWert)
     {
@@ -216,17 +218,29 @@ public class Datenabrufer
         SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanDokumente(mensatage)));
     }
 
+    private static void entferneLetztenListener(WebEngine webEngine)
+    {
+        if(letzteListener!=null)
+        {
+            webEngine.getLoadWorker().stateProperty().removeListener(letzteListener);
+        }
+    }
+
     public static void stundenplanAbrufen()
     {
         Platform.runLater(()->
         {
-            WebEngine webEngine= GrundViewController.getUglyWebview().getEngine();
+            WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
-            webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue) ->
+            entferneLetztenListener(webEngine);
+
+            ChangeListener<Worker.State> stateChangeListener=(observable, oldValue, newValue) ->
             {
                 if(newValue== Worker.State.SUCCEEDED)
                 {
                     end=System.nanoTime();
+
+                    progressIndicator.setProgress(0.25);
 
                     Task<Void> task = new Task<Void>()
                     {
@@ -238,40 +252,38 @@ public class Datenabrufer
                                         "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel()+"';" +
                                                 "document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
                             });
+                            progressIndicator.setProgress(0.5);
 
                             Thread.sleep(((end-start)/1000000)/2);
-
-                            System.out.println(1);
 
                             Platform.runLater(() -> {
                                 webEngine.executeScript(
                                         "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel()+"';"  +
                                                 "document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
                             });
+                            progressIndicator.setProgress(0.75);
 
                             Thread.sleep(((end-start)/1000000)/2);
 
-                            System.out.println(2);
+                            Platform.runLater(()->
+                            {
+                                SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
+                                progressIndicator.setProgress(1);
+                            });
+
+
 
                             return null;
                         }
                     };
 
-                    task.stateProperty().addListener(((observable1, oldValue1, newValue1) ->
-                    {
-                        if(newValue1== Worker.State.SUCCEEDED)
-                        {
-                            System.out.println(22);
-
-                            SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
-
-                            System.out.println(3);
-                        }
-                    }));
-
                     new Thread(task).start();
                 }
-            }));
+            };
+
+            webEngine.getLoadWorker().stateProperty().addListener(stateChangeListener);
+
+            letzteListener=stateChangeListener;
 
             start=System.nanoTime();
             webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
