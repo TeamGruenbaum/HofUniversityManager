@@ -5,18 +5,15 @@ import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 
 import Model.Datum;
-import Model.DropdownModel.Studiensemester;
 import Model.NutzerdatenModel.*;
 import Model.Tag;
 import Model.Uhrzeit;
-import javafx.application.Platform;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,27 +21,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
-import java.lang.management.ThreadInfo;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
 
-import static Model.Tag.*;
-
 public class StundenplanViewController implements Initializable
 {
 
-    ObservableList<Doppelstunde> montagObservableList, dienstagObservableList, mittwochObservableList, donnerstagObservableList, freitagObservableList, samstagObservableList;
+    ObservableList<Doppelstunde> montagObservableList, dienstagObservableList, mittwochObservableList, donnerstagObservableList, freitagObservableList, samstagObservableList, ohneTagObservableList;
+
 
     @FXML
     public BorderPane allesBorderPane;
@@ -101,24 +95,19 @@ public class StundenplanViewController implements Initializable
 
 
     @FXML
-    Accordion faecherSelect;
+    private TableView<Doppelstunde> ohneTagTableView;
+
     @FXML
-    TableColumn<Aufgabe, Datum> datumTableColumn;
+    private TableColumn<Doppelstunde, String> ohneTagTableColumn;
+
     @FXML
-    TableColumn<Aufgabe, Uhrzeit> uhrzeitTableColumn;
-    @FXML
-    TableColumn<Aufgabe, String> inhaltCol;
-    @FXML
-    TableColumn<Notiz, String> notizenCol;
-    @FXML
-    TableColumn<Note, String> artCol;
-    @FXML
-    TableColumn<Note, Integer> notenCol;
+	private Button stundenplanZuruecksetzen;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        //Hier werden die für die sieben verschiedenen TableViews ObservableLists initialisiert.
         montagObservableList=FXCollections.observableArrayList();
         dienstagObservableList=FXCollections.observableArrayList();
         mittwochObservableList=FXCollections.observableArrayList();
@@ -126,169 +115,196 @@ public class StundenplanViewController implements Initializable
         freitagObservableList=FXCollections.observableArrayList();
         samstagObservableList=FXCollections.observableArrayList();
 
-        //Datenabrufer.stundenplanAbrufen();
 
+        //Im Folgenden wird ein Callback Objekt erstellt, welches jeder Column übergeben wird, sodass beim Hovern
+        //über eine Zelle ihr ganzer Inhalt angezeigt wird.
         Callback<TableColumn.CellDataFeatures<Doppelstunde,String>,ObservableValue<String>> cellValueFactory = cellData ->
         {
             return new SimpleStringProperty(
-                    cellData.getValue().getBeginn()+"-"+cellData.getValue().getEnde()+", "+cellData.getValue().getRaum()+"\n"+
+                    ((cellData.getValue().getDatum() == null) ? "" : (cellData.getValue().getDatum()+" "))+cellData.getValue().getBeginn()+"-"+cellData.getValue().getEnde()+"\n"+
+                            cellData.getValue().getRaum()+"\n"+
                             cellData.getValue().getName()+"\n"+
                             cellData.getValue().getDozent());
         };
 
+
+        //Nun werden allen Tabellen ihre ObservableLists
         montagTableView.setItems(montagObservableList);
+        kontextMenueHinzufuegen(montagTableView);
         montagTableColumn.setCellValueFactory(cellValueFactory);
-        addTooltipToColumnCells(montagTableColumn);
+        tooltipZuZelleHinzufuegen(montagTableColumn);
 
         dienstagTableView.setItems(dienstagObservableList);
+        kontextMenueHinzufuegen(dienstagTableView);
         dienstagTableColumn.setCellValueFactory(cellValueFactory);
-
+        tooltipZuZelleHinzufuegen(dienstagTableColumn);
 
         mittwochTableView.setItems(mittwochObservableList);
+        kontextMenueHinzufuegen(mittwochTableView);
         mittwochTableColumn.setCellValueFactory(cellValueFactory);
-
+        tooltipZuZelleHinzufuegen(mittwochTableColumn);
 
         donnerstagTableView.setItems(donnerstagObservableList);
+        kontextMenueHinzufuegen(donnerstagTableView);
         donnerstagTableColumn.setCellValueFactory(cellValueFactory);
-
+        tooltipZuZelleHinzufuegen(donnerstagTableColumn);
 
         freitagTableView.setItems(freitagObservableList);
+        kontextMenueHinzufuegen(freitagTableView);
         freitagTableColumn.setCellValueFactory(cellValueFactory);
+        tooltipZuZelleHinzufuegen(freitagTableColumn);
 
         samstagTableView.setItems(samstagObservableList);
+        kontextMenueHinzufuegen(samstagTableView);
         samstagTableColumn.setCellValueFactory(cellValueFactory);
+        tooltipZuZelleHinzufuegen(samstagTableColumn);
+
+        ohneTagTableView.setItems(ohneTagObservableList);
+        kontextMenueHinzufuegen(ohneTagTableView);
+        ohneTagTableColumn.setCellValueFactory(cellValueFactory);
+        tooltipZuZelleHinzufuegen(ohneTagTableColumn);
+
 
         stundenplanHBox.getChildren().remove(samstagTableView);
-
-        Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
+        stundenplanHBox.getChildren().remove(ohneTagTableView);
 
         stundenplanZuruecksetzungProgressIndicator.progressProperty().addListener(((observable, oldValue, newValue) ->
         {
             if(newValue.doubleValue()==1)
             {
-                montagObservableList.clear();
-                dienstagObservableList.clear();
-                mittwochObservableList.clear();
-                donnerstagObservableList.clear();
-                freitagObservableList.clear();
-                samstagObservableList.clear();
+                stundenplanLaden();
 
-                Comparator<Doppelstunde> doppelstundeComparator=new Comparator<Doppelstunde>()
-                {
-                    @Override
-                    public int compare(Doppelstunde o1, Doppelstunde o2)
-                    {
-                        return o1.getBeginn().compareTo(o2.getBeginn());
-                    }
-                };
-
-                SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item ->
-                {
-                    switch(item.getTag())
-                    {
-                        case MONTAG:
-                        {
-                            montagObservableList.add(item);
-                            montagObservableList.sort(doppelstundeComparator);
-                        } break;
-                        case DIENSTAG:
-                        {
-                            dienstagObservableList.add(item);
-                            dienstagObservableList.sort(doppelstundeComparator);
-                        } break;
-                        case MITTWOCH:
-                        {
-                            mittwochObservableList.add(item);
-                            mittwochObservableList.sort(doppelstundeComparator);
-                        } break;
-                        case DONNERSTAG:
-                        {
-                            donnerstagObservableList.add(item);
-                            donnerstagObservableList.sort(doppelstundeComparator);
-                        } break;
-                        case FREITAG:
-                        {
-                            freitagObservableList.add(item);
-                            freitagObservableList.sort(doppelstundeComparator);
-                        } break;
-                        case SAMSTAG:
-                        {
-                            stundenplanHBox.getChildren().add(samstagTableView);
-                            samstagObservableList.add(item);
-                            samstagObservableList.sort(doppelstundeComparator);
-                        } break;
-                    }
-                });
-
-
-                montagTableView.refresh();
-                dienstagTableView.refresh();
-                mittwochTableView.refresh();
-                donnerstagTableView.refresh();
-                freitagTableView.refresh();
-                samstagTableView.refresh();
-
-                System.out.println("HAlllo");
+                stundenplanZuruecksetzen.setDisable(false);
             }
         }));
+
+
+        stundenplanLaden();
     }
-
-    //???
-    private <T> void addTooltipToColumnCells(TableColumn<Doppelstunde,T> column) {
-
-        Callback<TableColumn<Doppelstunde, T>, TableCell<Doppelstunde,T>> existingCellFactory=column.getCellFactory();
-
-        column.setCellFactory(c->
-        {
-            TableCell<Doppelstunde, T> cell = existingCellFactory.call(c);
-
-            Tooltip tooltip = new Tooltip();
-            tooltip.textProperty().bind(cell.itemProperty().asString());
-
-            cell.setTooltip(tooltip);
-            return cell ;
-        });
-    }
-
-    //###########################
 
     @FXML
     public void stundenplanZuruecksetzen(ActionEvent actionEvent)
     {
+        Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
         Datenabrufer.stundenplanAbrufen();
+        stundenplanZuruecksetzen.setDisable(true);
     }
 
     @FXML
     public void doppelstundeHinzufuegen(ActionEvent actionEvent)
     {
+
+        oeffneDoppelstundeDialog("Stunde hinzufügen","Hinzufügen","", "", "", Tag.MONTAG, 0, 0, 0, 0)
+        .ifPresent((item)->SchreiberLeser.getNutzerdaten().getDoppelstunden().add(item));
+        stundenplanLaden();
+    }
+
+    private void stundenplanLaden()
+    {
+        montagObservableList.clear();
+        dienstagObservableList.clear();
+        mittwochObservableList.clear();
+        donnerstagObservableList.clear();
+        freitagObservableList.clear();
+        samstagObservableList.clear();
+
+		stundenplanHBox.getChildren().remove(samstagTableView);
+		stundenplanHBox.getChildren().remove(ohneTagTableView);
+
+        Comparator<Doppelstunde> doppelstundeComparator=(o1, o2) -> o1.getBeginn().compareTo(o2.getBeginn());
+
+        SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item ->
+        {
+            if (item.getTag() == null)
+            {
+                stundenplanHBox.getChildren().add(ohneTagTableView);
+                ohneTagObservableList.add(item);
+                ohneTagObservableList.sort(doppelstundeComparator);
+            }
+            else
+            {
+                switch(item.getTag())
+                {
+                    case MONTAG:
+                    {
+                        montagObservableList.add(item);
+                        montagObservableList.sort(doppelstundeComparator);
+                    } break;
+                    case DIENSTAG:
+                    {
+                        dienstagObservableList.add(item);
+                        dienstagObservableList.sort(doppelstundeComparator);
+                    } break;
+                    case MITTWOCH:
+                    {
+                        mittwochObservableList.add(item);
+                        mittwochObservableList.sort(doppelstundeComparator);
+                    } break;
+                    case DONNERSTAG:
+                    {
+                        donnerstagObservableList.add(item);
+                        donnerstagObservableList.sort(doppelstundeComparator);
+                    } break;
+                    case FREITAG:
+                    {
+                        freitagObservableList.add(item);
+                        freitagObservableList.sort(doppelstundeComparator);
+                    } break;
+                    case SAMSTAG:
+                    {
+                        stundenplanHBox.getChildren().add(samstagTableView);
+                        samstagObservableList.add(item);
+                        samstagObservableList.sort(doppelstundeComparator);
+                    } break;
+                }
+            }
+        });
+
+        montagTableView.refresh();
+        dienstagTableView.refresh();
+        mittwochTableView.refresh();
+        donnerstagTableView.refresh();
+        freitagTableView.refresh();
+        samstagTableView.refresh();
+    }
+
+    private Optional<Doppelstunde> oeffneDoppelstundeDialog(String fensterTitel, String buttonTitel, String namePrompt, String dozentPrompt, String raumPrompt, Tag tagPrompt, int beginnStundeUhrzeitPrompt, int beginnMinuteUhrzeitPrompt, int endeStundeUhrzeitPrompt, int endeMinuteUhrzeitPrompt)
+    {
         DialogPane dialogPane=new DialogPane();
         try
         {
-            dialogPane.setContent((GridPane) FXMLLoader.load(getClass().getResource("../../View/DoppelstundenHinzufuegeView.fxml")));
+            dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/DoppelstundenHinzufuegeView.fxml")));
         }
         catch (IOException ignored){}
         dialogPane.setMinSize(300, 200);
-        dialogPane.getButtonTypes().add(ButtonType.OK);
-        ((Button) dialogPane.lookupButton(ButtonType.OK)).setText("Hinzufügen");
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        ((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+        ((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
         dialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
         TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
-        dialogTextfieldlistenerHinzufuegen(dialogPane, nameTextField);
-
         TextField dozentTextField=(TextField) dialogPane.lookup("#dozentTextField");
-        dialogTextfieldlistenerHinzufuegen(dialogPane, dozentTextField);
-
         TextField raumTextField=(TextField) dialogPane.lookup("#raumTextField");
-        dialogTextfieldlistenerHinzufuegen(dialogPane, raumTextField);
+        Bindings.createBooleanBinding(() ->
+                nameTextField.getText().trim().isEmpty(), nameTextField.textProperty())
+                .or(Bindings.createBooleanBinding(() -> dozentTextField.getText().trim().isEmpty(), dozentTextField.textProperty()))
+                .or(Bindings.createBooleanBinding(() -> raumTextField.getText().trim().isEmpty(), raumTextField.textProperty()))
+                .addListener(((observable, oldValue, newValue) ->
+                {
+                    dialogPane.lookupButton(ButtonType.OK).setDisable(newValue);
+                }));
+        nameTextField.setText(namePrompt);
+        dozentTextField.setText(dozentPrompt);
+        raumTextField.setText(raumPrompt);
 
-        //s.createBooleanBinding(() -> nameTextField.getText().trim().isEmpty() || , nameTextField.textProperty());
-
-        ChoiceBox<Tag> tagChoiceBox=(ChoiceBox) dialogPane.lookup("#tagChoiceBox");
+        ChoiceBox<Tag> tagChoiceBox=(ChoiceBox<Tag>) dialogPane.lookup("#tagChoiceBox");
         tagChoiceBox.setItems(FXCollections.observableArrayList(List.of(Tag.values())));
         tagChoiceBox.getSelectionModel().select(0);
-        tagChoiceBox.setConverter(new StringConverter<Tag>() {
+        tagChoiceBox.setConverter(new StringConverter<Tag>()
+        {
             @Override
-            public String toString(Tag object) {
+            public String toString(Tag object)
+            {
                 return object.toString().substring(0, 1).toUpperCase() + object.toString().substring(1).toLowerCase();
             }
 
@@ -297,61 +313,108 @@ public class StundenplanViewController implements Initializable
                 return null;
             }
         });
+        tagChoiceBox.setValue(tagPrompt);
 
         Spinner<Integer> beginnStundeUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#beginnStundeUhrzeitSpinner");
-        beginnStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        beginnStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, beginnStundeUhrzeitPrompt));
 
         Spinner<Integer> beginnMinuteUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#beginnMinuteUhrzeitSpinner");
-        beginnMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, Calendar.getInstance().get(Calendar.MINUTE)));
+        beginnMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, beginnMinuteUhrzeitPrompt));
 
         Spinner<Integer> endeStundeUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#endeStundeUhrzeitSpinner");
-        endeStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+        endeStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, endeStundeUhrzeitPrompt));
 
         Spinner<Integer> endeMinuteUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#endeMinuteUhrzeitSpinner");
-        endeMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, Calendar.getInstance().get(Calendar.MINUTE)));
+        endeMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, endeMinuteUhrzeitPrompt));
 
         Dialog<Doppelstunde> dialog=new Dialog<>();
-        dialog.setTitle("Stunde hinzufügen");
+        dialog.setTitle(fensterTitel);
         dialog.setDialogPane(dialogPane);
         dialog.setResultConverter((dialogButton)->
         {
-            return new Doppelstunde(
-                    nameTextField.getText(),
-                    dozentTextField.getText(),
-                    raumTextField.getText(),
-                    tagChoiceBox.getValue(),
-                    new Uhrzeit(
-                            beginnStundeUhrzeitSpinner.getValue(),
-                            beginnStundeUhrzeitSpinner.getValue()
-                    ),
-                    new Uhrzeit(
-                            endeStundeUhrzeitSpinner.getValue(),
-                            endeStundeUhrzeitSpinner.getValue()
-                    )
-            );
-        });
-        dialog.initOwner(Main.getPrimaryStage());
-        dialog.setOnCloseRequest((windowEvent)->{return;});
-
-        Optional<Doppelstunde> optionalDoppelstunde=dialog.showAndWait();
-
-
-    }
-
-    private void dialogTextfieldlistenerHinzufuegen(DialogPane dialogPane, TextField textField)
-    {
-        textField.setStyle("-fx-text-box-border: red; -fx-focus-color: red;");
-
-        textField.textProperty().addListener((observable, oldValue, newValue)->
-        {
-            if(textField.getText().trim().compareTo("")==0)
+            if(dialogButton.getButtonData().isCancelButton())
             {
-                textField.setStyle("-fx-text-box-border: red; -fx-focus-color: red;");
+                return null;
             }
             else
             {
-                textField.setStyle("");
+                return new Doppelstunde(
+                        null,
+                        nameTextField.getText().trim(),
+                        dozentTextField.getText().trim(),
+                        raumTextField.getText().trim(),
+                        tagChoiceBox.getValue(),
+                        new Uhrzeit(
+                                beginnStundeUhrzeitSpinner.getValue(),
+                                beginnMinuteUhrzeitSpinner.getValue()
+                        ),
+                        new Uhrzeit(
+                                endeStundeUhrzeitSpinner.getValue(),
+                                endeMinuteUhrzeitSpinner.getValue()
+                        )
+                );
             }
+        });
+        dialog.initOwner(Main.getPrimaryStage());
+
+        return dialog.showAndWait();
+    }
+
+    private void kontextMenueHinzufuegen(TableView<Doppelstunde> tableView)
+    {
+        ContextMenu contextMenu=new ContextMenu();
+
+        MenuItem loeschenMenuItem=new MenuItem("Löschen");
+        loeschenMenuItem.setOnAction((actionEvent)->
+        {
+            SchreiberLeser.getNutzerdaten().getDoppelstunden().remove(tableView.getSelectionModel().getSelectedItem());
+            stundenplanLaden();
+        });
+        contextMenu.getItems().add(loeschenMenuItem);
+
+        MenuItem aendernMenuItem=new MenuItem("Ändern");
+        aendernMenuItem.setOnAction((actionEvent)->
+        {
+            oeffneDoppelstundeDialog(
+                "Stunde ändern",
+                "Ändern",
+                tableView.getSelectionModel().getSelectedItem().getName(),
+                tableView.getSelectionModel().getSelectedItem().getDozent(),
+                tableView.getSelectionModel().getSelectedItem().getRaum(),
+                tableView.getSelectionModel().getSelectedItem().getTag(),
+                tableView.getSelectionModel().getSelectedItem().getBeginn().getStunde(),
+                tableView.getSelectionModel().getSelectedItem().getBeginn().getMinute(),
+                tableView.getSelectionModel().getSelectedItem().getEnde().getStunde(),
+                tableView.getSelectionModel().getSelectedItem().getEnde().getMinute()
+            )
+            .ifPresent((item)->SchreiberLeser.getNutzerdaten().getDoppelstunden().set(SchreiberLeser.getNutzerdaten().getDoppelstunden().indexOf(tableView.getSelectionModel().getSelectedItem()), item));
+            stundenplanLaden();
+        });
+        contextMenu.getItems().add(aendernMenuItem);
+
+        tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->
+        {
+            if(mouseEvent.getButton() == MouseButton.SECONDARY)
+            {
+                contextMenu.show(tableView, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            }
+        });
+    }
+
+    private <T> void tooltipZuZelleHinzufuegen(TableColumn<Doppelstunde,T> column)
+    {
+
+        Callback<TableColumn<Doppelstunde, T>, TableCell<Doppelstunde,T>> aktuelleCellFactory=column.getCellFactory();
+
+        column.setCellFactory((tableColumn)->
+        {
+            TableCell<Doppelstunde, T> tableCell =  aktuelleCellFactory.call(tableColumn);
+
+            Tooltip tooltip = new Tooltip();
+            tooltip.textProperty().bind(tableCell.itemProperty().asString());
+            tableCell.setTooltip(tooltip);
+
+            return tableCell ;
         });
     }
 }

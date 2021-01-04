@@ -38,4 +38,10 @@ public class Datum implements Serializable
     public void setJahr(int jahr) {
         this.jahr = jahr;
     }
+
+    @Override
+    public String toString()
+    {
+        return (tag<10?"0"+tag:String.valueOf(tag))+"."+(monat<10?"0"+monat:String.valueOf(monat))+"."+(jahr<10?"0"+jahr:String.valueOf(jahr));
+    }
 }
