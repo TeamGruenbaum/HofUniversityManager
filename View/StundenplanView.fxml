@@ -113,7 +113,7 @@
                                                       <TableColumn fx:id="aufgabenInhaltTableColumn" prefWidth="75.0" text="Inhalt" />
                                                       <TableColumn fx:id="aufgabenDatumTableColumn" prefWidth="75.0" text="Datum" />
                                                       <TableColumn fx:id="aufgabenZeitTableColumn" prefWidth="75.0" text="Zeit" />
-                                                      <TableColumn prefWidth="75.0" text="Fach" />
+                                                      <TableColumn fx:id="aufgabenFachTableColumn" prefWidth="75.0" text="Fach" />
 
                                                   </columns>
                                                   <columnResizePolicy>
