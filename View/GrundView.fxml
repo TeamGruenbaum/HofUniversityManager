@@ -17,7 +17,7 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label nodeOrientation="LEFT_TO_RIGHT" styleClass="menu-title" text="StudiPlaner">
+                              <Label nodeOrientation="LEFT_TO_RIGHT" styleClass="menu-title" text="HofUniversityManager">
                                  <font>
                                     <Font name="Helvetica" size="24.0" />
                                  </font>
@@ -36,7 +36,7 @@
          <bottom>
             <HBox maxHeight="20.0" prefHeight="100.0" prefWidth="200.0" styleClass="footer" BorderPane.alignment="CENTER">
                <children>
-                  <Label styleClass="footerText" text="© 2020">
+                  <Label styleClass="footerText" text="HofUniversityManager – © 2021">
                      <padding>
                         <Insets bottom="14.0" left="28.0" right="28.0" top="14.0" />
                      </padding>
