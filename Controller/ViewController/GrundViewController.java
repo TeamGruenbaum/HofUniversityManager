@@ -180,17 +180,19 @@ public class GrundViewController implements Initializable {
             Main.getRoot().setStyle("-menubar-color: #404040;" +
                     "-font-color: #262626;" +
                     "-anwendung-bgr: #a2a2a2;" +
-                    "-accent-color: #45cbff;" +
+                    "-accent-color: #79b7d2;" +
                     "-warn-color: #691c1c;" +
-                    "-menubar-text-color: white");
+                    "-menubar-text-color: white;" +
+                    "-accent-color-accent: #318eb1");
             farbwechsel.setBrightness(1);
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
                     "-font-color: #262626;" +
-                    "-anwendung-bgr: lightgrey;" +
+                    "-anwendung-bgr: #e2e2e2;" +
                     "-accent-color: #0072a0;" +
                     "-warn-color: #8a2828;" +
-                    "-menubar-text-color: black");
+                    "-menubar-text-color: black;" +
+                    "-accent-color-accent: #004a66");
             farbwechsel.setBrightness(0);
         }
 

@@ -34,7 +34,7 @@ public class Main extends Application
         hostServices=getHostServices();
 
         root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
-        primaryStage.setTitle("Studentenverwaltungsanwendung");
+        primaryStage.setTitle("HofUniversityManager");
         primaryStage.setScene(new Scene(root, 1000, 700));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
         root.getStylesheets().add("https://fonts.googleapis.com/css2?family=Rubik&display=swap");

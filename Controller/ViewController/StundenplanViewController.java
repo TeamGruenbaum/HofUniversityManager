@@ -44,6 +44,7 @@ import java.util.List;
 
 public class StundenplanViewController implements Initializable
 {
+	public TabPane hauptTabPane;
 	public TableView<Note> notenTableView;
 	public TableView<Notiz> notizenTableView;
 	public TableView<Aufgabe> aufgabenTableView;
@@ -126,6 +127,15 @@ public class StundenplanViewController implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle)
 	{
+		hauptTabPane.widthProperty().addListener((observable, oldValue, newValue) ->
+		{
+			hauptTabPane.setTabMinWidth((hauptTabPane.getWidth() / hauptTabPane.getTabs().size())-22);
+			hauptTabPane.setTabMaxWidth((hauptTabPane.getWidth() / hauptTabPane.getTabs().size())-22);
+		});
+
+		hauptTabPane.setTabMinHeight(40);
+		faecherTabPane.setTabMinHeight(40);
+
 		//STUNDENPLANZEUGS
 		//Hier werden die für die sieben verschiedenen TableViews ObservableLists initialisiert.
 		montagObservableList=FXCollections.observableArrayList();
