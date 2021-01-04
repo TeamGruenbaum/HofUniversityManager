@@ -20,6 +20,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.SetChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,106 +45,69 @@ import java.util.List;
 
 public class StundenplanViewController implements Initializable
 {
-	public TableView<Note> notenTableView;
-	public TableView<Notiz> notizenTableView;
-	public TableView<Aufgabe> aufgabenTableView;
-
-	public TableColumn<Aufgabe, String> aufgabenNameTableColumn;
-	public TableColumn<Aufgabe, String> aufgabenInhaltTableColumn;
-	public TableColumn<Aufgabe, String> aufgabenDatumTableColumn;
-	public TableColumn<Aufgabe, String> aufgabenZeitTableColumn;
-	public TableColumn<Aufgabe, String> aufgabenFachTableColumn;
-
-	public TableColumn<Notiz, String> notizenNameTableColumn;
-	public TableColumn<Notiz, String> notizenInhaltTableColumn;
-	public TableColumn<Notiz, String> notizenFachTableColumn;
-
-	public TableColumn<Note, String> notenNoteTableColumn;
-	public TableColumn<Note, String> notenArtTableColumn;
-	public TableColumn<Note, String> notenBemerkungTableColumn;
-	public TableColumn<Note, String> notenFachTableColumn;
-	public TabPane faecherTabPane;
-
-	ObservableList<Doppelstunde> montagObservableList, dienstagObservableList, mittwochObservableList, donnerstagObservableList, freitagObservableList, samstagObservableList, ohneTagObservableList;
-	ObservableList<Aufgabe> aufgabenObservableList;
-	ObservableList<Notiz> notizenObservableList;
-	ObservableList<Note> notenObservableList;
-
-	@FXML
+	//Alles
 	public BorderPane allesBorderPane;
 
-	@FXML
-	public ProgressIndicator stundenplanZuruecksetzungProgressIndicator;
+	//Tab Fächer
+	@FXML private TableView<Aufgabe> aufgabenTableView;
+	@FXML private TableColumn<Aufgabe, String> aufgabenNameTableColumn;
+	@FXML private TableColumn<Aufgabe, String> aufgabenInhaltTableColumn;
+	@FXML private TableColumn<Aufgabe, String> aufgabenDatumTableColumn;
+	@FXML private TableColumn<Aufgabe, String> aufgabenZeitTableColumn;
+	@FXML private TableColumn<Aufgabe, String> aufgabenFachTableColumn;
 
-	@FXML
-	private HBox stundenplanHBox;
+	@FXML private TableView<Notiz> notizenTableView;
+	@FXML private TableColumn<Notiz, String> notizenNameTableColumn;
+	@FXML private TableColumn<Notiz, String> notizenInhaltTableColumn;
+	@FXML private TableColumn<Notiz, String> notizenFachTableColumn;
+	private ObservableList<Notiz> notizObservableList;
 
-	@FXML
-	private TableView<Doppelstunde> montagTableView;
+	@FXML private TableView<Note> notenTableView;
+	@FXML private TableColumn<Note, String> notenNoteTableColumn;
+	@FXML private TableColumn<Note, String> notenArtTableColumn;
+	@FXML private TableColumn<Note, String> notenBemerkungTableColumn;
+	@FXML private TableColumn<Note, String> notenFachTableColumn;
+	@FXML private TabPane faecherTabPane;
 
-	@FXML
-	private TableColumn<Doppelstunde, String> montagTableColumn;
 
-	@FXML
-	private TableView<Doppelstunde> dienstagTableView;
+	//Tab Stundenplan
+	@FXML private HBox stundenplanHBox;
 
-	@FXML
-	public TableColumn<Doppelstunde, String> dienstagTableColumn;
+	@FXML private TableView<Doppelstunde> montagTableView;
+	@FXML private TableColumn<Doppelstunde, String> montagTableColumn;
+	private ObservableList<Doppelstunde> montagObservableList;
 
-	@FXML
-	private TableView<Doppelstunde> mittwochTableView;
+	@FXML private TableView<Doppelstunde> dienstagTableView;
+	@FXML private TableColumn<Doppelstunde, String> dienstagTableColumn;
+	private ObservableList<Doppelstunde> dienstagObservableList;
 
-	@FXML
-	private TableColumn<Doppelstunde, String> mittwochTableColumn;
+	@FXML private TableView<Doppelstunde> mittwochTableView;
+	@FXML private TableColumn<Doppelstunde, String> mittwochTableColumn;
+	private ObservableList<Doppelstunde> mittwochObservableList;
 
-	@FXML
-	private TableView<Doppelstunde> donnerstagTableView;
+	@FXML private TableView<Doppelstunde> donnerstagTableView;
+	@FXML private TableColumn<Doppelstunde, String> donnerstagTableColumn;
+	private ObservableList<Doppelstunde> donnerstagObservableList;
 
-	@FXML
-	private TableColumn<Doppelstunde, String> donnerstagTableColumn;
+	@FXML private TableView<Doppelstunde> freitagTableView;
+	@FXML private TableColumn<Doppelstunde, String> freitagTableColumn;
+	private ObservableList<Doppelstunde> freitagObservableList;
 
-	@FXML
-	private TableView<Doppelstunde> freitagTableView;
+	@FXML private TableView<Doppelstunde> samstagTableView;
+	@FXML private TableColumn<Doppelstunde, String> samstagTableColumn;
+	private ObservableList<Doppelstunde> samstagObservableList;
 
-	@FXML
-	private TableColumn<Doppelstunde, String> freitagTableColumn;
+	@FXML private TableView<Doppelstunde> ohneTagTableView;
+	@FXML private TableColumn<Doppelstunde, String> ohneTagTableColumn;
+	private ObservableList<Doppelstunde> ohneTagObservableList;
 
-	@FXML
-	private TableView<Doppelstunde> samstagTableView;
-
-	@FXML
-	private TableColumn<Doppelstunde, String> samstagTableColumn;
-
-	@FXML
-	private TableView<Doppelstunde> ohneTagTableView;
-
-	@FXML
-	private TableColumn<Doppelstunde, String> ohneTagTableColumn;
-
-	@FXML
-	private Button stundenplanZuruecksetzen;
+	@FXML private ProgressIndicator stundenplanZuruecksetzungProgressIndicator;
+	@FXML private Button stundenplanZuruecksetzen;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle)
 	{
-		//STUNDENPLANZEUGS
-		//Hier werden die für die sieben verschiedenen TableViews ObservableLists initialisiert.
-		montagObservableList=FXCollections.observableArrayList();
-		dienstagObservableList=FXCollections.observableArrayList();
-		mittwochObservableList=FXCollections.observableArrayList();
-		donnerstagObservableList=FXCollections.observableArrayList();
-		freitagObservableList=FXCollections.observableArrayList();
-		samstagObservableList=FXCollections.observableArrayList();
-		ohneTagObservableList=FXCollections.observableArrayList();
-
-		//Im Folgenden wird ein Callback Objekt erstellt, welches jeder Column übergeben wird, sodass beim Hovern
-		//über eine Zelle ihr ganzer Inhalt angezeigt wird.
-		Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> cellValueFactory=cellData->
-		{
-			return new SimpleStringProperty(((cellData.getValue().getDatum()==null)?""
-																				   :(cellData.getValue().getDatum()+" "))+cellData.getValue().getBeginn()+"-"+cellData.getValue().getEnde()+"\n"+cellData.getValue().getRaum()+"\n"+cellData.getValue().getName()+"\n"+cellData.getValue().getDozent());
-		};
-
+		//Alle
 		BiConsumer<ActionEvent, TableView<Doppelstunde>> aendernConsumer=(actionEvent, tableView)->
 		{
 			oeffneDoppelstundeDialog("Stunde ändern",
@@ -166,41 +130,28 @@ public class StundenplanViewController implements Initializable
 			stundenplanLaden();
 		};
 
-		//Nun werden allen Tabellen ihre ObservableLists
-		montagTableView.setItems(montagObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(montagTableView, aendernConsumer, loeschConsumer);
-		montagTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(montagTableColumn);
+		//Stundenplan
+		montagObservableList=FXCollections.observableArrayList();
+		dienstagObservableList=FXCollections.observableArrayList();
+		mittwochObservableList=FXCollections.observableArrayList();
+		donnerstagObservableList=FXCollections.observableArrayList();
+		freitagObservableList=FXCollections.observableArrayList();
+		samstagObservableList=FXCollections.observableArrayList();
+		ohneTagObservableList=FXCollections.observableArrayList();
 
-		dienstagTableView.setItems(dienstagObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(dienstagTableView, aendernConsumer, loeschConsumer);
-		dienstagTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(dienstagTableColumn);
+		Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> cellValueFactory=cellData->
+		{
+			return new SimpleStringProperty(((cellData.getValue().getDatum()==null)?""
+																				   :(cellData.getValue().getDatum()+" "))+cellData.getValue().getBeginn()+"-"+cellData.getValue().getEnde()+"\n"+cellData.getValue().getRaum()+"\n"+cellData.getValue().getName()+"\n"+cellData.getValue().getDozent());
+		};
 
-		mittwochTableView.setItems(mittwochObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(mittwochTableView, aendernConsumer, loeschConsumer);
-		mittwochTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(mittwochTableColumn);
-
-		donnerstagTableView.setItems(donnerstagObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(donnerstagTableView, aendernConsumer, loeschConsumer);
-		donnerstagTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(donnerstagTableColumn);
-
-		freitagTableView.setItems(freitagObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(freitagTableView, aendernConsumer, loeschConsumer);
-		freitagTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(freitagTableColumn);
-
-		samstagTableView.setItems(samstagObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(samstagTableView, aendernConsumer, loeschConsumer);
-		samstagTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(samstagTableColumn);
-
-		ohneTagTableView.setItems(ohneTagObservableList);
-		aendernLoeschenKontextMenueHinzufuegen(ohneTagTableView, aendernConsumer, loeschConsumer);
-		ohneTagTableColumn.setCellValueFactory(cellValueFactory);
-		tooltipZuZelleHinzufuegen(ohneTagTableColumn);
+		tableViewInitialisieren(montagTableView, montagTableColumn, montagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
+		tableViewInitialisieren(dienstagTableView, dienstagTableColumn, dienstagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
+		tableViewInitialisieren(mittwochTableView, mittwochTableColumn, mittwochObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
+		tableViewInitialisieren(donnerstagTableView, donnerstagTableColumn, donnerstagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
+		tableViewInitialisieren(freitagTableView, freitagTableColumn, freitagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
+		tableViewInitialisieren(samstagTableView, samstagTableColumn, samstagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
+		tableViewInitialisieren(ohneTagTableView, ohneTagTableColumn, ohneTagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
 
 		stundenplanHBox.getChildren().remove(samstagTableView);
 		stundenplanHBox.getChildren().remove(ohneTagTableView);
@@ -217,7 +168,7 @@ public class StundenplanViewController implements Initializable
 
 		stundenplanLaden();
 
-		//FAECHERZEUGS
+		//Fächer
 		notenTableView.setItems(FXCollections.observableArrayList());
 		notenBemerkungTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getBemerkung());});
 		notenNoteTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(Integer.toString(cellData.getValue().getNote()));});
@@ -228,74 +179,47 @@ public class StundenplanViewController implements Initializable
 		aufgabenInhaltTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getInhalt());});
 		aufgabenZeitTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getZeit().toString());});
 		aufgabenDatumTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getDatum().toString());});
-		//aufgabenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData
-		// .getValue().getFach());});
+		aufgabenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
-		notizenTableView.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen()));
-		aendernLoeschenKontextMenueHinzufuegen(notizenTableView, (actionEvent, notizTableView)->
+
+		notizObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen());
+		notizenTableView.setItems(notizObservableList);
+		aendernLoeschenKontextmenueHinzufuegen(notizenTableView, (actionEvent, notizTableView)->
 		{
 			oeffneNotizDialog("Notiz ändern", "Ändern",
 				notizTableView.getSelectionModel().getSelectedItem().getUeberschrift(),
 				notizTableView.getSelectionModel().getSelectedItem().getInhalt(),
 				notizTableView.getSelectionModel().getSelectedItem().getFach())
-				.ifPresent((item)->SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().set(notizTableView.getSelectionModel().getSelectedIndex(), item));
-			notizTableView.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen()));
-			},
+				.ifPresent((item)->
+				{
+					SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().set(notizTableView.getSelectionModel().getSelectedIndex(), item);
+					notizObservableList.set(notizTableView.getSelectionModel().getSelectedIndex(), item);
+					notizenTableView.refresh();
+				});
+		},
 		(actionEvent, notizTableView)->
 		{
-			SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().remove(notizTableView.getSelectionModel().getSelectedItem());
-			notizTableView.refresh();
+			SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().remove(notizTableView.getSelectionModel().getSelectedIndex());
+			notizObservableList.remove(notizTableView.getSelectionModel().getSelectedIndex());
+			notizenTableView.refresh();
 		});
 		notizenNameTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getUeberschrift());});
 		notizenInhaltTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getInhalt());});
 		notizenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 	}
 
-	@FXML
-	public void stundenplanZuruecksetzen(ActionEvent actionEvent)
+	//Stundenplan
+	@FXML private void stundenplanZuruecksetzen(ActionEvent actionEvent)
 	{
-
 		Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
 		Datenabrufer.stundenplanAbrufen();
 		stundenplanZuruecksetzen.setDisable(true);
 	}
 
-	@FXML
-	public void doppelstundeHinzufuegen(ActionEvent actionEvent)
+	@FXML private void doppelstundeHinzufuegen(ActionEvent actionEvent)
 	{
-
 		oeffneDoppelstundeDialog("Stunde hinzufügen", "Hinzufügen", "", "", "", Tag.MONTAG, 0, 0, 0, 0).ifPresent((item)->SchreiberLeser.getNutzerdaten().getDoppelstunden().add(item));
 		stundenplanLaden();
-	}
-
-	@FXML
-	public void aufgabeNotizNoteHinzufuegen(ActionEvent actionEvent)
-	{
-		switch(faecherTabPane.getSelectionModel().getSelectedIndex())
-		{
-			case 0->oeffneAufgabenDialog("Aufgaben hinzufügen", "Hinzufügen", "","").ifPresent((item)->
-			{
-				aufgabenObservableList.add(item);
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().add(item);
-
-				aufgabenTableView.refresh();
-			});
-			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","",
-				SchreiberLeser.getNutzerdaten().getFaecher().get(0)==null?"":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
-			{
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().add(item);
-				notizenTableView.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen()));
-
-				notizenTableView.refresh();
-			});
-			case 2->oeffneNotenDialog("Note hinzufügen", "Hinzufügen", "","").ifPresent((item)->
-			{
-				notenObservableList.add(item);
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().add(item);
-
-				notenTableView.refresh();
-			});
-		}
 	}
 
 	private void stundenplanLaden()
@@ -370,87 +294,6 @@ public class StundenplanViewController implements Initializable
 		donnerstagTableView.refresh();
 		freitagTableView.refresh();
 		samstagTableView.refresh();
-	}
-
-	private Optional<Aufgabe> oeffneAufgabenDialog(String fensterTitel, String buttonTitel, String namePrompt,
-											  String inhaltPrompt)
-	{
-		return null;
-	}
-
-	private Optional<Notiz> oeffneNotizDialog(String fensterTitel, String buttonTitel, String ueberschriftPrompt,
-											  String inhaltPrompt, String fachPrompt)
-	{
-		DialogPane dialogPane=new DialogPane();
-		try
-		{
-			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NotizHinzufuegeView.fxml")));
-		}catch(IOException ignored)
-		{
-		}
-		dialogPane.setMinSize(300, 200);
-		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
-		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
-		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
-
-		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
-		TextArea inhaltTextArea=(TextArea) dialogPane.lookup("#inhaltTextField");
-		Bindings.createBooleanBinding(
-			()->nameTextField.getText().trim().isEmpty(), nameTextField.textProperty())
-			.or(Bindings.createBooleanBinding(()->inhaltTextArea.getText().trim().isEmpty(), inhaltTextArea.textProperty()))
-			.addListener((observable, oldValue, newValue) ->
-		{
-			dialogPane.lookupButton(ButtonType.OK).setDisable(newValue);
-		});
-		nameTextField.setText(ueberschriftPrompt);
-		inhaltTextArea.setText(inhaltPrompt);
-
-		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) dialogPane.lookup("#fachChoiceBox");
-		fachHinzufuegen(fachPrompt, faecherChoiceBox);
-		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
-		faecherChoiceBox.getSelectionModel().select(0);
-		faecherChoiceBox.setValue(fachPrompt);
-
-		Button fachHinzufuegeButton=(Button) dialogPane.lookup("#fachHinzufuegeButton");
-		fachHinzufuegeButton.setOnAction((actionEvent)->
-		{
-			TextInputDialog textInputDialog=new TextInputDialog();
-			textInputDialog.showAndWait().ifPresent((item)->
-			{
-				fachHinzufuegen(item, faecherChoiceBox);
-			});
-		});
-
-		Button fachLoeschButton=(Button) dialogPane.lookup("#fachLoeschButton");
-		fachLoeschButton.setOnAction((actionEvent)->
-		{
-			fachLoeschen(faecherChoiceBox);
-		});
-
-		Dialog<Notiz> dialog=new Dialog<>();
-		dialog.setTitle(fensterTitel);
-		dialog.setDialogPane(dialogPane);
-		dialog.setResultConverter((dialogButton)->
-		{
-			if(dialogButton.getButtonData().isCancelButton())
-			{
-				return null;
-			}else
-			{
-				return new Notiz(nameTextField.getText().trim(), inhaltTextArea.getText().trim(),
-					faecherChoiceBox.getValue());
-			}
-		});
-		dialog.initOwner(Main.getPrimaryStage());
-
-		return dialog.showAndWait();
-	}
-
-	private Optional<Note> oeffneNotenDialog(String fensterTitel, String buttonTitel, String namePrompt,
-												 String inhaltPrompt)
-	{
-		return null;
 	}
 
 	private Optional<Doppelstunde> oeffneDoppelstundeDialog(String fensterTitel, String buttonTitel, String namePrompt, String dozentPrompt, String raumPrompt, Tag tagPrompt, int beginnStundeUhrzeitPrompt, int beginnMinuteUhrzeitPrompt, int endeStundeUhrzeitPrompt, int endeMinuteUhrzeitPrompt)
@@ -531,7 +374,135 @@ public class StundenplanViewController implements Initializable
 		return dialog.showAndWait();
 	}
 
-	private <S> void aendernLoeschenKontextMenueHinzufuegen(TableView<S> tableView,
+	private void tableViewInitialisieren(TableView<Doppelstunde> tableView, TableColumn<Doppelstunde, String> tableColumn, ObservableList<Doppelstunde> observableList, Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> callback, BiConsumer<ActionEvent, TableView<Doppelstunde>> aendernConsumer, BiConsumer<ActionEvent, TableView<Doppelstunde>> loeschConsumer)
+	{
+		tableView.setItems(observableList);
+		aendernLoeschenKontextmenueHinzufuegen(montagTableView, aendernConsumer, loeschConsumer);
+		tableColumn.setCellValueFactory(callback);
+		tooltipZuZelleHinzufuegen(tableColumn);
+	}
+
+	//Faecher
+	@FXML private void aufgabeNotizNoteHinzufuegen(ActionEvent actionEvent)
+	{
+		switch(faecherTabPane.getSelectionModel().getSelectedIndex())
+		{
+			case 0->oeffneAufgabenDialog("Aufgaben hinzufügen", "Hinzufügen", "","").ifPresent((item)->
+			{
+				/*aufgabenObservableList.add(item);
+				SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().add(item);
+
+				aufgabenTableView.refresh();*/
+			});
+			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
+			{
+				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().add(item);
+				notizObservableList.add(item);
+				notizenTableView.refresh();
+			});
+			case 2->oeffneNotenDialog("Note hinzufügen", "Hinzufügen", "","").ifPresent((item)->
+			{
+				/*notenObservableList.add(item);
+				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().add(item);
+
+				notenTableView.refresh();*/
+			});
+		}
+	}
+
+	private Optional<Aufgabe> oeffneAufgabenDialog(String fensterTitel, String buttonTitel, String namePrompt,String inhaltPrompt)
+	{
+		return null;
+	}
+
+	private Optional<Notiz> oeffneNotizDialog(String fensterTitel, String buttonTitel, String ueberschriftPrompt, String inhaltPrompt, String fachPrompt)
+	{
+		DialogPane dialogPane=new DialogPane();
+		try
+		{
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NotizHinzufuegeView.fxml")));
+		}catch(IOException ignored){}
+		dialogPane.setMinSize(300, 200);
+		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
+
+		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
+		TextArea inhaltTextArea=(TextArea) dialogPane.lookup("#inhaltTextField");
+		Bindings.createBooleanBinding(
+			()->nameTextField.getText().trim().isEmpty(), nameTextField.textProperty())
+			.or(Bindings.createBooleanBinding(()->inhaltTextArea.getText().trim().isEmpty(), inhaltTextArea.textProperty()))
+			.addListener((observable, oldValue, newValue) ->
+		{
+			dialogPane.lookupButton(ButtonType.OK).setDisable(newValue);
+		});
+		nameTextField.setText(ueberschriftPrompt);
+		inhaltTextArea.setText(inhaltPrompt);
+
+		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) dialogPane.lookup("#fachChoiceBox");
+		fachnameHinzufuegen(fachPrompt, faecherChoiceBox);
+		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
+		faecherChoiceBox.getSelectionModel().select(0);
+		faecherChoiceBox.setValue(fachPrompt);
+
+		Button fachHinzufuegeButton=(Button) dialogPane.lookup("#fachHinzufuegeButton");
+		fachHinzufuegeButton.setOnAction((actionEvent)->
+		{
+			TextInputDialog textInputDialog=new TextInputDialog();
+			textInputDialog.showAndWait().ifPresent((item)->
+			{
+				fachnameHinzufuegen(item, faecherChoiceBox);
+			});
+		});
+
+		Button fachLoeschButton=(Button) dialogPane.lookup("#fachLoeschButton");
+		fachLoeschButton.setOnAction((actionEvent)->
+		{
+			fachnameLoeschen(faecherChoiceBox);
+		});
+
+		Dialog<Notiz> dialog=new Dialog<>();
+		dialog.setTitle(fensterTitel);
+		dialog.setDialogPane(dialogPane);
+		dialog.setResultConverter((dialogButton)->
+		{
+			if(dialogButton.getButtonData().isCancelButton())
+			{
+				return null;
+			}else
+			{
+				return new Notiz(nameTextField.getText().trim(), inhaltTextArea.getText().trim(),
+					faecherChoiceBox.getValue());
+			}
+		});
+		dialog.initOwner(Main.getPrimaryStage());
+
+		return dialog.showAndWait();
+	}
+
+	private Optional<Note> oeffneNotenDialog(String fensterTitel, String buttonTitel, String namePrompt, String inhaltPrompt)
+	{
+		return null;
+	}
+
+	private void fachnameHinzufuegen(String item, ChoiceBox<String> choiceBox)
+	{
+		SchreiberLeser.getNutzerdaten().getFaecher().add(item);
+		SchreiberLeser.getNutzerdaten().setFaecher(new ArrayList<String>(SchreiberLeser.getNutzerdaten().getFaecher().stream().distinct().collect(Collectors.toList())));
+		choiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
+		choiceBox.getSelectionModel().select(item);
+	}
+
+	private void fachnameLoeschen(ChoiceBox<String> choiceBox)
+	{
+		SchreiberLeser.getNutzerdaten().getFaecher().remove(choiceBox.getValue());
+		choiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
+		choiceBox.getSelectionModel().select(0);
+	}
+
+	//Alle
+	private <S> void aendernLoeschenKontextmenueHinzufuegen(TableView<S> tableView,
 										 BiConsumer<ActionEvent, TableView<S>> aendernConsumer,
 										 BiConsumer<ActionEvent, TableView<S>> loeschenConsumer)
 	{
@@ -568,6 +539,7 @@ public class StundenplanViewController implements Initializable
 
 	private <T> void tooltipZuZelleHinzufuegen(TableColumn<Doppelstunde, T> column)
 	{
+
 		Callback<TableColumn<Doppelstunde, T>, TableCell<Doppelstunde, T>> aktuelleCellFactory=column.getCellFactory();
 
 		column.setCellFactory((tableColumn)->
@@ -584,20 +556,5 @@ public class StundenplanViewController implements Initializable
 
 			return tableCell;
 		});
-	}
-
-	private void fachHinzufuegen(String item, ChoiceBox<String> choiceBox)
-	{
-		SchreiberLeser.getNutzerdaten().getFaecher().add(item);
-		SchreiberLeser.getNutzerdaten().setFaecher(new ArrayList<String>(SchreiberLeser.getNutzerdaten().getFaecher().stream().distinct().collect(Collectors.toList())));
-		choiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
-		choiceBox.getSelectionModel().select(item);
-	}
-
-	private void fachLoeschen(ChoiceBox<String> choiceBox)
-	{
-		SchreiberLeser.getNutzerdaten().getFaecher().remove(choiceBox.getValue());
-		choiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
-		choiceBox.getSelectionModel().select(0);
 	}
 }
