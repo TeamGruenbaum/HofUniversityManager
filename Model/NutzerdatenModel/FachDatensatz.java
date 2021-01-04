@@ -1,29 +1,19 @@
 package Model.NutzerdatenModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FachDatensatz
+public class FachDatensatz implements Serializable
 {
-    private String name;
     private ArrayList<Aufgabe> aufgaben;
     private ArrayList<Notiz> notizen;
     private ArrayList<Note> noten;
 
-    public FachDatensatz(String name, ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notiz, ArrayList<Note> noten)
+    public FachDatensatz(ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notiz, ArrayList<Note> noten)
     {
-        this.name=name;
         this.aufgaben = aufgaben;
-        this.notizen = notizen;
+        this.notizen = notiz;
         this.noten = noten;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name=name;
     }
 
     public ArrayList<Aufgabe> getAufgaben() {

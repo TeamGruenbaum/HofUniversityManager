@@ -86,8 +86,6 @@ public class GrundViewController implements Initializable {
         studiengangEinmalHeruntergeladen=false;
         treffpunkteEinmalHeruntergeladen=false;
 
-        //setThema(SchreiberLeser.getNutzerdaten().getAktuellesThema());
-
         //Initialisieren des Hauptmenuebuttons
         ImageView view = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
         view.setFitHeight(35);

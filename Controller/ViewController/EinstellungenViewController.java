@@ -101,8 +101,10 @@ public class EinstellungenViewController implements Initializable
                 return null;
             }
         });
-        cbSemester.setItems(erzeugeSemesterListe(SchreiberLeser.getNutzerdaten().getStudiengang())); // hier legt der Fehler, wenn man das aber ändert => Fehler bei 1. Anwendungsstart!
-        // cbSemester.setItems(FXCollections.observableList(SchreiberLeser.getNutzerdaten().getStudiengang().getStudiensemester())); // => Alternative
+        if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null)
+        {
+            cbSemester.setItems(FXCollections.observableList(SchreiberLeser.getNutzerdaten().getStudiengang().getStudiensemester())); // => Alternative
+        }
 
         if(SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
         {

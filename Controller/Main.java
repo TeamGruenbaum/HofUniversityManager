@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.Speicher.SchreiberLeser;
+import Controller.ViewController.GrundViewController;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
@@ -37,6 +38,8 @@ public class Main extends Application
         primaryStage.setScene(new Scene(root, 1000, 700));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
         root.getStylesheets().add("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+
+        GrundViewController.setThema(SchreiberLeser.getNutzerdaten().getAktuellesThema());
 
         primaryStage.setMinHeight(900);
         primaryStage.setMinWidth(1300);

@@ -12,16 +12,22 @@ public class Nutzerdaten implements Serializable
 {
     private Studiensemester studiensemester;
     private ArrayList<Doppelstunde> doppelstunden;
+    private FachDatensatz fachDatensatz;
+    private ArrayList<String> faecher;
     private Login ssoLogin;
     private Thema aktuellesThema;
     private MenuepunktInformation letzterGeoeffneterMenuepunkt;
     private Studiengang studiengang;
 
-    public Nutzerdaten(Studiengang studiengang, Studiensemester studiensemester, ArrayList<Doppelstunde> doppelstunden, Login ssoLogin, Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
+    public Nutzerdaten(Studiengang studiengang, Studiensemester studiensemester,
+                       ArrayList<Doppelstunde> doppelstunden, FachDatensatz fachDatensatz, ArrayList<String> faecher,Login ssoLogin
+        , Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
     {
         this.studiengang=studiengang;
         this.studiensemester = studiensemester;
         this.doppelstunden = doppelstunden;
+        this.fachDatensatz=fachDatensatz;
+        this.faecher=faecher;
         this.ssoLogin = ssoLogin;
         this.aktuellesThema = aktuellesThema;
         this.letzterGeoeffneterMenuepunkt = letzterGeoeffneterMenuepunkt;
@@ -77,5 +83,22 @@ public class Nutzerdaten implements Serializable
     public void setLetzterGeoeffneterMenuepunkt(MenuepunktInformation neuerWert)
     {
         letzterGeoeffneterMenuepunkt=neuerWert;
+    }
+
+    public FachDatensatz getFachDatensatz()
+    {
+        return fachDatensatz;
+    }
+
+    public ArrayList<String> getFaecher()
+    {
+
+        return faecher;
+    }
+
+    public void setFaecher(ArrayList<String> faecher)
+    {
+
+        this.faecher=faecher;
     }
 }

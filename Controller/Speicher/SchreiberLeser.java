@@ -1,5 +1,6 @@
 package Controller.Speicher;
 
+import Model.Datum;
 import Model.DropdownModel.DropdownMenue;
 import Model.DropdownModel.Studiensemester;
 import Model.MensaplanModel.Mensaplan;
@@ -12,6 +13,7 @@ import Model.StudiengangModel.StudiengangInformationen;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
+import Model.Uhrzeit;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -58,7 +60,14 @@ public class SchreiberLeser
         studiengangInformationen=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
-        nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new Login("", ""), Thema.HELL, Menue.getMenuepunkte().get(Menue.getMenuepunkte().size()-1));
+
+        ArrayList<String> temp=new ArrayList<String>();
+        temp.add("Allgemein");
+        nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(),
+            new FachDatensatz(new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>()),
+            temp,
+            new Login("", ""), Thema.HELL,
+            Menue.getMenuepunkte().get(Menue.getMenuepunkte().size()-1));
 
         kopieren(new File(SchreiberLeser.class.getResource("../../Ressourcen/Andere/Dropdownmenue.sva").getPath()), "Dropdownmenue.sva");
         dropdownMenueLaden();
