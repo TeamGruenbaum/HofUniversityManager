@@ -146,11 +146,6 @@ public class EinstellungenViewController implements Initializable
     }
 
     @FXML
-    private void ersteSchritteAnzeigen() {
-        System.out.println("tutorial zeigen");
-    }
-
-    @FXML
     private void manuellesZuruecksetzen() {
         System.out.println("zurücksetzung");
     }
