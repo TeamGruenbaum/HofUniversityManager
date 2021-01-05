@@ -78,6 +78,7 @@ public class GrundViewController implements Initializable {
 
     private static WebView uglyWebView;
     private static Button uglyMenuHauptButton;
+    private static BorderPane uglyBorderPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -163,6 +164,7 @@ public class GrundViewController implements Initializable {
 
         uglyWebView=webView;
         uglyMenuHauptButton=menuHauptButton;
+        uglyBorderPane=borderPane;
     }
 
     @FXML
@@ -262,7 +264,7 @@ public class GrundViewController implements Initializable {
             } break;
             case STUDIENGANG:
             {
-                if(isStudiengangGesetzt())
+                if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
                 {
                     ProgressIndicator progressIndicator=ladeLadenScene();
                     hauptmenueSchließen();
@@ -378,11 +380,6 @@ public class GrundViewController implements Initializable {
                 ladeSceneMitScrollPane();
             }
         }
-    }
-
-    private boolean isStudiengangGesetzt()
-    {
-        return (SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null);
     }
 
     private void hauptmenueSchließen()
