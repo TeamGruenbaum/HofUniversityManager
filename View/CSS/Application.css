@@ -3,6 +3,7 @@
     -menubar-color: white;
     -font-color: #262626;
     -anwendung-bgr: #d6d6d6;
+    -anwendung-bgr-accent: #c3c3c3;
     -accent-color: #0072a0;
     -accent-color-accent: #004a66;
     -warn-color: #8a2828;
@@ -81,14 +82,9 @@
     -fx-background-color: -anwendung-bgr;
 }
 
-/* Footer-Leiste */
-.footer {
-    -fx-background-color: -menubar-color;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, -1);
-}
-
-.footerText {
-    -fx-text-fill: -menubar-text-color;
+/* Dialog-Panes */
+.dialog-pane {
+    -fx-background-color: -anwendung-bgr;
 }
 
 /* Tab-Panes */
@@ -169,11 +165,39 @@
     -fx-background-radius: 2,2,2,2;
 }
 
+/* Context-Menü */
+.context-menu {
+    -fx-background-color: white;
+    -fx-text-fill: -font-color;
+}
+
+.menu-item .label {
+    -fx-text-fill: -font-color;
+}
+
+.menu-item:focused{
+    -fx-background-color: -accent-color;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: white;
+}
+
 /* Textfelder */
 .anwendungsBereich > .text-field {
     -fx-text-box-border: transparent;
     -fx-background-color: white;
     -fx-background-insets: 1, 1, 1, 1;
+}
+
+.anwendungsBereich > .text-area {
+    -fx-text-box-border: transparent;
+    -fx-background-color: white;
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, white, transparent, white;
 }
 
 /* Checkbox (darkmode) */
@@ -191,6 +215,30 @@
 
 .anwendungsBereich > .button:hover {
     -fx-body-color: -accent-color-accent;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button{
+    -fx-body-color: -accent-color;
+    -fx-text-fill: white;
+    -fx-background-insets: 0,0,0,0;
+    -fx-background-radius: 2,2,2,2;
+}
+
+.dialog-pane .button:hover{
+    -fx-body-color: -accent-color-accent;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:cancel{
+    -fx-body-color: #cdcdcd;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:cancel:hover{
+    -fx-body-color: #f5f5f5;
+    -fx-text-fill: black;
     -fx-cursor: hand;
 }
 
@@ -276,4 +324,54 @@
 
 .progress-indicator  {
     -fx-padding: 0 0 -16 0;
+}
+
+/* Tabellen */
+.table-view{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: -menubar-color;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: -menubar-color;
+    -fx-text-fill: -menubar-text-color;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: -font-color;
+}
+
+.table-row-cell{
+    -fx-background-color: -anwendung-bgr, -anwendung-bgr;
+    -fx-background-insets: 0, 0 0 0 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -anwendung-bgr-accent, -anwendung-bgr-accent;
+    -fx-background-insets: 0, 0 0 0 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:selected .table-cell{
+    -fx-background-color: -accent-color;
+    -fx-text-fill: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.table-view > .virtual-flow > .scroll-bar > .increment-button,
+.table-view > .virtual-flow > .scroll-bar > .decrement-button {
+    -fx-opacity: 0;
+}
+
+.table-row-cell {
+    -fx-table-cell-border-color: transparent;
 }

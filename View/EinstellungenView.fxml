@@ -58,13 +58,19 @@
                         <Insets top="20.0" />
                      </padding></Label>
                    <Label text="Wenn Du Probleme in der Anwendung hast, kannst Du das Programm hier zurücksetzen." />
-                  <Button mnemonicParsing="false" styleClass="buttonKritisch" text="Anwendung zurücksetzen" onAction="#manuellesZuruecksetzen"/>
-                   <Label styleClass="ueberschrift" text="Beginner-Tutorial">
-                       <padding>
-                           <Insets top="20.0" />
-                       </padding></Label>
-                  <Label text="Du möchtest nochmal die ersten Schritte gezeigt bekommen?" />
-                  <Button mnemonicParsing="false" text="Erste Schritte anzeigen" onAction="#ersteSchritteAnzeigen"/>
+                  <Button mnemonicParsing="false" onAction="#manuellesZuruecksetzen" styleClass="buttonKritisch" text="Anwendung zurücksetzen" />
+                  <Label layoutX="10.0" layoutY="174.0" styleClass="ueberschrift" text="Über das Programm">
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="225.0" text="Entstanden im Rahmen desr Veranstaltung &quot;Software Engineering 2&quot;, Medieninformatik, WS 2020, Hochschule Hof, Prof. Dr. Matthias Meitner" />
+                  <Label layoutX="10.0" layoutY="348.0" text="Team: Patrick Dressel, Steven Solleder, Marcel Stürzenberger, Vincent Tischler, Isabell Waas">
+                     <VBox.margin>
+                        <Insets top="-15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="348.0" text="© 2021" />
                </children>
                <opaqueInsets>
                   <Insets />
