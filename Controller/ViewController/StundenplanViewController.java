@@ -273,6 +273,8 @@ public class StundenplanViewController implements Initializable
 			Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
 			alert.setTitle("Studiengang und -semester setzen");
 			alert.setHeaderText("Warnung");
+			alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			alert.getDialogPane().setStyle(Main.getRoot().getStyle());
 			alert.initOwner(Main.getPrimaryStage());
 			alert.showAndWait();
 		}
@@ -380,6 +382,8 @@ public class StundenplanViewController implements Initializable
 		try
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/DoppelstundenHinzufuegeView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException ignored)
 		{
 		}
@@ -644,11 +648,14 @@ public class StundenplanViewController implements Initializable
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NotizHinzufuegeView.fxml")));
 		}catch(IOException ignored){}
+		dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+		dialogPane.setStyle(Main.getRoot().getStyle());
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
 		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
+		System.out.println(((Button) dialogPane.lookupButton(ButtonType.CANCEL)).getScaleX());
 
 		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
 		TextArea inhaltTextArea=(TextArea) dialogPane.lookup("#inhaltTextField");
@@ -708,6 +715,8 @@ public class StundenplanViewController implements Initializable
 		textInputDialog.setContentText("Fachname");
 		textInputDialog.getEditor().textProperty().addListener(((observable, oldValue, newValue) -> textInputDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(textInputDialog.getEditor().textProperty().getValue().trim().isEmpty())));
 		textInputDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
+		textInputDialog.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+		textInputDialog.getDialogPane().setStyle(Main.getRoot().getStyle());
 
 		return textInputDialog.showAndWait();
 	}

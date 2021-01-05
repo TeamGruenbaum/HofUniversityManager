@@ -16,7 +16,7 @@
         <WebView fx:id="webview"/>
     </center>
     <bottom>
-        <HBox spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+        <HBox styleClass="anwendungsBereich" spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
             <Button onAction="#zurueckGehen" minWidth="80" mnemonicParsing="false" text="Zurück"  />
             <Button onAction="#vorwärtsGehen" minWidth="80" mnemonicParsing="false" text="Vorwärts"  />
             <ProgressIndicator fx:id="progressIndicator"></ProgressIndicator>

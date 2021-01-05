@@ -189,7 +189,8 @@ public class GrundViewController implements Initializable {
                     "-accent-color: #318eb1;" +
                     "-warn-color: #691c1c;" +
                     "-menubar-text-color: white;" +
-                    "-accent-color-accent: #266e8c");
+                    "-accent-color-accent: #266e8c;" +
+                    "-anwendung-bgr-accent: #c6c6c6");
             farbwechsel.setBrightness(1);
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
@@ -198,7 +199,8 @@ public class GrundViewController implements Initializable {
                     "-accent-color: #0072a0;" +
                     "-warn-color: #8a2828;" +
                     "-menubar-text-color: black;" +
-                    "-accent-color-accent: #004a66");
+                    "-accent-color-accent: #004a66;" +
+                    "-anwendung-bgr-accent: #c3c3c3");
             farbwechsel.setBrightness(0);
         }
 
@@ -300,6 +302,7 @@ public class GrundViewController implements Initializable {
                 else
                 {
                     Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
+                    alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
                     alert.setTitle("Studiengang und -semester setzen");
                     alert.setHeaderText("Warnung");
                     alert.initOwner(Main.getPrimaryStage());
@@ -358,6 +361,7 @@ public class GrundViewController implements Initializable {
                 if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
                 {
                     Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest deine Login-Daten in den Einstellungen hinterlegen!");
+                    alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
                     alert.setTitle("Login setzen");
                     alert.setHeaderText("Empfehlung");
                     alert.initOwner(Main.getPrimaryStage());
@@ -449,6 +453,7 @@ public class GrundViewController implements Initializable {
                 menuHauptButton.setDisable(false);
                 oeffneScene();
             });
+            ((Label) node.lookup("#text")).setWrapText(true);
             borderPane.setCenter(node);
         }catch(IOException e){}
     }
