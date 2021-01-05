@@ -4,16 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="aP" styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
+<AnchorPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
    <children>
       <BorderPane prefWidth="1000.0">
          <center>
-            <VBox spacing="14.0">
+            <VBox spacing="14.0" styleClass="anwendungsBereich">
                <BorderPane.margin>
                   <Insets bottom="28.0" left="28.0" right="28.0" />
                </BorderPane.margin>
                <children>
-                  <GridPane hgap="5.0" maxHeight="120.0" minHeight="150.0" prefHeight="120.0" vgap="5.0">
+                  <GridPane hgap="5.0" maxHeight="120.0" minHeight="150.0" prefHeight="120.0" styleClass="anwendungsBereich" vgap="5.0">
                     <columnConstraints>
                       <ColumnConstraints maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="10.0" prefWidth="533.0" />
@@ -53,6 +53,18 @@
                         <CheckBox fx:id="cbDarkMode" mnemonicParsing="false" text="inaktiv" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
+                  <Label styleClass="ueberschrift" text="Datenlöschung oder Fehlerbehebung">
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding></Label>
+                   <Label text="Wenn Du Probleme in der Anwendung hast, kannst Du das Programm hier zurücksetzen." />
+                  <Button mnemonicParsing="false" styleClass="buttonKritisch" text="Anwendung zurücksetzen" onAction="#manuellesZuruecksetzen"/>
+                   <Label styleClass="ueberschrift" text="Beginner-Tutorial">
+                       <padding>
+                           <Insets top="20.0" />
+                       </padding></Label>
+                  <Label text="Du möchtest nochmal die ersten Schritte gezeigt bekommen?" />
+                  <Button mnemonicParsing="false" text="Erste Schritte anzeigen" onAction="#ersteSchritteAnzeigen"/>
                </children>
                <opaqueInsets>
                   <Insets />
@@ -60,7 +72,7 @@
             </VBox>
          </center>
          <top>
-            <VBox>
+            <VBox styleClass="anwendungsBereich">
                <children>
                   <Label styleClass="ueberschrift" text="Persönliche Einstellungen">
                      <opaqueInsets>

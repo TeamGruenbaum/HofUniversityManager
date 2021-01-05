@@ -178,12 +178,12 @@ public class GrundViewController implements Initializable {
 
         if(thema == Thema.DUNKEL) {
             Main.getRoot().setStyle("-menubar-color: #404040;" +
-                    "-font-color: #262626;" +
+                    "-font-color: #000000;" +
                     "-anwendung-bgr: #a2a2a2;" +
-                    "-accent-color: #79b7d2;" +
+                    "-accent-color: #318eb1;" +
                     "-warn-color: #691c1c;" +
                     "-menubar-text-color: white;" +
-                    "-accent-color-accent: #318eb1");
+                    "-accent-color-accent: #266e8c");
             farbwechsel.setBrightness(1);
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
@@ -405,7 +405,8 @@ public class GrundViewController implements Initializable {
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
-            borderPane.getCenter().setViewOrder(0);
+            borderPane.getCenter().setViewOrder(1);
+            borderPane.getStyleClass().add("anwendungsBereich");
             hauptmenueSchließen();
         }
         catch(Exception e){
@@ -418,7 +419,7 @@ public class GrundViewController implements Initializable {
         try
         {
             borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
-            borderPane.getCenter().setViewOrder(0);
+            borderPane.getCenter().setViewOrder(1);
             hauptmenueSchließen();
         }
         catch(Exception e){

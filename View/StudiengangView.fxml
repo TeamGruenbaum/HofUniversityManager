@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StudiengangViewController">
+<AnchorPane styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StudiengangViewController">
     <children>
         <BorderPane minWidth="-Infinity" prefWidth="1000.0">
             <center>
-                <VBox fx:id="vbContent" spacing="14.0">
+                <VBox fx:id="vbContent" spacing="14.0" styleClass="anwendungsBereich">
                     <BorderPane.margin>
                         <Insets bottom="28.0" left="28.0" right="28.0" />
                     </BorderPane.margin>
@@ -19,7 +19,7 @@
                 </VBox>
             </center>
             <top>
-                <VBox>
+                <VBox styleClass="anwendungsBereich">
                     <children>
                         <Label fx:id="studiengangTitel" text="Studiengang" styleClass="ueberschrift">
                             <opaqueInsets>

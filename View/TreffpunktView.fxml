@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="aP" styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.TreffpunktViewController">
+<AnchorPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.TreffpunktViewController">
    <children>
       <BorderPane prefWidth="1000.0">
          <center>
-            <VBox spacing="14.0" fx:id="contentVBox">
+            <VBox spacing="14.0" fx:id="contentVBox" styleClass="anwendungsBereich">
                <BorderPane.margin>
                   <Insets bottom="28.0" left="28.0" right="28.0" />
                </BorderPane.margin>
@@ -22,9 +22,9 @@
             </VBox>
          </center>
          <top>
-            <VBox>
+            <VBox styleClass="anwendungsBereich">
                <children>
-                  <Label text="Treffpunkte" styleClass="ueberschrift">
+                  <Label text="Treffpunkte" styleClass="ueberschrift" >
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
