@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -48,6 +49,11 @@ public class Main extends Application
             public void handle(WindowEvent t)
             {
                 SchreiberLeser.alleSpeichern();
+
+                if(SchreiberLeser.isErsterStart())
+                {
+                    SchreiberLeser.isErsterStartSetzen();
+                }
 
                 Platform.exit();
                 System.exit(0);

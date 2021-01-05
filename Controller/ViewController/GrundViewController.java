@@ -12,6 +12,7 @@ import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 import Model.NutzerdatenModel.Anwendung;
 import Model.QuicklinksModel.Quicklinks;
+import java.io.IOException;
 import javafx.animation.FadeTransition;
 
 import Model.NutzerdatenModel.Nutzerdaten;
@@ -162,6 +163,11 @@ public class GrundViewController implements Initializable {
 
         oeffneScene();
 
+        if(SchreiberLeser.isErsterStart())
+        {
+            ladeErsterStartScene();
+        }
+
         uglyWebView=webView;
         uglyMenuHauptButton=menuHauptButton;
         uglyBorderPane=borderPane;
@@ -209,16 +215,6 @@ public class GrundViewController implements Initializable {
     private void oeffneScene()
     {
         ort.setText(grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
-
-        ButtonType zuEinstellungenButtonType=new ButtonType("Zu den Einstellungen", ButtonBar.ButtonData.OK_DONE);
-        Alert alert=new Alert(Alert.AlertType.INFORMATION, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst", zuEinstellungenButtonType);
-        alert.initOwner(Main.getPrimaryStage());
-        alert.setTitle("Studiengang und -semester setzen");
-        alert.setOnCloseRequest(event ->
-        {
-            SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
-            ladeSceneMitScrollPane();
-        });
 
 
         switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
@@ -305,16 +301,12 @@ public class GrundViewController implements Initializable {
                 }
                 else
                 {
-                    if(alert.showAndWait().orElse(ButtonType.CANCEL).getButtonData()==ButtonBar.ButtonData.OK_DONE)
-                    {
-                        SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml"));
-                        ladeSceneMitScrollPane();
-                    }
+                    Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
+                    alert.setTitle("Studiengang und -semester setzen");
+                    alert.setHeaderText("Warnung");
+                    alert.initOwner(Main.getPrimaryStage());
+                    alert.showAndWait();
                 }
-            }break;
-            case MOODLE:
-            {
-                ladeSceneOhneScrollPane();
             }break;
             case PANOPTO:
             {
@@ -324,7 +316,7 @@ public class GrundViewController implements Initializable {
             {
                 Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
             }break;
-            case CAMPUSSPORT:
+            case CAMPUSSPORT, BAYERNFAHRPLAN:
             {
                 ladeSceneOhneScrollPane();
             }break;
@@ -363,14 +355,19 @@ public class GrundViewController implements Initializable {
                     new Thread(task).start();
                 }
             }break;
-            case BAYERNFAHRPLAN:
+            case MOODLE, PRIMUSS:
             {
+                if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
+                {
+                    Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest deine Login-Daten in den Einstellungen hinterlegen!");
+                    alert.setTitle("Login setzen");
+                    alert.setHeaderText("Empfehlung");
+                    alert.initOwner(Main.getPrimaryStage());
+                    alert.showAndWait();
+                }
+
                 ladeSceneOhneScrollPane();
-            }break;
-            case PRIMUSS:
-            {
-                ladeSceneOhneScrollPane();
-            }break;
+            }
             case EINSTELLUNGEN:
             {
                 ladeSceneMitScrollPane();
@@ -438,6 +435,23 @@ public class GrundViewController implements Initializable {
         Datenabrufer.setProgressIndicator(progressBar);
 
         return progressBar;
+    }
+
+    private void ladeErsterStartScene()
+    {
+        menuHauptButton.setDisable(true);
+        ort.setText("Erster Start");
+        
+        try
+        {
+            Node node=FXMLLoader.load(getClass().getResource("../../View/ErsterStartView.fxml"));
+            ((Button) node.lookup("#losgehts")).setOnAction((actionEvent)->
+            {
+                menuHauptButton.setDisable(false);
+                oeffneScene();
+            });
+            borderPane.setCenter(node);
+        }catch(IOException e){}
     }
 
     //Hilfsmethoden für visuelle Effekte

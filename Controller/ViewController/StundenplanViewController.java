@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -222,10 +223,21 @@ public class StundenplanViewController implements Initializable
 	//Stundenplan
 	@FXML private void stundenplanZuruecksetzen(ActionEvent actionEvent)
 	{
-		Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
-		Datenabrufer.stundenplanAbrufen();
-		stundenplanZuruecksetzen.setDisable(true);
-		stundenplanZuruecksetzungProgressIndicator.setVisible(true);
+		if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
+		{
+			Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
+			alert.setTitle("Studiengang und -semester setzen");
+			alert.setHeaderText("Warnung");
+			alert.initOwner(Main.getPrimaryStage());
+			alert.showAndWait();
+		}
+		else
+		{
+			Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
+			Datenabrufer.stundenplanAbrufen();
+			stundenplanZuruecksetzen.setDisable(true);
+			stundenplanZuruecksetzungProgressIndicator.setVisible(true);
+		}
 	}
 
 	@FXML private void doppelstundeHinzufuegen(ActionEvent actionEvent)
@@ -332,16 +344,20 @@ public class StundenplanViewController implements Initializable
 		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
+
 		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
 		TextField dozentTextField=(TextField) dialogPane.lookup("#dozentTextField");
 		TextField raumTextField=(TextField) dialogPane.lookup("#raumTextField");
-		Bindings.createBooleanBinding(()->nameTextField.getText().trim().isEmpty(), nameTextField.textProperty()).or(Bindings.createBooleanBinding(()->dozentTextField.getText().trim().isEmpty(), dozentTextField.textProperty())).or(Bindings.createBooleanBinding(()->raumTextField.getText().trim().isEmpty(), raumTextField.textProperty())).addListener(((observable, oldValue, newValue)->
-		{
-			dialogPane.lookupButton(ButtonType.OK).setDisable(newValue);
-		}));
+
+		ChangeListener<String> changeListener=(observable, oldValue, newValue)->dialogPane.lookupButton(ButtonType.OK).setDisable(nameTextField.getText().trim().isEmpty()||dozentTextField.getText().trim().isEmpty()||raumTextField.getText().trim().isEmpty());
+		nameTextField.textProperty().addListener(changeListener);
+		dozentTextField.textProperty().addListener(changeListener);
+		raumTextField.textProperty().addListener(changeListener);
+
 		nameTextField.setText(namePrompt);
 		dozentTextField.setText(dozentPrompt);
 		raumTextField.setText(raumPrompt);
+
 
 		ChoiceBox<Tag> tagChoiceBox=(ChoiceBox<Tag>) dialogPane.lookup("#tagChoiceBox");
 		tagChoiceBox.setItems(FXCollections.observableArrayList(List.of(Tag.values())));
@@ -414,7 +430,7 @@ public class StundenplanViewController implements Initializable
 
 				aufgabenTableView.refresh();*/
 			});
-			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
+			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
 				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().add(item);
 				notizObservableList.add(item);
@@ -450,13 +466,9 @@ public class StundenplanViewController implements Initializable
 
 		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
 		TextArea inhaltTextArea=(TextArea) dialogPane.lookup("#inhaltTextField");
-		Bindings.createBooleanBinding(
-			()->nameTextField.getText().trim().isEmpty(), nameTextField.textProperty())
-			.or(Bindings.createBooleanBinding(()->inhaltTextArea.getText().trim().isEmpty(), inhaltTextArea.textProperty()))
-			.addListener((observable, oldValue, newValue) ->
-		{
-			dialogPane.lookupButton(ButtonType.OK).setDisable(newValue);
-		});
+		ChangeListener<String> changeListener=(observable, oldValue, newValue)->dialogPane.lookupButton(ButtonType.OK).setDisable(nameTextField.getText().trim().isEmpty() || inhaltTextArea.getText().trim().isEmpty());
+		nameTextField.textProperty().addListener(changeListener);
+		inhaltTextArea.textProperty().addListener(changeListener);
 		nameTextField.setText(ueberschriftPrompt);
 		inhaltTextArea.setText(inhaltPrompt);
 
@@ -512,7 +524,7 @@ public class StundenplanViewController implements Initializable
 		textInputDialog.setHeaderText(null);
 		((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Hinzufügen");
 		textInputDialog.setTitle("Fach hinzufügen");
-		textInputDialog.setContentText("Fachname:");
+		textInputDialog.setContentText("Fachname");
 
 		return textInputDialog.showAndWait();
 	}
