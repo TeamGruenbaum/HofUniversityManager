@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="aP" styleClass="anwendungsWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.MensaplanViewController">
+<AnchorPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.MensaplanViewController">
     <children>
         <BorderPane prefWidth="1000.0">
             <center>
-                <VBox fx:id="contentVBox" spacing="14.0">
+                <VBox fx:id="contentVBox" spacing="14.0" styleClass="anwendungsBereich">
                     <BorderPane.margin>
                         <Insets bottom="28.0" left="28.0" right="28.0" />
                     </BorderPane.margin>
@@ -22,7 +22,7 @@
                 </VBox>
             </center>
             <top>
-                <VBox>
+                <VBox styleClass="anwendungsBereich">
                     <children>
                         <Label text="Mensaplan" fx:id="mpTitel" styleClass="ueberschrift">
                             <opaqueInsets>

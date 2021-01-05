@@ -142,4 +142,14 @@ public class EinstellungenViewController implements Initializable
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList()));
     }
+
+    @FXML
+    private void ersteSchritteAnzeigen() {
+        System.out.println("tutorial zeigen");
+    }
+
+    @FXML
+    private void manuellesZuruecksetzen() {
+        System.out.println("zurücksetzung");
+    }
 }

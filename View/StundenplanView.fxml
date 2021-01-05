@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="allesBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="925.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StundenplanViewController">
+<BorderPane fx:id="allesBorderPane" styleClass="anwendungsBereich" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="925.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StundenplanViewController">
    <center>
         <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" fx:id="hauptTabPane">
             <tabs>
@@ -18,10 +18,10 @@
                     <content>
                   <BorderPane>
                      <bottom>
-                                <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER_RIGHT">
+                                <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER_RIGHT" styleClass="anwendungsBereich">
                                     <children>
                               <ProgressIndicator visible="false" fx:id="stundenplanZuruecksetzungProgressIndicator" progress="0.0" />
-                                        <Button fx:id="stundenplanZuruecksetzen" mnemonicParsing="false" onAction="#stundenplanZuruecksetzen" text="Stundenplan zurücksetzen und runterladen" />
+                                        <Button fx:id="stundenplanZuruecksetzen" styleClass="buttonKritisch" mnemonicParsing="false" onAction="#stundenplanZuruecksetzen" text="Stundenplan zurücksetzen und runterladen" />
                                           <Button alignment="CENTER" mnemonicParsing="false" onAction="#doppelstundeHinzufuegen" text="Stunde hinzufügen" />
                                     </children>
                            <opaqueInsets>
@@ -33,7 +33,7 @@
                         </HBox>
                      </bottom>
                      <center>
-                        <HBox fx:id="stundenplanHBox" BorderPane.alignment="CENTER">
+                        <HBox fx:id="stundenplanHBox" BorderPane.alignment="CENTER" >
                            <children>
                                 <TableView fx:id="montagTableView" HBox.hgrow="ALWAYS">
                                     <columns>
@@ -165,7 +165,7 @@
                         </TabPane>
                      </center>
                      <bottom>
-                        <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER" styleClass="anwendungsBereich">
                            <children>
                               <Button alignment="CENTER" mnemonicParsing="false" onAction="#aufgabeNotizNoteHinzufuegen" text="Hinzufügen" />
                            </children>
