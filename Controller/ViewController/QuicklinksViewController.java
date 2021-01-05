@@ -131,9 +131,13 @@ public class QuicklinksViewController implements Initializable
         });
     }
 
-    @FXML
-    public void zurueckGehen(ActionEvent actionEvent)
+    @FXML public void zurueckGehen(ActionEvent actionEvent)
     {
         webEngine.executeScript("history.back()");
     }
+
+    @FXML private void vorwärtsGehen(ActionEvent actionEvent)
+	{
+        webEngine.executeScript("history.forward()");
+	}
 }

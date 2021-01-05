@@ -9,14 +9,23 @@
 
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ProgressIndicator?>
-<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.QuicklinksViewController">
-    <children>
-        <WebView fx:id="webview" prefHeight="50" prefWidth="50"/>
-        <AnchorPane pickOnBounds="false">
-            <children>
-                <Button onAction="#zurueckGehen" mnemonicParsing="false" text="Zurück" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
-                <ProgressIndicator fx:id="progressIndicator" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0"></ProgressIndicator>
-            </children>
-        </AnchorPane>
-    </children>
-</StackPane>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.QuicklinksViewController">
+    <center>
+        <WebView fx:id="webview"/>
+    </center>
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+            <Button onAction="#zurueckGehen" minWidth="80" mnemonicParsing="false" text="Zurück"  />
+            <Button onAction="#vorwärtsGehen" minWidth="80" mnemonicParsing="false" text="Vorwärts"  />
+            <ProgressIndicator fx:id="progressIndicator"></ProgressIndicator>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+</BorderPane>

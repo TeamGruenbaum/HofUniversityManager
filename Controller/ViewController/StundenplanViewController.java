@@ -173,6 +173,7 @@ public class StundenplanViewController implements Initializable
 				stundenplanLaden();
 
 				stundenplanZuruecksetzen.setDisable(false);
+				stundenplanZuruecksetzungProgressIndicator.setVisible(false);
 			}
 		}));
 
@@ -224,6 +225,7 @@ public class StundenplanViewController implements Initializable
 		Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
 		Datenabrufer.stundenplanAbrufen();
 		stundenplanZuruecksetzen.setDisable(true);
+		stundenplanZuruecksetzungProgressIndicator.setVisible(true);
 	}
 
 	@FXML private void doppelstundeHinzufuegen(ActionEvent actionEvent)
@@ -244,13 +246,18 @@ public class StundenplanViewController implements Initializable
 		stundenplanHBox.getChildren().remove(samstagTableView);
 		stundenplanHBox.getChildren().remove(ohneTagTableView);
 
+
+		//TODO Digitale Wirtschaft 2 - SS
 		Comparator<Doppelstunde> doppelstundeComparator=(o1, o2)->o1.getBeginn().compareTo(o2.getBeginn());
 
 		SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item->
 		{
 			if(item.getTag()==null)
 			{
-				stundenplanHBox.getChildren().add(ohneTagTableView);
+				if(!stundenplanHBox.getChildren().contains(ohneTagTableView))
+				{
+					stundenplanHBox.getChildren().add(ohneTagTableView);
+				}
 				ohneTagObservableList.add(item);
 				ohneTagObservableList.sort(doppelstundeComparator);
 			}else
@@ -289,7 +296,10 @@ public class StundenplanViewController implements Initializable
 					break;
 					case SAMSTAG:
 					{
-						stundenplanHBox.getChildren().add(samstagTableView);
+						if(!stundenplanHBox.getChildren().contains(samstagTableView))
+						{
+							stundenplanHBox.getChildren().add(samstagTableView);
+						}
 						samstagObservableList.add(item);
 						samstagObservableList.sort(doppelstundeComparator);
 					}
@@ -387,7 +397,7 @@ public class StundenplanViewController implements Initializable
 	private void tableViewInitialisieren(TableView<Doppelstunde> tableView, TableColumn<Doppelstunde, String> tableColumn, ObservableList<Doppelstunde> observableList, Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> callback, BiConsumer<ActionEvent, TableView<Doppelstunde>> aendernConsumer, BiConsumer<ActionEvent, TableView<Doppelstunde>> loeschConsumer)
 	{
 		tableView.setItems(observableList);
-		aendernLoeschenKontextmenueHinzufuegen(montagTableView, aendernConsumer, loeschConsumer);
+		aendernLoeschenKontextmenueHinzufuegen(tableView, aendernConsumer, loeschConsumer);
 		tableColumn.setCellValueFactory(callback);
 		tooltipZuZelleHinzufuegen(tableColumn);
 	}
@@ -459,8 +469,7 @@ public class StundenplanViewController implements Initializable
 		Button fachHinzufuegeButton=(Button) dialogPane.lookup("#fachHinzufuegeButton");
 		fachHinzufuegeButton.setOnAction((actionEvent)->
 		{
-			TextInputDialog textInputDialog=new TextInputDialog();
-			textInputDialog.showAndWait().ifPresent((item)->
+			fachnameHinzufuegenDialogOeffnen().ifPresent((item)->
 			{
 				fachnameHinzufuegen(item, faecherChoiceBox);
 			});
@@ -494,6 +503,18 @@ public class StundenplanViewController implements Initializable
 	private Optional<Note> oeffneNotenDialog(String fensterTitel, String buttonTitel, String namePrompt, String inhaltPrompt)
 	{
 		return null;
+	}
+
+	private Optional<String> fachnameHinzufuegenDialogOeffnen()
+	{
+		TextInputDialog textInputDialog=new TextInputDialog();
+		textInputDialog.setGraphic(null);
+		textInputDialog.setHeaderText(null);
+		((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Hinzufügen");
+		textInputDialog.setTitle("Fach hinzufügen");
+		textInputDialog.setContentText("Fachname:");
+
+		return textInputDialog.showAndWait();
 	}
 
 	private void fachnameHinzufuegen(String item, ChoiceBox<String> choiceBox)

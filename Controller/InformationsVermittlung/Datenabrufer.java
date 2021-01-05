@@ -36,20 +36,20 @@ public class Datenabrufer
 
 	public static void setProgressIndicator(ProgressIndicator neuerWert)
 	{
-
 		progressIndicator=neuerWert;
 	}
 
 	public static void studiengangAbrufen()
 	{
-
 		Platform.runLater(()->
 		{
-			progressIndicator.setProgress(0.1);
+			progressIndicator.setProgress(0);
 
 			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
-			webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
+			entferneLetztenListener(webEngine);
+
+			ChangeListener<Worker.State> stateChangeListener=((observable, oldValue, newValue)->
 			{
 				if(newValue==Worker.State.SUCCEEDED)
 				{
@@ -159,7 +159,11 @@ public class Datenabrufer
 
 					new Thread(task).start();
 				}
-			}));
+			});
+
+			webEngine.getLoadWorker().stateProperty().addListener(stateChangeListener);
+
+			letzteListener=stateChangeListener;
 
 			start=System.nanoTime();
 			webEngine.load("https://www.hof-university.de/studierende/info-service/modulhandbuecher.html");
@@ -183,7 +187,6 @@ public class Datenabrufer
 
 	public static void mensaplanAbrufen()
 	{
-
 		ArrayList<MensaTag> mensatage=new ArrayList<>();
 
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -239,6 +242,8 @@ public class Datenabrufer
 
 		Platform.runLater(()->
 		{
+			progressIndicator.setProgress(0);
+
 			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
 			entferneLetztenListener(webEngine);
