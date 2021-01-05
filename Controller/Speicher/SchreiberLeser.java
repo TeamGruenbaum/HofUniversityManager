@@ -38,21 +38,21 @@ public class SchreiberLeser
 
     public static boolean isErsterStart()
     {
-        File file = new File(getSpeicherPfad() ,"nichtErsterStart");
+        return !(new File(getSpeicherPfad() ,"nichtErsterStart").exists());
+    }
 
-        boolean ersterStart = false;
+    public static void isErsterStartSetzen()
+    {
+        File file = new File(getSpeicherPfad() ,"nichtErsterStart");
 
         try
         {
             if(!file.exists())
             {
-                ersterStart = true;
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
         }catch(Exception e){e.printStackTrace();}
-
-        return ersterStart;
     }
 
     public static void alleZuruecksetzen()

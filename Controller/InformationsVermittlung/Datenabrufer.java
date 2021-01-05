@@ -256,6 +256,7 @@ public class Datenabrufer
 
 					progressIndicator.setProgress(0.25);
 
+
 					Task<Void> task=new Task<Void>()
 					{
 						@Override
