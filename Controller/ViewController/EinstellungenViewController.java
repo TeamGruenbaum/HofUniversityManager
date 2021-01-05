@@ -5,6 +5,7 @@ import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
 import Model.NutzerdatenModel.Thema;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -151,7 +152,10 @@ public class EinstellungenViewController implements Initializable
     }
 
     @FXML
-    private void manuellesZuruecksetzen() {
-        System.out.println("zurücksetzung");
+    private void manuellesZuruecksetzen()
+    {
+        SchreiberLeser.alleDatenLoeschen();
+        Platform.exit();
+        System.exit(0);
     }
 }

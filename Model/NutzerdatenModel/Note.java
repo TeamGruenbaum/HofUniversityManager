@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class Note implements Serializable
 {
     private String art;
-    private int note;
+    private String note;
     private String bemerkung;
     private String fach;
 
-    public Note(String art, int note, String bemerkung, String fach)
+    public Note(String art, String note, String bemerkung, String fach)
     {
         this.art=art;
         this.note=note;
@@ -25,11 +25,11 @@ public class Note implements Serializable
         this.art = art;
     }
 
-    public int getNote() {
+    public String getNote() {
         return note;
     }
 
-    public void setNote(int note) {
+    public void setNote(String note) {
         this.note = note;
     }
 

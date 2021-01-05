@@ -9,19 +9,13 @@ import Model.NutzerdatenModel.*;
 import Model.Tag;
 import Model.Uhrzeit;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.SetChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,13 +44,18 @@ public class StundenplanViewController implements Initializable
 	@FXML private BorderPane allesBorderPane;
 	@FXML private TabPane hauptTabPane;
 
+
+
 	//Tab Fächer
+	@FXML private TabPane faecherTabPane;
+
 	@FXML private TableView<Aufgabe> aufgabenTableView;
 	@FXML private TableColumn<Aufgabe, String> aufgabenNameTableColumn;
 	@FXML private TableColumn<Aufgabe, String> aufgabenInhaltTableColumn;
 	@FXML private TableColumn<Aufgabe, String> aufgabenDatumTableColumn;
 	@FXML private TableColumn<Aufgabe, String> aufgabenZeitTableColumn;
 	@FXML private TableColumn<Aufgabe, String> aufgabenFachTableColumn;
+	private ObservableList<Aufgabe> aufgabenObservableList;
 
 	@FXML private TableView<Notiz> notizenTableView;
 	@FXML private TableColumn<Notiz, String> notizenNameTableColumn;
@@ -69,7 +68,8 @@ public class StundenplanViewController implements Initializable
 	@FXML private TableColumn<Note, String> notenArtTableColumn;
 	@FXML private TableColumn<Note, String> notenBemerkungTableColumn;
 	@FXML private TableColumn<Note, String> notenFachTableColumn;
-	@FXML private TabPane faecherTabPane;
+	private ObservableList<Note> notenObservableList;
+
 
 
 	//Tab Stundenplan
@@ -181,12 +181,57 @@ public class StundenplanViewController implements Initializable
 		stundenplanLaden();
 
 		//Fächer
-		notenTableView.setItems(FXCollections.observableArrayList());
+		notenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten());
+		notenTableView.setItems(notenObservableList);
+		aendernLoeschenKontextmenueHinzufuegen(notenTableView, (actionEvent, noteTableView)->
+			{
+				oeffneNoteDialog("Note ändern", "Ändern",
+					noteTableView.getSelectionModel().getSelectedItem().getNote(),
+					noteTableView.getSelectionModel().getSelectedItem().getArt(),
+					noteTableView.getSelectionModel().getSelectedItem().getBemerkung(),
+					noteTableView.getSelectionModel().getSelectedItem().getFach())
+					.ifPresent((item)->
+					{
+						SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().set(noteTableView.getSelectionModel().getSelectedIndex(), item);
+						notenObservableList.set(noteTableView.getSelectionModel().getSelectedIndex(), item);
+						noteTableView.refresh();
+					});
+			},
+			(actionEvent, noteTableView)->
+			{
+				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().remove(noteTableView.getSelectionModel().getSelectedIndex());
+				notenObservableList.remove(noteTableView.getSelectionModel().getSelectedIndex());
+				noteTableView.refresh();
+			});
 		notenBemerkungTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getBemerkung());});
-		notenNoteTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(Integer.toString(cellData.getValue().getNote()));});
+		notenNoteTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getNote());});
 		notenArtTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getArt());});
 		notenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
+
+		aufgabenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben());
+		aufgabenTableView.setItems(aufgabenObservableList);
+		aendernLoeschenKontextmenueHinzufuegen(aufgabenTableView, (actionEvent, aufgabenTableView)->
+			{
+				oeffneAufgabeDialog("Aufgabe ändern", "Ändern",
+					aufgabenTableView.getSelectionModel().getSelectedItem().getName(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getInhalt(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getDatum(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getZeit(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getFach())
+					.ifPresent((item)->
+					{
+						SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().set(aufgabenTableView.getSelectionModel().getSelectedIndex(), item);
+						aufgabenObservableList.set(aufgabenTableView.getSelectionModel().getSelectedIndex(), item);
+						aufgabenTableView.refresh();
+					});
+			},
+			(actionEvent, aufgabenTableView)->
+			{
+				SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().remove(aufgabenTableView.getSelectionModel().getSelectedIndex());
+				aufgabenObservableList.remove(aufgabenTableView.getSelectionModel().getSelectedIndex());
+				aufgabenTableView.refresh();
+			});
 		aufgabenNameTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getName());});
 		aufgabenInhaltTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getInhalt());});
 		aufgabenZeitTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getZeit().toString());});
@@ -223,7 +268,7 @@ public class StundenplanViewController implements Initializable
 	//Stundenplan
 	@FXML private void stundenplanZuruecksetzen(ActionEvent actionEvent)
 	{
-		if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
+		if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
 		{
 			Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
 			alert.setTitle("Studiengang und -semester setzen");
@@ -242,7 +287,7 @@ public class StundenplanViewController implements Initializable
 
 	@FXML private void doppelstundeHinzufuegen(ActionEvent actionEvent)
 	{
-		oeffneDoppelstundeDialog("Stunde hinzufügen", "Hinzufügen", "", "", "", Tag.MONTAG, 0, 0, 0, 0).ifPresent((item)->SchreiberLeser.getNutzerdaten().getDoppelstunden().add(item));
+		oeffneDoppelstundeDialog("Stunde hinzufügen", "Hinzufügen", "", "", "", Tag.MONTAG, 8, 0, 8, 0).ifPresent((item)->SchreiberLeser.getNutzerdaten().getDoppelstunden().add(item));
 		stundenplanLaden();
 	}
 
@@ -423,32 +468,173 @@ public class StundenplanViewController implements Initializable
 	{
 		switch(faecherTabPane.getSelectionModel().getSelectedIndex())
 		{
-			case 0->oeffneAufgabenDialog("Aufgaben hinzufügen", "Hinzufügen", "","").ifPresent((item)->
+			case 0->oeffneAufgabeDialog("Aufgaben hinzufügen", "Hinzufügen", "","", new Datum(Calendar.getInstance().get(Calendar.DATE), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR)), new Uhrzeit(8, 0), SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
-				/*aufgabenObservableList.add(item);
 				SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().add(item);
-
-				aufgabenTableView.refresh();*/
+				aufgabenObservableList.add(item);
+				aufgabenTableView.refresh();
 			});
-			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
+			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
 				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().add(item);
 				notizObservableList.add(item);
 				notizenTableView.refresh();
 			});
-			case 2->oeffneNotenDialog("Note hinzufügen", "Hinzufügen", "","").ifPresent((item)->
+			case 2->oeffneNoteDialog("Note hinzufügen", "Hinzufügen", "","","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
-				/*notenObservableList.add(item);
 				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().add(item);
-
-				notenTableView.refresh();*/
+				notenObservableList.add(item);
+				notizenTableView.refresh();
 			});
 		}
 	}
 
-	private Optional<Aufgabe> oeffneAufgabenDialog(String fensterTitel, String buttonTitel, String namePrompt,String inhaltPrompt)
+	private Optional<Aufgabe> oeffneAufgabeDialog(String fensterTitel, String buttonTitel, String namePrompt,String inhaltPrompt, Datum datumPrompt, Uhrzeit uhrzeitPrompt, String fachPrompt)
 	{
-		return null;
+		DialogPane dialogPane=new DialogPane();
+		try
+		{
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/AufgabeHinzufuegenView.fxml")));
+		}catch(IOException ignored){}
+		dialogPane.setMinSize(300, 200);
+		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
+
+		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
+		TextField inhaltTextField=(TextField) dialogPane.lookup("#inhaltTextField");
+		ChangeListener<String> changeListener=(observable, oldValue, newValue)->dialogPane.lookupButton(ButtonType.OK).setDisable(nameTextField.getText().trim().isEmpty() || inhaltTextField.getText().trim().isEmpty());
+		nameTextField.textProperty().addListener(changeListener);
+		inhaltTextField.textProperty().addListener(changeListener);
+		nameTextField.setText(namePrompt);
+		inhaltTextField.setText(inhaltPrompt);
+
+
+		Spinner<Integer> tagDatumSpinner=(Spinner<Integer>) dialogPane.lookup("#tagDatumSpinner");
+		tagDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 31, datumPrompt.getTag()));
+
+		Spinner<Integer> monatDatumSpinner=(Spinner<Integer>) dialogPane.lookup("#monatDatumSpinner");
+		monatDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 12, datumPrompt.getMonat()));
+
+		Spinner<Integer> jahrDatumSpinner=(Spinner<Integer>) dialogPane.lookup("#jahrDatumSpinner");
+		jahrDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2402, datumPrompt.getJahr()));
+
+
+		Spinner<Integer> stundeUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#stundeUhrzeitSpinner");
+		stundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, uhrzeitPrompt.getStunde()));
+
+		Spinner<Integer> minuteUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#minuteUhrzeitSpinner");
+		minuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, uhrzeitPrompt.getMinute()));
+
+
+		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) dialogPane.lookup("#fachChoiceBox");
+		fachnameHinzufuegen(fachPrompt, faecherChoiceBox);
+		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
+		faecherChoiceBox.getSelectionModel().select(0);
+		faecherChoiceBox.setValue(fachPrompt);
+
+		Button fachHinzufuegeButton=(Button) dialogPane.lookup("#fachHinzufuegeButton");
+		fachHinzufuegeButton.setOnAction((actionEvent)->
+		{
+			fachnameHinzufuegenDialogOeffnen().ifPresent((item)->
+			{
+				fachnameHinzufuegen(item, faecherChoiceBox);
+			});
+		});
+
+		Button fachLoeschButton=(Button) dialogPane.lookup("#fachLoeschButton");
+		fachLoeschButton.setOnAction((actionEvent)->
+		{
+			fachnameLoeschen(faecherChoiceBox);
+		});
+
+		Dialog<Aufgabe> dialog=new Dialog<>();
+		dialog.setTitle(fensterTitel);
+		dialog.setDialogPane(dialogPane);
+		dialog.setResultConverter((dialogButton)->
+		{
+			if(dialogButton.getButtonData().isCancelButton())
+			{
+				return null;
+			}else
+			{
+				return new Aufgabe(nameTextField.getText().trim(),
+					inhaltTextField.getText().trim(),
+					new Datum(tagDatumSpinner.getValue(),monatDatumSpinner.getValue(), jahrDatumSpinner.getValue()),
+					new Uhrzeit(stundeUhrzeitSpinner.getValue(), minuteUhrzeitSpinner.getValue()),
+					faecherChoiceBox.getValue());
+			}
+		});
+		dialog.initOwner(Main.getPrimaryStage());
+
+		return dialog.showAndWait();
+	}
+
+	private Optional<Note> oeffneNoteDialog(String fensterTitel, String buttonTitel, String notePrompt, String artPrompt, String bemerkungPrompt, String fachPrompt)
+	{
+		DialogPane dialogPane=new DialogPane();
+		try
+		{
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NoteHinzufuegenView.fxml")));
+		}catch(IOException ignored){}
+		dialogPane.setMinSize(300, 200);
+		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
+
+		TextField noteTextField=(TextField) dialogPane.lookup("#noteTextField");
+		TextField artTextField=(TextField) dialogPane.lookup("#artTextField");
+		TextField bemerkungTextField=(TextField) dialogPane.lookup("#bemerkungTextField");
+		ChangeListener<String> changeListener=(observable, oldValue, newValue)->dialogPane.lookupButton(ButtonType.OK).setDisable(noteTextField.getText().trim().isEmpty() || artTextField.getText().trim().isEmpty() || bemerkungTextField.getText().trim().isEmpty());
+		noteTextField.textProperty().addListener(changeListener);
+		artTextField.textProperty().addListener(changeListener);
+		bemerkungTextField.textProperty().addListener(changeListener);
+		noteTextField.setText(notePrompt);
+		artTextField.setText(artPrompt);
+		bemerkungTextField.setText(bemerkungPrompt);
+
+		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) dialogPane.lookup("#fachChoiceBox");
+		fachnameHinzufuegen(fachPrompt, faecherChoiceBox);
+		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
+		faecherChoiceBox.getSelectionModel().select(0);
+		faecherChoiceBox.setValue(fachPrompt);
+
+		Button fachHinzufuegeButton=(Button) dialogPane.lookup("#fachHinzufuegeButton");
+		fachHinzufuegeButton.setOnAction((actionEvent)->
+		{
+			fachnameHinzufuegenDialogOeffnen().ifPresent((item)->
+			{
+				fachnameHinzufuegen(item, faecherChoiceBox);
+			});
+		});
+
+		Button fachLoeschButton=(Button) dialogPane.lookup("#fachLoeschButton");
+		fachLoeschButton.setOnAction((actionEvent)->
+		{
+			fachnameLoeschen(faecherChoiceBox);
+		});
+
+		Dialog<Note> dialog=new Dialog<>();
+		dialog.setTitle(fensterTitel);
+		dialog.setDialogPane(dialogPane);
+		dialog.setResultConverter((dialogButton)->
+		{
+			if(dialogButton.getButtonData().isCancelButton())
+			{
+				return null;
+			}else
+			{
+				return new Note(noteTextField.getText().trim(),
+					artTextField.getText().trim(),
+					bemerkungTextField.getText().trim(),
+					faecherChoiceBox.getValue());
+			}
+		});
+		dialog.initOwner(Main.getPrimaryStage());
+
+		return dialog.showAndWait();
 	}
 
 	private Optional<Notiz> oeffneNotizDialog(String fensterTitel, String buttonTitel, String ueberschriftPrompt, String inhaltPrompt, String fachPrompt)
@@ -512,11 +698,6 @@ public class StundenplanViewController implements Initializable
 		return dialog.showAndWait();
 	}
 
-	private Optional<Note> oeffneNotenDialog(String fensterTitel, String buttonTitel, String namePrompt, String inhaltPrompt)
-	{
-		return null;
-	}
-
 	private Optional<String> fachnameHinzufuegenDialogOeffnen()
 	{
 		TextInputDialog textInputDialog=new TextInputDialog();
@@ -525,6 +706,8 @@ public class StundenplanViewController implements Initializable
 		((Button) textInputDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Hinzufügen");
 		textInputDialog.setTitle("Fach hinzufügen");
 		textInputDialog.setContentText("Fachname");
+		textInputDialog.getEditor().textProperty().addListener(((observable, oldValue, newValue) -> textInputDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(textInputDialog.getEditor().textProperty().getValue().trim().isEmpty())));
+		textInputDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
 
 		return textInputDialog.showAndWait();
 	}

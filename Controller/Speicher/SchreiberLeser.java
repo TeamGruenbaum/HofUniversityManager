@@ -18,6 +18,9 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
+
+
 
 public class SchreiberLeser
 {
@@ -281,6 +284,17 @@ public class SchreiberLeser
             {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void alleDatenLoeschen()
+    {
+        try
+        {
+            FileUtils.forceDelete(new File(getSpeicherPfad()));
+        }catch(IOException e)
+        {
+            e.printStackTrace();
         }
     }
 

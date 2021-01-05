@@ -79,7 +79,6 @@ public class GrundViewController implements Initializable {
 
     private static WebView uglyWebView;
     private static Button uglyMenuHauptButton;
-    private static BorderPane uglyBorderPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -170,7 +169,6 @@ public class GrundViewController implements Initializable {
 
         uglyWebView=webView;
         uglyMenuHauptButton=menuHauptButton;
-        uglyBorderPane=borderPane;
     }
 
     @FXML
