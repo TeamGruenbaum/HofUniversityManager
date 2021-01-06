@@ -402,8 +402,10 @@ public class GrundViewController implements Initializable {
             borderPane.getCenter().setViewOrder(0);
             hauptmenueSchließen();
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(Exception keineGefahrExcpetion)
+        {
+            //Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+            keineGefahrExcpetion.printStackTrace();
         }
     }
 
@@ -415,8 +417,10 @@ public class GrundViewController implements Initializable {
             borderPane.getCenter().setViewOrder(0);
             hauptmenueSchließen();
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(Exception keineGefahrExcepttion)
+        {
+            //Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+            keineGefahrExcepttion.printStackTrace();
         }
     }
 
@@ -451,7 +455,12 @@ public class GrundViewController implements Initializable {
                 oeffneScene();
             });
             borderPane.setCenter(node);
-        }catch(IOException e){}
+        }
+        catch(Exception keinGefahreException)
+        {
+            //Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+            keinGefahreException.printStackTrace();
+        }
     }
 
     //Hilfsmethoden für visuelle Effekte

@@ -15,6 +15,8 @@ import Model.TreffpunktModel.Treffpunkte;
 
 import Model.Uhrzeit;
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,12 @@ public class SchreiberLeser
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
-        }catch(Exception e){e.printStackTrace();}
+        }
+        catch(Exception keineGefahrExcpetion)
+        {
+            //Die Gefahr ist gebannt, da die für File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind
+            keineGefahrExcpetion.printStackTrace();
+        }
     }
 
     public static void alleZuruecksetzen()
@@ -70,33 +77,36 @@ public class SchreiberLeser
             Menue.getMenuepunkte().get(Menue.getMenuepunkte().size()-1));
 
         kopieren(new File(SchreiberLeser.class.getResource("../../Ressourcen/Andere/Dropdownmenue.sva").getPath()), "Dropdownmenue.sva");
-        dropdownMenueLaden();
+        try
+        {
+            dropdownMenue=SchreiberLeser.<DropdownMenue>lesen(dropdownMenueDateiname);
+        }
+        catch(Exception keineGefahrExcpetion)
+        {
+            //Die Gefahr ist gebannt, da zwischen Kopieren und Lesen nicht genügend Zeit ist, die Datei zu manipulieren
+            keineGefahrExcpetion.printStackTrace();
+        }
     }
 
-    public static void alleLaden()
+    public static void alleLaden() throws Exception
     {
-        studiengangInformationenLaden();
-        treffpunkteLaden();
-        mensaplanLaden();
-        nutzerdatenLaden();
-        dropdownMenueLaden();
+        studiengangInformationen=SchreiberLeser.<StudiengangInformationen>lesen(studiengangInformationenDateiname);
+        treffpunkte=SchreiberLeser.<Treffpunkte>lesen(treffpunkteDateiname);
+        mensaplan=SchreiberLeser.<Mensaplan>lesen(mensaplanDateiname);
+        nutzerdaten=SchreiberLeser.<Nutzerdaten>lesen(nutzerdatenDateiname);
+        dropdownMenue=SchreiberLeser.<DropdownMenue>lesen(dropdownMenueDateiname);
     }
 
     public static void alleSpeichern()
     {
-        studiengangInformationenSpeichern();
-        treffpunkteSpeichern();
-        mensaplanSpeichern();
-        nutzerdatenSpeichern();
-        dropdownMenueSpeichern();
+        SchreiberLeser.<StudiengangInformationen>schreiben(studiengangInformationen, studiengangInformationenDateiname);
+        SchreiberLeser.<Treffpunkte>schreiben(treffpunkte, treffpunkteDateiname);
+        SchreiberLeser.<Mensaplan>schreiben(mensaplan, mensaplanDateiname);
+        SchreiberLeser.<Nutzerdaten>schreiben(nutzerdaten, nutzerdatenDateiname);
+        SchreiberLeser.<DropdownMenue>schreiben(dropdownMenue, dropdownMenueDateiname);
     }
 
     //StudiengangInformationen
-    public static void studiengangInformationenLaden()
-    {
-        studiengangInformationen=SchreiberLeser.<StudiengangInformationen>lesen(studiengangInformationenDateiname);
-    }
-
     public static StudiengangInformationen getStudiengangInformationen()
     {
         return studiengangInformationen;
@@ -107,18 +117,8 @@ public class SchreiberLeser
         studiengangInformationen=neuerWert;
     }
 
-    public static void studiengangInformationenSpeichern()
-    {
-        SchreiberLeser.<StudiengangInformationen>schreiben(studiengangInformationen, studiengangInformationenDateiname);
-    }
-
 
     //Treffpunkt
-    public static void treffpunkteLaden()
-    {
-        treffpunkte=SchreiberLeser.<Treffpunkte>lesen(treffpunkteDateiname);
-    }
-
     public static Treffpunkte getTreffpunkte()
     {
         return treffpunkte;
@@ -129,18 +129,8 @@ public class SchreiberLeser
         treffpunkte=neuerWert;
     }
 
-    public static void treffpunkteSpeichern()
-    {
-        SchreiberLeser.<Treffpunkte>schreiben(treffpunkte, treffpunkteDateiname);
-    }
-
 
     //Mensaplan
-    public static void mensaplanLaden()
-    {
-        mensaplan=SchreiberLeser.<Mensaplan>lesen(mensaplanDateiname);
-    }
-
     public static Mensaplan getMensaplan()
     {
         return mensaplan;
@@ -151,18 +141,8 @@ public class SchreiberLeser
         mensaplan=neuerWert;
     }
 
-    public static void mensaplanSpeichern()
-    {
-        SchreiberLeser.<Mensaplan>schreiben(mensaplan, mensaplanDateiname);
-    }
-
 
     //Nutzerdaten
-    public static void nutzerdatenLaden()
-    {
-        nutzerdaten=SchreiberLeser.<Nutzerdaten>lesen(nutzerdatenDateiname);
-    }
-
     public static Nutzerdaten getNutzerdaten()
     {
         return nutzerdaten;
@@ -173,17 +153,7 @@ public class SchreiberLeser
         nutzerdaten=neuerWert;
     }
 
-    public static void nutzerdatenSpeichern()
-    {
-        SchreiberLeser.<Nutzerdaten>schreiben(nutzerdaten, nutzerdatenDateiname);
-    }
-
     //DropdownMenue
-    public static void dropdownMenueLaden()
-    {
-        dropdownMenue=SchreiberLeser.<DropdownMenue>lesen(dropdownMenueDateiname);
-    }
-
     public static DropdownMenue getDropdownMenue()
     {
         return dropdownMenue;
@@ -194,30 +164,22 @@ public class SchreiberLeser
         dropdownMenue=neuerWert;
     }
 
-    public static void dropdownMenueSpeichern()
-    {
-        SchreiberLeser.<DropdownMenue>schreiben(dropdownMenue, dropdownMenueDateiname);
-    }
-
 
     //Allgemeines Speichern und Lesen
-    private static <T extends Serializable> T lesen(String dateiname)
+    //Falls einzelne Daten verändert oder gelöscht werden, wird die Exception geworfen, darauf muss an entsprechender Stelle reagiert werden
+    private static <T extends Serializable> T lesen(String dateiname) throws Exception
     {
         T transferred=null;
 
         File file=new File(getSpeicherPfad()+dateiname);
 
-        try
-        {
-            FileInputStream fileInputStream=new FileInputStream(file);
-            ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-            transferred=(T) objectInputStream.readObject();
 
-            objectInputStream.close();
-            fileInputStream.close();
-        }catch (Exception e){}
+        FileInputStream fileInputStream=new FileInputStream(file);
+        ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
+        transferred=(T) objectInputStream.readObject();
 
-
+        objectInputStream.close();
+        fileInputStream.close();
 
         return transferred;
     }
@@ -239,7 +201,11 @@ public class SchreiberLeser
             objectOutputStream.close();
             fileOutputStream.close();
         }
-        catch (Exception e){}
+        catch(Exception keineGefahrException)
+        {
+            //Die Gefahr ist gebannt, da die für File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind
+            keineGefahrException.printStackTrace();
+        }
     }
 
     private static void kopieren(File von, String dateiname)
@@ -255,32 +221,29 @@ public class SchreiberLeser
             eingang = new FileInputStream(von).getChannel();
             ausgang = new FileOutputStream(zu).getChannel();
             eingang.transferTo(0, eingang.size(), ausgang);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
 
-        if(eingang != null)
-        {
-            try
-            {
-                eingang.close();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            eingang.close();
+            ausgang.close();
         }
-
-        if(ausgang != null)
+        catch (Exception keineGefahrException)
         {
-            try
-            {
-                ausgang.close();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            //Die Gefahr ist gebannt, da die für den File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind
+            keineGefahrException.printStackTrace();
+        }
+    }
+
+    public static boolean isInternetVerbindungVorhanden(String url)
+    {
+        try
+        {
+            new URL(url).openConnection().connect();
+
+            return true;
+        }
+        catch(Exception keineGefahrException)
+        {
+            //Es ist gewollt, dass manchmal hier reingesprungen wird, nämlich dann wenn keine Verbindung zum Ziel aufgebaut werden kann
+            return false;
         }
     }
 

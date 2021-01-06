@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -29,7 +30,24 @@ public class Main extends Application
         }
         else
         {
-            SchreiberLeser.alleLaden();
+            try
+            {
+                SchreiberLeser.alleLaden();
+            }
+            catch(Exception keineGefahrException)
+            {
+                Alert alert=new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Daten korrupt");
+                alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");
+                alert.showAndWait().ifPresentOrElse((item)->
+                {
+
+                },
+                    ()->
+                    {
+                        Platform.exit();
+                    });
+            }
         }
 
         hostServices=getHostServices();

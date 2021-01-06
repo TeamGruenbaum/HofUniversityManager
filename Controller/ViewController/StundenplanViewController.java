@@ -335,8 +335,10 @@ public class StundenplanViewController implements Initializable
 		try
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/DoppelstundenHinzufuegeView.fxml")));
-		}catch(IOException ignored)
+		}catch(Exception keineGefahrExcepttion)
 		{
+			//Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+			keineGefahrExcepttion.printStackTrace();
 		}
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -457,7 +459,12 @@ public class StundenplanViewController implements Initializable
 		try
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NotizHinzufuegeView.fxml")));
-		}catch(IOException ignored){}
+		}
+		catch(Exception keineGefahrExcepttion)
+		{
+			//Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+			keineGefahrExcepttion.printStackTrace();
+		}
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);

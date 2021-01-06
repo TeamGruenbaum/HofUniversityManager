@@ -14,12 +14,16 @@ public class Schluesselmeister
 
         try
         {
-            cipher = Cipher.getInstance("AES");
-            SecretKey secretKey = new SecretKeySpec(new byte[]{3,7,4,5,3,7,4,5,3,7,4,5,3,7,4,5}, "AES");
+            cipher=Cipher.getInstance("AES");
+            SecretKey secretKey=new SecretKeySpec(new byte[]{3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5}, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             ergebnis=cipher.doFinal(wert.getBytes(Charset.forName("UTF-8")));
+        }catch(Exception keineGefahrException)
+        {
+            //Die Gefahr ist gebannt, da die Verschlüsselungsart und der Schlüssel hartkodiert ist und somit nie falsch sein können
+            keineGefahrException.printStackTrace();
         }
-        catch(Exception e){e.printStackTrace();}
+
 
         return ergebnis;
     }
@@ -36,7 +40,11 @@ public class Schluesselmeister
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             ergebnis=new String(cipher.doFinal(wert), Charset.forName("UTF-8"));
         }
-        catch(Exception e){e.printStackTrace();}
+        catch(Exception keineGefahrExcpetion)
+        {
+            //Die Gefahr ist gebannt, da die Verschlüsselungsart und der Schlüssel hartkodiert ist und somit nie falsch sein können
+            keineGefahrExcpetion.printStackTrace();
+        }
 
         return ergebnis;
     }
