@@ -268,7 +268,7 @@ public class StundenplanViewController implements Initializable
 	//Stundenplan
 	@FXML private void stundenplanZuruecksetzen(ActionEvent actionEvent)
 	{
-		if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
+		if(SchreiberLeser.getNutzerdaten().getStudiengang()==null && SchreiberLeser.getNutzerdaten().getStudiensemester()==null)
 		{
 			Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
 			alert.setTitle("Studiengang und -semester setzen");
