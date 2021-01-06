@@ -185,16 +185,13 @@ public class GrundViewController implements Initializable
 
     public static void setThema(Thema thema)
     {
+        ColorAdjust farbwechsel = new ColorAdjust();
 
-        ColorAdjust farbwechsel=new ColorAdjust();
-
-        if(thema==Thema.DUNKEL)
-        {
-            Main.getRoot().setStyle("-menubar-color: #404040;"+"-font-color: #000000;"+"-anwendung-bgr: #a2a2a2;"+"-accent-color: #318eb1;"+"-warn-color: #691c1c;"+"-menubar-text-color: white;"+"-accent-color-accent: #266e8c;"+"-anwendung-bgr-accent: #c6c6c6");
+        if(thema == Thema.DUNKEL) {
+            Main.getRoot().setStyle("-menubar-color: #676767;"+"-font-color: #ffffff;"+"-anwendung-bgr: #404040;"+"-accent-color: #318eb1;"+"-warn-color: #691c1c;"+"-menubar-text-color: white;"+"-accent-color-accent: #266e8c;"+"-anwendung-bgr-accent: #4f4f4f;"+"-menubar-titel-color: #45c8ff");
             farbwechsel.setBrightness(1);
-        }else
-        {
-            Main.getRoot().setStyle("-menubar-color: white;"+"-font-color: #262626;"+"-anwendung-bgr: #e2e2e2;"+"-accent-color: #0072a0;"+"-warn-color: #8a2828;"+"-menubar-text-color: black;"+"-accent-color-accent: #004a66;"+"-anwendung-bgr-accent: #c3c3c3");
+        } else {
+            Main.getRoot().setStyle("-menubar-color: white;"+"-font-color: #262626;"+"-anwendung-bgr: #e2e2e2;"+"-warn-color: #8a2828;"+"-menubar-text-color: black;"+"-accent-color-accent: #004a66;"+"-anwendung-bgr-accent: #ffffff;"+"-menubar-titel-color: #0072a0");
             farbwechsel.setBrightness(0);
         }
 
@@ -308,7 +305,6 @@ public class GrundViewController implements Initializable
                     }else
                     {
                         oeffneFehlendeInternetverbindungDialogDaten();
-
                         ladeSceneMitScrollPane();
                     }
                 }else
@@ -422,7 +418,6 @@ public class GrundViewController implements Initializable
                         alert.initOwner(Main.getPrimaryStage());
                         alert.showAndWait();
                     }
-
                     ladeSceneOhneScrollPane();
                 }
                 else
@@ -552,6 +547,7 @@ public class GrundViewController implements Initializable
     {
         Alert alert=new Alert(Alert.AlertType.WARNING, content);
         alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("../../View/CSS/Application.css").toExternalForm());
+        alert.getDialogPane().setStyle(Main.getRoot().getStyle());
         alert.setTitle("Keine Internetverbindung");
         alert.setHeaderText("Hinweis");
         alert.initOwner(Main.getPrimaryStage());

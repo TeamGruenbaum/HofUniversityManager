@@ -64,7 +64,7 @@
                         <Insets top="20.0" />
                      </padding>
                   </Label>
-                  <Label layoutX="10.0" layoutY="225.0" text="Entstanden im Rahmen desr Veranstaltung &quot;Software Engineering 2&quot;, Medieninformatik, WS 2020, Hochschule Hof, Prof. Dr. Matthias Meitner" />
+                  <Label layoutX="10.0" layoutY="225.0" text="Entstanden im Rahmen der Veranstaltung &quot;Software Engineering II&quot;, Medieninformatik, Hochschule Hof, WS 2020, Prof. Dr. Matthias Meitner" />
                   <Label layoutX="10.0" layoutY="348.0" text="Team: Patrick Dressel, Steven Solleder, Marcel Stürzenberger, Vincent Tischler, Isabell Waas">
                      <VBox.margin>
                         <Insets top="-15.0" />
