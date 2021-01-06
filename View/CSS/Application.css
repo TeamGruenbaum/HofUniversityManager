@@ -3,12 +3,13 @@
     -menubar-color: white;
     -font-color: #262626;
     -anwendung-bgr: #d6d6d6;
-    -anwendung-bgr-accent: #c3c3c3;
+    -anwendung-bgr-accent: #ffffff;
     -accent-color: #0072a0;
     -accent-color-accent: #004a66;
     -warn-color: #8a2828;
     -warn-color-accent: #a53131;
     -menubar-text-color: black;
+    -menubar-titel-color: #0072a0;
 }
 
 /* Allgemein */
@@ -31,7 +32,7 @@
 }
 
 .menu-title {
-    -fx-text-fill: -accent-color;
+    -fx-text-fill: -menubar-titel-color;
 }
 
 .menu-bc {
@@ -66,7 +67,7 @@
 
 /* Weitere Textformatierungen */
 .warnhinweis {
-    -fx-text-fill: -warn-color;
+    -fx-text-fill: #c68100;
 }
 
 .ueberschrift {
@@ -85,6 +86,11 @@
 /* Dialog-Panes */
 .dialog-pane {
     -fx-background-color: -anwendung-bgr;
+}
+
+.dialog-pane .header-panel{
+    -fx-background-color: -anwendung-bgr-accent;
+    -fx-text-fill: -font-color;
 }
 
 /* Tab-Panes */
@@ -147,27 +153,41 @@
 /* ComboxBoxes */
 .combo-box-popup .list-view .list-cell:hover {
     -fx-background-color: -accent-color;
-    -fx-text-fill: -menubar-color;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: -anwendung-bgr-accent;
+    -fx-text-fill: -font-color;
 }
 
 .combo-box-popup .list-view .list-cell:selected {
     -fx-background-color: -accent-color;
-    -fx-text-fill: -menubar-color;
+    -fx-text-fill: white;
 }
 
 .anwendungsBereich > .combo-box-base, .choice-box {
-    -fx-background-color: white;
+    -fx-background-color: -anwendung-bgr-accent;
     -fx-background-insets: 1, 1, 1, 1;
+}
+
+.arrow-button > .arrow {
+    -fx-background-color: -menubar-titel-color;
+}
+
+.anwendungsBereich > .choice-box > .open-button > .arrow {
+    -fx-background-color: -menubar-titel-color;
 }
 
 .combo-box-popup .list-view {
     -fx-background-insets: 1,1,1,1;
     -fx-background-radius: 2,2,2,2;
+    -fx-background-color: -anwendung-bgr-accent;
 }
 
 /* Context-Menü */
 .context-menu {
-    -fx-background-color: white;
+    -fx-background-color: -anwendung-bgr-accent;
     -fx-text-fill: -font-color;
 }
 
@@ -186,23 +206,27 @@
 /* Textfelder */
 .anwendungsBereich > .text-field {
     -fx-text-box-border: transparent;
-    -fx-background-color: white;
+    -fx-background-color: -anwendung-bgr-accent;
     -fx-background-insets: 1, 1, 1, 1;
 }
 
 .anwendungsBereich > .text-area {
     -fx-text-box-border: transparent;
-    -fx-background-color: white;
+    -fx-background-color: -anwendung-bgr-accent;
     -fx-background-insets: 0, 0, 0, 0;
 }
 
 .text-area .content {
-    -fx-background-color: transparent, white, transparent, white;
+    -fx-background-color: transparent, -anwendung-bgr-accent, transparent, -anwendung-bgr-accent;
 }
 
 /* Checkbox (darkmode) */
 .anwendungsBereich > .check-box .box{
-    -fx-background-color: white;
+    -fx-background-color: -anwendung-bgr-accent;
+}
+
+.anwendungsBereich > .check-box:selected .mark {
+    -fx-background-color: -menubar-titel-color;
 }
 
 /* Buttons */
@@ -331,6 +355,10 @@
     -fx-background-color: transparent;
 }
 
+.table-view .arrow {
+    -fx-background-color: -menubar-titel-color;
+}
+
 .table-view .column-header-background{
     -fx-background-color: -menubar-color;
 }
@@ -341,7 +369,7 @@
 }
 
 .table-view .column-header {
-    -fx-background-color: transparent;
+    -fx-background-color: -menubar-color;
 }
 
 .table-view .table-cell{
@@ -352,6 +380,14 @@
     -fx-background-color: -anwendung-bgr, -anwendung-bgr;
     -fx-background-insets: 0, 0 0 0 0;
     -fx-padding: 0.0em;
+}
+
+.stundenplanHBox .table-row-cell{
+    -fx-cell-size: 75px;
+}
+
+.stundenplanHBox .table-column{
+    -fx-alignment: CENTER-LEFT;
 }
 
 .table-row-cell:odd{
@@ -367,6 +403,13 @@
     -fx-background-radius: 0;
 }
 
+.stundenplanHBox .table-row-cell:selected .table-cell{
+    -fx-background-color: inherit;
+    -fx-text-fill: -font-color;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
 .table-view > .virtual-flow > .scroll-bar > .increment-button,
 .table-view > .virtual-flow > .scroll-bar > .decrement-button {
     -fx-opacity: 0;
@@ -374,4 +417,87 @@
 
 .table-row-cell {
     -fx-table-cell-border-color: transparent;
+}
+
+/* Accordion */
+.accordion > .titled-pane > .title {
+    -fx-background-color: -anwendung-bgr-accent;
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 2,2,2,2;
+}
+
+.accordion > .titled-pane > .title > .arrow-button > .arrow {
+    -fx-background-color: -menubar-titel-color;
+    -fx-focus-color: transparent;
+}
+
+.accordion > .titled-pane > .content {
+    -fx-background-color: -anwendung-bgr-accent;
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 2,2,2,2;
+    -fx-border-insets: 0,0,0,0;
+    -fx-border-color: transparent;
+}
+
+/* Progress-Bar */
+.progress-bar > .track {
+    -fx-background-color: -anwendung-bgr-accent;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: -accent-color;
+}
+
+/* Progress-Indicator */
+.progress-indicator .indicator {
+    -fx-background-color: -anwendung-bgr-accent;
+}
+
+.progress-indicator .progress {
+    -fx-background-color: -accent-color;
+}
+
+.progress-indicator .tick {
+    -fx-background-color: white;
+}
+
+/* Spinner */
+
+.spinner {
+    -fx-focus-color: -anwendung-bgr-accent;
+}
+
+.spinner .text-field {
+    -fx-text-box-border: transparent;
+    -fx-background-color: -anwendung-bgr-accent;
+}
+
+.spinner .text-field:hover {
+    -fx-cursor: pointer;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: -accent-color;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: -accent-color;
+}
+
+.spinner .increment-arrow-button:hover {
+    -fx-background-color: -accent-color-accent;
+    -fx-cursor: hand;
+}
+
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: -accent-color-accent;
+    -fx-cursor: hand;
+}
+
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: white;
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: white;
 }

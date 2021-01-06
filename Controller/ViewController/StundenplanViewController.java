@@ -268,7 +268,7 @@ public class StundenplanViewController implements Initializable
 	//Stundenplan
 	@FXML private void stundenplanZuruecksetzen(ActionEvent actionEvent)
 	{
-		if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
+		if(SchreiberLeser.getNutzerdaten().getStudiengang()==null && SchreiberLeser.getNutzerdaten().getStudiensemester()==null)
 		{
 			Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
 			alert.setTitle("Studiengang und -semester setzen");
@@ -433,15 +433,19 @@ public class StundenplanViewController implements Initializable
 
 		Spinner<Integer> beginnStundeUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#beginnStundeUhrzeitSpinner");
 		beginnStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, beginnStundeUhrzeitPrompt));
+		beginnStundeUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> beginnMinuteUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#beginnMinuteUhrzeitSpinner");
 		beginnMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, beginnMinuteUhrzeitPrompt));
+		beginnMinuteUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> endeStundeUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#endeStundeUhrzeitSpinner");
 		endeStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, endeStundeUhrzeitPrompt));
+		endeStundeUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> endeMinuteUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#endeMinuteUhrzeitSpinner");
 		endeMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, endeMinuteUhrzeitPrompt));
+		endeMinuteUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Dialog<Doppelstunde> dialog=new Dialog<>();
 		dialog.setTitle(fensterTitel);
@@ -501,6 +505,8 @@ public class StundenplanViewController implements Initializable
 		try
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/AufgabeHinzufuegenView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException ignored){}
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -516,23 +522,25 @@ public class StundenplanViewController implements Initializable
 		nameTextField.setText(namePrompt);
 		inhaltTextField.setText(inhaltPrompt);
 
-
 		Spinner<Integer> tagDatumSpinner=(Spinner<Integer>) dialogPane.lookup("#tagDatumSpinner");
 		tagDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 31, datumPrompt.getTag()));
+		tagDatumSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> monatDatumSpinner=(Spinner<Integer>) dialogPane.lookup("#monatDatumSpinner");
 		monatDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 12, datumPrompt.getMonat()));
+		monatDatumSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> jahrDatumSpinner=(Spinner<Integer>) dialogPane.lookup("#jahrDatumSpinner");
 		jahrDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2402, datumPrompt.getJahr()));
-
+		jahrDatumSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> stundeUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#stundeUhrzeitSpinner");
 		stundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, uhrzeitPrompt.getStunde()));
+		stundeUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		Spinner<Integer> minuteUhrzeitSpinner=(Spinner<Integer>) dialogPane.lookup("#minuteUhrzeitSpinner");
 		minuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, uhrzeitPrompt.getMinute()));
-
+		minuteUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
 		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) dialogPane.lookup("#fachChoiceBox");
 		fachnameHinzufuegen(fachPrompt, faecherChoiceBox);
@@ -583,6 +591,8 @@ public class StundenplanViewController implements Initializable
 		try
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NoteHinzufuegenView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException ignored){}
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -768,7 +778,7 @@ public class StundenplanViewController implements Initializable
 
 		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent)->
 		{
-			if(mouseEvent.getButton()==MouseButton.SECONDARY)
+			if((mouseEvent.getButton()==MouseButton.SECONDARY) || (mouseEvent.getClickCount()==2))
 			{
 				contextMenu.show(tableView, mouseEvent.getScreenX(),
 				mouseEvent.getScreenY());

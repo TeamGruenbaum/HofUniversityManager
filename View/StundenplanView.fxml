@@ -30,7 +30,7 @@
                         </HBox>
                      </bottom>
                      <center>
-                        <HBox fx:id="stundenplanHBox" BorderPane.alignment="CENTER">
+                        <HBox fx:id="stundenplanHBox" BorderPane.alignment="CENTER" styleClass="stundenplanHBox">
                            <children>
                                 <TableView fx:id="montagTableView" HBox.hgrow="ALWAYS">
                                     <columns>

@@ -11,8 +11,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import java.awt.Taskbar;
+import java.awt.Toolkit;
+import java.net.URL;
 
 public class Main extends Application
 {
@@ -63,7 +72,14 @@ public class Main extends Application
         primaryStage.setTitle("HofUniversityManager");
         primaryStage.setScene(new Scene(root, 1000, 700));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
-        root.getStylesheets().add("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+        Font.loadFont(Main.class.getResource("../Ressourcen/Schriften/Rubik-Regular.ttf").toExternalForm(), 10);
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream( "../Ressourcen/Grafiken/HUM_Icon_Short.png" )));
+
+        /*final URL imageResource = Main.class.getClassLoader().getResource("../Ressourcen/Grafiken/HUM_Icon_Short.png");
+        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+        final java.awt.Image image = defaultToolkit.getImage(imageResource);
+        final Taskbar taskbar = Taskbar.getTaskbar();
+        taskbar.setIconImage(image);*/
 
         GrundViewController.setThema(SchreiberLeser.getNutzerdaten().getAktuellesThema());
 

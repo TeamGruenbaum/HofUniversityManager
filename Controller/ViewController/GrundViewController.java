@@ -183,14 +183,15 @@ public class GrundViewController implements Initializable {
         ColorAdjust farbwechsel = new ColorAdjust();
 
         if(thema == Thema.DUNKEL) {
-            Main.getRoot().setStyle("-menubar-color: #404040;" +
-                    "-font-color: #000000;" +
-                    "-anwendung-bgr: #a2a2a2;" +
+            Main.getRoot().setStyle("-menubar-color: #676767;" +
+                    "-font-color: #ffffff;" +
+                    "-anwendung-bgr: #404040;" +
                     "-accent-color: #318eb1;" +
                     "-warn-color: #691c1c;" +
                     "-menubar-text-color: white;" +
                     "-accent-color-accent: #266e8c;" +
-                    "-anwendung-bgr-accent: #c6c6c6");
+                    "-anwendung-bgr-accent: #4f4f4f;" +
+                    "-menubar-titel-color: #45c8ff");
             farbwechsel.setBrightness(1);
         } else {
             Main.getRoot().setStyle("-menubar-color: white;" +
@@ -200,7 +201,8 @@ public class GrundViewController implements Initializable {
                     "-warn-color: #8a2828;" +
                     "-menubar-text-color: black;" +
                     "-accent-color-accent: #004a66;" +
-                    "-anwendung-bgr-accent: #c3c3c3");
+                    "-anwendung-bgr-accent: #ffffff;" +
+                    "-menubar-titel-color: #0072a0");
             farbwechsel.setBrightness(0);
         }
 
@@ -313,6 +315,7 @@ public class GrundViewController implements Initializable {
                     {
                         Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
                         alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+                        alert.getDialogPane().setStyle(Main.getRoot().getStyle());
                         alert.setTitle("Studiengang und -semester setzen");
                         alert.setHeaderText("Warnung");
                         alert.initOwner(Main.getPrimaryStage());
@@ -377,6 +380,7 @@ public class GrundViewController implements Initializable {
                 {
                     Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest deine Login-Daten in den Einstellungen hinterlegen!");
                     alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+                    alert.getDialogPane().setStyle(Main.getRoot().getStyle());
                     alert.setTitle("Login setzen");
                     alert.setHeaderText("Empfehlung");
                     alert.initOwner(Main.getPrimaryStage());
