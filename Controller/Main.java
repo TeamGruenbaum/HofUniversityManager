@@ -25,6 +25,7 @@ public class Main extends Application
     {
         if(SchreiberLeser.isErsterStart())
         {
+            SchreiberLeser.alleDatenLoeschen();
             SchreiberLeser.alleZuruecksetzen();
             SchreiberLeser.alleSpeichern();
         }
@@ -39,14 +40,20 @@ public class Main extends Application
                 Alert alert=new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Daten korrupt");
                 alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");
-                alert.showAndWait().ifPresentOrElse((item)->
-                {
-
-                },
+                alert.showAndWait().ifPresentOrElse(
+                    (item)->
+                    {
+                        SchreiberLeser.alleDatenLoeschen();
+                        Platform.exit();
+                        System.exit(0);
+                    },
                     ()->
                     {
+                        SchreiberLeser.alleDatenLoeschen();
                         Platform.exit();
-                    });
+                        System.exit(0);
+                    }
+                );
             }
         }
 

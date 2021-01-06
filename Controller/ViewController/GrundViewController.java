@@ -228,71 +228,32 @@ public class GrundViewController implements Initializable {
                 ladeLadenScene();
                 hauptmenueSchließen();
 
-                if(mensaplanEinmalHeruntergeladen)
+                if(SchreiberLeser.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
                 {
-                    ladeSceneMitScrollPane();
-                }
-                else
-                {
-                    Task task=new Task<Void>()
-                    {
-                        @Override
-                        protected Void call() throws Exception
-                        {
-                            menuHauptButton.setDisable(true);
-                            Datenabrufer.mensaplanAbrufen();
-                            return null;
-                        }
-                    };
-
-                    task.stateProperty().addListener(((observable, oldValue, newValue) ->
-                    {
-                        if(newValue== Worker.State.SUCCEEDED)
-                        {
-                            ladeSceneMitScrollPane();
-                            menuHauptButton.setDisable(false);
-                            mensaplanEinmalHeruntergeladen=true;
-                        }
-                    }));
-
-                    new Thread(task).start();
-                }
-            } break;
-            case STUDIENGANG:
-            {
-                if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
-                {
-                    ProgressIndicator progressIndicator=ladeLadenScene();
-                    hauptmenueSchließen();
-
-                    if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang() && letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
+                    if(mensaplanEinmalHeruntergeladen)
                     {
                         ladeSceneMitScrollPane();
                     }
                     else
                     {
-
-                        Task task = new Task<Void>()
+                        Task task=new Task<Void>()
                         {
                             @Override
                             protected Void call() throws Exception
                             {
                                 menuHauptButton.setDisable(true);
-                                Datenabrufer.studiengangAbrufen();
+                                Datenabrufer.mensaplanAbrufen();
                                 return null;
                             }
                         };
 
-                        progressIndicator.progressProperty().addListener(((observable, oldValue, newValue) ->
+                        task.stateProperty().addListener(((observable, oldValue, newValue) ->
                         {
-                            if (newValue.doubleValue() == 1)
+                            if(newValue== Worker.State.SUCCEEDED)
                             {
-                                letzterStudiengang=SchreiberLeser.getNutzerdaten().getStudiengang();
-                                letztesStudiensemester=SchreiberLeser.getNutzerdaten().getStudiensemester();
-
                                 ladeSceneMitScrollPane();
                                 menuHauptButton.setDisable(false);
-                                studiengangEinmalHeruntergeladen = true;
+                                mensaplanEinmalHeruntergeladen=true;
                             }
                         }));
 
@@ -301,12 +262,66 @@ public class GrundViewController implements Initializable {
                 }
                 else
                 {
-                    Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
-                    alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
-                    alert.setTitle("Studiengang und -semester setzen");
-                    alert.setHeaderText("Warnung");
-                    alert.initOwner(Main.getPrimaryStage());
-                    alert.showAndWait();
+                    //TODO Kein internet alert
+                }
+            } break;
+            case STUDIENGANG:
+            {
+
+                if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+                {
+                    if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
+                    {
+                        ProgressIndicator progressIndicator=ladeLadenScene();
+                        hauptmenueSchließen();
+
+                        if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang() && letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
+                        {
+                            ladeSceneMitScrollPane();
+                        }
+                        else
+                        {
+
+                            Task task = new Task<Void>()
+                            {
+                                @Override
+                                protected Void call() throws Exception
+                                {
+                                    menuHauptButton.setDisable(true);
+                                    Datenabrufer.studiengangAbrufen();
+                                    return null;
+                                }
+                            };
+
+                            progressIndicator.progressProperty().addListener(((observable, oldValue, newValue) ->
+                            {
+                                if (newValue.doubleValue() == 1)
+                                {
+                                    letzterStudiengang=SchreiberLeser.getNutzerdaten().getStudiengang();
+                                    letztesStudiensemester=SchreiberLeser.getNutzerdaten().getStudiensemester();
+
+                                    ladeSceneMitScrollPane();
+                                    menuHauptButton.setDisable(false);
+                                    studiengangEinmalHeruntergeladen = true;
+                                }
+                            }));
+
+                            new Thread(task).start();
+                        }
+                    }
+                    else
+                    {
+                        Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
+                        alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+                        alert.setTitle("Studiengang und -semester setzen");
+                        alert.setHeaderText("Warnung");
+                        alert.initOwner(Main.getPrimaryStage());
+                        alert.showAndWait();
+                    }
+                }
+                else
+                {
+                    //TODO Kein internet alert
                 }
             }break;
             case PANOPTO:
