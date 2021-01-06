@@ -9,7 +9,7 @@ public class StudiengangDokumente
     ArrayList<Document> faecherDokumente;
     // int i = 0;
 
-    public StudiengangDokumente(ArrayList<Document> faecherDokumente) throws IOException
+    public StudiengangDokumente(ArrayList<Document> faecherDokumente)
     {
         this.faecherDokumente = faecherDokumente;
     }

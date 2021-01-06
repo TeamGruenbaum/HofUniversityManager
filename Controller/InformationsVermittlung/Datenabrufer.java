@@ -115,16 +115,14 @@ public class Datenabrufer
 									{
 										try
 										{
-											//System.out.println("NUMMER"+i+": https://www.hof-university.de"+dokument.select("tbody>tr").get(i).
-											//      select("a").get(0).attr("href"));
-
 											//TODO BWL 1a
 											arrayList.add(Jsoup.connect("https://www.hof-university.de"+dokument.select("tbody>tr").get(i).
 												select("a").get(0).attr("href")).get());
-										}catch(Exception ignored)
+										}
+										catch(Exception keineGefahrException)
 										{
-											Platform.runLater(()->progressIndicator.setProgress(1));
-											break;
+											//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
+											keineGefahrException.printStackTrace();
 										}
 
 										int finalI=i;
@@ -145,13 +143,9 @@ public class Datenabrufer
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
-							try
-							{
+
 								SchreiberLeser.studiengangInformationenNeuSetzen(Parser.studiengangParsen(new StudiengangDokumente(arrayList)));
-							}catch(IOException e)
-							{
-								e.printStackTrace();
-							}
+
 
 							Platform.runLater(()->progressIndicator.setProgress(1));
 						}
@@ -180,8 +174,11 @@ public class Datenabrufer
 			{
 				progressIndicator.setProgress(1);
 			});
-		}catch(Exception e)
+		}
+		catch(Exception keineGefahrException)
 		{
+			//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
+			keineGefahrException.printStackTrace();
 		}
 	}
 
@@ -212,8 +209,10 @@ public class Datenabrufer
 			try
 			{
 				doc=Jsoup.connect(url).get();
-			}catch(Exception e)
+			}catch(Exception keineGefahrException)
 			{
+				//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
+				keineGefahrException.printStackTrace();
 			}
 
 			Datum datum=new Datum(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
@@ -328,8 +327,10 @@ public class Datenabrufer
 							try
 							{
 								laenge=Jsoup.connect("https://www.hof-university.de/studierende/info-service/stundenplaene.html").get().select("[name='tx_stundenplan_stundenplan[studiengang]']").get(0).childNodeSize();
-							}catch(Exception e)
+							}catch(Exception keineGefahrException)
 							{
+								//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
+								keineGefahrException.printStackTrace();
 							}
 
 							for(int i=1; i<laenge; i++)
@@ -346,8 +347,11 @@ public class Datenabrufer
 								try
 								{
 									Thread.sleep(((end-start)/1000000)/2);
-								}catch(Exception e)
+								}catch(Exception keineGefahrExcpetion)
 								{
+									//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
+									keineGefahrExcpetion.printStackTrace();
+
 								}
 
 								Platform.runLater(()->

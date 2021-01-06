@@ -290,26 +290,24 @@ public class Parser
             }
             else break;
 
-            try
+
+            switch(wochentag)
             {
-                switch(wochentag)
-                {
-                    case "Tag Beginn Ende Veranstaltung Dozent Typ Raum":
-                        if(stundenplanDokument.getElementsByTag("table").get(i).select("tbody").size()==1)
-                        {
-                            _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, null, i);
-                            letzteTabelle=true;
-                        } break;
-                    case "Montag":_doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MONTAG, i); break;
-                    case "Dienstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DIENSTAG, i); break;
-                    case "Mittwoch": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MITTWOCH, i); break;
-                    case "Donnerstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DONNERSTAG, i); break;
-                    case "Freitag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.FREITAG, i); break;
-                    case "Samstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.SAMSTAG, i); break;
-                    case "weitere Veranstaltungen": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, null, i); letzteTabelle=true; break;
-                }
+                case "Tag Beginn Ende Veranstaltung Dozent Typ Raum":
+                    if(stundenplanDokument.getElementsByTag("table").get(i).select("tbody").size()==1)
+                    {
+                        _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, null, i);
+                        letzteTabelle=true;
+                    } break;
+                case "Montag":_doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MONTAG, i); break;
+                case "Dienstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DIENSTAG, i); break;
+                case "Mittwoch": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.MITTWOCH, i); break;
+                case "Donnerstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.DONNERSTAG, i); break;
+                case "Freitag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.FREITAG, i); break;
+                case "Samstag": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, Tag.SAMSTAG, i); break;
+                case "weitere Veranstaltungen": _doppelstundeHinzufuegen(doppelstunden, stundenplanDokument, null, i); letzteTabelle=true; break;
             }
-            catch(Exception e){e.printStackTrace();}
+
 
             if((wochentag.compareTo("Freitag")==0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").size()!=0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("Samstag")!=0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0) ||
                 (wochentag.compareTo("Samstag")==0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").size()!=0 && stundenplanDokument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0) ||

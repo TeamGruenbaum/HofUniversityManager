@@ -384,8 +384,10 @@ public class StundenplanViewController implements Initializable
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/DoppelstundenHinzufuegeView.fxml")));
 			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
 			dialogPane.setStyle(Main.getRoot().getStyle());
-		}catch(IOException ignored)
+		}catch(IOException keineGefahrExcepttion)
 		{
+			//Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+			keineGefahrExcepttion.printStackTrace();
 		}
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -647,9 +649,15 @@ public class StundenplanViewController implements Initializable
 		try
 		{
 			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NotizHinzufuegeView.fxml")));
-		}catch(IOException ignored){}
-		dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
-		dialogPane.setStyle(Main.getRoot().getStyle());
+			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setStyle(Main.getRoot().getStyle());
+		}
+		catch(Exception keineGefahrExcepttion)
+		{
+			//Die Gefahr ist gebannt, da der Pfad zur richtigen FXML- bzw. CSS-Datei hartkodiert ist
+			keineGefahrExcepttion.printStackTrace();
+		}
+
 		dialogPane.setMinSize(300, 200);
 		dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
