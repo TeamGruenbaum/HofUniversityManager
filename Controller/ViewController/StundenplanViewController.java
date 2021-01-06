@@ -270,20 +270,21 @@ public class StundenplanViewController implements Initializable
 	{
 		if(SchreiberLeser.getNutzerdaten().getStudiengang()==null && SchreiberLeser.getNutzerdaten().getStudiensemester()==null)
 		{
-			Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
-			alert.setTitle("Studiengang und -semester setzen");
-			alert.setHeaderText("Warnung");
-			alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
-			alert.getDialogPane().setStyle(Main.getRoot().getStyle());
-			alert.initOwner(Main.getPrimaryStage());
-			alert.showAndWait();
+			GrundViewController.oeffneFehlenderStudiengangDialog();
 		}
 		else
 		{
-			Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
-			Datenabrufer.stundenplanAbrufen();
-			stundenplanZuruecksetzen.setDisable(true);
-			stundenplanZuruecksetzungProgressIndicator.setVisible(true);
+			if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+			{
+				Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
+				Datenabrufer.stundenplanAbrufen();
+				stundenplanZuruecksetzen.setDisable(true);
+				stundenplanZuruecksetzungProgressIndicator.setVisible(true);
+			}
+			else
+			{
+				GrundViewController.oeffneFehlendeInternetverbindungDialogDienst();
+			}
 		}
 	}
 

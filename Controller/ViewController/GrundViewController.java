@@ -51,7 +51,8 @@ import java.util.ResourceBundle;
 
 import static Model.NutzerdatenModel.Anwendung.*;
 
-public class GrundViewController implements Initializable {
+public class GrundViewController implements Initializable
+{
 
     //Attribute auf welche durch mehrere Methoden zugegriffen wird
     private static GridPane gridPane;
@@ -83,12 +84,13 @@ public class GrundViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+
         mensaplanEinmalHeruntergeladen=false;
         studiengangEinmalHeruntergeladen=false;
         treffpunkteEinmalHeruntergeladen=false;
 
         //Initialisieren des Hauptmenuebuttons
-        ImageView view = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
+        ImageView view=new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
         view.setFitHeight(35);
         view.setPreserveRatio(true);
 
@@ -102,11 +104,12 @@ public class GrundViewController implements Initializable {
         //GridPane initialisieren
         gridPane=new GridPane();
         gridPane.getStyleClass().add("icon-menu-karte");
-        ColumnConstraints columnConstraints = new ColumnConstraints();
+        ColumnConstraints columnConstraints=new ColumnConstraints();
         columnConstraints.setMinWidth(menuepunktHoeheBreite);
         columnConstraints.setMaxWidth(menuepunktHoeheBreite);
         gridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints, columnConstraints);
-        gridPane.addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
+        gridPane.addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->
+        {
             mouseEvent.consume();
         });
 
@@ -121,13 +124,13 @@ public class GrundViewController implements Initializable {
                     k++;
                 }
 
-                RowConstraints rowConstraints = new RowConstraints();
+                RowConstraints rowConstraints=new RowConstraints();
                 rowConstraints.setMinHeight(menuepunktHoeheBreite);
                 rowConstraints.setMaxHeight(menuepunktHoeheBreite);
                 gridPane.getRowConstraints().add(rowConstraints);
             }
 
-            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+Menue.getMenuepunkte().get(i).getIconDateiname())));
+            ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+Menue.getMenuepunkte().get(i).getIconDateiname())));
             imageView.setFitHeight(menuepunktHoeheBreite-55);
             imageView.setPreserveRatio(true);
 
@@ -156,7 +159,8 @@ public class GrundViewController implements Initializable {
         AnchorPane.setTopAnchor(gridPane, 70.0);
         AnchorPane.setRightAnchor(gridPane, 10.0);
         anchorPane.getChildren().add(gridPane);
-        anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)-> {
+        anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->
+        {
             hauptmenueSchließen();
         });
 
@@ -174,6 +178,7 @@ public class GrundViewController implements Initializable {
     @FXML
     public void menuOeffnen()
     {
+
         fadeTransitionStandard(anchorPane, 300, Blende.EINBLENDEN);
         stackPane.getChildren().add(anchorPane);
     }
@@ -183,30 +188,15 @@ public class GrundViewController implements Initializable {
         ColorAdjust farbwechsel = new ColorAdjust();
 
         if(thema == Thema.DUNKEL) {
-            Main.getRoot().setStyle("-menubar-color: #676767;" +
-                    "-font-color: #ffffff;" +
-                    "-anwendung-bgr: #404040;" +
-                    "-accent-color: #318eb1;" +
-                    "-warn-color: #691c1c;" +
-                    "-menubar-text-color: white;" +
-                    "-accent-color-accent: #266e8c;" +
-                    "-anwendung-bgr-accent: #4f4f4f;" +
-                    "-menubar-titel-color: #45c8ff");
+            Main.getRoot().setStyle("-menubar-color: #676767;"+"-font-color: #ffffff;"+"-anwendung-bgr: #404040;"+"-accent-color: #318eb1;"+"-warn-color: #691c1c;"+"-menubar-text-color: white;"+"-accent-color-accent: #266e8c;"+"-anwendung-bgr-accent: #4f4f4f;"+"-menubar-titel-color: #45c8ff");
             farbwechsel.setBrightness(1);
         } else {
-            Main.getRoot().setStyle("-menubar-color: white;" +
-                    "-font-color: #262626;" +
-                    "-anwendung-bgr: #e2e2e2;" +
-                    "-accent-color: #0072a0;" +
-                    "-warn-color: #8a2828;" +
-                    "-menubar-text-color: black;" +
-                    "-accent-color-accent: #004a66;" +
-                    "-anwendung-bgr-accent: #ffffff;" +
-                    "-menubar-titel-color: #0072a0");
+            Main.getRoot().setStyle("-menubar-color: white;"+"-font-color: #262626;"+"-anwendung-bgr: #e2e2e2;"+"-warn-color: #8a2828;"+"-menubar-text-color: black;"+"-accent-color-accent: #004a66;"+"-anwendung-bgr-accent: #ffffff;"+"-menubar-titel-color: #0072a0");
             farbwechsel.setBrightness(0);
         }
 
-        gridPane.getChildren().forEach((obj) -> {
+        gridPane.getChildren().forEach((obj)->
+        {
             obj.setEffect(farbwechsel);
         });
 
@@ -216,42 +206,43 @@ public class GrundViewController implements Initializable {
     //Hilfsmethoden und Hilfsklasse allgemeiner Art
     private void oeffneScene()
     {
-        ort.setText(grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
 
+        ort.setText(grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
 
         switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
         {
             case STUNDENPLAN:
             {
                 ladeSceneMitScrollPane();
-            }break;
+            }
+            break;
             case MENSAPLAN:
             {
-                ladeLadenScene();
-                hauptmenueSchließen();
-
-                if(SchreiberLeser.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
+                if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.studentenwerk-oberfranken.de/"))
                 {
+                    ladeLadenScene();
+                    hauptmenueSchließen();
+
                     if(mensaplanEinmalHeruntergeladen)
                     {
                         ladeSceneMitScrollPane();
-                    }
-                    else
+                    }else
                     {
                         Task task=new Task<Void>()
                         {
                             @Override
                             protected Void call() throws Exception
                             {
+
                                 menuHauptButton.setDisable(true);
                                 Datenabrufer.mensaplanAbrufen();
                                 return null;
                             }
                         };
 
-                        task.stateProperty().addListener(((observable, oldValue, newValue) ->
+                        task.stateProperty().addListener(((observable, oldValue, newValue)->
                         {
-                            if(newValue== Worker.State.SUCCEEDED)
+                            if(newValue==Worker.State.SUCCEEDED)
                             {
                                 ladeSceneMitScrollPane();
                                 menuHauptButton.setDisable(false);
@@ -261,138 +252,184 @@ public class GrundViewController implements Initializable {
 
                         new Thread(task).start();
                     }
-                }
-                else
+                }else
                 {
-                    //TODO Kein internet alert
+                    oeffneFehlendeInternetverbindungDialogDaten();
+
+                    ladeSceneMitScrollPane();
                 }
-            } break;
+            }
+            break;
             case STUDIENGANG:
             {
-
-                if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+                if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null&&SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
                 {
-                    if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null && SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
-                    {
-                        ProgressIndicator progressIndicator=ladeLadenScene();
-                        hauptmenueSchließen();
+                    ProgressIndicator progressIndicator=ladeLadenScene();
+                    hauptmenueSchließen();
 
-                        if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang() && letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
+                    if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+                    {
+                        if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang()&&letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
                         {
                             ladeSceneMitScrollPane();
-                        }
-                        else
+                        }else
                         {
 
-                            Task task = new Task<Void>()
+                            Task task=new Task<Void>()
                             {
                                 @Override
                                 protected Void call() throws Exception
                                 {
+
                                     menuHauptButton.setDisable(true);
                                     Datenabrufer.studiengangAbrufen();
                                     return null;
                                 }
                             };
 
-                            progressIndicator.progressProperty().addListener(((observable, oldValue, newValue) ->
+                            progressIndicator.progressProperty().addListener(((observable, oldValue, newValue)->
                             {
-                                if (newValue.doubleValue() == 1)
+                                if(newValue.doubleValue()==1)
                                 {
                                     letzterStudiengang=SchreiberLeser.getNutzerdaten().getStudiengang();
                                     letztesStudiensemester=SchreiberLeser.getNutzerdaten().getStudiensemester();
 
                                     ladeSceneMitScrollPane();
                                     menuHauptButton.setDisable(false);
-                                    studiengangEinmalHeruntergeladen = true;
+                                    studiengangEinmalHeruntergeladen=true;
                                 }
                             }));
 
                             new Thread(task).start();
                         }
-                    }
-                    else
+                    }else
                     {
-                        Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
-                        alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
-                        alert.getDialogPane().setStyle(Main.getRoot().getStyle());
-                        alert.setTitle("Studiengang und -semester setzen");
-                        alert.setHeaderText("Warnung");
-                        alert.initOwner(Main.getPrimaryStage());
-                        alert.showAndWait();
+                        oeffneFehlendeInternetverbindungDialogDaten();
+                        ladeSceneMitScrollPane();
                     }
+                }else
+                {
+                    oeffneFehlenderStudiengangDialog();
+                }
+            }
+            break;
+            case PANOPTO:
+            {
+                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                {
+                    Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
                 }
                 else
                 {
-                    //TODO Kein internet alert
+                    oeffneFehlendeInternetverbindungDialogDienst();
                 }
-            }break;
-            case PANOPTO:
-            {
-                Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
-            }break;
+
+            }
+            break;
             case NEXTCLOUD:
             {
-                Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
-            }break;
-            case CAMPUSSPORT, BAYERNFAHRPLAN:
+                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                {
+                    Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungDialogDienst();
+                }
+            }
+            break;
+            case CAMPUSSPORT:
             {
-                ladeSceneOhneScrollPane();
+                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
+                {
+                    ladeSceneOhneScrollPane();
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungDialogDienst();
+                }
+            }break;
+            case BAYERNFAHRPLAN:
+            {
+                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
+                {
+                    ladeSceneOhneScrollPane();
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungDialogDienst();
+                }
             }break;
             case TREFFPUNKTE:
             {
                 ladeLadenScene();
                 hauptmenueSchließen();
 
-                if(treffpunkteEinmalHeruntergeladen)
+                if(SchreiberLeser.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
                 {
-                    ladeSceneMitScrollPane();
+                    if(treffpunkteEinmalHeruntergeladen)
+                    {
+                        ladeSceneMitScrollPane();
+                    }else
+                    {
+                        Task task=new Task<Void>()
+                        {
+                            @Override
+                            protected Void call() throws Exception
+                            {
+
+                                menuHauptButton.setDisable(true);
+                                Datenabrufer.treffpunkteAbrufen();
+                                return null;
+                            }
+                        };
+
+                        task.stateProperty().addListener(((observable, oldValue, newValue)->
+                        {
+                            if(newValue==Worker.State.SUCCEEDED)
+                            {
+                                ladeSceneMitScrollPane();
+                                menuHauptButton.setDisable(false);
+                                treffpunkteEinmalHeruntergeladen=true;
+                            }
+                        }));
+
+                        new Thread(task).start();
+                    }
                 }
                 else
                 {
-                    Task task=new Task<Void>()
-                    {
-                        @Override
-                        protected Void call() throws Exception
-                        {
-                            menuHauptButton.setDisable(true);
-                            Datenabrufer.treffpunkteAbrufen();
-                            return null;
-                        }
-                    };
+                    oeffneFehlendeInternetverbindungDialogDaten();
 
-                    task.stateProperty().addListener(((observable, oldValue, newValue) ->
-                    {
-                        if(newValue== Worker.State.SUCCEEDED)
-                        {
-                            ladeSceneMitScrollPane();
-                            menuHauptButton.setDisable(false);
-                            treffpunkteEinmalHeruntergeladen=true;
-                        }
-                    }));
-
-                    new Thread(task).start();
+                    ladeSceneMitScrollPane();
                 }
-            }break;
+            }
+            break;
             case MOODLE, PRIMUSS:
             {
-                if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
+                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getMoodleLink()))
                 {
-                    Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest deine Login-Daten in den Einstellungen hinterlegen!");
-                    alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
-                    alert.getDialogPane().setStyle(Main.getRoot().getStyle());
-                    alert.setTitle("Login setzen");
-                    alert.setHeaderText("Empfehlung");
-                    alert.initOwner(Main.getPrimaryStage());
-                    alert.showAndWait();
+                    if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
+                    {
+                        Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest deine Login-Daten in den Einstellungen hinterlegen!");
+                        alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+                        alert.setTitle("Login setzen");
+                        alert.setHeaderText("Empfehlung");
+                        alert.initOwner(Main.getPrimaryStage());
+                        alert.showAndWait();
+                    }
+                    ladeSceneOhneScrollPane();
                 }
-
-                ladeSceneOhneScrollPane();
+                else
+                {
+                    oeffneFehlendeInternetverbindungDialogDienst();
+                }
             }
             case EINSTELLUNGEN:
             {
                 ladeSceneMitScrollPane();
-            }break;
+            }
+            break;
             default:
             {
                 ladeSceneMitScrollPane();
@@ -484,6 +521,37 @@ public class GrundViewController implements Initializable {
             //Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
             keinGefahreException.printStackTrace();
         }
+    }
+
+    public static void oeffneFehlenderStudiengangDialog()
+    {
+        Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
+        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("../../View/CSS/Application.css").toExternalForm());
+        alert.setTitle("Studiengang und -semester setzen");
+        alert.setHeaderText("Warnung");
+        alert.initOwner(Main.getPrimaryStage());
+        alert.showAndWait();
+    }
+
+    public static void oeffneFehlendeInternetverbindungDialogDienst()
+    {
+        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Dieser Dienst ist aktuell nicht verfügbar");
+    }
+
+    public static void oeffneFehlendeInternetverbindungDialogDaten()
+    {
+        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Eventuell sind keine oder veraltete Daten vorhanden");
+    }
+
+    private static void oeffneFehlendeInternetverbindungDialog(String content)
+    {
+        Alert alert=new Alert(Alert.AlertType.WARNING, content);
+        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("../../View/CSS/Application.css").toExternalForm());
+        alert.getDialogPane().setStyle(Main.getRoot().getStyle());
+        alert.setTitle("Keine Internetverbindung");
+        alert.setHeaderText("Hinweis");
+        alert.initOwner(Main.getPrimaryStage());
+        alert.showAndWait();
     }
 
     //Hilfsmethoden für visuelle Effekte
