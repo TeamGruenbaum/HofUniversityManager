@@ -171,6 +171,10 @@
     -fx-background-insets: 1, 1, 1, 1;
 }
 
+.anwendungsBereich > .choice-box {
+    -fx-mark-color: -font-color;
+}
+
 .arrow-button > .arrow {
     -fx-background-color: -menubar-titel-color;
 }
@@ -208,6 +212,11 @@
     -fx-text-box-border: transparent;
     -fx-background-color: -anwendung-bgr-accent;
     -fx-background-insets: 1, 1, 1, 1;
+}
+
+.dialog-pane .text-field{
+    -fx-text-box-border: transparent;
+    -fx-background-color: -anwendung-bgr-accent;
 }
 
 .anwendungsBereich > .text-area {
@@ -366,6 +375,7 @@
 .table-view .column-header-background .label{
     -fx-background-color: -menubar-color;
     -fx-text-fill: -menubar-text-color;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .table-view .column-header {

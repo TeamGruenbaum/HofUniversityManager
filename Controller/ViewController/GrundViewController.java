@@ -411,7 +411,7 @@ public class GrundViewController implements Initializable
                 {
                     if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
                     {
-                        Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest deine Login-Daten in den Einstellungen hinterlegen!");
+                        Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest Deine Login-Daten in den Einstellungen hinterlegen!");
                         alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
                         alert.setTitle("Login setzen");
                         alert.setHeaderText("Empfehlung");
@@ -525,7 +525,7 @@ public class GrundViewController implements Initializable
 
     public static void oeffneFehlenderStudiengangDialog()
     {
-        Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor du diese Funktion nutzen kannst!");
+        Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor Du diese Funktion nutzen kannst!");
         alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("../../View/CSS/Application.css").toExternalForm());
         alert.setTitle("Studiengang und -semester setzen");
         alert.setHeaderText("Warnung");
@@ -535,12 +535,12 @@ public class GrundViewController implements Initializable
 
     public static void oeffneFehlendeInternetverbindungDialogDienst()
     {
-        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Dieser Dienst ist aktuell nicht verfügbar");
+        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Dieser Dienst ist aktuell nicht verfügbar.");
     }
 
     public static void oeffneFehlendeInternetverbindungDialogDaten()
     {
-        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Eventuell sind keine oder veraltete Daten vorhanden");
+        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Eventuell sind keine oder veraltete Daten vorhanden.");
     }
 
     private static void oeffneFehlendeInternetverbindungDialog(String content)
