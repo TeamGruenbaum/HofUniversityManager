@@ -88,7 +88,7 @@
                         <Insets bottom="14.0" left="28.0" right="28.0" top="28.0" />
                      </padding>
                   </Label>
-                  <Label text="Gebe hier deine Benutzerdaten an. Das dient zur Identifizierung bei den Diensten." textOverrun="CLIP">
+                  <Label text="Gib hier Deine SSO-Benutzerdaten und Studiengangs-Informationen an. Das dient zur Identifizierung bei den Diensten." textOverrun="CLIP">
                      <padding>
                         <Insets bottom="14.0" left="28.0" />
                      </padding>
