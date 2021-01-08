@@ -2,7 +2,7 @@ package Controller.ViewController;
 
 
 import Controller.InformationsVermittlung.Internetdatenatenabrufer;
-import Controller.Speicher.Internetverbindungsontrolleur;
+import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
@@ -204,7 +204,7 @@ public class GrundViewController implements Initializable
             break;
             case MENSAPLAN:
             {
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://www.studentenwerk-oberfranken.de/"))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.studentenwerk-oberfranken.de/"))
                 {
                     ladeLadenScene();
                     hauptmenueSchließen();
@@ -252,7 +252,7 @@ public class GrundViewController implements Initializable
 
                 if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null&&SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
                 {
-                    if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+                    if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
                     {
                         ProgressIndicator progressIndicator=ladeLadenScene();
 
@@ -302,7 +302,7 @@ public class GrundViewController implements Initializable
             break;
             case PANOPTO:
             {
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
                 {
                     Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
                 }
@@ -315,7 +315,7 @@ public class GrundViewController implements Initializable
             break;
             case NEXTCLOUD:
             {
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
                 {
                     Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
                 }
@@ -327,7 +327,7 @@ public class GrundViewController implements Initializable
             break;
             case CAMPUSSPORT:
             {
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
                 {
                     ladeSceneOhneScrollPane();
                 }
@@ -338,7 +338,7 @@ public class GrundViewController implements Initializable
             }break;
             case BAYERNFAHRPLAN:
             {
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
                 {
                     ladeSceneOhneScrollPane();
                 }
@@ -352,7 +352,7 @@ public class GrundViewController implements Initializable
                 ladeLadenScene();
                 hauptmenueSchließen();
 
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
                 {
                     if(treffpunkteEinmalHeruntergeladen)
                     {
@@ -394,7 +394,7 @@ public class GrundViewController implements Initializable
             break;
             case MOODLE, PRIMUSS:
             {
-                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getMoodleLink()))
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getMoodleLink()))
                 {
                     if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
                     {

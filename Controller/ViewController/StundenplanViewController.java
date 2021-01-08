@@ -2,7 +2,7 @@ package Controller.ViewController;
 
 import Controller.InformationsVermittlung.Internetdatenatenabrufer;
 import Controller.Main;
-import Controller.Speicher.Internetverbindungsontrolleur;
+import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Speicher.SchreiberLeser;
 
 import Model.Datum;
@@ -183,7 +183,7 @@ public class StundenplanViewController implements Initializable
 
 		//TODO Art und Note verwechselt
 		//Fächer
-		notenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten());
+		notenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getNoten());
 		notenTableView.setItems(notenObservableList);
 		aendernLoeschenKontextmenueHinzufuegen(notenTableView, (actionEvent, noteTableView)->
 			{
@@ -194,14 +194,14 @@ public class StundenplanViewController implements Initializable
 					noteTableView.getSelectionModel().getSelectedItem().getFach())
 					.ifPresent((item)->
 					{
-						SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().set(noteTableView.getSelectionModel().getSelectedIndex(), item);
+						SchreiberLeser.getNutzerdaten().getNoten().set(noteTableView.getSelectionModel().getSelectedIndex(), item);
 						notenObservableList.set(noteTableView.getSelectionModel().getSelectedIndex(), item);
 						noteTableView.refresh();
 					});
 			},
 			(actionEvent, noteTableView)->
 			{
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().remove(noteTableView.getSelectionModel().getSelectedIndex());
+				SchreiberLeser.getNutzerdaten().getNoten().remove(noteTableView.getSelectionModel().getSelectedIndex());
 				notenObservableList.remove(noteTableView.getSelectionModel().getSelectedIndex());
 				noteTableView.refresh();
 			});
@@ -211,7 +211,7 @@ public class StundenplanViewController implements Initializable
 		notenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
 
-		aufgabenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben());
+		aufgabenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getAufgaben());
 		aufgabenTableView.setItems(aufgabenObservableList);
 		aendernLoeschenKontextmenueHinzufuegen(aufgabenTableView, (actionEvent, aufgabenTableView)->
 			{
@@ -223,14 +223,14 @@ public class StundenplanViewController implements Initializable
 					aufgabenTableView.getSelectionModel().getSelectedItem().getFach())
 					.ifPresent((item)->
 					{
-						SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().set(aufgabenTableView.getSelectionModel().getSelectedIndex(), item);
+						SchreiberLeser.getNutzerdaten().getAufgaben().set(aufgabenTableView.getSelectionModel().getSelectedIndex(), item);
 						aufgabenObservableList.set(aufgabenTableView.getSelectionModel().getSelectedIndex(), item);
 						aufgabenTableView.refresh();
 					});
 			},
 			(actionEvent, aufgabenTableView)->
 			{
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().remove(aufgabenTableView.getSelectionModel().getSelectedIndex());
+				SchreiberLeser.getNutzerdaten().getAufgaben().remove(aufgabenTableView.getSelectionModel().getSelectedIndex());
 				aufgabenObservableList.remove(aufgabenTableView.getSelectionModel().getSelectedIndex());
 				aufgabenTableView.refresh();
 			});
@@ -241,7 +241,7 @@ public class StundenplanViewController implements Initializable
 		aufgabenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
 
-		notizObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen());
+		notizObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getNotizen());
 		notizenTableView.setItems(notizObservableList);
 		aendernLoeschenKontextmenueHinzufuegen(notizenTableView, (actionEvent, notizTableView)->
 		{
@@ -251,14 +251,14 @@ public class StundenplanViewController implements Initializable
 				notizTableView.getSelectionModel().getSelectedItem().getFach())
 				.ifPresent((item)->
 				{
-					SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().set(notizTableView.getSelectionModel().getSelectedIndex(), item);
+					SchreiberLeser.getNutzerdaten().getNotizen().set(notizTableView.getSelectionModel().getSelectedIndex(), item);
 					notizObservableList.set(notizTableView.getSelectionModel().getSelectedIndex(), item);
 					notizenTableView.refresh();
 				});
 		},
 		(actionEvent, notizTableView)->
 		{
-			SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().remove(notizTableView.getSelectionModel().getSelectedIndex());
+			SchreiberLeser.getNutzerdaten().getNotizen().remove(notizTableView.getSelectionModel().getSelectedIndex());
 			notizObservableList.remove(notizTableView.getSelectionModel().getSelectedIndex());
 			notizenTableView.refresh();
 		});
@@ -276,7 +276,7 @@ public class StundenplanViewController implements Initializable
 		}
 		else
 		{
-			if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+			if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
 			{
 				Internetdatenatenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
 				Internetdatenatenabrufer.stundenplanAbrufen();
@@ -483,19 +483,19 @@ public class StundenplanViewController implements Initializable
 		{
 			case 0->oeffneAufgabeDialog("Aufgaben hinzufügen", "Hinzufügen", "","", new Datum(Calendar.getInstance().get(Calendar.DATE), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR)), new Uhrzeit(8, 0), SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getAufgaben().add(item);
+				SchreiberLeser.getNutzerdaten().getAufgaben().add(item);
 				aufgabenObservableList.add(item);
 				aufgabenTableView.refresh();
 			});
 			case 1->oeffneNotizDialog("Notiz hinzufügen", "Hinzufügen", "","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNotizen().add(item);
+				SchreiberLeser.getNutzerdaten().getNotizen().add(item);
 				notizObservableList.add(item);
 				notizenTableView.refresh();
 			});
 			case 2->oeffneNoteDialog("Note hinzufügen", "Hinzufügen", "","","", SchreiberLeser.getNutzerdaten().getFaecher().size()==0?"Allgemein":SchreiberLeser.getNutzerdaten().getFaecher().get(0)).ifPresent((item)->
 			{
-				SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten().add(item);
+				SchreiberLeser.getNutzerdaten().getNoten().add(item);
 				notenObservableList.add(item);
 				notizenTableView.refresh();
 			});

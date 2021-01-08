@@ -16,7 +16,9 @@ public class Nutzerdaten implements Serializable
     //nullable
     private Studiensemester studiensemester;
     private ArrayList<Doppelstunde> doppelstunden;
-    private FachDatensatz fachDatensatz;
+    private ArrayList<Aufgabe> aufgaben;
+    private ArrayList<Notiz> notizen;
+    private ArrayList<Note> noten;
     private ArrayList<String> faecher;
     private Login ssoLogin;
     private Thema aktuellesThema;
@@ -27,13 +29,15 @@ public class Nutzerdaten implements Serializable
 
 
     public Nutzerdaten(Studiengang studiengang, Studiensemester studiensemester,
-                       ArrayList<Doppelstunde> doppelstunden, FachDatensatz fachDatensatz, ArrayList<String> faecher,Login ssoLogin,
+                       ArrayList<Doppelstunde> doppelstunden, ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notizen, ArrayList<Note> noten, ArrayList<String> faecher,Login ssoLogin,
                        Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
     {
         this.studiengang=studiengang;
         this.studiensemester = studiensemester;
         this.doppelstunden = doppelstunden;
-        this.fachDatensatz=fachDatensatz;
+        this.aufgaben=aufgaben;
+        this.notizen=notizen;
+        this.noten=noten;
         this.faecher=faecher;
         this.ssoLogin = ssoLogin;
         this.aktuellesThema = aktuellesThema;
@@ -96,9 +100,19 @@ public class Nutzerdaten implements Serializable
         letzterGeoeffneterMenuepunkt=neuerWert;
     }
 
-    public FachDatensatz getFachDatensatz()
+    public ArrayList<Aufgabe> getAufgaben()
     {
-        return fachDatensatz;
+        return aufgaben;
+    }
+
+    public ArrayList<Notiz> getNotizen()
+    {
+        return notizen;
+    }
+
+    public ArrayList<Note> getNoten()
+    {
+        return noten;
     }
 
     public ArrayList<String> getFaecher()

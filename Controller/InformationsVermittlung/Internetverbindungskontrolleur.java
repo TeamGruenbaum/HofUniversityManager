@@ -1,4 +1,4 @@
-package Controller.Speicher;
+package Controller.InformationsVermittlung;
 
 
 
@@ -6,7 +6,7 @@ import java.net.URL;
 
 
 
-public class Internetverbindungsontrolleur
+public class Internetverbindungskontrolleur
 {
 	//Diese Methode gibt true zurück, insofern zu der angegebenen URL eine Verbindung hergestellt werden kann.
 	public static boolean isInternetVerbindungVorhanden(String url)

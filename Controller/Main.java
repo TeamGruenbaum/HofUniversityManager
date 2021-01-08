@@ -1,5 +1,7 @@
 package Controller;
 
+
+
 import Controller.Speicher.SchreiberLeser;
 import Controller.ViewController.GrundViewController;
 import javafx.application.Application;
@@ -16,12 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.awt.*;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.Taskbar;
-import java.awt.Toolkit;
-import java.net.URL;
+
 
 public class Main extends Application
 {

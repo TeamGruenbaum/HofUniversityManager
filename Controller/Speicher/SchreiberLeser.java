@@ -3,6 +3,7 @@ package Controller.Speicher;
 
 
 import Model.DropdownModel.DropdownMenue;
+import Model.DropdownModel.Studiengang;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
@@ -74,7 +75,7 @@ public class SchreiberLeser
         faecherNamen.add("Allgemein");
 
         nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(),
-            new FachDatensatz(new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>()),
+            new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>(),
             faecherNamen,
             new Login("", ""), Thema.HELL,
             Menue.getMenuepunktInformationen().get(Menue.getMenuepunktInformationen().size()-1));
