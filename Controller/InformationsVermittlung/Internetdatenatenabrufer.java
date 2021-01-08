@@ -1,34 +1,39 @@
 package Controller.InformationsVermittlung;
 
+
+
+import Controller.InformationsVermittlung.Hilfsklassen.NameKuerzelDocumentTripel;
+import Controller.InformationsVermittlung.Hilfsklassen.DatumDocumentPaar;
+import Controller.InformationsVermittlung.Hilfsklassen.MensaplanTupel;
 import Controller.Speicher.SchreiberLeser;
 import Controller.ViewController.GrundViewController;
 import Model.Datum;
 
 import java.nio.charset.StandardCharsets;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
-import org.apache.commons.io.IOUtils;
+
 import org.json.JSONObject;
-import org.jsoup.*;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.commons.io.IOUtils;
 
 
 
-public class Datenabrufer
+public class Internetdatenatenabrufer
 {
 	private static ProgressIndicator progressIndicator;
 	private static long start, end;
@@ -95,6 +100,7 @@ public class Datenabrufer
 
 								System.out.println(matcher.group(1));
 
+								//TODO Exception
 								webEngine.executeScript("document.getElementById('sem_change').value='"+matcher.group(1)+"';"+"document.getElementById('sem_change').dispatchEvent(new Event('change'));");
 							});
 
@@ -144,7 +150,7 @@ public class Datenabrufer
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
 
-								SchreiberLeser.studiengangInformationenNeuSetzen(Parser.studiengangParsen(new StudiengangDokumente(arrayList)));
+								SchreiberLeser.modulhandbuchNeuSetzen(Parser.studiengangParsen(arrayList));
 
 
 							Platform.runLater(()->progressIndicator.setProgress(1));
@@ -184,7 +190,7 @@ public class Datenabrufer
 
 	public static void mensaplanAbrufen()
 	{
-		ArrayList<MensaTag> mensatage=new ArrayList<>();
+		ArrayList<DatumDocumentPaar> mensatage=new ArrayList<>();
 
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal=Calendar.getInstance();
@@ -217,14 +223,14 @@ public class Datenabrufer
 
 			Datum datum=new Datum(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
 
-			MensaTag thisTag=new MensaTag(doc, datum);
+			DatumDocumentPaar thisTag=new DatumDocumentPaar(datum, doc);
 
 			mensatage.add(thisTag);
 
 			cal.add(Calendar.DATE, 1);
 		}
 
-		SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanDokumente(mensatage)));
+		SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanTupel(mensatage.get(0), mensatage.get(1), mensatage.get(2), mensatage.get(3), mensatage.get(4), mensatage.get(5))));
 	}
 
 	private static void entferneLetztenListener(WebEngine webEngine)
@@ -306,7 +312,7 @@ public class Datenabrufer
 
 		Platform.runLater(()->
 		{
-			ArrayList<KuerzelDokumentPaar> arrayList=new ArrayList<KuerzelDokumentPaar>();
+			ArrayList<NameKuerzelDocumentTripel> arrayList=new ArrayList<NameKuerzelDocumentTripel>();
 
 			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
@@ -356,7 +362,7 @@ public class Datenabrufer
 
 								Platform.runLater(()->
 								{
-									arrayList.add(new KuerzelDokumentPaar((String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Datenabrufer._webengineZuJSoupDocument(webEngine)));
+									arrayList.add(new NameKuerzelDocumentTripel((String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Internetdatenatenabrufer._webengineZuJSoupDocument(webEngine)));
 								});
 							}
 
@@ -370,7 +376,7 @@ public class Datenabrufer
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
-							SchreiberLeser.dropdownMenueNeuSetzen(Parser.dropdownMenueParsen(new DropdownMenueDokumente(arrayList)));
+							SchreiberLeser.dropdownMenueNeuSetzen(Parser.dropdownMenueParsen(arrayList));
 						}
 					}));
 

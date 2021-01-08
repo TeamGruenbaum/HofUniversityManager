@@ -1,44 +1,58 @@
 package Controller.Speicher;
 
+
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.nio.charset.Charset;
+
+
 
 public class Schluesselmeister
 {
+    private static SecretKey schluesselSecretKey=new SecretKeySpec(new byte[]{3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5}, "AES");
+
+
+
+    //Mit dieser Methode wird mithilfe eines hartkodierten Schlüssels ein String in ein byte-Array verschlüsselt.
     public static byte[] verschluesseln(String wert)
     {
         Cipher cipher=null;
-        byte[] ergebnis=null;
+        byte[] verschluesseltesErgebnis=null;
 
         try
         {
             cipher=Cipher.getInstance("AES");
-            SecretKey secretKey=new SecretKeySpec(new byte[]{3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5}, "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            ergebnis=cipher.doFinal(wert.getBytes(Charset.forName("UTF-8")));
-        }catch(Exception keineGefahrException)
+
+
+            cipher.init(Cipher.ENCRYPT_MODE, schluesselSecretKey);
+
+            verschluesseltesErgebnis=cipher.doFinal(wert.getBytes(Charset.forName("UTF-8")));
+        }
+        catch(Exception keineGefahrException)
         {
             //Die Gefahr ist gebannt, da die Verschlüsselungsart und der Schlüssel hartkodiert ist und somit nie falsch sein können
             keineGefahrException.printStackTrace();
         }
 
-
-        return ergebnis;
+        return verschluesseltesErgebnis;
     }
 
+    //Hiermit wird aus dem hartkodiertem Schlüssel und dem übergebenem byte-Array ein String entschlüsselt.
     public static String entschluesseln(byte[] wert)
     {
-        Cipher cipher=null;
-        String ergebnis=null;
+        Cipher verschluesslerCipher=null;
+        String entschluesseltesErgebnis=null;
 
         try
         {
-            cipher = Cipher.getInstance("AES");
-            SecretKey secretKey = new SecretKeySpec(new byte[]{3,7,4,5,3,7,4,5,3,7,4,5,3,7,4,5}, "AES");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            ergebnis=new String(cipher.doFinal(wert), Charset.forName("UTF-8"));
+            verschluesslerCipher = Cipher.getInstance("AES");
+
+            verschluesslerCipher.init(Cipher.DECRYPT_MODE, schluesselSecretKey);
+
+            entschluesseltesErgebnis=new String(verschluesslerCipher.doFinal(wert), Charset.forName("UTF-8"));
         }
         catch(Exception keineGefahrExcpetion)
         {
@@ -46,6 +60,6 @@ public class Schluesselmeister
             keineGefahrExcpetion.printStackTrace();
         }
 
-        return ergebnis;
+        return entschluesseltesErgebnis;
     }
 }

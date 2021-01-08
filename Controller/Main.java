@@ -70,6 +70,8 @@ public class Main extends Application
         primaryStage.setMinHeight(900);
         primaryStage.setMinWidth(1300);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            //TODO Korruption überprüfen
+
             @Override
             public void handle(WindowEvent t)
             {

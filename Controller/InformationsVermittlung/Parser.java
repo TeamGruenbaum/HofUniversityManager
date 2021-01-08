@@ -1,5 +1,7 @@
 package Controller.InformationsVermittlung;
 
+import Controller.InformationsVermittlung.Hilfsklassen.NameKuerzelDocumentTripel;
+import Controller.InformationsVermittlung.Hilfsklassen.MensaplanTupel;
 import Model.Datum;
 import Model.DropdownModel.DropdownMenue;
 import Model.DropdownModel.Studiengang;
@@ -8,7 +10,6 @@ import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.Doppelstunde;
-import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
 import Model.StundenplanaenderungModel.Stundenplanaenderung;
@@ -24,15 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 
-import java.sql.SQLOutput;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,9 +36,9 @@ import java.util.regex.Pattern;
 public class Parser
 {
     //Studiengang parsen
-    public static StudiengangInformationen studiengangParsen(StudiengangDokumente studiengangDokumente)
+    public static StudiengangInformationen studiengangParsen(ArrayList<Document> studiengangDokumente)
     {
-        ArrayList<Document> faecherDokumente=studiengangDokumente.getFaecherDokumente();
+        ArrayList<Document> faecherDokumente=studiengangDokumente;
 
         ArrayList<ModulhandbuchFach> faecher=new ArrayList<>();
         for(int i=0; i<faecherDokumente.size(); i++)
@@ -80,14 +76,14 @@ public class Parser
     }
 
     //Mensaplan parsen
-    public static Mensaplan mensaplanParsen(MensaplanDokumente mensaplanDokumente)
+    public static Mensaplan mensaplanParsen(MensaplanTupel mensaplanTupel)
     {
-        Tagesplan montagsplan=_getTagesplan(mensaplanDokumente.getMontag().getDokument(), Tag.MONTAG, mensaplanDokumente.getMontag().getDatum());
-        Tagesplan dienstagsplan=_getTagesplan(mensaplanDokumente.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanDokumente.getDienstag().getDatum());
-        Tagesplan mittwochsplan=_getTagesplan(mensaplanDokumente.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanDokumente.getMittwoch().getDatum());
-        Tagesplan donnerstagsplan=_getTagesplan(mensaplanDokumente.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanDokumente.getDonnerstag().getDatum());
-        Tagesplan freitagsplan=_getTagesplan(mensaplanDokumente.getFreitag().getDokument(), Tag.FREITAG, mensaplanDokumente.getFreitag().getDatum());
-        Tagesplan samstagsplan=_getTagesplan(mensaplanDokumente.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanDokumente.getSamstag().getDatum());
+        Tagesplan montagsplan=_getTagesplan(mensaplanTupel.getMontag().getDokument(), Tag.MONTAG, mensaplanTupel.getMontag().getDatum());
+        Tagesplan dienstagsplan=_getTagesplan(mensaplanTupel.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanTupel.getDienstag().getDatum());
+        Tagesplan mittwochsplan=_getTagesplan(mensaplanTupel.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanTupel.getMittwoch().getDatum());
+        Tagesplan donnerstagsplan=_getTagesplan(mensaplanTupel.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanTupel.getDonnerstag().getDatum());
+        Tagesplan freitagsplan=_getTagesplan(mensaplanTupel.getFreitag().getDokument(), Tag.FREITAG, mensaplanTupel.getFreitag().getDatum());
+        Tagesplan samstagsplan=_getTagesplan(mensaplanTupel.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanTupel.getSamstag().getDatum());
 
         ArrayList<Tagesplan> wochenplan=new ArrayList<Tagesplan>();
         wochenplan.addAll(Arrays.asList(montagsplan, dienstagsplan, mittwochsplan, donnerstagsplan, freitagsplan, samstagsplan));
@@ -399,9 +395,9 @@ public class Parser
     }
 
     //DropdownMenue parsen
-    public static DropdownMenue dropdownMenueParsen(DropdownMenueDokumente dropdownMenueDokumente)
+    public static DropdownMenue dropdownMenueParsen(ArrayList<NameKuerzelDocumentTripel> dropdownMenueDokumente)
     {
-        ArrayList<KuerzelDokumentPaar> kuerzelDokumentPaare= dropdownMenueDokumente.getKuerzelDokumentePaare();
+        ArrayList<NameKuerzelDocumentTripel> kuerzelDokumentPaare= dropdownMenueDokumente;
 
         //Hilfsvariablen anlegen
         Document stundenplanDokument=null;
