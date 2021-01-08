@@ -1,118 +1,143 @@
 package Model.StudiengangModel;
 
+
+
 import java.io.Serializable;
+
+
 
 public class ModulhandbuchFach implements Serializable
 {
-    private String fachName;
-    private String fachDozent;
-    private String fachZweitPruefer;
-    private String fachStudienjahr;
-    private String fachArt;
-    private String fachECTS;
-    private String fachSWS;
-    private String fachPraesenzZeit;
-    private String fachPruefungsVorbereitung;
-    private String fachSprache;
-    private String fachLehrinhalte;
-    private String fachLernziel;
-    private String fachVoraussetzung;
-    private String fachLiteraturliste;
-    private String fachPruefungsdurchfuehrung;
-    private String fachHilfsmittel;
-    private String fachMedienformen;
-    private String fachHaeufigkeit;
+    private String name;
+    private String dozent;
+    private String zweitpruefer;
+    private String studienjahr;
+    private String art;
+    private String ECTS;
+    private String SWS;
+    private String praesenzzeit;
+    private String pruefungsvorbereitung;
+    private String sprache;
+    private String lehrinhalte;
+    private String lernziel;
+    private String voraussetzung;
+    private String literaturliste;
+    private String pruefungsdurchfuehrung;
+    private String hilfsmittel;
+    private String medienformen;
+    private String haeufigkeit;
 
-    public ModulhandbuchFach(String fachName, String fachDozent, String fachZweitPruefer, String fachStudienjahr, String fachArt, String fachECTS, String fachSWS, String fachPraesenzZeit, String fachPruefungsVorbereitung, String fachSprache, String fachLehrinhalte, String fachLernziel, String fachVoraussetzung, String fachLiteraturliste, String fachPruefungsdurchfuehrung, String fachHilfsmittel, String fachMedienformen, String fachHaeufigkeit) {
-        this.fachName = fachName;
-        this.fachDozent = fachDozent;
-        this.fachZweitPruefer = fachZweitPruefer;
-        this.fachStudienjahr = fachStudienjahr;
-        this.fachArt = fachArt;
-        this.fachECTS = fachECTS;
-        this.fachSWS = fachSWS;
-        this.fachPraesenzZeit = fachPraesenzZeit;
-        this.fachPruefungsVorbereitung = fachPruefungsVorbereitung;
-        this.fachSprache = fachSprache;
-        this.fachLehrinhalte = fachLehrinhalte;
-        this.fachLernziel = fachLernziel;
-        this.fachVoraussetzung = fachVoraussetzung;
-        this.fachLiteraturliste = fachLiteraturliste;
-        this.fachPruefungsdurchfuehrung = fachPruefungsdurchfuehrung;
-        this.fachHilfsmittel = fachHilfsmittel;
-        this.fachMedienformen = fachMedienformen;
-        this.fachHaeufigkeit = fachHaeufigkeit;
+
+
+    public ModulhandbuchFach(String name, String dozent, String zweitpruefer, String studienjahr, String art, String ECTS, String SWS, String praesenzzeit, String pruefungsvorbereitung, String sprache, String lehrinhalte, String lernziel, String voraussetzung, String literaturliste, String pruefungsdurchfuehrung, String hilfsmittel, String medienformen, String haeufigkeit) {
+        this.name=name;
+        this.dozent=dozent;
+        this.zweitpruefer=zweitpruefer;
+        this.studienjahr=studienjahr;
+        this.art=art;
+        this.ECTS=ECTS;
+        this.SWS=SWS;
+        this.praesenzzeit=praesenzzeit;
+        this.pruefungsvorbereitung=pruefungsvorbereitung;
+        this.sprache=sprache;
+        this.lehrinhalte=lehrinhalte;
+        this.lernziel=lernziel;
+        this.voraussetzung=voraussetzung;
+        this.literaturliste=literaturliste;
+        this.pruefungsdurchfuehrung=pruefungsdurchfuehrung;
+        this.hilfsmittel=hilfsmittel;
+        this.medienformen=medienformen;
+        this.haeufigkeit=haeufigkeit;
     }
 
-    public String getFachName() {
-        return fachName;
+
+    public String getName()
+    {
+        return name;
     }
 
-    public String getFachDozent() {
-        return fachDozent;
+    public String getDozent()
+    {
+        return dozent;
     }
 
-    public String getFachZweitPruefer() {
-        return fachZweitPruefer;
+    public String getZweitpruefer()
+    {
+        return zweitpruefer;
     }
 
-    public String getFachStudienjahr() {
-        return fachStudienjahr;
+    public String getStudienjahr()
+    {
+        return studienjahr;
     }
 
-    public String getFachArt() {
-        return fachArt;
+    public String getArt()
+    {
+        return art;
     }
 
-    public String getFachECTS() {
-        return fachECTS;
+    public String getECTS()
+    {
+        return ECTS;
     }
 
-    public String getFachSWS() {
-        return fachSWS;
+    public String getSWS()
+    {
+        return SWS;
     }
 
-    public String getFachPraesenzZeit() {
-        return fachPraesenzZeit;
+    public String getPraesenzzeit()
+    {
+        return praesenzzeit;
     }
 
-    public String getFachPruefungsVorbereitung() {
-        return fachPruefungsVorbereitung;
+    public String getPruefungsvorbereitung()
+    {
+        return pruefungsvorbereitung;
     }
 
-    public String getFachSprache() {
-        return fachSprache;
+    public String getSprache()
+    {
+        return sprache;
     }
 
-    public String getFachLehrinhalte() {
-        return fachLehrinhalte;
+    public String getLehrinhalte()
+    {
+        return lehrinhalte;
     }
 
-    public String getFachLernziel() {
-        return fachLernziel;
+    public String getLernziel()
+    {
+        return lernziel;
     }
 
-    public String getFachVoraussetzung() {
-        return fachVoraussetzung;
+    public String getVoraussetzung()
+    {
+        return voraussetzung;
     }
 
-    public String getFachLiteraturliste() {
-        return fachLiteraturliste;
+    public String getLiteraturliste()
+    {
+        return literaturliste;
     }
 
-    public String getFachPruefungsdurchfuehrung() {
-        return fachPruefungsdurchfuehrung;
+    public String getPruefungsdurchfuehrung()
+    {
+        return pruefungsdurchfuehrung;
     }
 
-    public String getFachHilfsmittel() {
-        return fachHilfsmittel;
+    public String getHilfsmittel()
+    {
+        return hilfsmittel;
     }
 
-    public String getFachMedienformen() {
-        return fachMedienformen;
+    public String getMedienformen()
+    {
+        return medienformen;
     }
 
-    public String getFachHaeufigkeit() {
-        return fachHaeufigkeit;
+    public String getHaeufigkeit()
+    {
+        return haeufigkeit;
     }
 }

@@ -1,41 +1,44 @@
 package Model.NutzerdatenModel;
 
+
+
 import java.io.Serializable;
+
+
 
 public class Notiz implements Serializable
 {
-    private String ueberschrift;
+    private String titel;
     private String inhalt;
     private String fach;
 
-    public Notiz (String ueberschrift, String inhalt, String fach)
+
+
+    public Notiz (String titel, String inhalt, String fach)
     {
-        this.ueberschrift=ueberschrift;
+        this.titel=titel;
         this.inhalt=inhalt;
         this.fach=fach;
     }
 
-    public String getUeberschrift() {
-        return ueberschrift;
+
+    public String getTitel()
+    {
+        return titel;
     }
 
-    public void setUeberschrift(String ueberschrift) {
-        this.ueberschrift = ueberschrift;
-    }
-
-    public String getInhalt() {
+    public String getInhalt()
+    {
         return inhalt;
     }
 
-    public void setInhalt(String inhalt) {
-        this.inhalt = inhalt;
+    public void setInhalt(String neuerWert)
+    {
+        this.inhalt=neuerWert;
     }
 
-    public String getFach() {
+    public String getFach()
+    {
         return fach;
-    }
-
-    public void setFach(String fach) {
-        this.fach = fach;
     }
 }

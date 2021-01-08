@@ -1,6 +1,10 @@
 package Model.TreffpunktModel;
 
+
+
 import java.io.Serializable;
+
+
 
 public abstract class Treffpunkt implements Serializable
 {
@@ -9,26 +13,33 @@ public abstract class Treffpunkt implements Serializable
     private boolean wetterunabhaengig;
     private String information;
 
+
+
     protected Treffpunkt(String name, String ort, boolean wetterunabhaengig, String information) {
-        this.name = name;
-        this.ort = ort;
-        this.wetterunabhaengig = wetterunabhaengig;
-        this.information = information;
+        this.name=name;
+        this.ort=ort;
+        this.wetterunabhaengig=wetterunabhaengig;
+        this.information=information;
     }
 
-    public String getName() {
+
+    public String getName()
+    {
         return name;
     }
 
-    public String getOrt() {
+    public String getOrt()
+    {
         return ort;
     }
 
-    public boolean getWetterunabhaengig() {
+    public boolean getWetterunabhaengig()
+    {
         return wetterunabhaengig;
     }
 
-    public String getInformation() {
+    public String getInformation()
+    {
         return information;
     }
 }

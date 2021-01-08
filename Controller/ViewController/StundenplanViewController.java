@@ -187,7 +187,7 @@ public class StundenplanViewController implements Initializable
 			{
 				oeffneNoteDialog("Note ändern", "Ändern",
 					noteTableView.getSelectionModel().getSelectedItem().getNote(),
-					noteTableView.getSelectionModel().getSelectedItem().getArt(),
+					noteTableView.getSelectionModel().getSelectedItem().getHerkunft(),
 					noteTableView.getSelectionModel().getSelectedItem().getBemerkung(),
 					noteTableView.getSelectionModel().getSelectedItem().getFach())
 					.ifPresent((item)->
@@ -205,7 +205,7 @@ public class StundenplanViewController implements Initializable
 			});
 		notenBemerkungTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getBemerkung());});
 		notenNoteTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getNote());});
-		notenArtTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getArt());});
+		notenArtTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getHerkunft());});
 		notenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
 
@@ -244,7 +244,7 @@ public class StundenplanViewController implements Initializable
 		aendernLoeschenKontextmenueHinzufuegen(notizenTableView, (actionEvent, notizTableView)->
 		{
 			oeffneNotizDialog("Notiz ändern", "Ändern",
-				notizTableView.getSelectionModel().getSelectedItem().getUeberschrift(),
+				notizTableView.getSelectionModel().getSelectedItem().getTitel(),
 				notizTableView.getSelectionModel().getSelectedItem().getInhalt(),
 				notizTableView.getSelectionModel().getSelectedItem().getFach())
 				.ifPresent((item)->
@@ -260,7 +260,7 @@ public class StundenplanViewController implements Initializable
 			notizObservableList.remove(notizTableView.getSelectionModel().getSelectedIndex());
 			notizenTableView.refresh();
 		});
-		notizenNameTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getUeberschrift());});
+		notizenNameTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getTitel());});
 		notizenInhaltTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getInhalt());});
 		notizenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 	}

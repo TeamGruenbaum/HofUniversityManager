@@ -1,6 +1,10 @@
 package Model;
 
+
+
 import java.io.Serializable;
+
+
 
 public enum Tag implements Serializable
 {

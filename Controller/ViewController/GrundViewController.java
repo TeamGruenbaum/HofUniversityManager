@@ -9,29 +9,17 @@ import Model.DropdownModel.Studiensemester;
 import Model.NutzerdatenModel.Thema;
 import Model.OberflaechenModel.Blende;
 import Model.OberflaechenModel.Menue;
-import Model.OberflaechenModel.MenuepunktInformation;
-import Model.NutzerdatenModel.Anwendung;
 import Model.QuicklinksModel.Quicklinks;
-import java.io.IOException;
 import javafx.animation.FadeTransition;
-
-import Model.NutzerdatenModel.Nutzerdaten;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,15 +29,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
-
-import static Model.NutzerdatenModel.Anwendung.*;
 
 public class GrundViewController implements Initializable
 {
@@ -115,7 +98,7 @@ public class GrundViewController implements Initializable
 
         //Buttons erstellen und initialisieren
         int k=0;
-        for(int i=0; i<Menue.getMenuepunkte().size(); i++)
+        for(int i = 0; i<Menue.getMenuepunktInformationen().size(); i++)
         {
             if(i%3==0)
             {
@@ -130,7 +113,7 @@ public class GrundViewController implements Initializable
                 gridPane.getRowConstraints().add(rowConstraints);
             }
 
-            ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+Menue.getMenuepunkte().get(i).getIconDateiname())));
+            ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+Menue.getMenuepunktInformationen().get(i).getIconDateiname())));
             imageView.setFitHeight(menuepunktHoeheBreite-55);
             imageView.setPreserveRatio(true);
 
@@ -138,11 +121,11 @@ public class GrundViewController implements Initializable
             int finalI=i;
             button.setOnAction((actionEvent)->
             {
-                SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(Menue.getMenuepunkte().get(finalI));
+                SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(Menue.getMenuepunktInformationen().get(finalI));
 
                 oeffneScene();
             });
-            button.setTooltip(new Tooltip(grossschreiben(Menue.getMenuepunkte().get(i).getAnwendung().toString())));
+            button.setTooltip(new Tooltip(grossschreiben(Menue.getMenuepunktInformationen().get(i).getAnwendung().toString())));
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 

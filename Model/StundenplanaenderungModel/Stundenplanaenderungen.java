@@ -1,18 +1,25 @@
 package Model.StundenplanaenderungModel;
 
+
+
 import java.util.ArrayList;
+
+
 
 public class Stundenplanaenderungen
 {
-    private ArrayList<Stundenplanaenderung> aenderungen;
+    private ArrayList<Stundenplanaenderung> stundenplanaenderungen;
 
-    public Stundenplanaenderungen(ArrayList<Stundenplanaenderung> aenderungen)
+
+
+    public Stundenplanaenderungen(ArrayList<Stundenplanaenderung> stundenplanaenderungen)
     {
-        this.aenderungen=aenderungen;
+        this.stundenplanaenderungen=stundenplanaenderungen;
     }
+
 
     public ArrayList<Stundenplanaenderung> getAenderungen()
     {
-        return aenderungen;
+        return stundenplanaenderungen;
     }
 }
