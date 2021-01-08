@@ -1,9 +1,13 @@
 package Model.NutzerdatenModel;
 
+
+
 import Model.Datum;
 import Model.Uhrzeit;
 
 import java.io.Serializable;
+
+
 
 public class Aufgabe implements Serializable
 {
@@ -12,6 +16,8 @@ public class Aufgabe implements Serializable
     private Datum datum;
     private Uhrzeit zeit;
     private String fach;
+
+
 
     public Aufgabe (String name, String inhalt, Datum datum, Uhrzeit zeit, String fach)
     {
@@ -22,43 +28,44 @@ public class Aufgabe implements Serializable
         this.fach=fach;
     }
 
-    public String getName() {
+
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String neuerWert)
+    {
+        this.name=neuerWert;
     }
 
-    public String getInhalt() {
+    public String getInhalt()
+    {
         return inhalt;
     }
 
-    public void setInhalt(String inhalt) {
-        this.inhalt = inhalt;
+    public void setInhalt(String neuerWert)
+    {
+        this.inhalt=neuerWert;
     }
 
-    public Datum getDatum() {
+    public Datum getDatum()
+    {
         return datum;
     }
 
-    public void setDatum(Datum datum) {
-        this.datum = datum;
+    public void setDatum(Datum neuerWert)
+    {
+        this.datum=neuerWert;
     }
 
-    public Uhrzeit getZeit() {
+    public Uhrzeit getZeit()
+    {
         return zeit;
     }
 
-    public void setZeit(Uhrzeit zeit) {
-        this.zeit = zeit;
-    }
-
-    public String getFach() {
+    public String getFach()
+    {
         return fach;
-    }
-
-    public void setFach(String fach) {
-        this.fach = fach;
     }
 }

@@ -1,16 +1,19 @@
 package Model.OberflaechenModel;
 
+
+
+import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
 import Model.NutzerdatenModel.Anwendung;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
+
 
 public final class Menue implements Serializable
 {
-    private static ArrayList<MenuepunktInformation> menuepunkte=new ArrayList<MenuepunktInformation>(
+    private static ArrayList<MenuepunktInformation> menuepunktInformationen=new ArrayList<MenuepunktInformation>(
             List.of(
                 new MenuepunktInformation(Anwendung.STUNDENPLAN,"stundenplan-icon.png", "StundenplanView.fxml"),
                 new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaPlanView.fxml"),
@@ -25,11 +28,12 @@ public final class Menue implements Serializable
                 new MenuepunktInformation(EINSTELLUNGEN,"einstellungen-icon.png", "EinstellungenView.fxml")
             )
     );
-
     private Menue(){}
 
-    public static ArrayList<MenuepunktInformation> getMenuepunkte()
+
+
+    public static ArrayList<MenuepunktInformation> getMenuepunktInformationen()
     {
-        return menuepunkte;
+        return menuepunktInformationen;
     }
 }

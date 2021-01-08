@@ -13,8 +13,6 @@ import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
@@ -79,7 +77,7 @@ public class SchreiberLeser
             new FachDatensatz(new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>()),
             faecherNamen,
             new Login("", ""), Thema.HELL,
-            Menue.getMenuepunkte().get(Menue.getMenuepunkte().size()-1));
+            Menue.getMenuepunktInformationen().get(Menue.getMenuepunktInformationen().size()-1));
 
         //TODO - Beim FirstStart runterladen
     }

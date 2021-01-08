@@ -1,11 +1,17 @@
 package Model;
 
+
+
 import java.io.Serializable;
+
+
 
 public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
 {
     private int stunde;
     private int minute;
+
+
 
     public Uhrzeit(int stunde, int minute)
     {
@@ -13,28 +19,23 @@ public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
         this.minute=minute;
     }
 
+
     public int getStunde() {
         return stunde;
-    }
-
-    public void setStunde(int stunde) {
-        this.stunde = stunde;
     }
 
     public int getMinute() {
         return minute;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
     @Override
     public int compareTo(Uhrzeit comparingTime)
     {
-        if ((stunde - comparingTime.stunde) == 0) {
+        if ((stunde - comparingTime.stunde) == 0)
+        {
             return (minute - comparingTime.minute);
         }
+
         return (stunde - comparingTime.stunde);
     }
 

@@ -1,6 +1,10 @@
 package Model.NutzerdatenModel;
 
+
+
 import java.io.Serializable;
+
+
 
 public enum Anwendung implements Serializable
 {

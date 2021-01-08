@@ -42,7 +42,7 @@ public class StudiengangViewController implements Initializable {
                 columnConstraints.setMinWidth(250);
                 gpFachInfos.getColumnConstraints().addAll(columnConstraints, columnConstraints);
 
-                TitledPane tP = new TitledPane(fach.getFachName(), gpFachInfos);
+                TitledPane tP = new TitledPane(fach.getName(), gpFachInfos);
                 contentAccordion.getPanes().add(tP);
 
                 ObservableList<Label> alBezeichnung = FXCollections.observableArrayList(List.of(
@@ -66,23 +66,23 @@ public class StudiengangViewController implements Initializable {
                 ));
 
                 ObservableList<Label> alInfo = FXCollections.observableArrayList(List.of(
-                        new Label(fach.getFachDozent()),
-                        new Label(fach.getFachZweitPruefer()),
-                        new Label(String.valueOf(fach.getFachStudienjahr())),
-                        new Label(fach.getFachArt()),
-                        new Label(String.valueOf(fach.getFachECTS())),
-                        new Label(String.valueOf(fach.getFachSWS())),
-                        new Label(String.valueOf(fach.getFachPraesenzZeit())),
-                        new Label(String.valueOf(fach.getFachPruefungsVorbereitung())),
-                        new Label(fach.getFachSprache()),
-                        new Label(fach.getFachLehrinhalte()),
-                        new Label(fach.getFachLernziel()),
-                        new Label(fach.getFachVoraussetzung()),
-                        new Label(fach.getFachLiteraturliste()),
-                        new Label(fach.getFachPruefungsdurchfuehrung()),
-                        new Label(fach.getFachHilfsmittel()),
-                        new Label(fach.getFachMedienformen()),
-                        new Label(fach.getFachHaeufigkeit())
+                        new Label(fach.getDozent()),
+                        new Label(fach.getZweitpruefer()),
+                        new Label(String.valueOf(fach.getStudienjahr())),
+                        new Label(fach.getArt()),
+                        new Label(String.valueOf(fach.getECTS())),
+                        new Label(String.valueOf(fach.getSWS())),
+                        new Label(String.valueOf(fach.getPraesenzzeit())),
+                        new Label(String.valueOf(fach.getPruefungsvorbereitung())),
+                        new Label(fach.getSprache()),
+                        new Label(fach.getLehrinhalte()),
+                        new Label(fach.getLernziel()),
+                        new Label(fach.getVoraussetzung()),
+                        new Label(fach.getLiteraturliste()),
+                        new Label(fach.getPruefungsdurchfuehrung()),
+                        new Label(fach.getHilfsmittel()),
+                        new Label(fach.getMedienformen()),
+                        new Label(fach.getHaeufigkeit())
                 ));
 
                 for(int i=0; i<alBezeichnung.size(); i++) {

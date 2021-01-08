@@ -1,7 +1,6 @@
 package Controller.ViewController;
 
 import Controller.Speicher.SchreiberLeser;
-import Model.Datum;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
 import Model.Tag;
@@ -98,7 +97,7 @@ public class MensaplanViewController implements Initializable
                 TitledPane tP = new TitledPane(objName, vB);
                 contentAccordion.getPanes().add(tP);
 
-                gerichte.stream().filter((ger) -> ger.getKategorie() == objName).forEach((ger) -> {
+                gerichte.stream().filter((ger) -> ger.getGang() == objName).forEach((ger) -> {
                     ArrayList<Label> aL = new ArrayList<>();
                     VBox vbGericht = new VBox();
                     aL.add(new Label(ger.getName()));
@@ -138,7 +137,7 @@ public class MensaplanViewController implements Initializable
 
     private List<Gericht> _getGerichteListe(Tag tag) {
         // Liste mit den Tagen (einer, und zwar der heutige!), die Gericht-Liste beinhaltet erzeugen
-        List<List<Gericht>> listeListeGerichte = SchreiberLeser.getMensaplan().getWochenplan().stream()
+        List<List<Gericht>> listeListeGerichte = SchreiberLeser.getMensaplan().getTagesplaene().stream()
                 .filter((obj) -> obj.getTag().equals(tag))
                 .map(Tagesplan::getGerichte)
                 .collect(Collectors.toList());
@@ -152,7 +151,7 @@ public class MensaplanViewController implements Initializable
     private List<String> _getKategorienListe(Tag tag) {
         // Liste mit den Gericht-Kategorien
         return _getGerichteListe(tag).stream()
-                .map(Gericht::getKategorie)
+                .map(Gericht::getGang)
                 .distinct()
                 .collect(Collectors.toList());
     }

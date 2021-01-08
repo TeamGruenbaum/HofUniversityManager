@@ -1,15 +1,19 @@
 package Model.NutzerdatenModel;
 
+
+
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
-import Model.OberflaechenModel.Menue;
 import Model.OberflaechenModel.MenuepunktInformation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+
 public class Nutzerdaten implements Serializable
 {
+    //nullable
     private Studiensemester studiensemester;
     private ArrayList<Doppelstunde> doppelstunden;
     private FachDatensatz fachDatensatz;
@@ -17,11 +21,14 @@ public class Nutzerdaten implements Serializable
     private Login ssoLogin;
     private Thema aktuellesThema;
     private MenuepunktInformation letzterGeoeffneterMenuepunkt;
+    //nullable
     private Studiengang studiengang;
 
+
+
     public Nutzerdaten(Studiengang studiengang, Studiensemester studiensemester,
-                       ArrayList<Doppelstunde> doppelstunden, FachDatensatz fachDatensatz, ArrayList<String> faecher,Login ssoLogin
-        , Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
+                       ArrayList<Doppelstunde> doppelstunden, FachDatensatz fachDatensatz, ArrayList<String> faecher,Login ssoLogin,
+                       Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
     {
         this.studiengang=studiengang;
         this.studiensemester = studiensemester;
@@ -33,21 +40,25 @@ public class Nutzerdaten implements Serializable
         this.letzterGeoeffneterMenuepunkt = letzterGeoeffneterMenuepunkt;
     }
 
+
     public Studiensemester getStudiensemester()
     {
         return studiensemester;
     }
 
-    public void setStudiensemester(Studiensemester studiensemester) {
-        this.studiensemester = studiensemester;
+    public void setStudiensemester(Studiensemester neuerWert)
+    {
+        this.studiensemester=neuerWert;
     }
 
-    public Studiengang getStudiengang() {
+    public Studiengang getStudiengang()
+    {
         return studiengang;
     }
 
-    public void setStudiengang(Studiengang studiengang) {
-        this.studiengang = studiengang;
+    public void setStudiengang(Studiengang neuerWert)
+    {
+        this.studiengang=neuerWert;
     }
 
     public ArrayList<Doppelstunde> getDoppelstunden()
@@ -70,9 +81,9 @@ public class Nutzerdaten implements Serializable
         return aktuellesThema;
     }
 
-    public void setAktuellesThema(Thema thema)
+    public void setAktuellesThema(Thema neuerWert)
     {
-        aktuellesThema = thema;
+        aktuellesThema = neuerWert;
     }
 
     public MenuepunktInformation getLetzterGeoeffneterMenuepunkt()
@@ -92,13 +103,11 @@ public class Nutzerdaten implements Serializable
 
     public ArrayList<String> getFaecher()
     {
-
         return faecher;
     }
 
-    public void setFaecher(ArrayList<String> faecher)
+    public void setFaecher(ArrayList<String> neuerWert)
     {
-
-        this.faecher=faecher;
+        this.faecher=neuerWert;
     }
 }

@@ -1,55 +1,51 @@
 package Model.NutzerdatenModel;
 
+
+
 import java.io.Serializable;
+
+
 
 public class Note implements Serializable
 {
-    private String art;
+    private String herkunft;
     private String note;
     private String bemerkung;
     private String fach;
 
-    public Note(String art, String note, String bemerkung, String fach)
+
+
+    public Note(String herkunft, String note, String bemerkung, String fach)
     {
-        this.art=art;
+        this.herkunft=herkunft;
         this.note=note;
         this.bemerkung=bemerkung;
         this.fach=fach;
     }
 
-    public String getArt() {
-        return art;
+
+    public String getHerkunft()
+    {
+        return herkunft;
     }
 
-    public void setArt(String art) {
-        this.art = art;
-    }
-
-    public String getNote() {
+    public String getNote()
+    {
         return note;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setNote(String neuerWert)
+    {
+        this.note=neuerWert;
     }
 
     public String getBemerkung()
     {
-
         return bemerkung;
     }
 
-    public void setBemerkung(String bemerkung)
+    public String getFach()
     {
-
-        this.bemerkung=bemerkung;
-    }
-
-    public String getFach() {
         return fach;
-    }
-
-    public void setFach(String fach) {
-        this.fach = fach;
     }
 }

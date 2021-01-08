@@ -1,11 +1,17 @@
 package Model.StundenplanaenderungModel;
 
+
+
 public class Stundenplanaenderung
 {
     private String veranstaltung;
     private String dozent;
+    //nullable
     private Termin entfallenerTermin;
+    //nullable
     private Termin ersatztermin;
+
+
 
     public Stundenplanaenderung(String veranstaltung, String dozent, Termin entfallenerTermin, Termin ersatztermin)
     {
@@ -14,6 +20,7 @@ public class Stundenplanaenderung
         this.entfallenerTermin=entfallenerTermin;
         this.ersatztermin=ersatztermin;
     }
+
 
     public String getVeranstaltung()
     {

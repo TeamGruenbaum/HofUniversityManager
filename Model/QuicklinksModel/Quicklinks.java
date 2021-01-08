@@ -1,5 +1,7 @@
 package Model.QuicklinksModel;
 
+
+
 public final class Quicklinks
 {
     private static String nextcloudLink="https://nextcloud.hof-university.de";
@@ -9,7 +11,10 @@ public final class Quicklinks
     private static String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
     private static String campusSportLink="https://sport.aiv.hfoed.de";
 
+
+
     private Quicklinks(){}
+
 
     public static String getNextcloudLink()
     {

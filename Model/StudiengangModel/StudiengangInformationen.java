@@ -1,11 +1,16 @@
 package Model.StudiengangModel;
 
+
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public final class StudiengangInformationen implements Serializable
+
+
+public class StudiengangInformationen implements Serializable
 {
     private ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
+
 
 
     public StudiengangInformationen(ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
@@ -14,7 +19,8 @@ public final class StudiengangInformationen implements Serializable
     }
 
 
-    public ArrayList<ModulhandbuchFach> getModulhandbuch() {
+    public ArrayList<ModulhandbuchFach> getModulhandbuch()
+    {
         return modulhandbuchFaecher;
     }
 }

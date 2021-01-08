@@ -1,19 +1,26 @@
 package Model.DropdownModel;
 
+
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+
 public class DropdownMenue implements Serializable
 {
-    private ArrayList<Studiengang> eintraege;
+    private ArrayList<Studiengang> studiengaenge;
 
-    public DropdownMenue(ArrayList<Studiengang> eintraege)
+
+
+    public DropdownMenue(ArrayList<Studiengang> studiengaenge)
     {
-        this.eintraege=eintraege;
+        this.studiengaenge=studiengaenge;
     }
+
 
     public ArrayList<Studiengang> getEintraege()
     {
-        return eintraege;
+        return studiengaenge;
     }
 }
