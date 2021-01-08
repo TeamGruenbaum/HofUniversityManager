@@ -1,33 +1,30 @@
 package Controller.Speicher;
 
-import Model.Datum;
+
+
 import Model.DropdownModel.DropdownMenue;
-import Model.DropdownModel.Studiensemester;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
 import Model.OberflaechenModel.Menue;
-import Model.OberflaechenModel.MenuepunktInformation;
 import Model.StudiengangModel.ModulhandbuchFach;
 import Model.StudiengangModel.StudiengangInformationen;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
-import Model.Uhrzeit;
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 
 
 
 public class SchreiberLeser
 {
-    private static StudiengangInformationen studiengangInformationen;
-    private static String studiengangInformationenDateiname="StudiengangInformationen.sva";
+    private static StudiengangInformationen modulhandbuch;
+    private static String modulhandbuchDateiname="StudiengangInformationen.sva";
 
     private static Treffpunkte treffpunkte;
     private static String treffpunkteDateiname="Treffpunkte.sva";
@@ -41,15 +38,18 @@ public class SchreiberLeser
     private static DropdownMenue dropdownMenue;
     private static String dropdownMenueDateiname="Dropdownmenue.sva";
 
+
+
+    //Solange die Datei "nichtErsterStart" im Speicherordner nicht vorhanden ist, gibt diese Methode true zurück.
     public static boolean isErsterStart()
     {
         return !(new File(getSpeicherPfad() ,"nichtErsterStart").exists());
     }
 
+    //Damit wird im Speicherodner die Datei "nichtErsterStart" erstellt
     public static void isErsterStartSetzen()
     {
         File file = new File(getSpeicherPfad() ,"nichtErsterStart");
-
         try
         {
             if(!file.exists())
@@ -60,68 +60,75 @@ public class SchreiberLeser
         }
         catch(Exception keineGefahrExcpetion)
         {
-            //Die Gefahr ist gebannt, da die für File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind
+            //Die Gefahr ist gebannt, da die für File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind.
             keineGefahrExcpetion.printStackTrace();
         }
     }
 
+
+    //Diese Methode setzt alle Attribute, auf welchen im Laufe der Programmnutzung dauernd zugegriffen wird, auf einen sinnvollen "leeren" Zustand zurück.
     public static void alleZuruecksetzen()
     {
-        studiengangInformationen=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
+        modulhandbuch=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
+        ArrayList<String> faecherNamen=new ArrayList<String>();
+        faecherNamen.add("Allgemein");
 
-        ArrayList<String> temp=new ArrayList<String>();
-        temp.add("Allgemein");
         nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(),
             new FachDatensatz(new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>()),
-            temp,
+            faecherNamen,
             new Login("", ""), Thema.HELL,
             Menue.getMenuepunkte().get(Menue.getMenuepunkte().size()-1));
 
-        kopieren(new File(SchreiberLeser.class.getResource("../../Ressourcen/Andere/Dropdownmenue.sva").getPath()), "Dropdownmenue.sva");
-        try
-        {
-            dropdownMenue=SchreiberLeser.<DropdownMenue>lesen(dropdownMenueDateiname);
-        }
-        catch(Exception keineGefahrExcpetion)
-        {
-            //Die Gefahr ist gebannt, da zwischen Kopieren und Lesen nicht genügend Zeit ist, die Datei zu manipulieren
-            keineGefahrExcpetion.printStackTrace();
-        }
+        //TODO - Beim FirstStart runterladen
     }
 
+    //Diese Methode lädt alle persistent gespeicherten Daten in die entsprechenden Attribute.
     public static void alleLaden() throws Exception
     {
-        studiengangInformationen=SchreiberLeser.<StudiengangInformationen>lesen(studiengangInformationenDateiname);
+        modulhandbuch=SchreiberLeser.<StudiengangInformationen>lesen(modulhandbuchDateiname);
         treffpunkte=SchreiberLeser.<Treffpunkte>lesen(treffpunkteDateiname);
         mensaplan=SchreiberLeser.<Mensaplan>lesen(mensaplanDateiname);
         nutzerdaten=SchreiberLeser.<Nutzerdaten>lesen(nutzerdatenDateiname);
         dropdownMenue=SchreiberLeser.<DropdownMenue>lesen(dropdownMenueDateiname);
     }
 
+    //alleSpeichern() speichert alle Attribute, auf welche im Laufe der Programmnutzung dauernd zugegriffen wird, in den persistenten Speicher.
     public static void alleSpeichern()
     {
-        SchreiberLeser.<StudiengangInformationen>schreiben(studiengangInformationen, studiengangInformationenDateiname);
+        SchreiberLeser.<StudiengangInformationen>schreiben(modulhandbuch, modulhandbuchDateiname);
         SchreiberLeser.<Treffpunkte>schreiben(treffpunkte, treffpunkteDateiname);
         SchreiberLeser.<Mensaplan>schreiben(mensaplan, mensaplanDateiname);
         SchreiberLeser.<Nutzerdaten>schreiben(nutzerdaten, nutzerdatenDateiname);
         SchreiberLeser.<DropdownMenue>schreiben(dropdownMenue, dropdownMenueDateiname);
     }
 
-    //StudiengangInformationen
-    public static StudiengangInformationen getStudiengangInformationen()
+    //Hiermit werden alle persistent gespeicherten Daten gelöscht.
+    public static void alleDatenLoeschen()
     {
-        return studiengangInformationen;
+        try
+        {
+            FileUtils.forceDelete(new File(getSpeicherPfad()));
+        }catch(Exception keineGefahrException)
+        {
+            //Die Gefahr ist gebannt, da, wenn der Ordner der zu löschen ist nicht vorhanden ist, wird einfach nichts gelöscht.
+            keineGefahrException.printStackTrace();
+        }
     }
 
-    public static void studiengangInformationenNeuSetzen(StudiengangInformationen neuerWert)
+    //Alle folgenden Methoden dienen dazu die Attribute abzurufen oder sie komplett neu zu besetzen
+    public static StudiengangInformationen getModulhandbuch()
     {
-        studiengangInformationen=neuerWert;
+        return modulhandbuch;
+    }
+
+    public static void modulhandbuchNeuSetzen(StudiengangInformationen neuerWert)
+    {
+        modulhandbuch=neuerWert;
     }
 
 
-    //Treffpunkt
     public static Treffpunkte getTreffpunkte()
     {
         return treffpunkte;
@@ -133,7 +140,6 @@ public class SchreiberLeser
     }
 
 
-    //Mensaplan
     public static Mensaplan getMensaplan()
     {
         return mensaplan;
@@ -145,7 +151,6 @@ public class SchreiberLeser
     }
 
 
-    //Nutzerdaten
     public static Nutzerdaten getNutzerdaten()
     {
         return nutzerdaten;
@@ -156,7 +161,7 @@ public class SchreiberLeser
         nutzerdaten=neuerWert;
     }
 
-    //DropdownMenue
+
     public static DropdownMenue getDropdownMenue()
     {
         return dropdownMenue;
@@ -168,114 +173,57 @@ public class SchreiberLeser
     }
 
 
-    //Allgemeines Speichern und Lesen
-    //Falls einzelne Daten verändert oder gelöscht werden, wird die Exception geworfen, darauf muss an entsprechender Stelle reagiert werden
+    //Diese Methode speichert ein Objekt beliebigen Typs unter einem dem entsprechendem Dateinamen im Speicherordner.
+    //Falls einzelne Daten verändert oder gelöscht werden, wird die Exception geworfen, darauf muss an entsprechender Stelle reagiert werden.
     private static <T extends Serializable> T lesen(String dateiname) throws Exception
     {
-        T transferred=null;
+        FileInputStream leserFileInputStream=new FileInputStream(new File(getSpeicherPfad()+dateiname));
+        ObjectInputStream leserObjectInputStream=new ObjectInputStream(leserFileInputStream);
 
-        File file=new File(getSpeicherPfad()+dateiname);
+        leserObjectInputStream.close();
+        leserFileInputStream.close();
 
-
-        FileInputStream fileInputStream=new FileInputStream(file);
-        ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-        transferred=(T) objectInputStream.readObject();
-
-        objectInputStream.close();
-        fileInputStream.close();
-
-        return transferred;
+        return ((T) leserObjectInputStream.readObject());
     }
 
-
-
+    //Hiermit wird ein Objekt beliebigen Typs unter einem entsprechenden Dateinamen im Speicherordner gespeichert.
     private static <T extends Serializable> void schreiben(T objekt, String dateiname)
     {
-        File file=new File(getSpeicherPfad()+dateiname);
-        file.getParentFile().mkdirs();
-
+        File zielFile=new File(getSpeicherPfad()+dateiname);
+        zielFile.getParentFile().mkdirs();
         try
         {
-            FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            FileOutputStream schreiberFileOutputStream = new FileOutputStream(zielFile, false);
+            ObjectOutputStream schreiberObjectOutputStream = new ObjectOutputStream(schreiberFileOutputStream);
 
-            objectOutputStream.writeObject(objekt);
+            schreiberObjectOutputStream.writeObject(objekt);
 
-            objectOutputStream.close();
-            fileOutputStream.close();
+            schreiberObjectOutputStream.close();
+            schreiberFileOutputStream.close();
         }
         catch(Exception keineGefahrException)
         {
-            //Die Gefahr ist gebannt, da die für File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind
+            //Die Gefahr ist gebannt, da die für File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind.
             keineGefahrException.printStackTrace();
         }
     }
 
-    private static void kopieren(File von, String dateiname)
-    {
-        File zu=new File(getSpeicherPfad()+dateiname);
-        zu.getParentFile().mkdirs();
-
-        FileChannel eingang = null;
-        FileChannel ausgang = null;
-
-        try
-        {
-            eingang = new FileInputStream(von).getChannel();
-            ausgang = new FileOutputStream(zu).getChannel();
-            eingang.transferTo(0, eingang.size(), ausgang);
-
-            eingang.close();
-            ausgang.close();
-        }
-        catch (Exception keineGefahrException)
-        {
-            //Die Gefahr ist gebannt, da die für den File benötigten Ordner und Datei erstellt werden, insofern sie nicht schon vorhanden sind
-            keineGefahrException.printStackTrace();
-        }
-    }
-
-    public static boolean isInternetVerbindungVorhanden(String url)
-    {
-        try
-        {
-            new URL(url).openConnection().connect();
-
-            return true;
-        }
-        catch(Exception keineGefahrException)
-        {
-            //Es ist gewollt, dass manchmal hier reingesprungen wird, nämlich dann wenn keine Verbindung zum Ziel aufgebaut werden kann
-            return false;
-        }
-    }
-
-    public static void alleDatenLoeschen()
-    {
-        try
-        {
-            FileUtils.forceDelete(new File(getSpeicherPfad()));
-        }catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
+    //Diese Methode gibt den Speicherordner abhängig vom Betriebsystem zurück, die Methode funktioniert bei Windows als auch unxiodien bzw. unix-ähnlichen Betriebsystemen
     private static String getSpeicherPfad()
     {
-        String nutzerPfad=System.getProperty("user.home");
-        String OS = System.getProperty("os.name");
-        String speicherPfad;
+        String nutzerpfad=System.getProperty("user.home");
 
-        if(OS.contains("Windows"))
+        String betriebsystemart = System.getProperty("os.name");
+        String speicherpfad;
+        if(betriebsystemart.contains("Windows"))
         {
-            speicherPfad= "\\Studentenverwaltungsanwendung\\";
+            speicherpfad= "\\Studentenverwaltungsanwendung\\";
         }
         else
         {
-            speicherPfad="/.studentenverwaltungsanwendung/";
+            speicherpfad="/.studentenverwaltungsanwendung/";
         }
 
-        return nutzerPfad+speicherPfad;
+        return nutzerpfad+speicherpfad;
     }
 }

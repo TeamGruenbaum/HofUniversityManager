@@ -1,7 +1,8 @@
 package Controller.ViewController;
 
 
-import Controller.InformationsVermittlung.Datenabrufer;
+import Controller.InformationsVermittlung.Internetdatenatenabrufer;
+import Controller.Speicher.Internetverbindungsontrolleur;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
@@ -9,29 +10,17 @@ import Model.DropdownModel.Studiensemester;
 import Model.NutzerdatenModel.Thema;
 import Model.OberflaechenModel.Blende;
 import Model.OberflaechenModel.Menue;
-import Model.OberflaechenModel.MenuepunktInformation;
-import Model.NutzerdatenModel.Anwendung;
 import Model.QuicklinksModel.Quicklinks;
-import java.io.IOException;
 import javafx.animation.FadeTransition;
-
-import Model.NutzerdatenModel.Nutzerdaten;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,15 +30,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static Model.NutzerdatenModel.Anwendung.*;
+
 
 public class GrundViewController implements Initializable
 {
@@ -218,7 +204,7 @@ public class GrundViewController implements Initializable
             break;
             case MENSAPLAN:
             {
-                if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.studentenwerk-oberfranken.de/"))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://www.studentenwerk-oberfranken.de/"))
                 {
                     ladeLadenScene();
                     hauptmenueSchließen();
@@ -235,7 +221,7 @@ public class GrundViewController implements Initializable
                             {
 
                                 menuHauptButton.setDisable(true);
-                                Datenabrufer.mensaplanAbrufen();
+                                Internetdatenatenabrufer.mensaplanAbrufen();
                                 return null;
                             }
                         };
@@ -262,13 +248,14 @@ public class GrundViewController implements Initializable
             break;
             case STUDIENGANG:
             {
+                hauptmenueSchließen();
+
                 if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null&&SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
                 {
-                    ProgressIndicator progressIndicator=ladeLadenScene();
-                    hauptmenueSchließen();
-
-                    if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+                    if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
                     {
+                        ProgressIndicator progressIndicator=ladeLadenScene();
+
                         if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang()&&letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
                         {
                             ladeSceneMitScrollPane();
@@ -282,7 +269,7 @@ public class GrundViewController implements Initializable
                                 {
 
                                     menuHauptButton.setDisable(true);
-                                    Datenabrufer.studiengangAbrufen();
+                                    Internetdatenatenabrufer.studiengangAbrufen();
                                     return null;
                                 }
                             };
@@ -301,7 +288,7 @@ public class GrundViewController implements Initializable
                             }));
 
                             new Thread(task).start();
-                        }
+                    }
                     }else
                     {
                         oeffneFehlendeInternetverbindungDialogDaten();
@@ -315,7 +302,7 @@ public class GrundViewController implements Initializable
             break;
             case PANOPTO:
             {
-                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
                 {
                     Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
                 }
@@ -328,7 +315,7 @@ public class GrundViewController implements Initializable
             break;
             case NEXTCLOUD:
             {
-                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
                 {
                     Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
                 }
@@ -340,7 +327,7 @@ public class GrundViewController implements Initializable
             break;
             case CAMPUSSPORT:
             {
-                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
                 {
                     ladeSceneOhneScrollPane();
                 }
@@ -351,7 +338,7 @@ public class GrundViewController implements Initializable
             }break;
             case BAYERNFAHRPLAN:
             {
-                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
                 {
                     ladeSceneOhneScrollPane();
                 }
@@ -365,21 +352,21 @@ public class GrundViewController implements Initializable
                 ladeLadenScene();
                 hauptmenueSchließen();
 
-                if(SchreiberLeser.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
                 {
                     if(treffpunkteEinmalHeruntergeladen)
                     {
                         ladeSceneMitScrollPane();
-                    }else
+                    }
+                    else
                     {
                         Task task=new Task<Void>()
                         {
                             @Override
                             protected Void call() throws Exception
                             {
-
                                 menuHauptButton.setDisable(true);
-                                Datenabrufer.treffpunkteAbrufen();
+                                Internetdatenatenabrufer.treffpunkteAbrufen();
                                 return null;
                             }
                         };
@@ -407,7 +394,7 @@ public class GrundViewController implements Initializable
             break;
             case MOODLE, PRIMUSS:
             {
-                if(SchreiberLeser.isInternetVerbindungVorhanden(Quicklinks.getMoodleLink()))
+                if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden(Quicklinks.getMoodleLink()))
                 {
                     if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
                     {
@@ -495,7 +482,7 @@ public class GrundViewController implements Initializable
         borderPane.setCenter(progressBar);
         this.borderPane.setCenter(borderPane);
 
-        Datenabrufer.setProgressIndicator(progressBar);
+        Internetdatenatenabrufer.setProgressIndicator(progressBar);
 
         return progressBar;
     }

@@ -1,19 +1,26 @@
-package Controller.InformationsVermittlung;
+package Controller.InformationsVermittlung.Hilfsklassen;
+
+
 
 import org.jsoup.nodes.Document;
 
-public class KuerzelDokumentPaar
+
+
+public class NameKuerzelDocumentTripel
 {
     private String studiengangName;
     private String studiengangKuerzel;
     private Document stundenplanDokument;
 
-    public KuerzelDokumentPaar(String studiengangName, String studiengangKuerzel, Document stundenplanDokument)
+
+
+    public NameKuerzelDocumentTripel(String studiengangName, String studiengangKuerzel, Document stundenplanDokument)
     {
         this.studiengangName=studiengangName;
         this.studiengangKuerzel=studiengangKuerzel;
         this.stundenplanDokument=stundenplanDokument;
     }
+
 
     public String getStudiengangName()
     {

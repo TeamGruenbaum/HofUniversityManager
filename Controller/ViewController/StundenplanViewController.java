@@ -1,7 +1,8 @@
 package Controller.ViewController;
 
-import Controller.InformationsVermittlung.Datenabrufer;
+import Controller.InformationsVermittlung.Internetdatenatenabrufer;
 import Controller.Main;
+import Controller.Speicher.Internetverbindungsontrolleur;
 import Controller.Speicher.SchreiberLeser;
 
 import Model.Datum;
@@ -180,6 +181,7 @@ public class StundenplanViewController implements Initializable
 
 		stundenplanLaden();
 
+		//TODO Art und Note verwechselt
 		//Fächer
 		notenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFachDatensatz().getNoten());
 		notenTableView.setItems(notenObservableList);
@@ -274,10 +276,10 @@ public class StundenplanViewController implements Initializable
 		}
 		else
 		{
-			if(SchreiberLeser.isInternetVerbindungVorhanden("https://www.hof-university.de"))
+			if(Internetverbindungsontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
 			{
-				Datenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
-				Datenabrufer.stundenplanAbrufen();
+				Internetdatenatenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
+				Internetdatenatenabrufer.stundenplanAbrufen();
 				stundenplanZuruecksetzen.setDisable(true);
 				stundenplanZuruecksetzungProgressIndicator.setVisible(true);
 			}
