@@ -7,7 +7,7 @@
 
 <AnchorPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.TreffpunktViewController">
    <children>
-      <BorderPane prefWidth="1000.0">
+      <BorderPane>
          <center>
             <VBox spacing="14.0" fx:id="contentVBox" styleClass="anwendungsBereich">
                <BorderPane.margin>

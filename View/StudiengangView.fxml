@@ -7,7 +7,7 @@
 
 <AnchorPane styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.StudiengangViewController">
     <children>
-        <BorderPane minWidth="-Infinity" prefWidth="1000.0">
+        <BorderPane >
             <center>
                 <VBox fx:id="vbContent" spacing="14.0" styleClass="anwendungsBereich">
                     <BorderPane.margin>

@@ -70,7 +70,7 @@ public class Main extends Application
 
         root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
         primaryStage.setTitle("HofUniversityManager");
-        primaryStage.setScene(new Scene(root, 1000, 700));
+        primaryStage.setScene(new Scene(root, 900, 600));
         root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
         Font.loadFont(Main.class.getResource("../Ressourcen/Schriften/Rubik-Regular.ttf").toExternalForm(), 10);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream( "../Ressourcen/Grafiken/HUM_Icon_Short.png" )));
@@ -83,8 +83,8 @@ public class Main extends Application
 
         GrundViewController.setThema(SchreiberLeser.getNutzerdaten().getAktuellesThema());
 
-        primaryStage.setMinHeight(900);
-        primaryStage.setMinWidth(1300);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(900);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t)

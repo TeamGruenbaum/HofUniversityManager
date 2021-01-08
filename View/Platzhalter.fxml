@@ -8,7 +8,7 @@
 
 
 <?import javafx.scene.control.Label?>
-<BorderPane minHeight="-Infinity" minWidth="-Infinity">
+<BorderPane>
     <center>
         <Label>Platzhalter</Label>
     </center>
