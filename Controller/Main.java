@@ -2,6 +2,7 @@ package Controller;
 
 
 
+import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Speicher.SchreiberLeser;
 import Controller.ViewController.GrundViewController;
 import javafx.application.Application;
@@ -31,8 +32,29 @@ public class Main extends Application
     {
         if(SchreiberLeser.isErsterStart())
         {
-            SchreiberLeser.alleDatenLoeschen();
-            SchreiberLeser.alleZuruecksetzen();
+            if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de/"))
+            {
+                SchreiberLeser.alleDatenLoeschen();
+                SchreiberLeser.alleZuruecksetzen();
+            }
+            else
+            {
+                Alert alert=new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Internetverbindung notwendig");
+                alert.setContentText("Beim ersten Start des Programmes ist es zwingend notwendig, dass Du eine Verbindung zum Internet hast. Starte das Programm erneut, wenn Du eine Verbindung zum Internet hergestellt hast.");
+                alert.showAndWait().ifPresentOrElse(
+                    (item)->
+                    {
+                        Platform.exit();
+                        System.exit(0);
+                    },
+                    ()->
+                    {
+                        Platform.exit();
+                        System.exit(0);
+                    }
+                );
+            }
         }
         else
         {
