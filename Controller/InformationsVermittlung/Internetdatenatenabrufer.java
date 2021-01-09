@@ -339,6 +339,8 @@ public class Internetdatenatenabrufer
 								keineGefahrException.printStackTrace();
 							}
 
+							progressIndicator.setProgress(0.1);
+
 							for(int i=1; i<laenge; i++)
 							{
 								updateProgress(i, laenge);
@@ -364,6 +366,8 @@ public class Internetdatenatenabrufer
 								{
 									arrayList.add(new NameKuerzelDocumentTripel((String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Internetdatenatenabrufer._webengineZuJSoupDocument(webEngine)));
 								});
+
+								progressIndicator.setProgress(0.1 + (((double) i)/laenge) * 0.8 );
 							}
 
 							return null;
@@ -377,6 +381,8 @@ public class Internetdatenatenabrufer
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
 							SchreiberLeser.dropdownMenueNeuSetzen(Parser.dropdownMenueParsen(arrayList));
+
+							progressIndicator.setProgress(1);
 						}
 					}));
 

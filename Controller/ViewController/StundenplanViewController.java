@@ -389,7 +389,7 @@ public class StundenplanViewController implements Initializable
 			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException keineGefahrExcepttion)
 		{
-			//Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist
+			//Die Gefahr ist gebannt, da der Pfad zur richtigen FXML-Datei hartkodiert ist.
 			keineGefahrExcepttion.printStackTrace();
 		}
 		dialogPane.setMinSize(300, 200);

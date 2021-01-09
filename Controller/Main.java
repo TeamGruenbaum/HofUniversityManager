@@ -33,7 +33,6 @@ public class Main extends Application
         {
             SchreiberLeser.alleDatenLoeschen();
             SchreiberLeser.alleZuruecksetzen();
-            SchreiberLeser.alleSpeichern();
         }
         else
         {
@@ -43,6 +42,8 @@ public class Main extends Application
             }
             catch(Exception keineGefahrException)
             {
+                keineGefahrException.printStackTrace();
+
                 Alert alert=new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Daten korrupt");
                 alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");

@@ -179,10 +179,12 @@ public class SchreiberLeser
         FileInputStream leserFileInputStream=new FileInputStream(new File(getSpeicherPfad()+dateiname));
         ObjectInputStream leserObjectInputStream=new ObjectInputStream(leserFileInputStream);
 
+        T gelesenesT=(T) leserObjectInputStream.readObject();
+
         leserObjectInputStream.close();
         leserFileInputStream.close();
 
-        return ((T) leserObjectInputStream.readObject());
+        return gelesenesT;
     }
 
     //Hiermit wird ein Objekt beliebigen Typs unter einem entsprechenden Dateinamen im Speicherordner gespeichert.

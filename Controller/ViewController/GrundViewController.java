@@ -150,11 +150,14 @@ public class GrundViewController implements Initializable
             hauptmenueSchließen();
         });
 
-        oeffneScene();
 
         if(SchreiberLeser.isErsterStart())
         {
             ladeErsterStartScene();
+        }
+        else
+        {
+            oeffneScene();
         }
 
         uglyWebView=webView;
@@ -495,13 +498,30 @@ public class GrundViewController implements Initializable
         try
         {
             Node node=FXMLLoader.load(getClass().getResource("../../View/ErsterStartView.fxml"));
-            ((Button) node.lookup("#losgehts")).setOnAction((actionEvent)->
+            Button zuDenEinstellungenButton=(Button) node.lookup("#losgehts");
+            zuDenEinstellungenButton.setDisable(true);
+            zuDenEinstellungenButton.setOnAction((actionEvent)->
             {
                 menuHauptButton.setDisable(false);
                 oeffneScene();
             });
             ((Label) node.lookup("#text")).setWrapText(true);
+
+            ProgressIndicator progressIndicator=(ProgressIndicator) node.lookup("#dropdownMenueLadenProgressBar");
+            progressIndicator.progressProperty().addListener((observable, oldValue, newValue) ->
+            {
+                if(newValue.doubleValue()==1)
+                {
+                    zuDenEinstellungenButton.setDisable(false);
+                }
+            });
+            Internetdatenatenabrufer.setProgressIndicator(progressIndicator);
+
             borderPane.setCenter(node);
+
+            Internetdatenatenabrufer.dropdownMenueAbrufen();
+
+
         }
         catch(Exception keinGefahreException)
         {
