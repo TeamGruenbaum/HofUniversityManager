@@ -20,21 +20,21 @@ public class Doppelstunde implements Serializable
     //nullable
     private Tag tag;
     //nullable
-    private Uhrzeit beginn;
+    private Uhrzeit beginnUhrzeit;
     //nullable
-    private Uhrzeit ende;
+    private Uhrzeit endeUhrzeit;
 
 
 
-    public Doppelstunde(Datum datum, String name, String dozent, String raum, Tag tag, Uhrzeit beginn, Uhrzeit ende)
+    public Doppelstunde(Datum datum, String name, String dozent, String raum, Tag tag, Uhrzeit beginnUhrzeit, Uhrzeit endeUhrzeit)
     {
         this.datum=datum;
         this.name=name;
         this.dozent=dozent;
         this.raum=raum;
         this.tag=tag;
-        this.beginn=beginn;
-        this.ende=ende;
+        this.beginnUhrzeit=beginnUhrzeit;
+        this.endeUhrzeit=endeUhrzeit;
     }
 
     public Datum getDatum()
@@ -75,19 +75,11 @@ public class Doppelstunde implements Serializable
         this.tag=neuerWert;
     }
 
-    public Uhrzeit getBeginn() {
-        return beginn;
+    public Uhrzeit getBeginnUhrzeit() {
+        return beginnUhrzeit;
     }
 
-    public void setBeginn(Uhrzeit neuerWert) {
-        this.beginn=neuerWert;
-    }
-
-    public Uhrzeit getEnde() {
-        return ende;
-    }
-
-    public void setEnde(Uhrzeit neuerWert) {
-        this.ende=neuerWert;
+    public Uhrzeit getEndeUhrzeit() {
+        return endeUhrzeit;
     }
 }

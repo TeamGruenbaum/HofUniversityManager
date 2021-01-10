@@ -18,7 +18,7 @@ public class Stundenplanaenderungen
     }
 
 
-    public ArrayList<Stundenplanaenderung> getAenderungen()
+    public ArrayList<Stundenplanaenderung> getStundenplanaenderungen()
     {
         return stundenplanaenderungen;
     }

@@ -14,7 +14,7 @@ public class ModulhandbuchFach implements Serializable
     private String studienjahr;
     private String art;
     private String ECTS;
-    private String SWS;
+    private String semesterwochenstunden;
     private String praesenzzeit;
     private String pruefungsvorbereitung;
     private String sprache;
@@ -29,14 +29,14 @@ public class ModulhandbuchFach implements Serializable
 
 
 
-    public ModulhandbuchFach(String name, String dozent, String zweitpruefer, String studienjahr, String art, String ECTS, String SWS, String praesenzzeit, String pruefungsvorbereitung, String sprache, String lehrinhalte, String lernziel, String voraussetzung, String literaturliste, String pruefungsdurchfuehrung, String hilfsmittel, String medienformen, String haeufigkeit) {
+    public ModulhandbuchFach(String name, String dozent, String zweitpruefer, String studienjahr, String art, String ECTS, String semesterwochenstunden, String praesenzzeit, String pruefungsvorbereitung, String sprache, String lehrinhalte, String lernziel, String voraussetzung, String literaturliste, String pruefungsdurchfuehrung, String hilfsmittel, String medienformen, String haeufigkeit) {
         this.name=name;
         this.dozent=dozent;
         this.zweitpruefer=zweitpruefer;
         this.studienjahr=studienjahr;
         this.art=art;
         this.ECTS=ECTS;
-        this.SWS=SWS;
+        this.semesterwochenstunden=semesterwochenstunden;
         this.praesenzzeit=praesenzzeit;
         this.pruefungsvorbereitung=pruefungsvorbereitung;
         this.sprache=sprache;
@@ -81,9 +81,9 @@ public class ModulhandbuchFach implements Serializable
         return ECTS;
     }
 
-    public String getSWS()
+    public String getSemesterwochenstunden()
     {
-        return SWS;
+        return semesterwochenstunden;
     }
 
     public String getPraesenzzeit()

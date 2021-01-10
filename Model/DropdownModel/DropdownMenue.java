@@ -19,7 +19,7 @@ public class DropdownMenue implements Serializable
     }
 
 
-    public ArrayList<Studiengang> getEintraege()
+    public ArrayList<Studiengang> getStudiengaenge()
     {
         return studiengaenge;
     }

@@ -128,10 +128,10 @@ public class StundenplanViewController implements Initializable
 				tableView.getSelectionModel().getSelectedItem().getDozent(),
 				tableView.getSelectionModel().getSelectedItem().getRaum(),
 				tableView.getSelectionModel().getSelectedItem().getTag(),
-				tableView.getSelectionModel().getSelectedItem().getBeginn().getStunde(),
-				tableView.getSelectionModel().getSelectedItem().getBeginn().getMinute(),
-				tableView.getSelectionModel().getSelectedItem().getEnde().getStunde(),
-				tableView.getSelectionModel().getSelectedItem().getEnde().getMinute())
+				tableView.getSelectionModel().getSelectedItem().getBeginnUhrzeit().getStunde(),
+				tableView.getSelectionModel().getSelectedItem().getBeginnUhrzeit().getMinute(),
+				tableView.getSelectionModel().getSelectedItem().getEndeUhrzeit().getStunde(),
+				tableView.getSelectionModel().getSelectedItem().getEndeUhrzeit().getMinute())
 				.ifPresent((item)->SchreiberLeser.getNutzerdaten().getDoppelstunden().set(SchreiberLeser.getNutzerdaten().getDoppelstunden().indexOf(tableView.getSelectionModel().getSelectedItem()), item));
 			stundenplanLaden();
 		};
@@ -154,7 +154,7 @@ public class StundenplanViewController implements Initializable
 		Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> cellValueFactory=cellData->
 		{
 			return new SimpleStringProperty(((cellData.getValue().getDatum()==null)?""
-																				   :(cellData.getValue().getDatum()+" "))+cellData.getValue().getBeginn()+"-"+cellData.getValue().getEnde()+"\n"+cellData.getValue().getRaum()+"\n"+cellData.getValue().getName()+"\n"+cellData.getValue().getDozent());
+																				   :(cellData.getValue().getDatum()+" "))+cellData.getValue().getBeginnUhrzeit()+"-"+cellData.getValue().getEndeUhrzeit()+"\n"+cellData.getValue().getRaum()+"\n"+cellData.getValue().getName()+"\n"+cellData.getValue().getDozent());
 		};
 
 		tableViewInitialisieren(montagTableView, montagTableColumn, montagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
@@ -219,7 +219,7 @@ public class StundenplanViewController implements Initializable
 					aufgabenTableView.getSelectionModel().getSelectedItem().getName(),
 					aufgabenTableView.getSelectionModel().getSelectedItem().getInhalt(),
 					aufgabenTableView.getSelectionModel().getSelectedItem().getDatum(),
-					aufgabenTableView.getSelectionModel().getSelectedItem().getZeit(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getUhrzeit(),
 					aufgabenTableView.getSelectionModel().getSelectedItem().getFach())
 					.ifPresent((item)->
 					{
@@ -236,7 +236,7 @@ public class StundenplanViewController implements Initializable
 			});
 		aufgabenNameTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getName());});
 		aufgabenInhaltTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getInhalt());});
-		aufgabenZeitTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getZeit().toString());});
+		aufgabenZeitTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getUhrzeit().toString());});
 		aufgabenDatumTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getDatum().toString());});
 		aufgabenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
@@ -310,7 +310,7 @@ public class StundenplanViewController implements Initializable
 
 
 		//TODO Digitale Wirtschaft 2 - SS
-		Comparator<Doppelstunde> doppelstundeComparator=(o1, o2)->o1.getBeginn().compareTo(o2.getBeginn());
+		Comparator<Doppelstunde> doppelstundeComparator=(o1, o2)->o1.getBeginnUhrzeit().compareTo(o2.getBeginnUhrzeit());
 
 		SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item->
 		{

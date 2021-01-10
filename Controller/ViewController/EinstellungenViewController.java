@@ -1,6 +1,5 @@
 package Controller.ViewController;
 
-import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
@@ -9,15 +8,11 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import javafx.scene.web.WebEngine;
 import javafx.util.StringConverter;
 
 import java.net.URL;
@@ -76,7 +71,7 @@ public class EinstellungenViewController implements Initializable
             }
         });
         cbStudiengang.setPromptText("Studiengang auswählen");
-        cbStudiengang.setItems(FXCollections.observableArrayList(SchreiberLeser.getDropdownMenue().getEintraege()));
+        cbStudiengang.setItems(FXCollections.observableArrayList(SchreiberLeser.getDropdownMenue().getStudiengaenge()));
         if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null)
         {
             cbStudiengang.setValue(SchreiberLeser.getNutzerdaten().getStudiengang());
@@ -136,7 +131,7 @@ public class EinstellungenViewController implements Initializable
     }
 
     private ObservableList<Studiensemester> erzeugeSemesterListe(Studiengang studiengang) {
-        List<List<Studiensemester>> listeListeSemester = SchreiberLeser.getDropdownMenue().getEintraege().stream()
+        List<List<Studiensemester>> listeListeSemester = SchreiberLeser.getDropdownMenue().getStudiengaenge().stream()
                 .filter((obj) -> obj.equals(studiengang))
                 .map(Studiengang::getStudiensemester)
                 .collect(Collectors.toList());

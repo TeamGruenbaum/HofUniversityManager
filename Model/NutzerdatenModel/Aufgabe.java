@@ -14,17 +14,17 @@ public class Aufgabe implements Serializable
     private String name;
     private String inhalt;
     private Datum datum;
-    private Uhrzeit zeit;
+    private Uhrzeit uhrzeit;
     private String fach;
 
 
 
-    public Aufgabe (String name, String inhalt, Datum datum, Uhrzeit zeit, String fach)
+    public Aufgabe (String name, String inhalt, Datum datum, Uhrzeit uhrzeit, String fach)
     {
         this.name=name;
         this.inhalt=inhalt;
         this.datum=datum;
-        this.zeit=zeit;
+        this.uhrzeit=uhrzeit;
         this.fach=fach;
     }
 
@@ -59,9 +59,9 @@ public class Aufgabe implements Serializable
         this.datum=neuerWert;
     }
 
-    public Uhrzeit getZeit()
+    public Uhrzeit getUhrzeit()
     {
-        return zeit;
+        return uhrzeit;
     }
 
     public String getFach()

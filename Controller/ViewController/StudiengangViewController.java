@@ -35,7 +35,7 @@ public class StudiengangViewController implements Initializable {
             contentAccordion.setPrefWidth(500);
             vbContent.getChildren().add(contentAccordion);
 
-            SchreiberLeser.getModulhandbuch().getModulhandbuch().forEach((fach) -> {
+            SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().forEach((fach) -> {
                 GridPane gpFachInfos = new GridPane();
                 gpFachInfos.setVgap(5);
                 ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -71,7 +71,7 @@ public class StudiengangViewController implements Initializable {
                         new Label(String.valueOf(fach.getStudienjahr())),
                         new Label(fach.getArt()),
                         new Label(String.valueOf(fach.getECTS())),
-                        new Label(String.valueOf(fach.getSWS())),
+                        new Label(String.valueOf(fach.getSemesterwochenstunden())),
                         new Label(String.valueOf(fach.getPraesenzzeit())),
                         new Label(String.valueOf(fach.getPruefungsvorbereitung())),
                         new Label(fach.getSprache()),

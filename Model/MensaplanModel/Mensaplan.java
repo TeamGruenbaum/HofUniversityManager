@@ -13,9 +13,9 @@ public class Mensaplan implements Serializable
 
 
 
-    public Mensaplan(ArrayList<Tagesplan> wochenplan)
+    public Mensaplan(ArrayList<Tagesplan> tagesplaene)
     {
-        this.tagesplaene = wochenplan;
+        this.tagesplaene=tagesplaene;
     }
 
 

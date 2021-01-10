@@ -15,11 +15,11 @@ public class StudiengangInformationen implements Serializable
 
     public StudiengangInformationen(ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
     {
-        this.modulhandbuchFaecher = modulhandbuchFaecher;
+        this.modulhandbuchFaecher=modulhandbuchFaecher;
     }
 
 
-    public ArrayList<ModulhandbuchFach> getModulhandbuch()
+    public ArrayList<ModulhandbuchFach> getModulhandbuchFaecher()
     {
         return modulhandbuchFaecher;
     }

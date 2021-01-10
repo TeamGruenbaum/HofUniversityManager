@@ -31,12 +31,7 @@ public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
     @Override
     public int compareTo(Uhrzeit comparingTime)
     {
-        if ((stunde - comparingTime.stunde) == 0)
-        {
-            return (minute - comparingTime.minute);
-        }
-
-        return (stunde - comparingTime.stunde);
+        return (((stunde-comparingTime.stunde)==0)?(minute-comparingTime.minute):(stunde-comparingTime.stunde));
     }
 
     @Override
