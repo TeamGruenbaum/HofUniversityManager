@@ -1,5 +1,6 @@
 package Controller.ViewController;
 
+import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.TreffpunktModel.Freizeitaktivitaet;
 import Model.TreffpunktModel.Restaurant;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -26,8 +28,13 @@ public class TreffpunktViewController implements Initializable
     @FXML
     private VBox contentVBox;
 
+    @FXML
+    private Hyperlink emailHyperlink;
+
     public void initialize(URL location, ResourceBundle resources)
     {
+        emailHyperlink.setOnAction((event ->Main.oeffneLinkInBrowser("mailto:hum@meggede1.de")));
+
         // Erzeuge Einträge in ChoiceBox und wähle 1. Element
         ArrayList<String> listOriginal = new ArrayList<>();
         listOriginal.add("Restaurants");
@@ -38,7 +45,8 @@ public class TreffpunktViewController implements Initializable
 
         // Erstelle Accordion und füge es der VBox hinzu
         Accordion contentAccordion = new Accordion();
-        contentAccordion.setPrefWidth(500);
+        contentAccordion.setPrefWidth(700);
+        contentAccordion.setMaxWidth(700);
         contentVBox.getChildren().add(contentAccordion);
 
         // Erhalte alle Treffpunkte als ArrayList

@@ -13,11 +13,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import java.awt.Taskbar;
+
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import javax.imageio.ImageIO;
 
 
 
@@ -30,6 +34,8 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("../Ressourcen/Grafiken/HUM_Icon_Short.png")));
+
         if(SchreiberLeser.isErsterStart())
         {
             if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de/"))
@@ -42,6 +48,7 @@ public class Main extends Application
                 Alert alert=new Alert(Alert.AlertType.WARNING);
                 alert.setHeaderText("Internetverbindung notwendig");
                 alert.setContentText("Beim ersten Start des Programmes ist es zwingend notwendig, dass Du eine Verbindung zum Internet hast. Starte das Programm erneut, wenn Du eine Verbindung zum Internet hergestellt hast.");
+                alert.getDialogPane().getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
                 alert.showAndWait().ifPresentOrElse(
                     (item)->
                     {
@@ -61,6 +68,11 @@ public class Main extends Application
             try
             {
                 SchreiberLeser.alleLaden();
+
+                if(SchreiberLeser.getDropdownMenue()==null)
+                {
+                    throw new Exception();
+                }
             }
             catch(Exception keineGefahrException)
             {
@@ -69,6 +81,7 @@ public class Main extends Application
                 Alert alert=new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Daten korrupt");
                 alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");
+                alert.getDialogPane().getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
                 alert.showAndWait().ifPresentOrElse(
                     (item)->
                     {
@@ -106,7 +119,6 @@ public class Main extends Application
         primaryStage.setMinHeight(600);
         primaryStage.setMinWidth(900);
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            //TODO Korruption überprüfen
 
             @Override
             public void handle(WindowEvent t)

@@ -146,7 +146,7 @@
                                               <TableView fx:id="notenTableView" prefHeight="506.0" prefWidth="598.0" BorderPane.alignment="CENTER">
                                                   <columns>
                                                       <TableColumn fx:id="notenNoteTableColumn" prefWidth="75.0" text="Note" />
-                                                      <TableColumn fx:id="notenArtTableColumn" prefWidth="75.0" text="Art" />
+                                                      <TableColumn fx:id="notenHerkunftTableColumn" prefWidth="75.0" text="Herkunft" />
                                                       <TableColumn fx:id="notenBemerkungTableColumn" prefWidth="75.0" text="Bemerkung" />
                                                       <TableColumn fx:id="notenFachTableColumn" prefWidth="75.0" text="Fach" />
                                                   </columns>

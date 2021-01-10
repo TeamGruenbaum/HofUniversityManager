@@ -25,13 +25,13 @@
        <Label text="Note" />
        <TextField fx:id="noteTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
 
-       <Label text="Art" GridPane.rowIndex="1" />
-       <TextField fx:id="artTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <Label text="Herkunft" GridPane.rowIndex="1" />
+       <TextField fx:id="herkunftTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
        <Label text="Bemerkung" GridPane.rowIndex="2" />
        <TextField fx:id="bemerkungTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-       <Label text="Tag" GridPane.rowIndex="3" />
+       <Label text="Fach" GridPane.rowIndex="3" />
       <HBox styleClass="anwendungsBereich" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
             <ChoiceBox fx:id="fachChoiceBox" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />

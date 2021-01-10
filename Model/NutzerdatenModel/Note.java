@@ -15,7 +15,7 @@ public class Note implements Serializable
 
 
 
-    public Note(String herkunft, String note, String bemerkung, String fach)
+    public Note(String note, String herkunft, String bemerkung, String fach)
     {
         this.herkunft=herkunft;
         this.note=note;

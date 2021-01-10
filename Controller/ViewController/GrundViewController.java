@@ -15,6 +15,7 @@ import javafx.animation.FadeTransition;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
@@ -209,7 +210,6 @@ public class GrundViewController implements Initializable
             {
                 if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.studentenwerk-oberfranken.de/"))
                 {
-                    ladeLadenScene();
                     hauptmenueSchließen();
 
                     if(mensaplanEinmalHeruntergeladen)
@@ -217,14 +217,17 @@ public class GrundViewController implements Initializable
                         ladeSceneMitScrollPane();
                     }else
                     {
-                        Task task=new Task<Void>()
+                        ladeLadenScene();
+
+                        Task<Void> task=new Task<Void>()
                         {
                             @Override
-                            protected Void call() throws Exception
+                            protected Void call()
                             {
 
-                                menuHauptButton.setDisable(true);
+                                Platform.runLater(()->menuHauptButton.setDisable(true));
                                 Internetdatenatenabrufer.mensaplanAbrufen();
+
                                 return null;
                             }
                         };
@@ -249,7 +252,7 @@ public class GrundViewController implements Initializable
                 }
             }
             break;
-            case STUDIENGANG:
+            case MODULHANDBUCH:
             {
                 hauptmenueSchließen();
 
@@ -485,7 +488,7 @@ public class GrundViewController implements Initializable
         borderPane.setCenter(progressBar);
         this.borderPane.setCenter(borderPane);
 
-        Internetdatenatenabrufer.setProgressIndicator(progressBar);
+        Internetdatenatenabrufer.setFortschrittProgressIndicator(progressBar);
 
         return progressBar;
     }
@@ -515,7 +518,7 @@ public class GrundViewController implements Initializable
                     zuDenEinstellungenButton.setDisable(false);
                 }
             });
-            Internetdatenatenabrufer.setProgressIndicator(progressIndicator);
+            Internetdatenatenabrufer.setFortschrittProgressIndicator(progressIndicator);
 
             borderPane.setCenter(node);
 

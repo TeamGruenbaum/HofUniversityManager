@@ -66,7 +66,7 @@ public class StundenplanViewController implements Initializable
 
 	@FXML private TableView<Note> notenTableView;
 	@FXML private TableColumn<Note, String> notenNoteTableColumn;
-	@FXML private TableColumn<Note, String> notenArtTableColumn;
+	@FXML private TableColumn<Note, String> notenHerkunftTableColumn;
 	@FXML private TableColumn<Note, String> notenBemerkungTableColumn;
 	@FXML private TableColumn<Note, String> notenFachTableColumn;
 	private ObservableList<Note> notenObservableList;
@@ -181,7 +181,6 @@ public class StundenplanViewController implements Initializable
 
 		stundenplanLaden();
 
-		//TODO Art und Note verwechselt
 		//Fächer
 		notenObservableList=FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getNoten());
 		notenTableView.setItems(notenObservableList);
@@ -207,7 +206,7 @@ public class StundenplanViewController implements Initializable
 			});
 		notenBemerkungTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getBemerkung());});
 		notenNoteTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getNote());});
-		notenArtTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getHerkunft());});
+		notenHerkunftTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getHerkunft());});
 		notenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
 
@@ -278,7 +277,7 @@ public class StundenplanViewController implements Initializable
 		{
 			if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
 			{
-				Internetdatenatenabrufer.setProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
+				Internetdatenatenabrufer.setFortschrittProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
 				Internetdatenatenabrufer.stundenplanAbrufen();
 				stundenplanZuruecksetzen.setDisable(true);
 				stundenplanZuruecksetzungProgressIndicator.setVisible(true);
@@ -309,7 +308,6 @@ public class StundenplanViewController implements Initializable
 		stundenplanHBox.getChildren().remove(ohneTagTableView);
 
 
-		//TODO Digitale Wirtschaft 2 - SS
 		Comparator<Doppelstunde> doppelstundeComparator=(o1, o2)->o1.getBeginnUhrzeit().compareTo(o2.getBeginnUhrzeit());
 
 		SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item->
@@ -473,7 +471,6 @@ public class StundenplanViewController implements Initializable
 		tableView.setItems(observableList);
 		aendernLoeschenKontextmenueHinzufuegen(tableView, aendernConsumer, loeschConsumer);
 		tableColumn.setCellValueFactory(callback);
-		tooltipZuZelleHinzufuegen(tableColumn);
 	}
 
 	//Faecher
@@ -604,14 +601,14 @@ public class StundenplanViewController implements Initializable
 		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
 		TextField noteTextField=(TextField) dialogPane.lookup("#noteTextField");
-		TextField artTextField=(TextField) dialogPane.lookup("#artTextField");
+		TextField herkunftTextField=(TextField) dialogPane.lookup("#herkunftTextField");
 		TextField bemerkungTextField=(TextField) dialogPane.lookup("#bemerkungTextField");
-		ChangeListener<String> changeListener=(observable, oldValue, newValue)->dialogPane.lookupButton(ButtonType.OK).setDisable(noteTextField.getText().trim().isEmpty() || artTextField.getText().trim().isEmpty() || bemerkungTextField.getText().trim().isEmpty());
+		ChangeListener<String> changeListener=(observable, oldValue, newValue)->dialogPane.lookupButton(ButtonType.OK).setDisable(noteTextField.getText().trim().isEmpty() || herkunftTextField.getText().trim().isEmpty());
 		noteTextField.textProperty().addListener(changeListener);
-		artTextField.textProperty().addListener(changeListener);
+		herkunftTextField.textProperty().addListener(changeListener);
 		bemerkungTextField.textProperty().addListener(changeListener);
 		noteTextField.setText(notePrompt);
-		artTextField.setText(artPrompt);
+		herkunftTextField.setText(artPrompt);
 		bemerkungTextField.setText(bemerkungPrompt);
 
 		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) dialogPane.lookup("#fachChoiceBox");
@@ -646,7 +643,7 @@ public class StundenplanViewController implements Initializable
 			}else
 			{
 				return new Note(noteTextField.getText().trim(),
-					artTextField.getText().trim(),
+					herkunftTextField.getText().trim(),
 					bemerkungTextField.getText().trim(),
 					faecherChoiceBox.getValue());
 			}
@@ -676,7 +673,6 @@ public class StundenplanViewController implements Initializable
 		((Button) dialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
 		((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		dialogPane.lookupButton(ButtonType.OK).setDisable(true);
-		System.out.println(((Button) dialogPane.lookupButton(ButtonType.CANCEL)).getScaleX());
 
 		TextField nameTextField=(TextField) dialogPane.lookup("#nameTextField");
 		TextArea inhaltTextArea=(TextArea) dialogPane.lookup("#inhaltTextField");
@@ -790,27 +786,6 @@ public class StundenplanViewController implements Initializable
 			{
 				contextMenu.hide();
 			}
-		});
-	}
-
-	private <T> void tooltipZuZelleHinzufuegen(TableColumn<Doppelstunde, T> column)
-	{
-
-		Callback<TableColumn<Doppelstunde, T>, TableCell<Doppelstunde, T>> aktuelleCellFactory=column.getCellFactory();
-
-		column.setCellFactory((tableColumn)->
-		{
-			TableCell<Doppelstunde, T> tableCell=aktuelleCellFactory.call(tableColumn);
-
-			//TODO - NOT NULL, Contextmenü schließen
-			if(tableCell.getItem()!=null)
-			{
-				Tooltip tooltip=new Tooltip();
-				tooltip.textProperty().bind(tableCell.itemProperty().asString());
-				tableCell.setTooltip(tooltip);
-			}
-
-			return tableCell;
 		});
 	}
 }

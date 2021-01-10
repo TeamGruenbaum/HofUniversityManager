@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class StudiengangViewController implements Initializable {
+public class ModulhandbuchViewController implements Initializable {
 
     @FXML
     VBox vbContent;
@@ -32,7 +32,7 @@ public class StudiengangViewController implements Initializable {
 
             // Erstelle Accordion mit Fächern
             Accordion contentAccordion = new Accordion();
-            contentAccordion.setPrefWidth(500);
+            contentAccordion.setPrefWidth(700);
             vbContent.getChildren().add(contentAccordion);
 
             SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().forEach((fach) -> {

@@ -52,7 +52,6 @@ public class MensaplanViewController implements Initializable
                 case 2 -> generiereSpeiseplan(Tag.MITTWOCH);
                 case 3 -> generiereSpeiseplan(Tag.DONNERSTAG);
                 case 4 -> generiereSpeiseplan(Tag.FREITAG);
-                default -> System.out.println("Alert");
             }
         });
 

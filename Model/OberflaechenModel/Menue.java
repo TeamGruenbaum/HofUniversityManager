@@ -17,7 +17,7 @@ public final class Menue implements Serializable
             List.of(
                 new MenuepunktInformation(Anwendung.STUNDENPLAN,"stundenplan-icon.png", "StundenplanView.fxml"),
                 new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaPlanView.fxml"),
-                new MenuepunktInformation(Anwendung.STUDIENGANG,"studiengang-icon.png", "StudiengangView.fxml"),
+                new MenuepunktInformation(Anwendung.MODULHANDBUCH,"modulhandbuch-icon.png", "ModulhandbuchView.fxml"),
                 new MenuepunktInformation(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformation(Anwendung.PANOPTO,"panopto-icon.png", "Platzhalter.fxml"),
                 new MenuepunktInformation(Anwendung.NEXTCLOUD,"nextcloud-icon.png", "Platzhalter.fxml"),

@@ -9,14 +9,13 @@ import Controller.Speicher.SchreiberLeser;
 import Controller.ViewController.GrundViewController;
 import Model.Datum;
 
-import java.nio.charset.StandardCharsets;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -25,30 +24,94 @@ import javafx.concurrent.Worker;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import org.apache.commons.io.IOUtils;
 
 
 
 public class Internetdatenatenabrufer
 {
-	private static ProgressIndicator progressIndicator;
+	private static ProgressIndicator fortschrittProgressIndicator;
 	private static long start, end;
 	private static ChangeListener<Worker.State> letzteListener=null;
 
-	public static void setProgressIndicator(ProgressIndicator neuerWert)
+	public static void setFortschrittProgressIndicator(ProgressIndicator neuerWertProgressIndicator)
 	{
-		progressIndicator=neuerWert;
+		fortschrittProgressIndicator=neuerWertProgressIndicator;
+	}
+
+	public static void stundenplanAbrufen()
+	{
+
+		Platform.runLater(()->
+		{
+			fortschrittProgressIndicator.setProgress(0);
+
+			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
+
+			entferneLetztenListener(webEngine);
+
+			ChangeListener<Worker.State> stateChangeListener=(observable, oldValue, newValue)->
+			{
+				if(newValue==Worker.State.SUCCEEDED)
+				{
+					end=System.nanoTime();
+
+					fortschrittProgressIndicator.setProgress(0.25);
+
+
+					Task<Void> task=new Task<Void>()
+					{
+						@Override
+						protected Void call() throws Exception
+						{
+
+							Platform.runLater(()->
+							{
+								webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
+							});
+							fortschrittProgressIndicator.setProgress(0.5);
+
+							Thread.sleep(((end-start)/1000000)/2);
+
+							Platform.runLater(()->
+							{
+								webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
+							});
+							fortschrittProgressIndicator.setProgress(0.75);
+
+							Thread.sleep(((end-start)/1000000)/2);
+
+							Platform.runLater(()->
+							{
+								SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
+								fortschrittProgressIndicator.setProgress(1);
+							});
+
+							return null;
+						}
+					};
+
+					new Thread(task).start();
+				}
+			};
+
+			webEngine.getLoadWorker().stateProperty().addListener(stateChangeListener);
+
+			letzteListener=stateChangeListener;
+
+			start=System.nanoTime();
+			webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
+		});
 	}
 
 	public static void studiengangAbrufen()
 	{
 		Platform.runLater(()->
 		{
-			progressIndicator.setProgress(0);
+			fortschrittProgressIndicator.setProgress(0);
 
 			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
@@ -73,7 +136,7 @@ public class Internetdatenatenabrufer
 								webEngine.executeScript("document.getElementById('class_change').value='"+SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel()+"';"+"document.getElementById('class_change').dispatchEvent(new Event('change'));");
 							});
 
-							Platform.runLater(()->progressIndicator.setProgress(0.1));
+							Platform.runLater(()->fortschrittProgressIndicator.setProgress(0.1));
 
 							Thread.sleep(((end-start)/1000000)/2);
 
@@ -84,12 +147,10 @@ public class Internetdatenatenabrufer
 								Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel());
 								matcher.matches();
 
-								System.out.println(matcher.group(3).replace('#', ' '));
-
 								webEngine.executeScript("document.getElementById('year_change').value='"+matcher.group(3).replace('#', ' ')+"';"+"document.getElementById('year_change').dispatchEvent(new Event('change'));");
 							});
 
-							Platform.runLater(()->progressIndicator.setProgress(0.2));
+							Platform.runLater(()->fortschrittProgressIndicator.setProgress(0.2));
 
 							Thread.sleep(((end-start)/1000000)/2);
 
@@ -98,15 +159,12 @@ public class Internetdatenatenabrufer
 								Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel());
 								matcher.matches();
 
-								System.out.println(matcher.group(1));
-
-								//TODO Exception
 								webEngine.executeScript("document.getElementById('sem_change').value='"+matcher.group(1)+"';"+"document.getElementById('sem_change').dispatchEvent(new Event('change'));");
 							});
 
 							Thread.sleep(((end-start)/1000000)/2);
 
-							Platform.runLater(()->progressIndicator.setProgress(0.3));
+							Platform.runLater(()->fortschrittProgressIndicator.setProgress(0.3));
 
 							Platform.runLater(()->
 							{
@@ -115,13 +173,10 @@ public class Internetdatenatenabrufer
 								if(dokument.select("tbody").size()!=0)
 								{
 
-									System.out.println(dokument.select("tbody>tr").size());
-
 									for(int i=0; i<dokument.select("tbody>tr").size(); i++)
 									{
 										try
 										{
-											//TODO BWL 1a
 											arrayList.add(Jsoup.connect("https://www.hof-university.de"+dokument.select("tbody>tr").get(i).
 												select("a").get(0).attr("href")).get());
 										}
@@ -134,8 +189,7 @@ public class Internetdatenatenabrufer
 										int finalI=i;
 										Platform.runLater(()->
 										{
-											System.out.println(0.3+(((double) finalI)/(dokument.select("tbody>tr").size()-1))*0.6);
-											progressIndicator.setProgress(0.3+(((double) finalI)/(dokument.select("tbody>tr").size()-1))*0.6);
+											fortschrittProgressIndicator.setProgress(0.3+(((double) finalI)/(dokument.select("tbody>tr").size()-1))*0.6);
 										});
 									}
 								}
@@ -150,10 +204,10 @@ public class Internetdatenatenabrufer
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
 
-								SchreiberLeser.modulhandbuchNeuSetzen(Parser.studiengangParsen(arrayList));
+								SchreiberLeser.modulhandbuchNeuSetzen(Parser.modulhandbuchParsen(arrayList));
 
 
-							Platform.runLater(()->progressIndicator.setProgress(1));
+							Platform.runLater(()->fortschrittProgressIndicator.setProgress(1));
 						}
 					}));
 
@@ -168,24 +222,6 @@ public class Internetdatenatenabrufer
 			start=System.nanoTime();
 			webEngine.load("https://www.hof-university.de/studierende/info-service/modulhandbuecher.html");
 		});
-	}
-
-	public static void treffpunkteAbrufen()
-	{
-
-		try
-		{
-			SchreiberLeser.treffpunkteNeuSetzen(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), StandardCharsets.UTF_8))));
-			Platform.runLater(()->
-			{
-				progressIndicator.setProgress(1);
-			});
-		}
-		catch(Exception keineGefahrException)
-		{
-			//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
-			keineGefahrException.printStackTrace();
-		}
 	}
 
 	public static void mensaplanAbrufen()
@@ -205,7 +241,7 @@ public class Internetdatenatenabrufer
 			int finalI=i;
 			Platform.runLater(()->
 			{
-				progressIndicator.setProgress(((double) finalI)/5);
+				fortschrittProgressIndicator.setProgress(((double) finalI)/5);
 			});
 
 			String url="https://www.studentenwerk-oberfranken.de/essen/speiseplaene/hof/"+sdf.format(cal.getTime())+".html";
@@ -233,90 +269,35 @@ public class Internetdatenatenabrufer
 		SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanTupel(mensatage.get(0), mensatage.get(1), mensatage.get(2), mensatage.get(3), mensatage.get(4), mensatage.get(5))));
 	}
 
-	private static void entferneLetztenListener(WebEngine webEngine)
+	public static void treffpunkteAbrufen()
 	{
 
-		if(letzteListener!=null)
+		try
 		{
-			webEngine.getLoadWorker().stateProperty().removeListener(letzteListener);
-		}
-	}
-
-	public static void stundenplanAbrufen()
-	{
-
-		Platform.runLater(()->
-		{
-			progressIndicator.setProgress(0);
-
-			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
-
-			entferneLetztenListener(webEngine);
-
-			ChangeListener<Worker.State> stateChangeListener=(observable, oldValue, newValue)->
+			SchreiberLeser.treffpunkteNeuSetzen(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), StandardCharsets.UTF_8))));
+			Platform.runLater(()->
 			{
-				if(newValue==Worker.State.SUCCEEDED)
-				{
-					end=System.nanoTime();
-
-					progressIndicator.setProgress(0.25);
-
-
-					Task<Void> task=new Task<Void>()
-					{
-						@Override
-						protected Void call() throws Exception
-						{
-
-							Platform.runLater(()->
-							{
-								webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
-							});
-							progressIndicator.setProgress(0.5);
-
-							Thread.sleep(((end-start)/1000000)/2);
-
-							Platform.runLater(()->
-							{
-								webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
-							});
-							progressIndicator.setProgress(0.75);
-
-							Thread.sleep(((end-start)/1000000)/2);
-
-							Platform.runLater(()->
-							{
-								SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"))));
-								progressIndicator.setProgress(1);
-							});
-
-							return null;
-						}
-					};
-
-					new Thread(task).start();
-				}
-			};
-
-			webEngine.getLoadWorker().stateProperty().addListener(stateChangeListener);
-
-			letzteListener=stateChangeListener;
-
-			start=System.nanoTime();
-			webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
-		});
+				fortschrittProgressIndicator.setProgress(1);
+			});
+		}
+		catch(Exception keineGefahrException)
+		{
+			//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
+			keineGefahrException.printStackTrace();
+		}
 	}
 
 	public static void dropdownMenueAbrufen()
 	{
-
 		Platform.runLater(()->
 		{
 			ArrayList<NameKuerzelDocumentTripel> arrayList=new ArrayList<NameKuerzelDocumentTripel>();
 
 			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
 
-			webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
+			entferneLetztenListener(webEngine);
+
+			ChangeListener<Worker.State> changeListener=((observable, oldValue, newValue)->
 			{
 				if(newValue==Worker.State.SUCCEEDED)
 				{
@@ -327,7 +308,6 @@ public class Internetdatenatenabrufer
 						@Override
 						protected Void call()
 						{
-
 							int laenge=0;
 
 							try
@@ -339,7 +319,7 @@ public class Internetdatenatenabrufer
 								keineGefahrException.printStackTrace();
 							}
 
-							progressIndicator.setProgress(0.1);
+							fortschrittProgressIndicator.setProgress(0.1);
 
 							for(int i=1; i<laenge; i++)
 							{
@@ -367,7 +347,7 @@ public class Internetdatenatenabrufer
 									arrayList.add(new NameKuerzelDocumentTripel((String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Internetdatenatenabrufer._webengineZuJSoupDocument(webEngine)));
 								});
 
-								progressIndicator.setProgress(0.1 + (((double) i)/laenge) * 0.8 );
+								fortschrittProgressIndicator.setProgress(0.1 + (((double) i)/laenge) * 0.8 );
 							}
 
 							return null;
@@ -382,13 +362,17 @@ public class Internetdatenatenabrufer
 						{
 							SchreiberLeser.dropdownMenueNeuSetzen(Parser.dropdownMenueParsen(arrayList));
 
-							progressIndicator.setProgress(1);
+							fortschrittProgressIndicator.setProgress(1);
 						}
 					}));
 
 					new Thread(task).start();
 				}
-			}));
+			});
+
+			webEngine.getLoadWorker().stateProperty().addListener(changeListener);
+
+			letzteListener=changeListener;
 
 			start=System.nanoTime();
 			webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
@@ -399,5 +383,13 @@ public class Internetdatenatenabrufer
 	{
 
 		return Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"));
+	}
+
+	private static void entferneLetztenListener(WebEngine webEngine)
+	{
+		if(letzteListener!=null)
+		{
+			webEngine.getLoadWorker().stateProperty().removeListener(letzteListener);
+		}
 	}
 }

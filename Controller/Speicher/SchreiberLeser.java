@@ -3,13 +3,12 @@ package Controller.Speicher;
 
 
 import Model.DropdownModel.DropdownMenue;
-import Model.DropdownModel.Studiengang;
 import Model.MensaplanModel.Mensaplan;
 import Model.MensaplanModel.Tagesplan;
 import Model.NutzerdatenModel.*;
 import Model.OberflaechenModel.Menue;
-import Model.StudiengangModel.ModulhandbuchFach;
-import Model.StudiengangModel.StudiengangInformationen;
+import Model.ModulhandbuchModel.ModulhandbuchFach;
+import Model.ModulhandbuchModel.Modulhandbuch;
 import Model.TreffpunktModel.Treffpunkt;
 import Model.TreffpunktModel.Treffpunkte;
 
@@ -22,8 +21,8 @@ import org.apache.commons.io.FileUtils;
 
 public class SchreiberLeser
 {
-    private static StudiengangInformationen modulhandbuch;
-    private static String modulhandbuchDateiname="StudiengangInformationen.sva";
+    private static Modulhandbuch modulhandbuch;
+    private static String modulhandbuchDateiname="Modulhandbuch.sva";
 
     private static Treffpunkte treffpunkte;
     private static String treffpunkteDateiname="Treffpunkte.sva";
@@ -68,7 +67,7 @@ public class SchreiberLeser
     //Diese Methode setzt alle Attribute, auf welchen im Laufe der Programmnutzung dauernd zugegriffen wird, auf einen sinnvollen "leeren" Zustand zurück.
     public static void alleZuruecksetzen()
     {
-        modulhandbuch=new StudiengangInformationen(new ArrayList<ModulhandbuchFach>());
+        modulhandbuch=new Modulhandbuch(new ArrayList<ModulhandbuchFach>());
         treffpunkte=new Treffpunkte(new ArrayList<Treffpunkt>());
         mensaplan=new Mensaplan(new ArrayList<Tagesplan>());
         ArrayList<String> faecherNamen=new ArrayList<String>();
@@ -79,14 +78,12 @@ public class SchreiberLeser
             faecherNamen,
             new Login("", ""), Thema.HELL,
             Menue.getMenuepunktInformationen().get(Menue.getMenuepunktInformationen().size()-1));
-
-        //TODO - Beim FirstStart runterladen
     }
 
     //Diese Methode lädt alle persistent gespeicherten Daten in die entsprechenden Attribute.
     public static void alleLaden() throws Exception
     {
-        modulhandbuch=SchreiberLeser.<StudiengangInformationen>lesen(modulhandbuchDateiname);
+        modulhandbuch=SchreiberLeser.<Modulhandbuch>lesen(modulhandbuchDateiname);
         treffpunkte=SchreiberLeser.<Treffpunkte>lesen(treffpunkteDateiname);
         mensaplan=SchreiberLeser.<Mensaplan>lesen(mensaplanDateiname);
         nutzerdaten=SchreiberLeser.<Nutzerdaten>lesen(nutzerdatenDateiname);
@@ -96,7 +93,7 @@ public class SchreiberLeser
     //alleSpeichern() speichert alle Attribute, auf welche im Laufe der Programmnutzung dauernd zugegriffen wird, in den persistenten Speicher.
     public static void alleSpeichern()
     {
-        SchreiberLeser.<StudiengangInformationen>schreiben(modulhandbuch, modulhandbuchDateiname);
+        SchreiberLeser.<Modulhandbuch>schreiben(modulhandbuch, modulhandbuchDateiname);
         SchreiberLeser.<Treffpunkte>schreiben(treffpunkte, treffpunkteDateiname);
         SchreiberLeser.<Mensaplan>schreiben(mensaplan, mensaplanDateiname);
         SchreiberLeser.<Nutzerdaten>schreiben(nutzerdaten, nutzerdatenDateiname);
@@ -117,12 +114,12 @@ public class SchreiberLeser
     }
 
     //Alle folgenden Methoden dienen dazu die Attribute abzurufen oder sie komplett neu zu besetzen
-    public static StudiengangInformationen getModulhandbuch()
+    public static Modulhandbuch getModulhandbuch()
     {
         return modulhandbuch;
     }
 
-    public static void modulhandbuchNeuSetzen(StudiengangInformationen neuerWert)
+    public static void modulhandbuchNeuSetzen(Modulhandbuch neuerWert)
     {
         modulhandbuch=neuerWert;
     }

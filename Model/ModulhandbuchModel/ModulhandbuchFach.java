@@ -1,4 +1,4 @@
-package Model.StudiengangModel;
+package Model.ModulhandbuchModel;
 
 
 

@@ -1,4 +1,4 @@
-package Model.StudiengangModel;
+package Model.ModulhandbuchModel;
 
 
 
@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 
 
-public class StudiengangInformationen implements Serializable
+public class Modulhandbuch implements Serializable
 {
     private ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
 
 
 
-    public StudiengangInformationen(ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
+    public Modulhandbuch(ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
     {
         this.modulhandbuchFaecher=modulhandbuchFaecher;
     }

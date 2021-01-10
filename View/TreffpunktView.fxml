@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.TreffpunktViewController">
-   <children>
-      <BorderPane>
+<BorderPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.TreffpunktViewController">
          <center>
-            <VBox spacing="14.0" fx:id="contentVBox" styleClass="anwendungsBereich">
+            <VBox fx:id="contentVBox" spacing="14.0" styleClass="anwendungsBereich">
                <BorderPane.margin>
                   <Insets bottom="28.0" left="28.0" right="28.0" />
                </BorderPane.margin>
@@ -24,7 +25,7 @@
          <top>
             <VBox styleClass="anwendungsBereich">
                <children>
-                  <Label text="Treffpunkte" styleClass="ueberschrift" >
+                  <Label styleClass="ueberschrift" text="Treffpunkte">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -40,6 +41,22 @@
                </children>
             </VBox>
          </top>
+         <bottom>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Weitere Vorschläge gerne an" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="28.0" bottom="14.0"/>
+               </HBox.margin></Label>
+            <Hyperlink fx:id="emailHyperlink" text="hum@meggede1.de" >
+               <HBox.margin>
+                  <Insets bottom="14.0"/>
+               </HBox.margin>
+            </Hyperlink>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
+         </bottom>
       </BorderPane>
-   </children>
-</AnchorPane>

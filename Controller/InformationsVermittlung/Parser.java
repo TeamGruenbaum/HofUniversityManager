@@ -8,8 +8,9 @@ import Controller.InformationsVermittlung.Hilfsklassen.MensaplanTupel;
 import Model.Datum;
 import Model.DropdownModel.*;
 import Model.MensaplanModel.*;
+import Model.ModulhandbuchModel.Modulhandbuch;
+import Model.ModulhandbuchModel.ModulhandbuchFach;
 import Model.NutzerdatenModel.Doppelstunde;
-import Model.StudiengangModel.*;
 import Model.StundenplanaenderungModel.*;
 import Model.Tag;
 import Model.TreffpunktModel.*;
@@ -32,7 +33,7 @@ import org.jsoup.nodes.Element;
 public class Parser
 {
     //Diese Methode parst das Modulhandbuch des ausgewählten Studiengangs und Semesters.
-    public static StudiengangInformationen studiengangParsen(ArrayList<Document> Documents)
+    public static Modulhandbuch modulhandbuchParsen(ArrayList<Document> Documents)
     {
         ArrayList<ModulhandbuchFach> modulhandbuchFaecher=new ArrayList<>();
 
@@ -42,7 +43,7 @@ public class Parser
         }
 
 
-        return new StudiengangInformationen(modulhandbuchFaecher);
+        return new Modulhandbuch(modulhandbuchFaecher);
     }
 
     //Diese Methode parst den Mensaplan des Studentenwerks Oberfranken.

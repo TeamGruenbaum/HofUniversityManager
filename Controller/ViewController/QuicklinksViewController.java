@@ -55,7 +55,6 @@ public class QuicklinksViewController implements Initializable
         progressIndicator.progressProperty().bind(webEngine.getLoadWorker().progressProperty());
         webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
         {
-            System.out.println(oldValue+"->"+newValue);
 
             if(newValue==Worker.State.SUCCEEDED)
             {
