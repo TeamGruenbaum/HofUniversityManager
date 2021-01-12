@@ -34,7 +34,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        if(System.getProperty("user.home").contains("Mac OS X"))
+        if(System.getProperty("os.name").contentEquals("Mac OS X"))
         {
             Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("../Ressourcen/Grafiken/HUM_Icon_Short.png")));
         }
