@@ -1,7 +1,7 @@
 package Controller.ViewController;
 
 
-import Controller.InformationsVermittlung.Internetdatenatenabrufer;
+import Controller.InformationsVermittlung.Downloader;
 import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
@@ -17,7 +17,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -217,24 +216,9 @@ public class GrundViewController implements Initializable
                         ladeSceneMitScrollPane();
                     }else
                     {
-                        ladeLadenScene();
-
-                        Task<Void> task=new Task<Void>()
+                        ladeLadenScene().progressProperty().addListener(((observable, oldValue, newValue)->
                         {
-                            @Override
-                            protected Void call()
-                            {
-
-                                Platform.runLater(()->menuHauptButton.setDisable(true));
-                                Internetdatenatenabrufer.mensaplanAbrufen();
-
-                                return null;
-                            }
-                        };
-
-                        task.stateProperty().addListener(((observable, oldValue, newValue)->
-                        {
-                            if(newValue==Worker.State.SUCCEEDED)
+                            if(newValue.doubleValue()==1.0)
                             {
                                 ladeSceneMitScrollPane();
                                 menuHauptButton.setDisable(false);
@@ -242,7 +226,18 @@ public class GrundViewController implements Initializable
                             }
                         }));
 
-                        new Thread(task).start();
+                        new Thread(new Task<Void>()
+                        {
+                            @Override
+                            protected Void call()
+                            {
+
+                                Platform.runLater(()->menuHauptButton.setDisable(true));
+                                Downloader.mensaplanAbrufen();
+
+                                return null;
+                            }
+                        }).start();
                     }
                 }else
                 {
@@ -260,29 +255,14 @@ public class GrundViewController implements Initializable
                 {
                     if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
                     {
-                        ProgressIndicator progressIndicator=ladeLadenScene();
-
                         if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang()&&letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
                         {
                             ladeSceneMitScrollPane();
                         }else
                         {
-
-                            Task task=new Task<Void>()
+                            ladeLadenScene().progressProperty().addListener(((observable, oldValue, newValue)->
                             {
-                                @Override
-                                protected Void call() throws Exception
-                                {
-
-                                    menuHauptButton.setDisable(true);
-                                    Internetdatenatenabrufer.studiengangAbrufen();
-                                    return null;
-                                }
-                            };
-
-                            progressIndicator.progressProperty().addListener(((observable, oldValue, newValue)->
-                            {
-                                if(newValue.doubleValue()==1)
+                                if(newValue.doubleValue()==1.0)
                                 {
                                     letzterStudiengang=SchreiberLeser.getNutzerdaten().getStudiengang();
                                     letztesStudiensemester=SchreiberLeser.getNutzerdaten().getStudiensemester();
@@ -293,7 +273,17 @@ public class GrundViewController implements Initializable
                                 }
                             }));
 
-                            new Thread(task).start();
+                            new Thread(new Task<Void>()
+                            {
+                                @Override
+                                protected Void call() throws Exception
+                                {
+
+                                    menuHauptButton.setDisable(true);
+                                    Downloader.modulhandbuchAbrufen();
+                                    return null;
+                                }
+                            }).start();
                     }
                     }else
                     {
@@ -366,20 +356,9 @@ public class GrundViewController implements Initializable
                     }
                     else
                     {
-                        Task task=new Task<Void>()
+                        ladeLadenScene().progressProperty().addListener(((observable, oldValue, newValue)->
                         {
-                            @Override
-                            protected Void call() throws Exception
-                            {
-                                menuHauptButton.setDisable(true);
-                                Internetdatenatenabrufer.treffpunkteAbrufen();
-                                return null;
-                            }
-                        };
-
-                        task.stateProperty().addListener(((observable, oldValue, newValue)->
-                        {
-                            if(newValue==Worker.State.SUCCEEDED)
+                            if(newValue.doubleValue()==1.0)
                             {
                                 ladeSceneMitScrollPane();
                                 menuHauptButton.setDisable(false);
@@ -387,7 +366,16 @@ public class GrundViewController implements Initializable
                             }
                         }));
 
-                        new Thread(task).start();
+                        new Thread(new Task<Void>()
+                        {
+                            @Override
+                            protected Void call() throws Exception
+                            {
+                                menuHauptButton.setDisable(true);
+                                Downloader.treffpunkteAbrufen();
+                                return null;
+                            }
+                        }).start();
                     }
                 }
                 else
@@ -488,7 +476,7 @@ public class GrundViewController implements Initializable
         borderPane.setCenter(progressBar);
         this.borderPane.setCenter(borderPane);
 
-        Internetdatenatenabrufer.setFortschrittProgressIndicator(progressBar);
+        Downloader.setDownloadfortschrittProgressIndicator(progressBar);
 
         return progressBar;
     }
@@ -518,11 +506,11 @@ public class GrundViewController implements Initializable
                     zuDenEinstellungenButton.setDisable(false);
                 }
             });
-            Internetdatenatenabrufer.setFortschrittProgressIndicator(progressIndicator);
+            Downloader.setDownloadfortschrittProgressIndicator(progressIndicator);
 
             borderPane.setCenter(node);
 
-            Internetdatenatenabrufer.dropdownMenueAbrufen();
+            Downloader.dropdownMenueAbrufen();
 
 
         }

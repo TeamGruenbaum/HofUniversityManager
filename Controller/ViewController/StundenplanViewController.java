@@ -1,6 +1,6 @@
 package Controller.ViewController;
 
-import Controller.InformationsVermittlung.Internetdatenatenabrufer;
+import Controller.InformationsVermittlung.Downloader;
 import Controller.Main;
 import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Speicher.SchreiberLeser;
@@ -277,8 +277,8 @@ public class StundenplanViewController implements Initializable
 		{
 			if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
 			{
-				Internetdatenatenabrufer.setFortschrittProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
-				Internetdatenatenabrufer.stundenplanAbrufen();
+				Downloader.setDownloadfortschrittProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
+				Downloader.stundenplanAbrufen();
 				stundenplanZuruecksetzen.setDisable(true);
 				stundenplanZuruecksetzungProgressIndicator.setVisible(true);
 			}
