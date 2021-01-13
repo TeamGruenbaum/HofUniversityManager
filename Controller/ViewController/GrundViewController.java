@@ -4,6 +4,7 @@ package Controller.ViewController;
 import Controller.InformationsVermittlung.Downloader;
 import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Main;
+import Controller.Sonstiges.TextHelfer;
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
@@ -60,7 +61,7 @@ public class GrundViewController implements Initializable
     @FXML
     private WebView webView;
 
-    private boolean mensaplanEinmalHeruntergeladen, studiengangEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
+    private boolean mensaplanEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
     private Studiengang letzterStudiengang;
     private Studiensemester letztesStudiensemester;
 
@@ -72,7 +73,6 @@ public class GrundViewController implements Initializable
     {
 
         mensaplanEinmalHeruntergeladen=false;
-        studiengangEinmalHeruntergeladen=false;
         treffpunkteEinmalHeruntergeladen=false;
 
         //Initialisieren des Hauptmenuebuttons
@@ -128,7 +128,7 @@ public class GrundViewController implements Initializable
 
                 oeffneScene();
             });
-            button.setTooltip(new Tooltip(grossschreiben(Menue.getMenuepunktInformationen().get(i).getAnwendung().toString())));
+            button.setTooltip(new Tooltip(TextHelfer.grossschreiben(Menue.getMenuepunktInformationen().get(i).getAnwendung().toString())));
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -196,7 +196,7 @@ public class GrundViewController implements Initializable
     private void oeffneScene()
     {
 
-        ort.setText(grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
+        ort.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
 
         switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
         {
@@ -269,7 +269,6 @@ public class GrundViewController implements Initializable
 
                                     ladeSceneMitScrollPane();
                                     menuHauptButton.setDisable(false);
-                                    studiengangEinmalHeruntergeladen=true;
                                 }
                             }));
 
@@ -588,11 +587,6 @@ public class GrundViewController implements Initializable
     }
 
     //Weitere
-    private String grossschreiben(String wort)
-    {
-        return wort.substring(0,1).toUpperCase() + wort.substring(1).toLowerCase();
-    }
-
     public static WebView getUglyWebview()
     {
         return uglyWebView;

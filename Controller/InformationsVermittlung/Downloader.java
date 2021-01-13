@@ -119,7 +119,6 @@ public class Downloader
 		});
 	}
 
-	//TODO - Text in View, Fehler beim runterladen
 	public static void modulhandbuchAbrufen()
 	{
 		Platform.runLater(()->
@@ -193,13 +192,16 @@ public class Downloader
 								keineGefahrExcpetion.printStackTrace();
 							}
 
-							Document modulübersichtDocument=webengineZuJSoupDocument(downloadWebEngine);
 							Platform.runLater(()->
 							{
+								Document modulübersichtDocument=webengineZuJSoupDocument(downloadWebEngine);
+
 								if(modulübersichtDocument.select("tbody").size()!=0)
 								{
 									for(int i=0; i<modulübersichtDocument.select("tbody>tr").size(); i++)
 									{
+										System.out.println(i+" von "+modulübersichtDocument.select("tbody>tr").size());
+
 										try
 										{
 											module.add(Jsoup.connect("https://www.hof-university.de"+modulübersichtDocument.select("tbody>tr").get(i).select("a").get(0).attr("href")).get());
@@ -221,6 +223,8 @@ public class Downloader
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
+								System.out.println(333);
+
 								SchreiberLeser.modulhandbuchNeuSetzen(Parser.modulhandbuchParsen(module));
 								Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 						}
@@ -251,7 +255,7 @@ public class Downloader
 		for(int i=0; i<6; i++)
 		{
 			int finalI=i;
-			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(((double) finalI)/5));
+			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress((((double) finalI)/5)*0.9));
 
 			Document mensaplanDocument=null;
 			try
@@ -271,6 +275,7 @@ public class Downloader
 		}
 
 		SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanTupel(mensatage.get(0), mensatage.get(1), mensatage.get(2), mensatage.get(3), mensatage.get(4), mensatage.get(5))));
+		Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 	}
 
 	public static void treffpunkteAbrufen()

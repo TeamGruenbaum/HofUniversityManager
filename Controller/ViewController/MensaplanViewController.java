@@ -1,6 +1,8 @@
 package Controller.ViewController;
 
+import Controller.Sonstiges.TextHelfer;
 import Controller.Speicher.SchreiberLeser;
+import Model.DropdownModel.Studiengang;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
 import Model.Tag;
@@ -20,11 +22,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import javafx.util.StringConverter;
+
+
 
 public class MensaplanViewController implements Initializable
 {
     @FXML
-    private ChoiceBox cbWochentag;
+    private ChoiceBox<Tag> cbWochentag;
 
     @FXML
     private Label mpTitel;
@@ -34,48 +39,23 @@ public class MensaplanViewController implements Initializable
 
     public void initialize(URL location, ResourceBundle resources)
     {
-        ArrayList<String> listOriginal = new ArrayList<>();
-        listOriginal.add("Montag");
-        listOriginal.add("Dienstag");
-        listOriginal.add("Mittwoch");
-        listOriginal.add("Donnerstag");
-        listOriginal.add("Freitag");
-        ObservableList<String> list = FXCollections.observableArrayList(listOriginal);
-        cbWochentag.setItems(list);
+        mpTitel.setText("Mensaplan für die Kalenderwoche " + _getRichtigeKalenderwoche());
 
-        mpTitel.setText("Mensaplan für die KW " + _getRichtigeKalenderwoche());
+        cbWochentag.setItems(FXCollections.observableArrayList(Tag.values()));
+        cbWochentag.setConverter(new StringConverter<Tag>() {
+            @Override
+            public String toString(Tag object) {
+                return TextHelfer.grossschreiben(object.toString());
+            }
 
-        cbWochentag.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            switch((int) newValue) {
-                case 0 -> generiereSpeiseplan(Tag.MONTAG);
-                case 1 -> generiereSpeiseplan(Tag.DIENSTAG);
-                case 2 -> generiereSpeiseplan(Tag.MITTWOCH);
-                case 3 -> generiereSpeiseplan(Tag.DONNERSTAG);
-                case 4 -> generiereSpeiseplan(Tag.FREITAG);
+            @Override
+            public Tag fromString(String string) {
+                return null;
             }
         });
-
-        switch(LocalDate.now().getDayOfWeek()) {
-            case MONDAY -> cbWochentag.getSelectionModel().select(0);
-            case TUESDAY -> cbWochentag.getSelectionModel().select(1);
-            case WEDNESDAY -> cbWochentag.getSelectionModel().select(2);
-            case THURSDAY -> cbWochentag.getSelectionModel().select(3);
-            case FRIDAY -> cbWochentag.getSelectionModel().select(4);
-            default -> cbWochentag.getSelectionModel().select(0);
-        }
-
-        /* //Testroutine
-        Tag aktuellerTag = _datumZuTag(new Datum((LocalDate.now().getDayOfMonth()-1), LocalDate.now().getMonthValue(), LocalDate.now().getYear()));
-        Tag testtag = _datumZuTag(new Datum(17-1, 12, 2020)); // Testroutine, wenn ich die gerichte des 17.12. haben möchte
-        generiereSpeiseplan(Tag.MONTAG); */
+        cbWochentag.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->generiereSpeiseplan(Tag.values()[newValue.intValue()]));
+        cbWochentag.getSelectionModel().select(LocalDate.now().getDayOfWeek().getValue()<6?LocalDate.now().getDayOfWeek().getValue()-1:0);
     }
-
-    /*private Tag _datumZuTag(Datum datum)
-    {
-        Calendar c = GregorianCalendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"), new Locale("de", "DE"));
-        c.set(datum.getJahr(), datum.getMonat()-1, datum.getTag());
-        return Tag.values()[c.get(Calendar.DAY_OF_WEEK)-1];
-    }*/
 
     private void generiereSpeiseplan(Tag tag) {
         List<Gericht> gerichte = _getGerichteListe(tag);
