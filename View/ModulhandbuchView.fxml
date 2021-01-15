@@ -29,7 +29,7 @@
                                 <Insets bottom="14.0" left="28.0" right="28.0" top="28.0" />
                             </padding>
                         </Label>
-                        <Label text="In diesem Bereich findest Du Infos zu deinem Studiengang." textOverrun="CLIP">
+                        <Label text="In diesem Bereich findest Du das Modulhandbuch zu deinem aktuellen Semester, soweit vorhanden." textOverrun="CLIP">
                             <padding>
                                 <Insets bottom="14.0" left="28.0" />
                             </padding>

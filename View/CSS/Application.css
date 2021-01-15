@@ -511,3 +511,8 @@
 .spinner .increment-arrow-button .increment-arrow {
     -fx-background-color: white;
 }
+
+#ohneTagTableColumn
+{
+    -fx-alignment: TOP-LEFT;
+}

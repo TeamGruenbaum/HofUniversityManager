@@ -453,9 +453,9 @@ public class Parser
             doppelstunden.add(new Doppelstunde
                     (
                             datum,
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(3).text(),
+                            aktuelleDoppelstundeElement.getElementsByTag("td").get(3).text().replace("\n", "").replace("\r", ""),
                             aktuelleDoppelstundeElement.getElementsByTag("td").get(4).text(),
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text(),
+                            aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text().compareTo("")==0?null:aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text(),
                             datumsTag,
                             getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,1),
                             getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,2)

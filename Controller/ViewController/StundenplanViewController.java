@@ -153,8 +153,13 @@ public class StundenplanViewController implements Initializable
 
 		Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> cellValueFactory=cellData->
 		{
-			return new SimpleStringProperty(((cellData.getValue().getDatum()==null)?""
-																				   :(cellData.getValue().getDatum()+" "))+cellData.getValue().getBeginnUhrzeit()+"-"+cellData.getValue().getEndeUhrzeit()+"\n"+cellData.getValue().getRaum()+"\n"+cellData.getValue().getName()+"\n"+cellData.getValue().getDozent());
+			return new SimpleStringProperty(
+				((cellData.getValue().getDatum()==null)?"":(cellData.getValue().getDatum()+" "))+
+				((cellData.getValue().getBeginnUhrzeit()==null)?"":(cellData.getValue().getBeginnUhrzeit()+"-"+cellData.getValue().getEndeUhrzeit()+"\n"))+
+				((cellData.getValue().getRaum()==null)?"":(cellData.getValue().getRaum()+"\n"))+
+				cellData.getValue().getName()+"\n"+
+				cellData.getValue().getDozent()
+			);
 		};
 
 		tableViewInitialisieren(montagTableView, montagTableColumn, montagObservableList, cellValueFactory, aendernConsumer, loeschConsumer);
@@ -303,12 +308,13 @@ public class StundenplanViewController implements Initializable
 		donnerstagObservableList.clear();
 		freitagObservableList.clear();
 		samstagObservableList.clear();
+		ohneTagObservableList.clear();
 
 		stundenplanHBox.getChildren().remove(samstagTableView);
 		stundenplanHBox.getChildren().remove(ohneTagTableView);
 
 
-		Comparator<Doppelstunde> doppelstundeComparator=(o1, o2)->o1.getBeginnUhrzeit().compareTo(o2.getBeginnUhrzeit());
+		Comparator<Doppelstunde> doppelstundeComparator=(o1, o2)-> {return o1.getBeginnUhrzeit()==null?0:o1.getBeginnUhrzeit().compareTo(o2.getBeginnUhrzeit());};
 
 		SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item->
 		{

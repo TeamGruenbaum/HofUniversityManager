@@ -9,6 +9,8 @@ import Controller.Speicher.SchreiberLeser;
 import Controller.ViewController.GrundViewController;
 import Model.Datum;
 
+import Model.ModulhandbuchModel.Modulhandbuch;
+import Model.ModulhandbuchModel.ModulhandbuchFach;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -39,13 +41,13 @@ public class Downloader
 	private static ChangeListener<Worker.State> letzteListenerChangeListener=null;
 
 
-
-	public static void
-	setDownloadfortschrittProgressIndicator(ProgressIndicator neuerWertProgressIndicator)
+	//Hiermit wird der für den Downloader benötigte DownloadfortschrittProgressIndicator gesetzt.
+	public static void setDownloadfortschrittProgressIndicator(ProgressIndicator neuerWertProgressIndicator)
 	{
 		downloadfortschrittProgressIndicator=neuerWertProgressIndicator;
 	}
 
+	//Hiermit wird der Stundenplan der Hochschule auf Basis des in den Einstellungen hinterlegten Studiengangs und Semesters als Html-Datei heruntergeladen, geparst und als ArrayList<Doppelstunde>-Objekt im Nutzerdaten-Objekt, welches im SpeicherLeser als Attrbitut gespeichert ist, gesichert.
 	public static void stundenplanAbrufen()
 	{
 		Platform.runLater(()->
@@ -91,7 +93,7 @@ public class Downloader
 
 							try
 							{
-								Thread.sleep((getDownloadzeit()));
+								Thread.sleep((getDownloadzeit()*2));
 							}catch(Exception keineGefahrExcpetion)
 							{
 								//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
@@ -119,6 +121,8 @@ public class Downloader
 		});
 	}
 
+
+	//Hiermit wird das Modulhandbuch der Hochschule auf Basis des in den Einstellungen hinterlegten Studiengangs und Semesters als Html-Datei heruntergeladen, geparst und als Modulhandbuch-Objekt im SpeicherLeser als Attrbitut gespeichert.
 	public static void modulhandbuchAbrufen()
 	{
 		Platform.runLater(()->
@@ -208,8 +212,10 @@ public class Downloader
 										}
 										catch(Exception keineGefahrException)
 										{
-											//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
-											keineGefahrException.printStackTrace();
+											//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird und bei Nichtvorhandensein eines Modulhandbuchs, dieses einfach zurückgesetzt wird und der Abrufvorgang abgebrochen wird.
+											SchreiberLeser.modulhandbuchNeuSetzen(new Modulhandbuch(new ArrayList<ModulhandbuchFach>()));
+											downloadfortschrittProgressIndicator.setProgress(1);
+											return;
 										}
 										downloadfortschrittProgressIndicator.setProgress(0.3+(((double) i)/(modulübersichtDocument.select("tbody>tr").size()-1))*0.6);
 									}
@@ -241,6 +247,7 @@ public class Downloader
 		});
 	}
 
+	//Mit diesr Methode wird der Mensaplan als Html-Datei abgerufen, geparst und im SchreiberLeser in Form eines Mensaplan-Objekt als Attribut gespeichert.
 	public static void mensaplanAbrufen()
 	{
 		Calendar naechsterMontagDatumCalendar=Calendar.getInstance();
@@ -278,6 +285,7 @@ public class Downloader
 		Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 	}
 
+	//Mit diesr Methode werden die Treffpunkte als Json-Datei abgerufen, geparst und im SchreiberLeser in Form eines Treffpunkte-Objekt als Attribut gespeichert.
 	public static void treffpunkteAbrufen()
 	{
 		try
@@ -292,6 +300,7 @@ public class Downloader
 		}
 	}
 
+	//Damit werden alle Studiengänge samt deren Semestern auf Basis des Dropdownmenüs von https://www.hof-university.de/studierende/info-service/stundenplaene.html abgerufen, geparst und als DropdownMenue-Objekt als Attribut im SpeicherLeser gesichert.
 	public static void dropdownMenueAbrufen()
 	{
 		Platform.runLater(()->
@@ -372,12 +381,13 @@ public class Downloader
 		});
 	}
 
-
+	//Mit dieser Methode kann die ungefähr geschätzte Downloadzeit auf Basis von einer vorherig gemessenen Downloaddauer berechnet werden.
 	private static long getDownloadzeit()
 	{
 		return (((messEndzeit-messStartzeit)/1000000)/2);
 	}
 
+	//Hiermit wird von der übergebenen WebEnginge der im Attribut letzteListenerChangeListener gespeicherte ChangeListener entfernt.
 	private static void entferneLetztenListener(WebEngine webEngine)
 	{
 		if(letzteListenerChangeListener!=null)
@@ -386,6 +396,7 @@ public class Downloader
 		}
 	}
 
+	//Diese Methode macht aus der Website, welche gerade in der übergebenen WebEnginge geladen ist, ein Document-Objekt der JSoup-Bibliotheken.
 	private static Document webengineZuJSoupDocument(WebEngine webEngine)
 	{
 		return Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"));

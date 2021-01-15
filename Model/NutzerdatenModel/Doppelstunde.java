@@ -16,6 +16,7 @@ public class Doppelstunde implements Serializable
     private Datum datum;
     private String name;
     private String dozent;
+    //nullable
     private String raum;
     //nullable
     private Tag tag;
