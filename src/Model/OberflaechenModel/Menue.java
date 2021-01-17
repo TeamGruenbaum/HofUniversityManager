@@ -16,7 +16,7 @@ public final class Menue implements Serializable
     private static ArrayList<MenuepunktInformation> menuepunktInformationen=new ArrayList<MenuepunktInformation>(
             List.of(
                 new MenuepunktInformation(Anwendung.STUNDENPLAN,"stundenplan-icon.png", "StundenplanView.fxml"),
-                new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaPlanView.fxml"),
+                new MenuepunktInformation(Anwendung.MENSAPLAN,"mensaplan-icon.png", "MensaplanView.fxml"),
                 new MenuepunktInformation(Anwendung.MODULHANDBUCH,"modulhandbuch-icon.png", "ModulhandbuchView.fxml"),
                 new MenuepunktInformation(Anwendung.MOODLE,"moodle-icon.png", "QuicklinksView.fxml"),
                 new MenuepunktInformation(Anwendung.PANOPTO,"panopto-icon.png", "Platzhalter.fxml"),
