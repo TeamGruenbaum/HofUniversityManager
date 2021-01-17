@@ -1,5 +1,7 @@
 package Controller.ViewController;
 
+
+
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
@@ -20,6 +22,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+
 
 public class EinstellungenViewController implements Initializable
 {

@@ -22,20 +22,14 @@ import java.util.ResourceBundle;
 
 public class TreffpunktViewController implements Initializable
 {
-    @FXML
-    private ChoiceBox cbTreffpunktTyp;
-
-    @FXML
-    private VBox contentVBox;
-
-    @FXML
-    private Hyperlink emailHyperlink;
+    @FXML private ChoiceBox cbTreffpunktTyp;
+    @FXML private VBox contentVBox;
+    @FXML private Hyperlink emailHyperlink;
 
     public void initialize(URL location, ResourceBundle resources)
     {
         emailHyperlink.setOnAction((event ->Main.oeffneLinkInBrowser("mailto:hum@meggede1.de")));
 
-        // Erzeuge Einträge in ChoiceBox und wähle 1. Element
         ArrayList<String> listOriginal = new ArrayList<>();
         listOriginal.add("Restaurants");
         listOriginal.add("Freizeitaktivitäten");
@@ -43,19 +37,15 @@ public class TreffpunktViewController implements Initializable
         cbTreffpunktTyp.setItems(list);
         cbTreffpunktTyp.getSelectionModel().selectFirst();
 
-        // Erstelle Accordion und füge es der VBox hinzu
         Accordion contentAccordion = new Accordion();
         contentAccordion.setPrefWidth(700);
         contentAccordion.setMaxWidth(700);
         contentVBox.getChildren().add(contentAccordion);
 
-        // Erhalte alle Treffpunkte als ArrayList
         ArrayList<Treffpunkt> alleTreffpunkte = SchreiberLeser.getTreffpunkte().getTreffpunkte();
 
-        // Erstmaliger Aufruf: Ausführung der Abfrage für Restaurants
         zeigeRestaurants(contentAccordion, alleTreffpunkte);
 
-        // Listener User-Änderung im Filter
         cbTreffpunktTyp.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(0)) {
                 zeigeRestaurants(contentAccordion, alleTreffpunkte);
@@ -63,27 +53,26 @@ public class TreffpunktViewController implements Initializable
                 zeigeFreizeitaktivitaeten(contentAccordion, alleTreffpunkte);
             }
         });
-
     }
 
+    
     public void zeigeRestaurants(Accordion accordion, ArrayList<Treffpunkt> arrayList)
     {
         accordion.getPanes().clear();
-        arrayList.stream().filter((obj) -> obj instanceof Restaurant).forEach((obj) -> {
+        arrayList.stream().filter((obj) -> obj instanceof Restaurant).forEach((item) -> {
 
             VBox vB = new VBox();
 
-            TitledPane tP = new TitledPane(obj.getName(), vB);
-            accordion.getPanes().add(tP);
+            accordion.getPanes().add(new TitledPane(item.getName(), vB));
 
-            ArrayList<Label> aL = new ArrayList<>();
-            aL.add(new Label("Ort: " + obj.getOrt()));
-            aL.add(new Label("Information: " + obj.getInformation()));
-            aL.add(new Label("Art: " + ((Restaurant) obj).getArt()));
-            aL.add(new Label("Nationalität: " + ((Restaurant) obj).getNationalitaet()));
-            aL.add(new Label((obj.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
-            aL.add(new Label((((Restaurant) obj).getLieferdienst())?"Liefert: ja":"Liefert: nein"));
-            ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
+            ArrayList<Label> treffpunktTextzeilen = new ArrayList<>();
+            treffpunktTextzeilen.add(new Label("Ort: " + item.getOrt()));
+            treffpunktTextzeilen.add(new Label("Information: " + item.getInformation()));
+            treffpunktTextzeilen.add(new Label("Art: " + ((Restaurant) item).getArt()));
+            treffpunktTextzeilen.add(new Label("Nationalität: " + ((Restaurant) item).getNationalitaet()));
+            treffpunktTextzeilen.add(new Label((item.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
+            treffpunktTextzeilen.add(new Label((((Restaurant) item).getLieferdienst())?"Liefert: ja":"Liefert: nein"));
+            ObservableList<Label> oaL = FXCollections.observableArrayList(treffpunktTextzeilen);
 
             vB.getChildren().addAll(oaL);
         });
@@ -96,8 +85,7 @@ public class TreffpunktViewController implements Initializable
 
             VBox vB = new VBox();
 
-            TitledPane tP = new TitledPane(obj.getName(), vB);
-            accordion.getPanes().add(tP);
+            accordion.getPanes().add(new TitledPane(obj.getName(), vB));
 
             ArrayList<Label> aL = new ArrayList<>();
             aL.add(new Label("Ort: " + obj.getOrt()));

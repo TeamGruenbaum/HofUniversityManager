@@ -285,7 +285,7 @@ public class Downloader
 		Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 	}
 
-	//Mit diesr Methode werden die Treffpunkte als Json-Datei abgerufen, geparst und im SchreiberLeser in Form eines Treffpunkte-Objekt als Attribut gespeichert.
+	//Mit diese Methode werden die Treffpunkte als Json-Datei abgerufen, geparst und im SchreiberLeser in Form eines Treffpunkte-Objekt als Attribut gespeichert.
 	public static void treffpunkteAbrufen()
 	{
 		try

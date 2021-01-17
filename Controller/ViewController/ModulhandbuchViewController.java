@@ -1,5 +1,7 @@
 package Controller.ViewController;
 
+
+
 import Controller.Speicher.SchreiberLeser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,42 +14,42 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
+
 public class ModulhandbuchViewController implements Initializable {
 
-    @FXML
-    VBox vbContent;
+    @FXML VBox contentVBox;
+    @FXML Label studiengangtitelLabel;
 
-    @FXML
-    Label studiengangTitel;
+
 
     public void initialize(URL location, ResourceBundle resources) {
         if(SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().size()==0) {
-            Label fehlendeInformation = new Label("Für das ausgewählte Studierensemester scheint es kein Modulhandbuch zu geben");
-            fehlendeInformation.setWrapText(true);
-            fehlendeInformation.getStyleClass().add("warnhinweis");
-            vbContent.getChildren().add(fehlendeInformation);
+            Label fehlendeInformationLabel = new Label("Für das ausgewählte Studierensemester scheint es kein Modulhandbuch zu geben");
+            fehlendeInformationLabel.setWrapText(true);
+            fehlendeInformationLabel.getStyleClass().add("warnhinweis");
+            contentVBox.getChildren().add(fehlendeInformationLabel);
         }
         else
         {
-            studiengangTitel.setText("Studiengang: " + SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getName() + " (" + SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getKuerzel() + ", " + SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester().getName() + ")");
-            studiengangTitel.setWrapText(true);
+            studiengangtitelLabel.setText("Studiengang: " + SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getName() + " (" + SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getKuerzel() + ", " + SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester().getName() + ")");
+            studiengangtitelLabel.setWrapText(true);
 
             // Erstelle Accordion mit Fächern
-            Accordion contentAccordion = new Accordion();
-            contentAccordion.setPrefWidth(700);
-            vbContent.getChildren().add(contentAccordion);
+            Accordion faecherAccordion = new Accordion();
+            faecherAccordion.setPrefWidth(700);
+            contentVBox.getChildren().add(faecherAccordion);
 
             SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().forEach((fach) -> {
-                GridPane gpFachInfos = new GridPane();
-                gpFachInfos.setVgap(5);
-                ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setMinWidth(250);
-                gpFachInfos.getColumnConstraints().addAll(columnConstraints, columnConstraints);
+                GridPane fachinformationenGridPane = new GridPane();
+                fachinformationenGridPane.setVgap(5);
+                ColumnConstraints abstandColumnConstraints = new ColumnConstraints();
+                abstandColumnConstraints.setMinWidth(250);
+                fachinformationenGridPane.getColumnConstraints().addAll(abstandColumnConstraints, abstandColumnConstraints);
 
-                TitledPane tP = new TitledPane(fach.getName(), gpFachInfos);
-                contentAccordion.getPanes().add(tP);
+                faecherAccordion.getPanes().add(new TitledPane(fach.getName(), fachinformationenGridPane));
 
-                ObservableList<Label> alBezeichnung = FXCollections.observableArrayList(List.of(
+                ObservableList<Label> bezeichnungen = FXCollections.observableArrayList(List.of(
                         new Label("Dozent: "),
                         new Label("Zweitprüfer: "),
                         new Label("Studienjahr: "),
@@ -67,7 +69,7 @@ public class ModulhandbuchViewController implements Initializable {
                         new Label("Häufigkeit: ")
                 ));
 
-                ObservableList<Label> alInfo = FXCollections.observableArrayList(List.of(
+                ObservableList<Label> informationen = FXCollections.observableArrayList(List.of(
                         new Label(fach.getDozent()),
                         new Label(fach.getZweitpruefer()),
                         new Label(String.valueOf(fach.getStudienjahr())),
@@ -87,11 +89,11 @@ public class ModulhandbuchViewController implements Initializable {
                         new Label(fach.getHaeufigkeit())
                 ));
 
-                for(int i=0; i<alBezeichnung.size(); i++) {
-                    alBezeichnung.get(i).setWrapText(true);
-                    alInfo.get(i).setWrapText(true);
-                    gpFachInfos.add(alBezeichnung.get(i), 0, i);
-                    gpFachInfos.add(alInfo.get(i), 1, i);
+                for(int i=0; i<bezeichnungen.size(); i++) {
+                    bezeichnungen.get(i).setWrapText(true);
+                    informationen.get(i).setWrapText(true);
+                    fachinformationenGridPane.add(bezeichnungen.get(i), 0, i);
+                    fachinformationenGridPane.add(informationen.get(i), 1, i);
                 }
             });
         }

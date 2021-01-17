@@ -9,7 +9,7 @@
     <children>
         <BorderPane >
             <center>
-                <VBox fx:id="vbContent" spacing="14.0" styleClass="anwendungsBereich">
+                <VBox fx:id="contentVBox" spacing="14.0" styleClass="anwendungsBereich">
                     <BorderPane.margin>
                         <Insets bottom="28.0" left="28.0" right="28.0" />
                     </BorderPane.margin>
@@ -21,7 +21,7 @@
             <top>
                 <VBox styleClass="anwendungsBereich">
                     <children>
-                        <Label fx:id="studiengangTitel" text="Studiengang" styleClass="ueberschrift">
+                        <Label fx:id="studiengangtitelLabel" text="Studiengang" styleClass="ueberschrift">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>

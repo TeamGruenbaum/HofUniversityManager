@@ -1,5 +1,7 @@
 package Controller.ViewController;
 
+
+
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.QuicklinksModel.Quicklinks;
@@ -16,25 +18,25 @@ import javax.swing.event.HyperlinkEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+
 public class QuicklinksViewController implements Initializable
 {
-    @FXML
-    private WebView webview;
+    @FXML private WebView anzeigeWebWiew;
+    @FXML private ProgressIndicator websiteLadeProgressIndicator;
 
-    @FXML
-    private ProgressIndicator progressIndicator;
-
-    private WebEngine webEngine;
+    private WebEngine anzeigeWebEngine;
     private String letztGeklickteURL;
     private boolean ersterLoginVersuch=true;
-    private boolean ersterKlick=true;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        webEngine=webview.getEngine();
+        anzeigeWebEngine=anzeigeWebWiew.getEngine();
 
-        WebViews.addHyperlinkListener(webview, (event) ->
+        WebViews.addHyperlinkListener(anzeigeWebWiew, (event) ->
         {
             try
             {
@@ -47,13 +49,13 @@ public class QuicklinksViewController implements Initializable
             return false;
         }, HyperlinkEvent.EventType.ACTIVATED);
         
-        progressIndicator.progressProperty().bind(webEngine.getLoadWorker().progressProperty());
-        webEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
+        websiteLadeProgressIndicator.progressProperty().bind(anzeigeWebEngine.getLoadWorker().progressProperty());
+        anzeigeWebEngine.getLoadWorker().stateProperty().addListener(((observable, oldValue, newValue)->
         {
 
             if(newValue==Worker.State.SUCCEEDED)
             {
-                progressIndicator.setVisible(false);
+                websiteLadeProgressIndicator.setVisible(false);
             }
             else
             {
@@ -63,11 +65,11 @@ public class QuicklinksViewController implements Initializable
                     {
                         Main.oeffneLinkInBrowser(letztGeklickteURL);
                     }
-                    progressIndicator.setVisible(false);
+                    websiteLadeProgressIndicator.setVisible(false);
                 }
                 else
                 {
-                    progressIndicator.setVisible(true);
+                    websiteLadeProgressIndicator.setVisible(true);
                 }
             }
         }));
@@ -76,25 +78,25 @@ public class QuicklinksViewController implements Initializable
         {
             case MOODLE:
             {
-                webEngine.load(Quicklinks.getMoodleLink());
-                loginSSO();
+                anzeigeWebEngine.load(Quicklinks.getMoodleLink());
+                loginInSSO();
             } break;
             case CAMPUSSPORT:
             {
-                webEngine.load(Quicklinks.getCampusSportLink());
+                anzeigeWebEngine.load(Quicklinks.getCampusSportLink());
             } break;
             case BAYERNFAHRPLAN:
             {
-                webEngine.load(Quicklinks.getBayernfahrplanLink());
+                anzeigeWebEngine.load(Quicklinks.getBayernfahrplanLink());
             } break;
             case PRIMUSS:
             {
-                webEngine.load(Quicklinks.getPrimussLink());
-                loginSSO();
+                anzeigeWebEngine.load(Quicklinks.getPrimussLink());
+                loginInSSO();
             } break;
             default:
             {
-                webEngine.loadContent
+                anzeigeWebEngine.loadContent
                 (
                     "<html>" +
                         "<header>" +
@@ -108,30 +110,34 @@ public class QuicklinksViewController implements Initializable
         }
     }
 
-    private void loginSSO()
+
+    //
+    private void loginInSSO()
     {
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue)->
+        anzeigeWebEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue)->
         {
             if(ersterLoginVersuch && newValue==Worker.State.SUCCEEDED)
             {
                 try
                 {
-                    webEngine.executeScript("document.getElementById('username').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getName()+"'");
-                    webEngine.executeScript("document.getElementById('password').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort()+"'");
-                    webEngine.executeScript("document.getElementsByName('_eventId_proceed')[0].click()");
+                    anzeigeWebEngine.executeScript("document.getElementById('username').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getName()+"'");
+                    anzeigeWebEngine.executeScript("document.getElementById('password').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort()+"'");
+                    anzeigeWebEngine.executeScript("document.getElementsByName('_eventId_proceed')[0].click()");
                 }catch(Exception exception){}
                 ersterLoginVersuch=false;
             }
         });
     }
 
+    //
     @FXML public void zurueckGehen(ActionEvent actionEvent)
     {
-        webEngine.executeScript("history.back()");
+        anzeigeWebEngine.executeScript("history.back()");
     }
 
+    //
     @FXML private void vorwärtsGehen(ActionEvent actionEvent)
 	{
-        webEngine.executeScript("history.forward()");
+        anzeigeWebEngine.executeScript("history.forward()");
 	}
 }

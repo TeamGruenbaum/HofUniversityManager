@@ -1,12 +1,13 @@
 package Controller.ViewController;
 
+
+
 import Controller.Sonstiges.TextHelfer;
 import Controller.Speicher.SchreiberLeser;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
 import Model.Tag;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
@@ -49,12 +50,12 @@ public class MensaplanViewController implements Initializable
                 return null;
             }
         });
-        wochentagChoicebox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->generiereSpeiseplan(Tag.values()[newValue.intValue()]));
+        wochentagChoicebox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->zeigeSpeiseplan(Tag.values()[newValue.intValue()]));
         wochentagChoicebox.getSelectionModel().select(LocalDate.now().getDayOfWeek().getValue()<6?LocalDate.now().getDayOfWeek().getValue()-1:0);
     }
 
     //!!!!!!!
-    private void generiereSpeiseplan(Tag tag) {
+    private void zeigeSpeiseplan(Tag tag) {
         List<Gericht> gerichte = getGerichteListe(tag);
         List<String> kategorien = getKategorienListe(tag);
 
@@ -66,25 +67,24 @@ public class MensaplanViewController implements Initializable
 
         if(!gerichte.isEmpty()) {
             kategorien.forEach((item) -> {
-                VBox vB = new VBox();
-                vB.setSpacing(10);
-                TitledPane tP = new TitledPane(item, vB);
-                kategorienAccordion.getPanes().add(tP);
+                VBox kategorieinhatlVBox = new VBox();
+                kategorieinhatlVBox.setSpacing(10);
+                kategorienAccordion.getPanes().add(new TitledPane(item, kategorieinhatlVBox));
 
                 gerichte
                     .stream()
                     .filter((item2) -> item2.getGang() == item)
                     .forEach((item2) ->
                     {
-                        ArrayList<Label> aL = new ArrayList<>();
-                        VBox vbGericht = new VBox();
-                        aL.add(new Label(item2.getName()));
-                        aL.add(new Label(item2.getBeschreibung()));
-                        aL.add(new Label(formatierePreis(item2.getPreis())));
-                        aL.forEach((item3) -> item3.setWrapText(true));
+                        ArrayList<Label> gerichtTexzeilen = new ArrayList<>();
+                        VBox gerichtVBox = new VBox();
+                        gerichtTexzeilen.add(new Label(item2.getName()));
+                        gerichtTexzeilen.add(new Label(item2.getBeschreibung()));
+                        gerichtTexzeilen.add(new Label(formatierePreis(item2.getPreis())));
+                        gerichtTexzeilen.forEach((item3) -> item3.setWrapText(true));
 
-                        vbGericht.getChildren().addAll(FXCollections.observableArrayList(aL));
-                        vB.getChildren().add(vbGericht);
+                        gerichtVBox.getChildren().addAll(FXCollections.observableArrayList(gerichtTexzeilen));
+                        kategorieinhatlVBox.getChildren().add(gerichtVBox);
                     });
             });
         } else {
