@@ -290,7 +290,7 @@ public class Downloader
 	{
 		try
 		{
-			SchreiberLeser.treffpunkteNeuSetzen(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://nebenwohnung.stevensolleder.de/Treffpunkte.json"), StandardCharsets.UTF_8))));
+			SchreiberLeser.treffpunkteNeuSetzen(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://stevensolleder.de/other/treffpunkte.json"), StandardCharsets.UTF_8))));
 			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 		}
 		catch(Exception keineGefahrException)

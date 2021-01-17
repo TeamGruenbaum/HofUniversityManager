@@ -76,7 +76,7 @@ public class GrundViewController implements Initializable
         treffpunkteEinmalHeruntergeladen=false;
 
         //Initialisieren des Hauptmenuebuttons
-        ImageView view=new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/dots-menu.png")));
+        ImageView view=new ImageView(new Image(getClass().getResourceAsStream("/Grafiken/dots-menu.png")));
         view.setFitHeight(35);
         view.setPreserveRatio(true);
 
@@ -116,7 +116,7 @@ public class GrundViewController implements Initializable
                 gridPane.getRowConstraints().add(rowConstraints);
             }
 
-            ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream("../../Ressourcen/Grafiken/"+Menue.getMenuepunktInformationen().get(i).getIconDateiname())));
+            ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream("/Grafiken/"+Menue.getMenuepunktInformationen().get(i).getIconDateiname())));
             imageView.setFitHeight(menuepunktHoeheBreite-55);
             imageView.setPreserveRatio(true);
 
@@ -392,7 +392,7 @@ public class GrundViewController implements Initializable
                     if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
                     {
                         Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest Deine Login-Daten in den Einstellungen hinterlegen!");
-                        alert.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+                        alert.getDialogPane().getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
                         alert.setTitle("Login setzen");
                         alert.setHeaderText("Empfehlung");
                         alert.initOwner(Main.getPrimaryStage());
@@ -435,7 +435,7 @@ public class GrundViewController implements Initializable
             sp.setFitToHeight(true);
             sp.setFitToWidth(true);
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            sp.setContent(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
+            sp.setContent(FXMLLoader.load(getClass().getResource("/View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.setCenter(sp);
             borderPane.getCenter().setViewOrder(1);
             borderPane.getStyleClass().add("anwendungsBereich");
@@ -452,7 +452,7 @@ public class GrundViewController implements Initializable
     {
         try
         {
-            borderPane.setCenter(FXMLLoader.load(getClass().getResource("../../View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
+            borderPane.setCenter(FXMLLoader.load(getClass().getResource("/View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
             borderPane.getCenter().setViewOrder(1);
             hauptmenueSchließen();
         }
@@ -487,7 +487,7 @@ public class GrundViewController implements Initializable
         
         try
         {
-            Node node=FXMLLoader.load(getClass().getResource("../../View/ErsterStartView.fxml"));
+            Node node=FXMLLoader.load(getClass().getResource("/View/ErsterStartView.fxml"));
             Button zuDenEinstellungenButton=(Button) node.lookup("#losgehts");
             zuDenEinstellungenButton.setDisable(true);
             zuDenEinstellungenButton.setOnAction((actionEvent)->
@@ -523,7 +523,7 @@ public class GrundViewController implements Initializable
     public static void oeffneFehlenderStudiengangDialog()
     {
         Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor Du diese Funktion nutzen kannst!");
-        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("../../View/CSS/Application.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("/View/CSS/Application.css").toExternalForm());
         alert.setTitle("Studiengang und -semester setzen");
         alert.setHeaderText("Warnung");
         alert.initOwner(Main.getPrimaryStage());
@@ -543,7 +543,7 @@ public class GrundViewController implements Initializable
     private static void oeffneFehlendeInternetverbindungDialog(String content)
     {
         Alert alert=new Alert(Alert.AlertType.WARNING, content);
-        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("../../View/CSS/Application.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("/View/CSS/Application.css").toExternalForm());
         alert.getDialogPane().setStyle(Main.getRoot().getStyle());
         alert.setTitle("Keine Internetverbindung");
         alert.setHeaderText("Hinweis");

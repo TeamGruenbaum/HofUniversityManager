@@ -384,8 +384,8 @@ public class StundenplanViewController implements Initializable
 		DialogPane dialogPane=new DialogPane();
 		try
 		{
-			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/DoppelstundenHinzufuegeView.fxml")));
-			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/DoppelstundenHinzufuegeView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException keineGefahrExcepttion)
 		{
@@ -506,8 +506,8 @@ public class StundenplanViewController implements Initializable
 		DialogPane dialogPane=new DialogPane();
 		try
 		{
-			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/AufgabeHinzufuegenView.fxml")));
-			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/AufgabeHinzufuegenView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException ignored){}
 		dialogPane.setMinSize(300, 200);
@@ -592,8 +592,8 @@ public class StundenplanViewController implements Initializable
 		DialogPane dialogPane=new DialogPane();
 		try
 		{
-			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NoteHinzufuegenView.fxml")));
-			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/NoteHinzufuegenView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 			dialogPane.setStyle(Main.getRoot().getStyle());
 		}catch(IOException ignored){}
 		dialogPane.setMinSize(300, 200);
@@ -660,8 +660,8 @@ public class StundenplanViewController implements Initializable
 		DialogPane dialogPane=new DialogPane();
 		try
 		{
-			dialogPane.setContent(FXMLLoader.load(getClass().getResource("../../View/NotizHinzufuegeView.fxml")));
-			dialogPane.getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+			dialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/NotizHinzufuegeView.fxml")));
+			dialogPane.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 			dialogPane.setStyle(Main.getRoot().getStyle());
 		}
 		catch(Exception keineGefahrExcepttion)
@@ -734,7 +734,7 @@ public class StundenplanViewController implements Initializable
 		textInputDialog.setContentText("Fachname");
 		textInputDialog.getEditor().textProperty().addListener(((observable, oldValue, newValue) -> textInputDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(textInputDialog.getEditor().textProperty().getValue().trim().isEmpty())));
 		textInputDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
-		textInputDialog.getDialogPane().getStylesheets().add(getClass().getResource("../../View/CSS/Application.css").toExternalForm());
+		textInputDialog.getDialogPane().getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 		textInputDialog.getDialogPane().setStyle(Main.getRoot().getStyle());
 
 		return textInputDialog.showAndWait();

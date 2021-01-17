@@ -34,10 +34,10 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        if(System.getProperty("os.name").contentEquals("Mac OS X"))
+        /*if(System.getProperty("os.name").contentEquals("Mac OS X"))
         {
-            Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("../Ressourcen/Grafiken/HUM_Icon_Short.png")));
-        }
+            Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("Grafiken/HUM_Icon_Short.png")));
+        }*/
 
         if(SchreiberLeser.isErsterStart())
         {
@@ -51,7 +51,7 @@ public class Main extends Application
                 Alert alert=new Alert(Alert.AlertType.WARNING);
                 alert.setHeaderText("Internetverbindung notwendig");
                 alert.setContentText("Beim ersten Start des Programmes ist es zwingend notwendig, dass Du eine Verbindung zum Internet hast. Starte das Programm erneut, wenn Du eine Verbindung zum Internet hergestellt hast.");
-                alert.getDialogPane().getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
+                alert.getDialogPane().getStylesheets().add(getClass().getResource("View/CSS/Application.css").toExternalForm());
                 alert.showAndWait().ifPresentOrElse(
                     (item)->
                     {
@@ -84,7 +84,7 @@ public class Main extends Application
                 Alert alert=new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Daten korrupt");
                 alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");
-                alert.getDialogPane().getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
+                alert.getDialogPane().getStylesheets().add(getClass().getResource("View/CSS/Application.css").toExternalForm());
                 alert.showAndWait().ifPresentOrElse(
                     (item)->
                     {
@@ -104,12 +104,12 @@ public class Main extends Application
 
         hostServices=getHostServices();
 
-        root = FXMLLoader.load(getClass().getResource("../View/GrundView.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/View/GrundView.fxml"));
         primaryStage.setTitle("HofUniversityManager");
         primaryStage.setScene(new Scene(root, 900, 600));
-        root.getStylesheets().add(getClass().getResource("../View/CSS/Application.css").toExternalForm());
-        Font.loadFont(Main.class.getResource("../Ressourcen/Schriften/Rubik-Regular.ttf").toExternalForm(), 10);
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream( "../Ressourcen/Grafiken/HUM_Icon_Short.png" )));
+        root.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
+        Font.loadFont(Main.class.getResource("/Schriften/Rubik-Regular.ttf").toExternalForm(), 10);
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/Grafiken/HUM_Icon_Short.png")));
 
         /*final URL imageResource = Main.class.getClassLoader().getResource("../Ressourcen/Grafiken/HUM_Icon_Short.png");
         final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
