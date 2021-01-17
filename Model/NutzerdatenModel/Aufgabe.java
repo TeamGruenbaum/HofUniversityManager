@@ -13,18 +13,18 @@ public class Aufgabe implements Serializable
 {
     private String name;
     private String inhalt;
-    private Datum datum;
-    private Uhrzeit uhrzeit;
+    private Datum faelligkeitsdatumDatum;
+    private Uhrzeit faelligkeitsuhrzeitUhrzeit;
     private String fach;
 
 
 
-    public Aufgabe (String name, String inhalt, Datum datum, Uhrzeit uhrzeit, String fach)
+    public Aufgabe (String name, String inhalt, Datum faelligkeitsdatumDatum, Uhrzeit faelligkeitsuhrzeitUhrzeit, String fach)
     {
         this.name=name;
         this.inhalt=inhalt;
-        this.datum=datum;
-        this.uhrzeit=uhrzeit;
+        this.faelligkeitsdatumDatum=faelligkeitsdatumDatum;
+        this.faelligkeitsuhrzeitUhrzeit=faelligkeitsuhrzeitUhrzeit;
         this.fach=fach;
     }
 
@@ -49,19 +49,19 @@ public class Aufgabe implements Serializable
         this.inhalt=neuerWert;
     }
 
-    public Datum getDatum()
+    public Datum getFaelligkeitsdatum()
     {
-        return datum;
+        return faelligkeitsdatumDatum;
     }
 
-    public void setDatum(Datum neuerWert)
+    public void setFaelligkeitsdatum(Datum neuerWert)
     {
-        this.datum=neuerWert;
+        this.faelligkeitsdatumDatum=neuerWert;
     }
 
-    public Uhrzeit getUhrzeit()
+    public Uhrzeit getFaelligkeitsuhrzeit()
     {
-        return uhrzeit;
+        return faelligkeitsuhrzeitUhrzeit;
     }
 
     public String getFach()

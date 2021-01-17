@@ -9,22 +9,22 @@ import Model.Uhrzeit;
 
 public class Termin
 {
-    private Datum datum;
-    private Uhrzeit uhrzeit;
+    private Datum ausfalldatumDatum;
+    private Uhrzeit ausfalluhrzeitUhrzeit;
     private String raum;
 
 
 
-    public Termin(Datum datum, Uhrzeit uhrzeit, String raum)
+    public Termin(Datum ausfalldatumDatum, Uhrzeit ausfalluhrzeitUhrzeit, String raum)
     {
-        this.datum=datum;
-        this.uhrzeit=uhrzeit;
+        this.ausfalldatumDatum=ausfalldatumDatum;
+        this.ausfalluhrzeitUhrzeit=ausfalluhrzeitUhrzeit;
         this.raum=raum;
     }
 
 
-    public Datum getDatum()
+    public Datum getAusfalldatum()
     {
-        return datum;
+        return ausfalldatumDatum;
     }
 }

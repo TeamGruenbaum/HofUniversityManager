@@ -13,39 +13,60 @@ import java.io.Serializable;
 public class Doppelstunde implements Serializable
 {
     //nullable
-    private Datum datum;
-    private String name;
-    private String dozent;
+    private Tag doppelstundentagTag;
     //nullable
-    private String raum;
-    //nullable
-    private Tag tag;
+    private Datum doppelstundendatumDatum;
     //nullable
     private Uhrzeit beginnUhrzeit;
     //nullable
     private Uhrzeit endeUhrzeit;
+    //nullable
+    private String raum;
+    private String name;
+    private String dozent;
 
 
 
-    public Doppelstunde(Datum datum, String name, String dozent, String raum, Tag tag, Uhrzeit beginnUhrzeit, Uhrzeit endeUhrzeit)
+    public Doppelstunde(Tag doppelstundentagTag, Datum doppelstundendatumDatum, Uhrzeit beginnUhrzeit, Uhrzeit endeUhrzeit, String raum, String name, String dozent)
     {
-        this.datum=datum;
-        this.name=name;
-        this.dozent=dozent;
-        this.raum=raum;
-        this.tag=tag;
+        this.doppelstundentagTag=doppelstundentagTag;
+        this.doppelstundendatumDatum=doppelstundendatumDatum;
         this.beginnUhrzeit=beginnUhrzeit;
         this.endeUhrzeit=endeUhrzeit;
+        this.raum=raum;
+        this.name=name;
+        this.dozent=dozent;
     }
 
-    public Datum getDatum()
-    {
-        return datum;
+
+    public Tag getDoppelstundentag() {
+        return doppelstundentagTag;
     }
 
-    public void setDatum(Datum neuerWert)
+    public void setDoppelstundentag(Tag neuerWert) {
+        this.doppelstundentagTag=neuerWert;
+    }
+
+    public Datum getDoppelstundendatum()
     {
-        this.datum=neuerWert;
+        return doppelstundendatumDatum;
+    }
+
+    public void setDoppelstundendatum(Datum neuerWert)
+    {
+        this.doppelstundendatumDatum=neuerWert;
+    }
+
+    public Uhrzeit getBeginnUhrzeit() {
+        return beginnUhrzeit;
+    }
+
+    public Uhrzeit getEndeUhrzeit() {
+        return endeUhrzeit;
+    }
+
+    public String getRaum() {
+        return raum;
     }
 
     public String getName() {
@@ -62,25 +83,5 @@ public class Doppelstunde implements Serializable
 
     public void setDozent(String neuerWert) {
         this.dozent=neuerWert;
-    }
-
-    public String getRaum() {
-        return raum;
-    }
-
-    public Tag getTag() {
-        return tag;
-    }
-
-    public void setTag(Tag neuerWert) {
-        this.tag=neuerWert;
-    }
-
-    public Uhrzeit getBeginnUhrzeit() {
-        return beginnUhrzeit;
-    }
-
-    public Uhrzeit getEndeUhrzeit() {
-        return endeUhrzeit;
     }
 }

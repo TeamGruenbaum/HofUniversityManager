@@ -413,18 +413,18 @@ public class Parser
     private static void doppelstundeHinzufuegen(ArrayList<Doppelstunde> doppelstunden, Document stundenplanDocument, Tag tag, int zaehler)
     {
         Element aktuelleDoppelstundeElement=null;
-        Datum datum=null;
+        Datum doppelstundeDatum=null;
         Tag datumsTag=tag;
 
         for(int j=0;j<stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").size();j++)
         {
             aktuelleDoppelstundeElement=stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").get(j);
-            datum=getDoppelstundenDatum(aktuelleDoppelstundeElement);
+            doppelstundeDatum=getDoppelstundenDatum(aktuelleDoppelstundeElement);
 
             //Ermittle den Wochentag der Doppelstunde über ihr Datum; ignoriere hierbei "weitere Veranstaltungen", die kein Datum besitzen
-            if(tag==null && datum!=null)
+            if(tag==null && doppelstundeDatum!=null)
             {
-                switch(LocalDate.of(datum.getJahr(),datum.getMonat(),datum.getTag()).getDayOfWeek())
+                switch(LocalDate.of(doppelstundeDatum.getJahr(),doppelstundeDatum.getMonat(),doppelstundeDatum.getTag()).getDayOfWeek())
                 {
                     case MONDAY:
                         datumsTag=Tag.MONTAG;
@@ -452,13 +452,14 @@ public class Parser
 
             doppelstunden.add(new Doppelstunde
                     (
-                            datum,
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(3).text().replace("\n", "").replace("\r", ""),
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(4).text(),
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text().compareTo("")==0?null:aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text(),
-                            datumsTag,
+                        datumsTag,
+                            doppelstundeDatum,
                             getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,1),
-                            getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,2)
+                            getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,2),
+                            aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text().compareTo("")==0?null:aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text(),
+                            aktuelleDoppelstundeElement.getElementsByTag("td").get(3).text().replace("\n", "").replace("\r", ""),
+                            aktuelleDoppelstundeElement.getElementsByTag("td").get(4).text()
+
                     )
             );
         };

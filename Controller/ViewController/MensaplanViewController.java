@@ -2,7 +2,6 @@ package Controller.ViewController;
 
 import Controller.Sonstiges.TextHelfer;
 import Controller.Speicher.SchreiberLeser;
-import Model.DropdownModel.Studiengang;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
 import Model.Tag;
@@ -28,21 +27,18 @@ import javafx.util.StringConverter;
 
 public class MensaplanViewController implements Initializable
 {
-    @FXML
-    private ChoiceBox<Tag> cbWochentag;
+    @FXML private Label titelLabel;
+    @FXML private ChoiceBox<Tag> wochentagChoicebox;
+    @FXML private VBox contentVBox;
 
-    @FXML
-    private Label mpTitel;
 
-    @FXML
-    private VBox contentVBox;
 
     public void initialize(URL location, ResourceBundle resources)
     {
-        mpTitel.setText("Mensaplan für die Kalenderwoche " + _getRichtigeKalenderwoche());
+        titelLabel.setText("Mensaplan für die Kalenderwoche " + getRichtigeKalenderwoche());
 
-        cbWochentag.setItems(FXCollections.observableArrayList(Tag.values()));
-        cbWochentag.setConverter(new StringConverter<Tag>() {
+        wochentagChoicebox.setItems(FXCollections.observableArrayList(Tag.values()));
+        wochentagChoicebox.setConverter(new StringConverter<Tag>() {
             @Override
             public String toString(Tag object) {
                 return TextHelfer.grossschreiben(object.toString());
@@ -53,60 +49,65 @@ public class MensaplanViewController implements Initializable
                 return null;
             }
         });
-        cbWochentag.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->generiereSpeiseplan(Tag.values()[newValue.intValue()]));
-        cbWochentag.getSelectionModel().select(LocalDate.now().getDayOfWeek().getValue()<6?LocalDate.now().getDayOfWeek().getValue()-1:0);
+        wochentagChoicebox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->generiereSpeiseplan(Tag.values()[newValue.intValue()]));
+        wochentagChoicebox.getSelectionModel().select(LocalDate.now().getDayOfWeek().getValue()<6?LocalDate.now().getDayOfWeek().getValue()-1:0);
     }
 
+    //!!!!!!!
     private void generiereSpeiseplan(Tag tag) {
-        List<Gericht> gerichte = _getGerichteListe(tag);
-        List<String> kategorien = _getKategorienListe(tag);
+        List<Gericht> gerichte = getGerichteListe(tag);
+        List<String> kategorien = getKategorienListe(tag);
 
-        // Erstelle ContentAccordion
-        Accordion contentAccordion = new Accordion();
-        contentAccordion.setPrefWidth(500);
-        contentVBox.getChildren().add(1, contentAccordion);
+        Accordion kategorienAccordion = new Accordion();
+        kategorienAccordion.setPrefWidth(700);
+        contentVBox.getChildren().add(1, kategorienAccordion);
 
-        // Entferne das überschüssige Accordion, aber nur, wenn nicht 1. Aufruf
         if(contentVBox.getChildren().size() > 2) contentVBox.getChildren().remove(2);
 
         if(!gerichte.isEmpty()) {
-            kategorien.forEach((objName) -> {
+            kategorien.forEach((item) -> {
                 VBox vB = new VBox();
                 vB.setSpacing(10);
-                TitledPane tP = new TitledPane(objName, vB);
-                contentAccordion.getPanes().add(tP);
+                TitledPane tP = new TitledPane(item, vB);
+                kategorienAccordion.getPanes().add(tP);
 
-                gerichte.stream().filter((ger) -> ger.getGang() == objName).forEach((ger) -> {
-                    ArrayList<Label> aL = new ArrayList<>();
-                    VBox vbGericht = new VBox();
-                    aL.add(new Label(ger.getName()));
-                    aL.add(new Label(ger.getBeschreibung()));
-                    aL.add(new Label(_formatierePreis(ger.getPreis())));
-                    aL.forEach((lbl) -> lbl.setWrapText(true));
+                gerichte
+                    .stream()
+                    .filter((item2) -> item2.getGang() == item)
+                    .forEach((item2) ->
+                    {
+                        ArrayList<Label> aL = new ArrayList<>();
+                        VBox vbGericht = new VBox();
+                        aL.add(new Label(item2.getName()));
+                        aL.add(new Label(item2.getBeschreibung()));
+                        aL.add(new Label(formatierePreis(item2.getPreis())));
+                        aL.forEach((item3) -> item3.setWrapText(true));
 
-                    ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
-                    vbGericht.getChildren().addAll(oaL);
-                    vB.getChildren().add(vbGericht);
-                });
+                        vbGericht.getChildren().addAll(FXCollections.observableArrayList(aL));
+                        vB.getChildren().add(vbGericht);
+                    });
             });
         } else {
-            Label hinweisLeer = new Label("An diesem Tag stehen leider keine Gerichte zur Verfügung.");
-            hinweisLeer.getStyleClass().add("warnhinweis");
-            contentVBox.getChildren().add(1, hinweisLeer);
+            Label hinweisLeerLabel = new Label("An diesem Tag stehen leider keine Gerichte zur Verfügung.");
+            hinweisLeerLabel.getStyleClass().add("warnhinweis");
+            contentVBox.getChildren().add(1, hinweisLeerLabel);
         }
     }
 
-    private String _formatierePreis(float number) {
-        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-        return format.format(number);
+
+    //
+    private String formatierePreis(float number) {
+        NumberFormat deuschtesZahlenformatNumberFormat = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+        return deuschtesZahlenformatNumberFormat.format(number);
     }
 
-    private int _getRichtigeKalenderwoche(){
-        Date datum = new Date();
+    //
+    private int getRichtigeKalenderwoche(){
+        Date aktuellesDatumDate = new Date();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datum);
-        int wochenNummer = calendar.get(Calendar.WEEK_OF_YEAR);
+        Calendar kalenderCalendar = Calendar.getInstance();
+        kalenderCalendar.setTime(aktuellesDatumDate);
+        int wochenNummer = kalenderCalendar.get(Calendar.WEEK_OF_YEAR);
 
         if((LocalDate.now().getDayOfWeek() == DayOfWeek.SATURDAY) || (LocalDate.now().getDayOfWeek() == DayOfWeek.SUNDAY)) {
             return wochenNummer+1;
@@ -114,24 +115,23 @@ public class MensaplanViewController implements Initializable
         return wochenNummer;
     }
 
-    private List<Gericht> _getGerichteListe(Tag tag) {
-        // Liste mit den Tagen (einer, und zwar der heutige!), die Gericht-Liste beinhaltet erzeugen
-        List<List<Gericht>> listeListeGerichte = SchreiberLeser.getMensaplan().getTagesplaene().stream()
-                .filter((obj) -> obj.getTag().equals(tag))
-                .map(Tagesplan::getGerichte)
-                .collect(Collectors.toList());
-
-        // Liste nur noch mit den Gerichten erzeugen
-        return listeListeGerichte.stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
-
-    private List<String> _getKategorienListe(Tag tag) {
-        // Liste mit den Gericht-Kategorien
-        return _getGerichteListe(tag).stream()
+    //
+    private List<String> getKategorienListe(Tag tag) {
+        return getGerichteListe(tag).stream()
                 .map(Gericht::getGang)
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    //
+    private List<Gericht> getGerichteListe(Tag tag) {
+        List<List<Gericht>> gerichte = SchreiberLeser.getMensaplan().getTagesplaene().stream()
+            .filter((obj) -> obj.getTagesplanTag().equals(tag))
+            .map(Tagesplan::getGerichte)
+            .collect(Collectors.toList());
+
+        return gerichte.stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 }

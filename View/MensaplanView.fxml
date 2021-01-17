@@ -17,14 +17,14 @@
                         <Insets />
                     </opaqueInsets>
                     <children>
-                        <ChoiceBox fx:id="cbWochentag" prefWidth="150.0" />
+                        <ChoiceBox fx:id="wochentagChoicebox" prefWidth="150.0" />
                     </children>
                 </VBox>
             </center>
             <top>
                 <VBox styleClass="anwendungsBereich">
                     <children>
-                        <Label text="Mensaplan" fx:id="mpTitel" styleClass="ueberschrift">
+                        <Label text="Mensaplan" fx:id="titelLabel" styleClass="ueberschrift">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>

@@ -21,13 +21,15 @@ public class ModulhandbuchViewController implements Initializable {
     Label studiengangTitel;
 
     public void initialize(URL location, ResourceBundle resources) {
-        if((SchreiberLeser.getNutzerdaten().getStudiengang() == null) || (SchreiberLeser.getNutzerdaten().getStudiensemester() == null)) {
-            Label fehlendeInformation = new Label("Leider hast Du in den Einstellungen keinen Studiengang definiert. Bitte definiere Deinen Studiengang!");
+        if(SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().size()==0) {
+            Label fehlendeInformation = new Label("Für das ausgewählte Studierensemester scheint es kein Modulhandbuch zu geben");
             fehlendeInformation.setWrapText(true);
             fehlendeInformation.getStyleClass().add("warnhinweis");
             vbContent.getChildren().add(fehlendeInformation);
-        } else {
-            studiengangTitel.setText("Studiengang: " + SchreiberLeser.getNutzerdaten().getStudiengang().getName() + " (" + SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel() + ", " + SchreiberLeser.getNutzerdaten().getStudiensemester().getName() + ")");
+        }
+        else
+        {
+            studiengangTitel.setText("Studiengang: " + SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getName() + " (" + SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getKuerzel() + ", " + SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester().getName() + ")");
             studiengangTitel.setWrapText(true);
 
             // Erstelle Accordion mit Fächern

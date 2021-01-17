@@ -14,31 +14,32 @@ import java.util.ArrayList;
 public class Tagesplan implements Serializable
 {
     private ArrayList<Gericht> gerichte;
-    private Tag tag;
-    private Datum datum;
+    private Tag tagesplanTag;
+    private Datum tagesplanDatum;
 
-
-
-    public Tagesplan(ArrayList<Gericht> gerichte, Tag tag, Datum datum)
+    public Tagesplan(ArrayList<Gericht> gerichte, Tag tagesplanTag, Datum tagesplanDatum)
     {
-        this.gerichte=gerichte;
-        this.tag=tag;
-        this.datum=datum;
-    }
 
+        this.gerichte=gerichte;
+        this.tagesplanTag=tagesplanTag;
+        this.tagesplanDatum=tagesplanDatum;
+    }
 
     public ArrayList<Gericht> getGerichte()
     {
+
         return gerichte;
     }
 
-    public Tag getTag()
+    public Tag getTagesplanTag()
     {
-        return tag;
+
+        return tagesplanTag;
     }
 
-    public Datum getDatum()
+    public Datum getTagesplanDatum()
     {
-        return datum;
+
+        return tagesplanDatum;
     }
 }

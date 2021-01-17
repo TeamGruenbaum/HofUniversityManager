@@ -128,7 +128,7 @@ public class GrundViewController implements Initializable
 
                 oeffneScene();
             });
-            button.setTooltip(new Tooltip(TextHelfer.grossschreiben(Menue.getMenuepunktInformationen().get(i).getAnwendung().toString())));
+            button.setTooltip(new Tooltip(TextHelfer.grossschreiben(Menue.getMenuepunktInformationen().get(i).getZielanwendung().toString())));
             button.getTooltip().getStyleClass().add("breadcrumb-menu");
             button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -196,9 +196,9 @@ public class GrundViewController implements Initializable
     private void oeffneScene()
     {
 
-        ort.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung().toString()));
+        ort.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString()));
 
-        switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
+        switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung())
         {
             case STUNDENPLAN:
             {
@@ -251,11 +251,11 @@ public class GrundViewController implements Initializable
             {
                 hauptmenueSchließen();
 
-                if(SchreiberLeser.getNutzerdaten().getStudiengang()!=null&&SchreiberLeser.getNutzerdaten().getStudiensemester()!=null)
+                if(SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()!=null&&SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester()!=null)
                 {
                     if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
                     {
-                        if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getStudiengang()&&letztesStudiensemester==SchreiberLeser.getNutzerdaten().getStudiensemester())
+                        if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()&&letztesStudiensemester==SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester())
                         {
                             ladeSceneMitScrollPane();
                         }else
@@ -264,8 +264,8 @@ public class GrundViewController implements Initializable
                             {
                                 if(newValue.doubleValue()==1.0)
                                 {
-                                    letzterStudiengang=SchreiberLeser.getNutzerdaten().getStudiengang();
-                                    letztesStudiensemester=SchreiberLeser.getNutzerdaten().getStudiensemester();
+                                    letzterStudiengang=SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang();
+                                    letztesStudiensemester=SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester();
 
                                     ladeSceneMitScrollPane();
                                     menuHauptButton.setDisable(false);

@@ -41,13 +41,9 @@ import java.util.List;
 
 public class StundenplanViewController implements Initializable
 {
-	//Alles
-	@FXML private BorderPane allesBorderPane;
 	@FXML private TabPane hauptTabPane;
 
 
-
-	//Tab Fächer
 	@FXML private TabPane faecherTabPane;
 
 	@FXML private TableView<Aufgabe> aufgabenTableView;
@@ -72,8 +68,6 @@ public class StundenplanViewController implements Initializable
 	private ObservableList<Note> notenObservableList;
 
 
-
-	//Tab Stundenplan
 	@FXML private HBox stundenplanHBox;
 
 	@FXML private TableView<Doppelstunde> montagTableView;
@@ -107,6 +101,8 @@ public class StundenplanViewController implements Initializable
 	@FXML private ProgressIndicator stundenplanZuruecksetzungProgressIndicator;
 	@FXML private Button stundenplanZuruecksetzen;
 
+
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle)
 	{
@@ -127,7 +123,7 @@ public class StundenplanViewController implements Initializable
 				tableView.getSelectionModel().getSelectedItem().getName(),
 				tableView.getSelectionModel().getSelectedItem().getDozent(),
 				tableView.getSelectionModel().getSelectedItem().getRaum(),
-				tableView.getSelectionModel().getSelectedItem().getTag(),
+				tableView.getSelectionModel().getSelectedItem().getDoppelstundentag(),
 				tableView.getSelectionModel().getSelectedItem().getBeginnUhrzeit().getStunde(),
 				tableView.getSelectionModel().getSelectedItem().getBeginnUhrzeit().getMinute(),
 				tableView.getSelectionModel().getSelectedItem().getEndeUhrzeit().getStunde(),
@@ -154,7 +150,7 @@ public class StundenplanViewController implements Initializable
 		Callback<TableColumn.CellDataFeatures<Doppelstunde, String>, ObservableValue<String>> cellValueFactory=cellData->
 		{
 			return new SimpleStringProperty(
-				((cellData.getValue().getDatum()==null)?"":(cellData.getValue().getDatum()+" "))+
+				((cellData.getValue().getDoppelstundendatum()==null)?"":(cellData.getValue().getDoppelstundendatum()+" "))+
 				((cellData.getValue().getBeginnUhrzeit()==null)?"":(cellData.getValue().getBeginnUhrzeit()+"-"+cellData.getValue().getEndeUhrzeit()+"\n"))+
 				((cellData.getValue().getRaum()==null)?"":(cellData.getValue().getRaum()+"\n"))+
 				cellData.getValue().getName()+"\n"+
@@ -222,8 +218,8 @@ public class StundenplanViewController implements Initializable
 				oeffneAufgabeDialog("Aufgabe ändern", "Ändern",
 					aufgabenTableView.getSelectionModel().getSelectedItem().getName(),
 					aufgabenTableView.getSelectionModel().getSelectedItem().getInhalt(),
-					aufgabenTableView.getSelectionModel().getSelectedItem().getDatum(),
-					aufgabenTableView.getSelectionModel().getSelectedItem().getUhrzeit(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getFaelligkeitsdatum(),
+					aufgabenTableView.getSelectionModel().getSelectedItem().getFaelligkeitsuhrzeit(),
 					aufgabenTableView.getSelectionModel().getSelectedItem().getFach())
 					.ifPresent((item)->
 					{
@@ -240,8 +236,8 @@ public class StundenplanViewController implements Initializable
 			});
 		aufgabenNameTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getName());});
 		aufgabenInhaltTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getInhalt());});
-		aufgabenZeitTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getUhrzeit().toString());});
-		aufgabenDatumTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getDatum().toString());});
+		aufgabenZeitTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFaelligkeitsuhrzeit().toString());});
+		aufgabenDatumTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFaelligkeitsdatum().toString());});
 		aufgabenFachTableColumn.setCellValueFactory((cellData) -> {return new SimpleStringProperty(cellData.getValue().getFach());});
 
 
@@ -274,7 +270,7 @@ public class StundenplanViewController implements Initializable
 	//Stundenplan
 	@FXML private void stundenplanZuruecksetzen(ActionEvent actionEvent)
 	{
-		if(SchreiberLeser.getNutzerdaten().getStudiengang()==null && SchreiberLeser.getNutzerdaten().getStudiensemester()==null)
+		if(SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()==null && SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester()==null)
 		{
 			GrundViewController.oeffneFehlenderStudiengangDialog();
 		}
@@ -318,7 +314,7 @@ public class StundenplanViewController implements Initializable
 
 		SchreiberLeser.getNutzerdaten().getDoppelstunden().forEach(item->
 		{
-			if(item.getTag()==null)
+			if(item.getDoppelstundentag()==null)
 			{
 				if(!stundenplanHBox.getChildren().contains(ohneTagTableView))
 				{
@@ -328,7 +324,7 @@ public class StundenplanViewController implements Initializable
 				ohneTagObservableList.sort(doppelstundeComparator);
 			}else
 			{
-				switch(item.getTag())
+				switch(item.getDoppelstundentag())
 				{
 					case MONTAG:
 					{
@@ -464,7 +460,7 @@ public class StundenplanViewController implements Initializable
 				return null;
 			}else
 			{
-				return new Doppelstunde(null, nameTextField.getText().trim(), dozentTextField.getText().trim(), raumTextField.getText().trim(), tagChoiceBox.getValue(), new Uhrzeit(beginnStundeUhrzeitSpinner.getValue(), beginnMinuteUhrzeitSpinner.getValue()), new Uhrzeit(endeStundeUhrzeitSpinner.getValue(), endeMinuteUhrzeitSpinner.getValue()));
+				return new Doppelstunde(tagChoiceBox.getValue(), null,  new Uhrzeit(beginnStundeUhrzeitSpinner.getValue(), beginnMinuteUhrzeitSpinner.getValue()), new Uhrzeit(endeStundeUhrzeitSpinner.getValue(), endeMinuteUhrzeitSpinner.getValue()), raumTextField.getText().trim(), nameTextField.getText().trim(), dozentTextField.getText().trim());
 			}
 		});
 		dialog.initOwner(Main.getPrimaryStage());

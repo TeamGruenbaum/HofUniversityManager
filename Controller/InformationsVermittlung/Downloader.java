@@ -72,7 +72,7 @@ public class Downloader
 						{
 							Platform.runLater(()->
 							{
-								downloadWebEnginge.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
+								downloadWebEnginge.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].value='"+SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));");
 								downloadfortschrittProgressIndicator.setProgress(0.5);
 							});
 
@@ -87,7 +87,7 @@ public class Downloader
 
 							Platform.runLater(()->
 							{
-								downloadWebEnginge.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].value='"+SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
+								downloadWebEnginge.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].value='"+SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester().getKuerzel()+"';"+"document.getElementsByName('tx_stundenplan_stundenplan[semester]')[0].dispatchEvent(new Event('change'));");
 								downloadfortschrittProgressIndicator.setProgress(0.75);
 							});
 
@@ -147,7 +147,7 @@ public class Downloader
 						{
 							Platform.runLater(()->
 							{
-								downloadWebEngine.executeScript("document.getElementById('class_change').value='"+SchreiberLeser.getNutzerdaten().getStudiengang().getKuerzel()+"';"+"document.getElementById('class_change').dispatchEvent(new Event('change'));");
+								downloadWebEngine.executeScript("document.getElementById('class_change').value='"+SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang().getKuerzel()+"';"+"document.getElementById('class_change').dispatchEvent(new Event('change'));");
 								downloadfortschrittProgressIndicator.setProgress(0.1);
 							});
 
@@ -164,7 +164,7 @@ public class Downloader
 
 							Platform.runLater(()->
 							{
-								Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel());
+								Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester().getKuerzel());
 								matcher.matches();
 								downloadWebEngine.executeScript("document.getElementById('year_change').value='"+matcher.group(3).replace('#', ' ')+"';"+"document.getElementById('year_change').dispatchEvent(new Event('change'));");
 								downloadfortschrittProgressIndicator.setProgress(0.2);
@@ -181,7 +181,7 @@ public class Downloader
 
 							Platform.runLater(()->
 							{
-								Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getStudiensemester().getKuerzel());
+								Matcher matcher=pattern.matcher(SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester().getKuerzel());
 								matcher.matches();
 								downloadWebEngine.executeScript("document.getElementById('sem_change').value='"+matcher.group(1)+"';"+"document.getElementById('sem_change').dispatchEvent(new Event('change'));");
 								downloadfortschrittProgressIndicator.setProgress(0.3);

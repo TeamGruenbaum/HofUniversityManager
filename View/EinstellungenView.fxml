@@ -4,98 +4,94 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
-   <children>
-      <BorderPane>
-         <center>
-            <VBox spacing="14.0" styleClass="anwendungsBereich">
-               <BorderPane.margin>
-                  <Insets bottom="28.0" left="28.0" right="28.0" />
-               </BorderPane.margin>
-               <children>
-                  <GridPane hgap="5.0" maxHeight="120.0" minHeight="150.0" prefHeight="120.0" styleClass="anwendungsBereich" vgap="5.0">
-                    <columnConstraints>
-                      <ColumnConstraints maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="10.0" prefWidth="533.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+<BorderPane fx:id="viewBorderPane" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
+ <center>
+    <VBox spacing="14.0" styleClass="anwendungsBereich">
+       <BorderPane.margin>
+          <Insets bottom="28.0" left="28.0" right="28.0" />
+       </BorderPane.margin>
+       <children>
+          <GridPane hgap="5.0" maxHeight="120.0" minHeight="150.0" prefHeight="120.0" styleClass="anwendungsBereich" vgap="5.0">
+            <columnConstraints>
+              <ColumnConstraints maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
+              <ColumnConstraints hgrow="SOMETIMES" maxWidth="567.0" minWidth="10.0" prefWidth="533.0" />
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+             <children>
+                <Label text="Benutzername">
+                </Label>
+                <Label text="Passwort" GridPane.rowIndex="1">
+                </Label>
+                <Label text="Studiengang" GridPane.rowIndex="2">
+                </Label>
+                 <Label text="Semester" GridPane.rowIndex="3">
+                </Label>
+                <TextField fx:id="benutzernameTextField" prefWidth="500.0" promptText="Benutzername" GridPane.columnIndex="1" />
+                <PasswordField fx:id="passwortPasswortField" prefWidth="500.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <ComboBox fx:id="studiengangChoicebox" prefHeight="27.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ComboBox fx:id="semesterChoicebox" prefHeight="27.0" prefWidth="600.0" promptText="Studiengang wählen" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                 <GridPane hgap="5.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" GridPane.rowIndex="4">
+                     <columnConstraints>
+                         <ColumnConstraints maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <Label text="Benutzername">
-                        </Label>
-                        <Label text="Passwort" GridPane.rowIndex="1">
-                        </Label>
-                        <Label text="Studiengang" GridPane.rowIndex="2">
-                        </Label>
-                         <Label text="Semester" GridPane.rowIndex="3">
-                        </Label>
-                        <TextField fx:id="tfBenutzername" prefWidth="500.0" promptText="Benutzername" GridPane.columnIndex="1" />
-                        <PasswordField fx:id="pfPasswort" prefWidth="500.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="cbStudiengang" prefHeight="27.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="cbSemester" prefHeight="27.0" prefWidth="600.0" promptText="Studiengang wählen" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                         <GridPane hgap="5.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" GridPane.rowIndex="4">
-                             <columnConstraints>
-                                 <ColumnConstraints maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
-                             </columnConstraints>
-                             <rowConstraints>
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                             </rowConstraints>
-                             <children>
-                                 <Label text="Dark-Mode">
-                           </Label>
-                             </children>
-                         </GridPane>
-                        <CheckBox fx:id="cbDarkMode" mnemonicParsing="false" text="inaktiv" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                         <Label text="Dark-Mode">
+                   </Label>
                      </children>
-                  </GridPane>
-                  <Label styleClass="ueberschrift" text="Datenlöschung oder Fehlerbehebung">
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding></Label>
-                   <Label text="Wenn Du Probleme in der Anwendung hast, kannst Du das Programm hier zurücksetzen." />
-                  <Button mnemonicParsing="false" onAction="#manuellesZuruecksetzen" styleClass="buttonKritisch" text="Anwendung zurücksetzen" />
-                  <Label layoutX="10.0" layoutY="174.0" styleClass="ueberschrift" text="Über das Programm">
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="225.0" text="Entstanden im Rahmen der Veranstaltung &quot;Software Engineering II&quot;, Medieninformatik, Hochschule Hof, WS 2020, Prof. Dr. Matthias Meitner" />
-                  <Label layoutX="10.0" layoutY="348.0" text="Team: Patrick Dressel, Steven Solleder, Marcel Stürzenberger, Vincent Tischler, Isabell Waas">
-                     <VBox.margin>
-                        <Insets top="-15.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="348.0" text="© 2021" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </VBox>
-         </center>
-         <top>
-            <VBox styleClass="anwendungsBereich">
-               <children>
-                  <Label styleClass="ueberschrift" text="Persönliche Einstellungen">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets bottom="14.0" left="28.0" right="28.0" top="28.0" />
-                     </padding>
-                  </Label>
-                  <Label text="Gib hier Deine SSO-Benutzerdaten und Studiengangs-Informationen an. Das dient zur Identifizierung bei den Diensten." textOverrun="CLIP">
-                     <padding>
-                        <Insets bottom="14.0" left="28.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </VBox>
-         </top>
-      </BorderPane>
-   </children>
-</AnchorPane>
+                 </GridPane>
+                <CheckBox fx:id="darkmodeCheckBox" mnemonicParsing="false" text="inaktiv" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+             </children>
+          </GridPane>
+          <Label styleClass="ueberschrift" text="Datenlöschung oder Fehlerbehebung">
+             <padding>
+                <Insets top="20.0" />
+             </padding></Label>
+           <Label text="Wenn Du Probleme in der Anwendung hast, kannst Du das Programm hier zurücksetzen." />
+          <Button mnemonicParsing="false" onAction="#manuellZuruecksetzen" styleClass="buttonKritisch" text="Anwendung zurücksetzen" />
+          <Label layoutX="10.0" layoutY="174.0" styleClass="ueberschrift" text="Über das Programm">
+             <padding>
+                <Insets top="20.0" />
+             </padding>
+          </Label>
+          <Label layoutX="10.0" layoutY="225.0" text="Entstanden im Rahmen der Veranstaltung &quot;Software Engineering II&quot;, Medieninformatik, Hochschule Hof, WS 2020, Prof. Dr. Matthias Meitner" />
+          <Label layoutX="10.0" layoutY="348.0" text="Team: Patrick Dressel, Steven Solleder, Marcel Stürzenberger, Vincent Tischler, Isabell Waas">
+             <VBox.margin>
+                <Insets top="-15.0" />
+             </VBox.margin>
+          </Label>
+          <Label layoutX="10.0" layoutY="348.0" text="© 2021" />
+       </children>
+       <opaqueInsets>
+          <Insets />
+       </opaqueInsets>
+    </VBox>
+ </center>
+ <top>
+    <VBox styleClass="anwendungsBereich">
+       <children>
+          <Label styleClass="ueberschrift" text="Persönliche Einstellungen">
+             <opaqueInsets>
+                <Insets />
+             </opaqueInsets>
+             <padding>
+                <Insets bottom="14.0" left="28.0" right="28.0" top="28.0" />
+             </padding>
+          </Label>
+          <Label text="Gib hier Deine SSO-Benutzerdaten und Studiengangs-Informationen an. Das dient zur Identifizierung bei den Diensten." textOverrun="CLIP">
+             <padding>
+                <Insets bottom="14.0" left="28.0" />
+             </padding>
+          </Label>
+       </children>
+    </VBox>
+ </top>
+</BorderPane>

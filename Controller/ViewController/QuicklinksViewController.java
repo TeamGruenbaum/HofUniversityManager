@@ -2,19 +2,14 @@ package Controller.ViewController;
 
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
-import Model.NutzerdatenModel.Nutzerdaten;
 import Model.QuicklinksModel.Quicklinks;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import org.codefx.libfx.control.webview.WebViewHyperlinkListener;
 import org.codefx.libfx.control.webview.WebViews;
 
 import javax.swing.event.HyperlinkEvent;
@@ -77,7 +72,7 @@ public class QuicklinksViewController implements Initializable
             }
         }));
 
-        switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getAnwendung())
+        switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung())
         {
             case MOODLE:
             {

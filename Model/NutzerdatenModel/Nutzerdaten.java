@@ -14,7 +14,9 @@ import java.util.ArrayList;
 public class Nutzerdaten implements Serializable
 {
     //nullable
-    private Studiensemester studiensemester;
+    private Studiengang ausgewaehlterStudiengangStudiengang;
+    //nullable
+    private Studiensemester ausgewaehltesStudiensemesterStudiensemester;
     private ArrayList<Doppelstunde> doppelstunden;
     private ArrayList<Aufgabe> aufgaben;
     private ArrayList<Notiz> notizen;
@@ -23,17 +25,16 @@ public class Nutzerdaten implements Serializable
     private Login ssoLogin;
     private Thema aktuellesThema;
     private MenuepunktInformation letzterGeoeffneterMenuepunkt;
-    //nullable
-    private Studiengang studiengang;
 
 
 
-    public Nutzerdaten(Studiengang studiengang, Studiensemester studiensemester,
+
+    public Nutzerdaten(Studiengang ausgewaehlterStudiengangStudiengang, Studiensemester studiensemester,
                        ArrayList<Doppelstunde> doppelstunden, ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notizen, ArrayList<Note> noten, ArrayList<String> faecher,Login ssoLogin,
                        Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
     {
-        this.studiengang=studiengang;
-        this.studiensemester = studiensemester;
+        this.ausgewaehlterStudiengangStudiengang=ausgewaehlterStudiengangStudiengang;
+        this.ausgewaehltesStudiensemesterStudiensemester= studiensemester;
         this.doppelstunden = doppelstunden;
         this.aufgaben=aufgaben;
         this.notizen=notizen;
@@ -44,25 +45,24 @@ public class Nutzerdaten implements Serializable
         this.letzterGeoeffneterMenuepunkt = letzterGeoeffneterMenuepunkt;
     }
 
-
-    public Studiensemester getStudiensemester()
+    public Studiengang getAusgewaehlterStudiengang()
     {
-        return studiensemester;
+        return ausgewaehlterStudiengangStudiengang;
     }
 
-    public void setStudiensemester(Studiensemester neuerWert)
+    public void setAusgewaehlterStudiengang(Studiengang neuerWert)
     {
-        this.studiensemester=neuerWert;
+        this.ausgewaehlterStudiengangStudiengang=neuerWert;
     }
 
-    public Studiengang getStudiengang()
+    public Studiensemester getAusgewaehltesStudiensemester()
     {
-        return studiengang;
+        return ausgewaehltesStudiensemesterStudiensemester;
     }
 
-    public void setStudiengang(Studiengang neuerWert)
+    public void setAusgewaehltesStudiensemester(Studiensemester neuerWert)
     {
-        this.studiengang=neuerWert;
+        this.ausgewaehltesStudiensemesterStudiensemester=neuerWert;
     }
 
     public ArrayList<Doppelstunde> getDoppelstunden()
