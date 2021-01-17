@@ -54,7 +54,7 @@ public class MensaplanViewController implements Initializable
         wochentagChoicebox.getSelectionModel().select(LocalDate.now().getDayOfWeek().getValue()<6?LocalDate.now().getDayOfWeek().getValue()-1:0);
     }
 
-    //!!!!!!!
+    //
     private void zeigeSpeiseplan(Tag tag) {
         List<Gericht> gerichte = getGerichteListe(tag);
         List<String> kategorien = getKategorienListe(tag);

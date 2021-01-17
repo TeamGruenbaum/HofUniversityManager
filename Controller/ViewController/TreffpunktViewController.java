@@ -55,11 +55,11 @@ public class TreffpunktViewController implements Initializable
         });
     }
 
-    
+    //
     public void zeigeRestaurants(Accordion accordion, ArrayList<Treffpunkt> arrayList)
     {
         accordion.getPanes().clear();
-        arrayList.stream().filter((obj) -> obj instanceof Restaurant).forEach((item) -> {
+        arrayList.stream().filter((item) -> item instanceof Restaurant).forEach((item) -> {
 
             VBox vB = new VBox();
 
@@ -78,20 +78,21 @@ public class TreffpunktViewController implements Initializable
         });
     }
 
+    //
     public void zeigeFreizeitaktivitaeten(Accordion accordion, ArrayList<Treffpunkt> arrayList)
     {
         accordion.getPanes().clear();
-        arrayList.stream().filter((obj) -> obj instanceof Freizeitaktivitaet).forEach((obj) -> {
+        arrayList.stream().filter((item) -> item instanceof Freizeitaktivitaet).forEach((item) -> {
 
             VBox vB = new VBox();
 
-            accordion.getPanes().add(new TitledPane(obj.getName(), vB));
+            accordion.getPanes().add(new TitledPane(item.getName(), vB));
 
             ArrayList<Label> aL = new ArrayList<>();
-            aL.add(new Label("Ort: " + obj.getOrt()));
-            aL.add(new Label("Information: " + obj.getInformation()));
-            aL.add(new Label("Ambiente: " + ((Freizeitaktivitaet) obj).getAmbiente()));
-            aL.add(new Label((obj.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
+            aL.add(new Label("Ort: " + item.getOrt()));
+            aL.add(new Label("Information: " + item.getInformation()));
+            aL.add(new Label("Ambiente: " + ((Freizeitaktivitaet) item).getAmbiente()));
+            aL.add(new Label((item.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
             ObservableList<Label> oaL = FXCollections.observableArrayList(aL);
 
             vB.getChildren().addAll(oaL);
