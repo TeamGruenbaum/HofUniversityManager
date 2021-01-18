@@ -10,7 +10,7 @@ public class NameKuerzelDocumentTripel
 {
 	private String studiengangName;
 	private String studiengangKuerzel;
-	private Document stundenplanDokument;
+	private Document stundenplanDokumentDocument;
 
 
 
@@ -18,7 +18,7 @@ public class NameKuerzelDocumentTripel
 	{
 		this.studiengangName=studiengangName;
 		this.studiengangKuerzel=studiengangKuerzel;
-		this.stundenplanDokument=stundenplanDokument;
+		this.stundenplanDokumentDocument=stundenplanDokument;
 	}
 
 
@@ -34,6 +34,6 @@ public class NameKuerzelDocumentTripel
 
 	public Document getStundenplanDokument()
 	{
-		return stundenplanDokument;
+		return stundenplanDokumentDocument;
 	}
 }

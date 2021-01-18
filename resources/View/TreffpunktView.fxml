@@ -10,7 +10,7 @@
 
 <BorderPane fx:id="aP" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.TreffpunktViewController">
          <center>
-            <VBox fx:id="contentVBox" spacing="14.0" styleClass="anwendungsBereich">
+            <VBox fx:id="inhaltVBox" spacing="14.0" styleClass="anwendungsBereich">
                <BorderPane.margin>
                   <Insets bottom="28.0" left="28.0" right="28.0" />
                </BorderPane.margin>
@@ -18,7 +18,7 @@
                   <Insets />
                </opaqueInsets>
                <children>
-                  <ChoiceBox fx:id="cbTreffpunktTyp" prefWidth="150.0" />
+                  <ChoiceBox fx:id="treffpunktTypChoiceBox" prefWidth="150.0" />
                </children>
             </VBox>
          </center>

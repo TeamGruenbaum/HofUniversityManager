@@ -31,7 +31,7 @@ public class MensaplanViewController implements Initializable
 {
 	@FXML private Label titelLabel;
 	@FXML private ChoiceBox<Tag> wochentagChoicebox;
-	@FXML private VBox contentVBox;
+	@FXML private VBox inhaltVBox;
 
 
 
@@ -56,18 +56,18 @@ public class MensaplanViewController implements Initializable
 		wochentagChoicebox.getSelectionModel().select(LocalDate.now().getDayOfWeek().getValue()<6?LocalDate.now().getDayOfWeek().getValue()-1:0);
 	}
 
-	private void zeigeSpeiseplan(Tag tag)
+	private void zeigeSpeiseplan(Tag aktuellerTagTag)
 	{
-		List<Gericht> gerichte=getGerichteListe(tag);
-		List<String> kategorien=getKategorienListe(tag);
+		List<Gericht> gerichte=getGerichteListe(aktuellerTagTag);
+		List<String> kategorien=getKategorienListe(aktuellerTagTag);
 
 		Accordion kategorienAccordion=new Accordion();
 		kategorienAccordion.setPrefWidth(700);
-		contentVBox.getChildren().add(1, kategorienAccordion);
+		inhaltVBox.getChildren().add(1, kategorienAccordion);
 
-		if(contentVBox.getChildren().size()>2)
+		if(inhaltVBox.getChildren().size()>2)
 		{
-			contentVBox.getChildren().remove(2);
+			inhaltVBox.getChildren().remove(2);
 		}
 
 		if(!gerichte.isEmpty())
@@ -96,7 +96,7 @@ public class MensaplanViewController implements Initializable
 		{
 			Label hinweisLeerLabel=new Label("An diesem Tag stehen leider keine Gerichte zur Verfügung.");
 			hinweisLeerLabel.getStyleClass().add("warnhinweis");
-			contentVBox.getChildren().add(1, hinweisLeerLabel);
+			inhaltVBox.getChildren().add(1, hinweisLeerLabel);
 		}
 	}
 
@@ -122,14 +122,14 @@ public class MensaplanViewController implements Initializable
 		return wochenNummer;
 	}
 
-	private List<String> getKategorienListe(Tag tag)
+	private List<String> getKategorienListe(Tag aktuellerTagTag)
 	{
-		return getGerichteListe(tag).stream().map(Gericht::getGang).distinct().collect(Collectors.toList());
+		return getGerichteListe(aktuellerTagTag).stream().map(Gericht::getGang).distinct().collect(Collectors.toList());
 	}
 
-	private List<Gericht> getGerichteListe(Tag tag)
+	private List<Gericht> getGerichteListe(Tag aktuellerTagTag)
 	{
-		List<List<Gericht>> gerichte=SchreiberLeser.getMensaplan().getTagesplaene().stream().filter((obj)->obj.getTagesplanTag().equals(tag)).map(Tagesplan::getGerichte).collect(Collectors.toList());
+		List<List<Gericht>> gerichte=SchreiberLeser.getMensaplan().getTagesplaene().stream().filter((obj)->obj.getTagesplanTag().equals(aktuellerTagTag)).map(Tagesplan::getGerichte).collect(Collectors.toList());
 
 		return gerichte.stream().flatMap(Collection::stream).collect(Collectors.toList());
 	}

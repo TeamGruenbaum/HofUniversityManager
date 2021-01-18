@@ -25,7 +25,7 @@ import org.codefx.libfx.control.webview.WebViews;
 
 public class QuicklinksViewController implements Initializable
 {
-	@FXML private WebView anzeigeWebWiew;
+	@FXML private WebView anzeigeWebView;
 	@FXML private ProgressIndicator websiteLadeProgressIndicator;
 
 	private WebEngine anzeigeWebEngine;
@@ -36,9 +36,9 @@ public class QuicklinksViewController implements Initializable
 
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
-		anzeigeWebEngine=anzeigeWebWiew.getEngine();
+		anzeigeWebEngine=anzeigeWebView.getEngine();
 
-		WebViews.addHyperlinkListener(anzeigeWebWiew, (event)->
+		WebViews.addHyperlinkListener(anzeigeWebView, (event)->
 		{
 			try
 			{
@@ -134,7 +134,7 @@ public class QuicklinksViewController implements Initializable
 		anzeigeWebEngine.executeScript("history.back()");
 	}
 
-	@FXML private void vorwärtsGehen(ActionEvent actionEvent)
+	@FXML private void vorwaertsGehen(ActionEvent actionEvent)
 	{
 		anzeigeWebEngine.executeScript("history.forward()");
 	}

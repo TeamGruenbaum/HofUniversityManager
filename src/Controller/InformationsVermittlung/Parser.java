@@ -47,12 +47,12 @@ public class Parser
 
 	public static Mensaplan mensaplanParsen(MensaplanTupel mensaplanTupel)
 	{
-		Tagesplan montagsTagesplan=getTagesplan(mensaplanTupel.getMontag().getDokument(), Tag.MONTAG, mensaplanTupel.getMontag().getDatum());
-		Tagesplan dienstagsTagesplan=getTagesplan(mensaplanTupel.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanTupel.getDienstag().getDatum());
-		Tagesplan mittwochsTagesplan=getTagesplan(mensaplanTupel.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanTupel.getMittwoch().getDatum());
-		Tagesplan donnerstagsTagesplan=getTagesplan(mensaplanTupel.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanTupel.getDonnerstag().getDatum());
-		Tagesplan freitagsTagesplan=getTagesplan(mensaplanTupel.getFreitag().getDokument(), Tag.FREITAG, mensaplanTupel.getFreitag().getDatum());
-		Tagesplan samstagsTagesplan=getTagesplan(mensaplanTupel.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanTupel.getSamstag().getDatum());
+		Tagesplan montagsTagesplan=getTagesplan(mensaplanTupel.getMontag().getPaarDokument(), Tag.MONTAG, mensaplanTupel.getMontag().getPaarDatum());
+		Tagesplan dienstagsTagesplan=getTagesplan(mensaplanTupel.getDienstag().getPaarDokument(), Tag.DIENSTAG, mensaplanTupel.getDienstag().getPaarDatum());
+		Tagesplan mittwochsTagesplan=getTagesplan(mensaplanTupel.getMittwoch().getPaarDokument(), Tag.MITTWOCH, mensaplanTupel.getMittwoch().getPaarDatum());
+		Tagesplan donnerstagsTagesplan=getTagesplan(mensaplanTupel.getDonnerstag().getPaarDokument(), Tag.DONNERSTAG, mensaplanTupel.getDonnerstag().getPaarDatum());
+		Tagesplan freitagsTagesplan=getTagesplan(mensaplanTupel.getFreitag().getPaarDokument(), Tag.FREITAG, mensaplanTupel.getFreitag().getPaarDatum());
+		Tagesplan samstagsTagesplan=getTagesplan(mensaplanTupel.getSamstag().getPaarDokument(), Tag.SAMSTAG, mensaplanTupel.getSamstag().getPaarDatum());
 
 		ArrayList<Tagesplan> tagesplaene=new ArrayList<Tagesplan>();
 		tagesplaene.addAll(Arrays.asList(montagsTagesplan, dienstagsTagesplan, mittwochsTagesplan, donnerstagsTagesplan, freitagsTagesplan, samstagsTagesplan));
@@ -201,7 +201,7 @@ public class Parser
 		return new ModulhandbuchFach(modulhandbuchFachDocument.select("h2:not([class])").text(), tabelleElement.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(12).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(13).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(14).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(15).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(16).getElementsByTag("td").get(1).text());
 	}
 
-	private static Tagesplan getTagesplan(Document tagesplanDocument, Tag tag, Datum datum)
+	private static Tagesplan getTagesplan(Document tagesplanDocument, Tag tagesplanTagTag, Datum tagesplanDatumDatum)
 	{
 		ArrayList<Gericht> gerichte=new ArrayList<Gericht>();
 		Element gerichtElement=null;
@@ -243,7 +243,7 @@ public class Parser
 		}
 
 
-		return new Tagesplan(gerichte, tag, datum);
+		return new Tagesplan(gerichte, tagesplanTagTag, tagesplanDatumDatum);
 	}
 
 	private static String getBeschreibung(Element iconElement)
@@ -330,18 +330,18 @@ public class Parser
 		return beschreibung;
 	}
 
-	private static void doppelstundeHinzufuegen(ArrayList<Doppelstunde> doppelstunden, Document stundenplanDocument, Tag tag, int zaehler)
+	private static void doppelstundeHinzufuegen(ArrayList<Doppelstunde> doppelstunden, Document stundenplanDocument, Tag doppelstundenTagTag, int zaehler)
 	{
 		Element aktuelleDoppelstundeElement=null;
 		Datum doppelstundeDatum=null;
-		Tag datumsTag=tag;
+		Tag datumsTag=doppelstundenTagTag;
 
 		for(int j=0;j<stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").size();j++)
 		{
 			aktuelleDoppelstundeElement=stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").get(j);
 			doppelstundeDatum=getDoppelstundenDatum(aktuelleDoppelstundeElement);
 
-			if(tag==null&&doppelstundeDatum!=null)
+			if(doppelstundenTagTag==null&&doppelstundeDatum!=null)
 			{
 				switch(LocalDate.of(doppelstundeDatum.getJahr(), doppelstundeDatum.getMonat(), doppelstundeDatum.getTag()).getDayOfWeek())
 				{

@@ -28,10 +28,10 @@ import javafx.util.StringConverter;
 
 public class EinstellungenViewController implements Initializable
 {
-	@FXML private BorderPane viewBorderPane;
+	@FXML private BorderPane ansichtBorderPane;
 
 	@FXML private TextField benutzernameTextField;
-	@FXML private PasswordField passwortPasswortField;
+	@FXML private PasswordField passwortPasswordField;
 
 	@FXML private ComboBox<Studiengang> studiengangChoicebox;
 	@FXML private ComboBox<Studiensemester> semesterChoicebox;
@@ -42,7 +42,7 @@ public class EinstellungenViewController implements Initializable
 
 	public void initialize(URL location, ResourceBundle resources)
 	{
-		viewBorderPane.addEventHandler(MouseEvent.MOUSE_CLICKED, e->viewBorderPane.requestFocus());
+		ansichtBorderPane.addEventHandler(MouseEvent.MOUSE_CLICKED, e->ansichtBorderPane.requestFocus());
 
 		benutzernameTextField.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getName());
 		benutzernameTextField.textProperty().addListener((observable, oldValue, newValue)->
@@ -50,8 +50,8 @@ public class EinstellungenViewController implements Initializable
 			SchreiberLeser.getNutzerdaten().getSsoLogin().setName(newValue);
 		});
 
-		passwortPasswortField.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort());
-		passwortPasswortField.textProperty().addListener((observable, oldValue, newValue)->
+		passwortPasswordField.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort());
+		passwortPasswordField.textProperty().addListener((observable, oldValue, newValue)->
 		{
 			SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort(newValue);
 		});

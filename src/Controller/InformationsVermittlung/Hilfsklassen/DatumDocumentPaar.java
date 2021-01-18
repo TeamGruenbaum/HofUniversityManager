@@ -9,25 +9,25 @@ import org.jsoup.nodes.Document;
 
 public class DatumDocumentPaar
 {
-	private Datum datum;
-	private Document tag;
+	private Datum paarDatumDatum;
+	private Document paarDokumentDocument;
 
 
 
-	public DatumDocumentPaar(Datum datum, Document tag)
+	public DatumDocumentPaar(Datum paarDatumDatum, Document paarDokumentDocument)
 	{
-		this.datum=datum;
-		this.tag=tag;
+		this.paarDatumDatum=paarDatumDatum;
+		this.paarDokumentDocument=paarDokumentDocument;
 	}
 
 
-	public Datum getDatum()
+	public Datum getPaarDatum()
 	{
-		return datum;
+		return paarDatumDatum;
 	}
 
-	public Document getDokument()
+	public Document getPaarDokument()
 	{
-		return tag;
+		return paarDokumentDocument;
 	}
 }

@@ -20,8 +20,8 @@ import javafx.scene.layout.*;
 public class ModulhandbuchViewController implements Initializable
 {
 
-	@FXML VBox contentVBox;
-	@FXML Label studiengangtitelLabel;
+	@FXML private VBox inhaltVBox;
+	@FXML private Label studiengangtitelLabel;
 
 
 
@@ -32,7 +32,7 @@ public class ModulhandbuchViewController implements Initializable
 			Label fehlendeInformationLabel=new Label("Für das ausgewählte Studierensemester scheint es kein Modulhandbuch zu geben");
 			fehlendeInformationLabel.setWrapText(true);
 			fehlendeInformationLabel.getStyleClass().add("warnhinweis");
-			contentVBox.getChildren().add(fehlendeInformationLabel);
+			inhaltVBox.getChildren().add(fehlendeInformationLabel);
 		}
 		else
 		{
@@ -41,7 +41,7 @@ public class ModulhandbuchViewController implements Initializable
 
 			Accordion faecherAccordion=new Accordion();
 			faecherAccordion.setPrefWidth(700);
-			contentVBox.getChildren().add(faecherAccordion);
+			inhaltVBox.getChildren().add(faecherAccordion);
 
 			SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().forEach((fach)->
 			{

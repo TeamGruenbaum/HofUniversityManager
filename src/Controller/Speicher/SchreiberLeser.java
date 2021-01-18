@@ -109,7 +109,7 @@ public class SchreiberLeser
 		return modulhandbuch;
 	}
 
-	public static void modulhandbuchNeuSetzen(Modulhandbuch neuerWert)
+	public static void setModulhandbuch(Modulhandbuch neuerWert)
 	{
 		modulhandbuch=neuerWert;
 	}
@@ -120,7 +120,7 @@ public class SchreiberLeser
 		return treffpunkte;
 	}
 
-	public static void treffpunkteNeuSetzen(Treffpunkte neuerWert)
+	public static void setTreffpunkte(Treffpunkte neuerWert)
 	{
 		treffpunkte=neuerWert;
 	}
@@ -131,7 +131,7 @@ public class SchreiberLeser
 		return mensaplan;
 	}
 
-	public static void mensaplanNeuSetzen(Mensaplan neuerWert)
+	public static void setMensaplan(Mensaplan neuerWert)
 	{
 		mensaplan=neuerWert;
 	}
@@ -142,18 +142,13 @@ public class SchreiberLeser
 		return nutzerdaten;
 	}
 
-	public static void nutzerdatenNeuSetzen(Nutzerdaten neuerWert)
-	{
-		nutzerdaten=neuerWert;
-	}
-
 
 	public static DropdownMenue getDropdownMenue()
 	{
 		return dropdownMenue;
 	}
 
-	public static void dropdownMenueNeuSetzen(DropdownMenue neuerWert)
+	public static void setDropdownMenue(DropdownMenue neuerWert)
 	{
 		dropdownMenue=neuerWert;
 	}

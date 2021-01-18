@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="viewBorderPane" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
+<BorderPane fx:id="ansichtBorderPane" styleClass="anwendungsBereich" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.EinstellungenViewController">
  <center>
     <VBox spacing="14.0" styleClass="anwendungsBereich">
        <BorderPane.margin>
@@ -33,7 +33,7 @@
                  <Label text="Semester" GridPane.rowIndex="3">
                 </Label>
                 <TextField fx:id="benutzernameTextField" prefWidth="500.0" promptText="Benutzername" GridPane.columnIndex="1" />
-                <PasswordField fx:id="passwortPasswortField" prefWidth="500.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <PasswordField fx:id="passwortPasswordField" prefWidth="500.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <ComboBox fx:id="studiengangChoicebox" prefHeight="27.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <ComboBox fx:id="semesterChoicebox" prefHeight="27.0" prefWidth="600.0" promptText="Studiengang wählen" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                  <GridPane hgap="5.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" GridPane.rowIndex="4">

@@ -27,8 +27,8 @@ import javafx.scene.layout.VBox;
 
 public class TreffpunktViewController implements Initializable
 {
-	@FXML private ChoiceBox cbTreffpunktTyp;
-	@FXML private VBox contentVBox;
+	@FXML private ChoiceBox treffpunktTypChoiceBox;
+	@FXML private VBox inhaltVBox;
 	@FXML private Hyperlink emailHyperlink;
 
 	public void initialize(URL location, ResourceBundle resources)
@@ -39,19 +39,19 @@ public class TreffpunktViewController implements Initializable
 		listOriginal.add("Restaurants");
 		listOriginal.add("Freizeitaktivitäten");
 		ObservableList<String> list=FXCollections.observableArrayList(listOriginal);
-		cbTreffpunktTyp.setItems(list);
-		cbTreffpunktTyp.getSelectionModel().selectFirst();
+		treffpunktTypChoiceBox.setItems(list);
+		treffpunktTypChoiceBox.getSelectionModel().selectFirst();
 
 		Accordion contentAccordion=new Accordion();
 		contentAccordion.setPrefWidth(700);
 		contentAccordion.setMaxWidth(700);
-		contentVBox.getChildren().add(contentAccordion);
+		inhaltVBox.getChildren().add(contentAccordion);
 
 		ArrayList<Treffpunkt> alleTreffpunkte=SchreiberLeser.getTreffpunkte().getTreffpunkte();
 
 		zeigeRestaurants(contentAccordion, alleTreffpunkte);
 
-		cbTreffpunktTyp.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->
+		treffpunktTypChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->
 		{
 			if(newValue.equals(0))
 			{
@@ -64,10 +64,10 @@ public class TreffpunktViewController implements Initializable
 		});
 	}
 
-	public void zeigeRestaurants(Accordion accordion, ArrayList<Treffpunkt> arrayList)
+	public void zeigeRestaurants(Accordion accordion, ArrayList<Treffpunkt> treffpunkte)
 	{
 		accordion.getPanes().clear();
-		arrayList.stream().filter((item)->item instanceof Restaurant).forEach((item)->
+		treffpunkte.stream().filter((item)->item instanceof Restaurant).forEach((item)->
 		{
 
 			VBox vB=new VBox();
@@ -87,10 +87,10 @@ public class TreffpunktViewController implements Initializable
 		});
 	}
 
-	public void zeigeFreizeitaktivitaeten(Accordion accordion, ArrayList<Treffpunkt> arrayList)
+	public void zeigeFreizeitaktivitaeten(Accordion accordion, ArrayList<Treffpunkt> treffpunkte)
 	{
 		accordion.getPanes().clear();
-		arrayList.stream().filter((item)->item instanceof Freizeitaktivitaet).forEach((item)->
+		treffpunkte.stream().filter((item)->item instanceof Freizeitaktivitaet).forEach((item)->
 		{
 
 			VBox vB=new VBox();

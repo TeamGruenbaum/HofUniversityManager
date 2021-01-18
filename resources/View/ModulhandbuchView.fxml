@@ -9,7 +9,7 @@
     <children>
         <BorderPane >
             <center>
-                <VBox fx:id="contentVBox" spacing="14.0" styleClass="anwendungsBereich">
+                <VBox fx:id="inhaltVBox" spacing="14.0" styleClass="anwendungsBereich">
                     <BorderPane.margin>
                         <Insets bottom="28.0" left="28.0" right="28.0" />
                     </BorderPane.margin>

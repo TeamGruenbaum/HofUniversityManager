@@ -44,7 +44,7 @@ public class GrundViewController implements Initializable
 {
 	@FXML private BorderPane geruestBorderPane;
 	@FXML private StackPane geruestStackPane;
-	@FXML private Label ortLabel;
+	@FXML private Label aktuellAusgewaehlterMenuepunktTextLabel;
 	@FXML private Button menueHauptbuttonButton;
 	@FXML private WebView downloaderWebView;
 
@@ -53,10 +53,10 @@ public class GrundViewController implements Initializable
 
 	private boolean mensaplanEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
 	private Studiengang letzterStudiengangStudiengang;
-	private Studiensemester letztesStudiengangStudiensemester;
+	private Studiensemester letztesStudiensemesterStudiensemester;
 
 	private static WebView staticDownloaderWebView;
-	private static Button staticMenuHauptbuttonButton;
+	private static Button staticMenueHauptbuttonButton;
 
 
 
@@ -142,7 +142,7 @@ public class GrundViewController implements Initializable
 		}
 
 		staticDownloaderWebView=downloaderWebView;
-		staticMenuHauptbuttonButton=menueHauptbuttonButton;
+		staticMenueHauptbuttonButton=menueHauptbuttonButton;
 	}
 
 
@@ -160,7 +160,7 @@ public class GrundViewController implements Initializable
 
 	private void oeffneScene()
 	{
-		ortLabel.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString()));
+		aktuellAusgewaehlterMenuepunktTextLabel.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString()));
 
 		switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung())
 		{
@@ -220,7 +220,7 @@ public class GrundViewController implements Initializable
 				{
 					if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
 					{
-						if(letzterStudiengangStudiengang==SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()&&letztesStudiengangStudiensemester==SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester())
+						if(letzterStudiengangStudiengang==SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()&&letztesStudiensemesterStudiensemester==SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester())
 						{
 							ladeSceneMitScrollPane();
 						}
@@ -231,7 +231,7 @@ public class GrundViewController implements Initializable
 								if(newValue.doubleValue()==1.0)
 								{
 									letzterStudiengangStudiengang=SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang();
-									letztesStudiengangStudiensemester=SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester();
+									letztesStudiensemesterStudiensemester=SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester();
 
 									ladeSceneMitScrollPane();
 									menueHauptbuttonButton.setDisable(false);
@@ -443,7 +443,7 @@ public class GrundViewController implements Initializable
 	private void ladeErsterStartScene()
 	{
 		menueHauptbuttonButton.setDisable(true);
-		ortLabel.setText("Erster Start");
+		aktuellAusgewaehlterMenuepunktTextLabel.setText("Erster Start");
 
 		try
 		{
@@ -532,7 +532,7 @@ public class GrundViewController implements Initializable
 			item.setEffect(farbwechselColorAdjust);
 		});
 
-		getStaticMenuHauptbuttonButton().setEffect(farbwechselColorAdjust);
+		getStaticMenueHauptbuttonButton().setEffect(farbwechselColorAdjust);
 	}
 
 	private void blenden(Node zielNode, int dauer, Blende artBlende)
@@ -578,8 +578,8 @@ public class GrundViewController implements Initializable
 		return staticDownloaderWebView;
 	}
 
-	public static Button getStaticMenuHauptbuttonButton()
+	public static Button getStaticMenueHauptbuttonButton()
 	{
-		return staticMenuHauptbuttonButton;
+		return staticMenueHauptbuttonButton;
 	}
 }

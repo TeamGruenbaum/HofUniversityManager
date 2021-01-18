@@ -41,9 +41,9 @@ public class Downloader
 	private static ChangeListener<Worker.State> letzteListenerChangeListener=null;
 
 
-	public static void setDownloadfortschrittProgressIndicator(ProgressIndicator neuerWertProgressIndicator)
+	public static void setDownloadfortschrittProgressIndicator(ProgressIndicator neuerWert)
 	{
-		downloadfortschrittProgressIndicator=neuerWertProgressIndicator;
+		downloadfortschrittProgressIndicator=neuerWert;
 	}
 
 	//Hiermit wird der Stundenplan der Hochschule auf Basis des in den Einstellungen hinterlegten Studiengangs und Semesters als Html-Datei heruntergeladen, geparst und als ArrayList<Doppelstunde>-Objekt im Nutzerdaten-Objekt, welches im SpeicherLeser als Attrbitut gespeichert ist, gesichert.
@@ -213,7 +213,7 @@ public class Downloader
 										catch(Exception keineGefahrException)
 										{
 											//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird und bei Nichtvorhandensein eines Modulhandbuchs, dieses einfach zurückgesetzt wird und der Abrufvorgang abgebrochen wird.
-											SchreiberLeser.modulhandbuchNeuSetzen(new Modulhandbuch(new ArrayList<ModulhandbuchFach>()));
+											SchreiberLeser.setModulhandbuch(new Modulhandbuch(new ArrayList<ModulhandbuchFach>()));
 											downloadfortschrittProgressIndicator.setProgress(1);
 											return;
 										}
@@ -229,7 +229,7 @@ public class Downloader
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
-							SchreiberLeser.modulhandbuchNeuSetzen(Parser.modulhandbuchParsen(module));
+							SchreiberLeser.setModulhandbuch(Parser.modulhandbuchParsen(module));
 							Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 						}
 					}));
@@ -278,7 +278,7 @@ public class Downloader
 			naechsterMontagDatumCalendar.add(Calendar.DATE, 1);
 		}
 
-		SchreiberLeser.mensaplanNeuSetzen(Parser.mensaplanParsen(new MensaplanTupel(mensatage.get(0), mensatage.get(1), mensatage.get(2), mensatage.get(3), mensatage.get(4), mensatage.get(5))));
+		SchreiberLeser.setMensaplan(Parser.mensaplanParsen(new MensaplanTupel(mensatage.get(0), mensatage.get(1), mensatage.get(2), mensatage.get(3), mensatage.get(4), mensatage.get(5))));
 		Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 	}
 
@@ -286,7 +286,7 @@ public class Downloader
 	{
 		try
 		{
-			SchreiberLeser.treffpunkteNeuSetzen(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://stevensolleder.de/other/treffpunkte.json"), StandardCharsets.UTF_8))));
+			SchreiberLeser.setTreffpunkte(Parser.treffpunkteParsen(new JSONObject(IOUtils.toString(new URL("https://stevensolleder.de/other/treffpunkte.json"), StandardCharsets.UTF_8))));
 			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 		}
 		catch(Exception keineGefahrException)
@@ -359,7 +359,7 @@ public class Downloader
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
-							SchreiberLeser.dropdownMenueNeuSetzen(Parser.dropdownMenueParsen(arrayList));
+							SchreiberLeser.setDropdownMenue(Parser.dropdownMenueParsen(arrayList));
 							downloadfortschrittProgressIndicator.setProgress(1);
 						}
 					}));

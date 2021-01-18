@@ -21,7 +21,7 @@
                                 <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="anwendungsBereich" BorderPane.alignment="CENTER_RIGHT">
                                     <children>
                               <ProgressIndicator fx:id="stundenplanZuruecksetzungProgressIndicator" progress="0.0" visible="false" />
-                                        <Button fx:id="stundenplanZuruecksetzen" mnemonicParsing="false" onAction="#stundenplanZuruecksetzen" styleClass="buttonKritisch" text="Zurücksetzen und herunterladen" />
+                                        <Button fx:id="stundenplanZuruecksetzungButton" mnemonicParsing="false" onAction="#stundenplanZuruecksetzen" styleClass="buttonKritisch" text="Zurücksetzen und herunterladen" />
                                           <Button alignment="CENTER" mnemonicParsing="false" onAction="#doppelstundeHinzufuegen" text="Stunde hinzufügen" />
                                     </children>
                            <opaqueInsets>

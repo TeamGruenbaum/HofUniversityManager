@@ -13,12 +13,12 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.QuicklinksViewController">
     <center>
-        <WebView fx:id="anzeigeWebWiew"/>
+        <WebView fx:id="anzeigeWebView"/>
     </center>
     <bottom>
         <HBox styleClass="anwendungsBereich" spacing="10" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
             <Button onAction="#zurueckGehen" minWidth="80" mnemonicParsing="false" text="Zurück"  />
-            <Button onAction="#vorwärtsGehen" minWidth="80" mnemonicParsing="false" text="Vorwärts"  />
+            <Button onAction="#vorwaertsGehen" minWidth="80" mnemonicParsing="false" text="Vorwärts"  />
             <ProgressIndicator fx:id="websiteLadeProgressIndicator"></ProgressIndicator>
             <opaqueInsets>
                 <Insets />

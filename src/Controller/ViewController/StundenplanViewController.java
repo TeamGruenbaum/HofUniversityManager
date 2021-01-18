@@ -76,7 +76,7 @@ public class StundenplanViewController implements Initializable
 	private ObservableList<Doppelstunde> ohneTagObservableList;
 
 	@FXML private ProgressIndicator stundenplanZuruecksetzungProgressIndicator;
-	@FXML private Button stundenplanZuruecksetzen;
+	@FXML private Button stundenplanZuruecksetzungButton;
 
 
 	@FXML private TabPane faecherTabPane;
@@ -159,7 +159,7 @@ public class StundenplanViewController implements Initializable
 			{
 				stundenplanLaden();
 
-				stundenplanZuruecksetzen.setDisable(false);
+				stundenplanZuruecksetzungButton.setDisable(false);
 				stundenplanZuruecksetzungProgressIndicator.setVisible(false);
 			}
 		}));
@@ -280,7 +280,7 @@ public class StundenplanViewController implements Initializable
 			{
 				Downloader.setDownloadfortschrittProgressIndicator(stundenplanZuruecksetzungProgressIndicator);
 				Downloader.stundenplanAbrufen();
-				stundenplanZuruecksetzen.setDisable(true);
+				stundenplanZuruecksetzungButton.setDisable(true);
 				stundenplanZuruecksetzungProgressIndicator.setVisible(true);
 			}
 			else
@@ -470,10 +470,10 @@ public class StundenplanViewController implements Initializable
 		return doppelstundeHinzufuegenDialog.showAndWait();
 	}
 
-	private void tableViewInitialisieren(TableView<Doppelstunde> tableView, TableColumn<Doppelstunde,String> tableColumn, ObservableList<Doppelstunde> observableList, Callback<TableColumn.CellDataFeatures<Doppelstunde,String>,ObservableValue<String>> callback, BiConsumer<ActionEvent,TableView<Doppelstunde>> aendernConsumer, BiConsumer<ActionEvent,TableView<Doppelstunde>> loeschConsumer)
+	private void tableViewInitialisieren(TableView<Doppelstunde> tableView, TableColumn<Doppelstunde,String> tableColumn, ObservableList<Doppelstunde> observableList, Callback<TableColumn.CellDataFeatures<Doppelstunde,String>,ObservableValue<String>> callback, BiConsumer<ActionEvent,TableView<Doppelstunde>> aendernBiConsumer, BiConsumer<ActionEvent,TableView<Doppelstunde>> loeschenBiConsumer)
 	{
 		tableView.setItems(observableList);
-		aendernLoeschenKontextmenueHinzufuegen(tableView, aendernConsumer, loeschConsumer);
+		aendernLoeschenKontextmenueHinzufuegen(tableView, aendernBiConsumer, loeschenBiConsumer);
 		tableColumn.setCellValueFactory(callback);
 	}
 
