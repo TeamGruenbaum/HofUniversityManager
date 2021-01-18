@@ -5,6 +5,7 @@ package Controller.ViewController;
 import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.QuicklinksModel.Quicklinks;
+
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,11 +13,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import org.codefx.libfx.control.webview.WebViews;
 
-import javax.swing.event.HyperlinkEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.swing.event.HyperlinkEvent;
+
+import org.codefx.libfx.control.webview.WebViews;
 
 
 

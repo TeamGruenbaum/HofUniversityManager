@@ -6,13 +6,13 @@
 <?import javafx.scene.text.*?>
 
 <?import javafx.scene.web.WebView?>
-<StackPane fx:id="stackPane" styleClass="mainWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.GrundViewController">
+<StackPane fx:id="geruestStackPane" styleClass="mainWindow" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController.GrundViewController">
    <children>
-      <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <BorderPane fx:id="geruestBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <top>
             <HBox alignment="CENTER_RIGHT" maxHeight="80.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" styleClass="menu-bar" BorderPane.alignment="CENTER" fx:id="hbTop">
                <children>
-                  <Button fx:id="menuHauptButton" mnemonicParsing="false" onAction="#menuOeffnen" />
+                  <Button fx:id="menueHauptbuttonButton" mnemonicParsing="false" onAction="#hauptmenueOeffnen" />
                   <HBox nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
                         <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
@@ -22,7 +22,7 @@
                                     <Font name="Helvetica" size="24.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="ort" styleClass="menu-bc" text="Home" />
+                              <Label fx:id="ortLabel" styleClass="menu-bc" text="Home" />
                            </children>
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -37,6 +37,6 @@
             <Pane BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <WebView fx:id="webView" visible="false"></WebView>
+      <WebView fx:id="downloaderWebView" visible="false"></WebView>
    </children>
 </StackPane>

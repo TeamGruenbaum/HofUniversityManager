@@ -6,6 +6,13 @@ import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
 import Model.NutzerdatenModel.Thema;
+
+import java.net.URL;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -16,12 +23,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
-
-import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 
 

@@ -26,7 +26,7 @@
 }
 
 /* Menü-Leiste */
-#menuHauptButton {
+#menueHauptbuttonButton {
     -fx-background-color: transparent;
     -fx-cursor: hand;
 }

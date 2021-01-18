@@ -1,6 +1,7 @@
 package Controller.ViewController;
 
 
+
 import Controller.InformationsVermittlung.Downloader;
 import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Main;
@@ -14,10 +15,14 @@ import Model.OberflaechenModel.Menue;
 import Model.QuicklinksModel.Quicklinks;
 import javafx.animation.FadeTransition;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,119 +38,96 @@ import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 
 
 public class GrundViewController implements Initializable
 {
-
-    //Attribute auf welche durch mehrere Methoden zugegriffen wird
-    private static GridPane gridPane;
-    private AnchorPane anchorPane;
-
-    //Methoden und Attribute für den Zugriff auf die View
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private StackPane stackPane;
-
-    @FXML
-    private Label ort;
-
-    @FXML
-    private Button menuHauptButton;
-
-    @FXML
-    private WebView webView;
+    @FXML private BorderPane geruestBorderPane;
+    @FXML private StackPane geruestStackPane;
+    @FXML private Label ortLabel;
+    @FXML private Button menueHauptbuttonButton;
+    @FXML private WebView downloaderWebView;
+    
+    private static GridPane hauptmenueGridPane;
+    private AnchorPane hauptmenueAnchorPane;
 
     private boolean mensaplanEinmalHeruntergeladen, treffpunkteEinmalHeruntergeladen;
-    private Studiengang letzterStudiengang;
-    private Studiensemester letztesStudiensemester;
+    private Studiengang letzterStudiengangStudiengang;
+    private Studiensemester letztesStudiengangStudiensemester;
 
-    private static WebView uglyWebView;
-    private static Button uglyMenuHauptButton;
+    private static WebView staticDownloaderWebView;
+    private static Button staticMenuHauptbuttonButton;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-
         mensaplanEinmalHeruntergeladen=false;
         treffpunkteEinmalHeruntergeladen=false;
+        
+        ImageView hauptmenueIconImageView=new ImageView(new Image(getClass().getResourceAsStream("/Grafiken/dots-menu.png")));
+        hauptmenueIconImageView.setFitHeight(35);
+        hauptmenueIconImageView.setPreserveRatio(true);
 
-        //Initialisieren des Hauptmenuebuttons
-        ImageView view=new ImageView(new Image(getClass().getResourceAsStream("/Grafiken/dots-menu.png")));
-        view.setFitHeight(35);
-        view.setPreserveRatio(true);
+        menueHauptbuttonButton.setGraphic(hauptmenueIconImageView);
 
-        menuHauptButton.setGraphic(view);
+        setHoverEffekt(menueHauptbuttonButton, hauptmenueIconImageView);
 
-        hoverIconsEffect(menuHauptButton, view);
-
-        //Initialisieren des Hauptmenues
         int menuepunktHoeheBreite=90;
-
-        //GridPane initialisieren
-        gridPane=new GridPane();
-        gridPane.getStyleClass().add("icon-menu-karte");
-        ColumnConstraints columnConstraints=new ColumnConstraints();
-        columnConstraints.setMinWidth(menuepunktHoeheBreite);
-        columnConstraints.setMaxWidth(menuepunktHoeheBreite);
-        gridPane.getColumnConstraints().addAll(columnConstraints, columnConstraints, columnConstraints);
-        gridPane.addEventFilter(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->
-        {
-            mouseEvent.consume();
-        });
-
-        //Buttons erstellen und initialisieren
-        int k=0;
+        
+        hauptmenueGridPane =new GridPane();
+        hauptmenueGridPane.getStyleClass().add("icon-menu-karte");
+        ColumnConstraints abstandColumnConstraints=new ColumnConstraints();
+        abstandColumnConstraints.setMinWidth(menuepunktHoeheBreite);
+        abstandColumnConstraints.setMaxWidth(menuepunktHoeheBreite);
+        hauptmenueGridPane.getColumnConstraints().addAll(abstandColumnConstraints, abstandColumnConstraints, abstandColumnConstraints);
+        hauptmenueGridPane.addEventFilter(MouseEvent.MOUSE_CLICKED, Event::consume);
+        
+        int j=0;
         for(int i = 0; i<Menue.getMenuepunktInformationen().size(); i++)
         {
             if(i%3==0)
             {
                 if(i!=0)
                 {
-                    k++;
+                    j++;
                 }
 
-                RowConstraints rowConstraints=new RowConstraints();
-                rowConstraints.setMinHeight(menuepunktHoeheBreite);
-                rowConstraints.setMaxHeight(menuepunktHoeheBreite);
-                gridPane.getRowConstraints().add(rowConstraints);
+                RowConstraints abstandRowConstraints=new RowConstraints();
+                abstandRowConstraints.setMinHeight(menuepunktHoeheBreite);
+                abstandRowConstraints.setMaxHeight(menuepunktHoeheBreite);
+                hauptmenueGridPane.getRowConstraints().add(abstandRowConstraints);
             }
-
-            ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream("/Grafiken/"+Menue.getMenuepunktInformationen().get(i).getIconDateiname())));
-            imageView.setFitHeight(menuepunktHoeheBreite-55);
-            imageView.setPreserveRatio(true);
-
-            Button button=new Button();
+            
+            Button menuepunktButton=new Button();
             int finalI=i;
-            button.setOnAction((actionEvent)->
+            menuepunktButton.setOnAction((actionEvent)->
             {
                 SchreiberLeser.getNutzerdaten().setLetzterGeoeffneterMenuepunkt(Menue.getMenuepunktInformationen().get(finalI));
 
                 oeffneScene();
             });
-            button.setTooltip(new Tooltip(TextHelfer.grossschreiben(Menue.getMenuepunktInformationen().get(i).getZielanwendung().toString())));
-            button.getTooltip().getStyleClass().add("breadcrumb-menu");
-            button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            menuepunktButton.setTooltip(new Tooltip(TextHelfer.grossschreiben(Menue.getMenuepunktInformationen().get(i).getZielanwendung().toString())));
+            menuepunktButton.getTooltip().getStyleClass().add("breadcrumb-menu");
+            
+            menuepunktButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-            button.setGraphic(imageView);
-            button.getStyleClass().add("icon-menu-button");
+            ImageView menuepunktIconImageView=new ImageView(new Image(getClass().getResourceAsStream("/Grafiken/"+Menue.getMenuepunktInformationen().get(i).getIconDateiname())));
+            menuepunktIconImageView.setFitHeight(menuepunktHoeheBreite-55);
+            menuepunktIconImageView.setPreserveRatio(true);
+            menuepunktButton.setGraphic(menuepunktIconImageView);
+            menuepunktButton.getStyleClass().add("icon-menu-button");
+            setHoverEffekt(menuepunktButton, menuepunktIconImageView);
 
-            hoverIconsEffect(button, imageView);
-
-            gridPane.add(button, i%3, k);
+            hauptmenueGridPane.add(menuepunktButton, i%3, j);
         }
-
-        //AnchorPane initialisieren
-        anchorPane=new AnchorPane();
-        AnchorPane.setTopAnchor(gridPane, 70.0);
-        AnchorPane.setRightAnchor(gridPane, 10.0);
-        anchorPane.getChildren().add(gridPane);
-        anchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->
+        
+        hauptmenueAnchorPane =new AnchorPane();
+        AnchorPane.setTopAnchor(hauptmenueGridPane, 70.0);
+        AnchorPane.setRightAnchor(hauptmenueGridPane, 10.0);
+        hauptmenueAnchorPane.getChildren().add(hauptmenueGridPane);
+        hauptmenueAnchorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent mouseEvent)->
         {
             hauptmenueSchließen();
         });
@@ -160,43 +142,32 @@ public class GrundViewController implements Initializable
             oeffneScene();
         }
 
-        uglyWebView=webView;
-        uglyMenuHauptButton=menuHauptButton;
+        staticDownloaderWebView = downloaderWebView;
+        staticMenuHauptbuttonButton = menueHauptbuttonButton;
     }
 
-    @FXML
-    public void menuOeffnen()
+
+    //
+    @FXML public void hauptmenueOeffnen()
     {
-
-        fadeTransitionStandard(anchorPane, 300, Blende.EINBLENDEN);
-        stackPane.getChildren().add(anchorPane);
+        blenden(hauptmenueAnchorPane, 300, Blende.EINBLENDEN);
+        geruestStackPane.getChildren().add(hauptmenueAnchorPane);
     }
 
-    public static void setThema(Thema thema)
+    //
+    private void hauptmenueSchließen()
     {
-        ColorAdjust farbwechsel = new ColorAdjust();
-
-        if(thema == Thema.DUNKEL) {
-            Main.getRoot().setStyle("-menubar-color: #676767;"+"-font-color: #ffffff;"+"-anwendung-bgr: #404040;"+"-accent-color: #318eb1;"+"-warn-color: #691c1c;"+"-menubar-text-color: white;"+"-accent-color-accent: #266e8c;"+"-anwendung-bgr-accent: #4f4f4f;"+"-menubar-titel-color: #45c8ff");
-            farbwechsel.setBrightness(1);
-        } else {
-            Main.getRoot().setStyle("-menubar-color: white;"+"-font-color: #262626;"+"-anwendung-bgr: #e2e2e2;"+"-warn-color: #8a2828;"+"-menubar-text-color: black;"+"-accent-color-accent: #004a66;"+"-anwendung-bgr-accent: #ffffff;"+"-menubar-titel-color: #0072a0");
-            farbwechsel.setBrightness(0);
-        }
-
-        gridPane.getChildren().forEach((obj)->
-        {
-            obj.setEffect(farbwechsel);
-        });
-
-        getUglyMenuHauptButton().setEffect(farbwechsel);
+        new Timeline(
+                new KeyFrame(Duration.ZERO, event -> blenden(hauptmenueAnchorPane, 300, Blende.AUSBLENDEN)),
+                new KeyFrame(Duration.millis(300), event -> geruestStackPane.getChildren().remove(hauptmenueAnchorPane))
+        ).play();
     }
 
-    //Hilfsmethoden und Hilfsklasse allgemeiner Art
+
+    //
     private void oeffneScene()
     {
-
-        ort.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString()));
+        ortLabel.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString()));
 
         switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung())
         {
@@ -221,7 +192,7 @@ public class GrundViewController implements Initializable
                             if(newValue.doubleValue()==1.0)
                             {
                                 ladeSceneMitScrollPane();
-                                menuHauptButton.setDisable(false);
+                                menueHauptbuttonButton.setDisable(false);
                                 mensaplanEinmalHeruntergeladen=true;
                             }
                         }));
@@ -232,7 +203,7 @@ public class GrundViewController implements Initializable
                             protected Void call()
                             {
 
-                                Platform.runLater(()->menuHauptButton.setDisable(true));
+                                Platform.runLater(()-> menueHauptbuttonButton.setDisable(true));
                                 Downloader.mensaplanAbrufen();
 
                                 return null;
@@ -241,7 +212,7 @@ public class GrundViewController implements Initializable
                     }
                 }else
                 {
-                    oeffneFehlendeInternetverbindungDialogDaten();
+                    oeffneFehlendeInternetverbindungAlertHinweis();
 
                     ladeSceneMitScrollPane();
                 }
@@ -255,7 +226,7 @@ public class GrundViewController implements Initializable
                 {
                     if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de"))
                     {
-                        if(letzterStudiengang==SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()&&letztesStudiensemester==SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester())
+                        if(letzterStudiengangStudiengang ==SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang()&& letztesStudiengangStudiensemester ==SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester())
                         {
                             ladeSceneMitScrollPane();
                         }else
@@ -264,11 +235,11 @@ public class GrundViewController implements Initializable
                             {
                                 if(newValue.doubleValue()==1.0)
                                 {
-                                    letzterStudiengang=SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang();
-                                    letztesStudiensemester=SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester();
+                                    letzterStudiengangStudiengang =SchreiberLeser.getNutzerdaten().getAusgewaehlterStudiengang();
+                                    letztesStudiengangStudiensemester =SchreiberLeser.getNutzerdaten().getAusgewaehltesStudiensemester();
 
                                     ladeSceneMitScrollPane();
-                                    menuHauptButton.setDisable(false);
+                                    menueHauptbuttonButton.setDisable(false);
                                 }
                             }));
 
@@ -278,7 +249,7 @@ public class GrundViewController implements Initializable
                                 protected Void call() throws Exception
                                 {
 
-                                    menuHauptButton.setDisable(true);
+                                    menueHauptbuttonButton.setDisable(true);
                                     Downloader.modulhandbuchAbrufen();
                                     return null;
                                 }
@@ -286,102 +257,12 @@ public class GrundViewController implements Initializable
                     }
                     }else
                     {
-                        oeffneFehlendeInternetverbindungDialogDaten();
+                        oeffneFehlendeInternetverbindungAlertHinweis();
                         ladeSceneMitScrollPane();
                     }
                 }else
                 {
                     oeffneFehlenderStudiengangDialog();
-                }
-            }
-            break;
-            case PANOPTO:
-            {
-                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
-                {
-                    Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
-                }
-                else
-                {
-                    oeffneFehlendeInternetverbindungDialogDienst();
-                }
-
-            }
-            break;
-            case NEXTCLOUD:
-            {
-                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
-                {
-                    Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
-                }
-                else
-                {
-                    oeffneFehlendeInternetverbindungDialogDienst();
-                }
-            }
-            break;
-            case CAMPUSSPORT:
-            {
-                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
-                {
-                    ladeSceneOhneScrollPane();
-                }
-                else
-                {
-                    oeffneFehlendeInternetverbindungDialogDienst();
-                }
-            }break;
-            case BAYERNFAHRPLAN:
-            {
-                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
-                {
-                    ladeSceneOhneScrollPane();
-                }
-                else
-                {
-                    oeffneFehlendeInternetverbindungDialogDienst();
-                }
-            }break;
-            case TREFFPUNKTE:
-            {
-                ladeLadenScene();
-                hauptmenueSchließen();
-
-                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
-                {
-                    if(treffpunkteEinmalHeruntergeladen)
-                    {
-                        ladeSceneMitScrollPane();
-                    }
-                    else
-                    {
-                        ladeLadenScene().progressProperty().addListener(((observable, oldValue, newValue)->
-                        {
-                            if(newValue.doubleValue()==1.0)
-                            {
-                                ladeSceneMitScrollPane();
-                                menuHauptButton.setDisable(false);
-                                treffpunkteEinmalHeruntergeladen=true;
-                            }
-                        }));
-
-                        new Thread(new Task<Void>()
-                        {
-                            @Override
-                            protected Void call() throws Exception
-                            {
-                                menuHauptButton.setDisable(true);
-                                Downloader.treffpunkteAbrufen();
-                                return null;
-                            }
-                        }).start();
-                    }
-                }
-                else
-                {
-                    oeffneFehlendeInternetverbindungDialogDaten();
-
-                    ladeSceneMitScrollPane();
                 }
             }
             break;
@@ -402,9 +283,99 @@ public class GrundViewController implements Initializable
                 }
                 else
                 {
-                    oeffneFehlendeInternetverbindungDialogDienst();
+                    oeffneFehlendeInternetverbindungAlertWarnung();
+                }
+            }break;
+            case PANOPTO:
+            {
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                {
+                    Main.oeffneLinkInBrowser(Quicklinks.getPanoptoLink());
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungAlertWarnung();
+                }
+
+            }
+            break;
+            case NEXTCLOUD:
+            {
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getPanoptoLink()))
+                {
+                    Main.oeffneLinkInBrowser(Quicklinks.getNextcloudLink());
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungAlertWarnung();
                 }
             }
+            break;
+            case CAMPUSSPORT:
+            {
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getCampusSportLink()))
+                {
+                    ladeSceneOhneScrollPane();
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungAlertWarnung();
+                }
+            }break;
+            case TREFFPUNKTE:
+            {
+                ladeLadenScene();
+                hauptmenueSchließen();
+
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://nebenwohnung.stevensolleder.de"))
+                {
+                    if(treffpunkteEinmalHeruntergeladen)
+                    {
+                        ladeSceneMitScrollPane();
+                    }
+                    else
+                    {
+                        ladeLadenScene().progressProperty().addListener(((observable, oldValue, newValue)->
+                        {
+                            if(newValue.doubleValue()==1.0)
+                            {
+                                ladeSceneMitScrollPane();
+                                menueHauptbuttonButton.setDisable(false);
+                                treffpunkteEinmalHeruntergeladen=true;
+                            }
+                        }));
+
+                        new Thread(new Task<Void>()
+                        {
+                            @Override
+                            protected Void call() throws Exception
+                            {
+                                menueHauptbuttonButton.setDisable(true);
+                                Downloader.treffpunkteAbrufen();
+                                return null;
+                            }
+                        }).start();
+                    }
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungAlertHinweis();
+
+                    ladeSceneMitScrollPane();
+                }
+            }
+            break;
+            case BAYERNFAHRPLAN:
+            {
+                if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getBayernfahrplanLink()))
+                {
+                    ladeSceneOhneScrollPane();
+                }
+                else
+                {
+                    oeffneFehlendeInternetverbindungAlertWarnung();
+                }
+            }break;
             case EINSTELLUNGEN:
             {
                 ladeSceneMitScrollPane();
@@ -417,15 +388,8 @@ public class GrundViewController implements Initializable
         }
     }
 
-    private void hauptmenueSchließen()
-    {
-        Timeline ablauf = new Timeline(
-                new KeyFrame(Duration.ZERO, event -> fadeTransitionStandard(anchorPane, 300, Blende.AUSBLENDEN)),
-                new KeyFrame(Duration.millis(300), event -> stackPane.getChildren().remove(anchorPane))
-        );
-        ablauf.play();
-    }
 
+    //
     private void ladeSceneMitScrollPane()
     {
         try
@@ -436,9 +400,9 @@ public class GrundViewController implements Initializable
             sp.setFitToWidth(true);
             sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             sp.setContent(FXMLLoader.load(getClass().getResource("/View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
-            borderPane.setCenter(sp);
-            borderPane.getCenter().setViewOrder(1);
-            borderPane.getStyleClass().add("anwendungsBereich");
+            geruestBorderPane.setCenter(sp);
+            geruestBorderPane.getCenter().setViewOrder(1);
+            geruestBorderPane.getStyleClass().add("anwendungsBereich");
             hauptmenueSchließen();
         }
         catch(Exception keineGefahrExcpetion)
@@ -448,12 +412,13 @@ public class GrundViewController implements Initializable
         }
     }
 
+    //
     private void ladeSceneOhneScrollPane()
     {
         try
         {
-            borderPane.setCenter(FXMLLoader.load(getClass().getResource("/View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
-            borderPane.getCenter().setViewOrder(1);
+            geruestBorderPane.setCenter(FXMLLoader.load(getClass().getResource("/View/"+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getFxmlDateiname())));
+            geruestBorderPane.getCenter().setViewOrder(1);
             hauptmenueSchließen();
         }
         catch(Exception keineGefahrExcepttion)
@@ -463,55 +428,56 @@ public class GrundViewController implements Initializable
         }
     }
 
+    //
     private ProgressIndicator ladeLadenScene()
     {
-        BorderPane borderPane=new BorderPane();
-        borderPane.setMinHeight(Double.MIN_VALUE);
-        borderPane.setMinWidth(Double.MIN_VALUE);
+        BorderPane rahmenBorderPane=new BorderPane();
+        rahmenBorderPane.setMinHeight(Double.MIN_VALUE);
+        rahmenBorderPane.setMinWidth(Double.MIN_VALUE);
 
-        ProgressBar progressBar=new ProgressBar();
-        progressBar.setMinWidth(100);
+        ProgressBar downloadFortschrittProgressBar=new ProgressBar();
+        downloadFortschrittProgressBar.setMinWidth(100);
 
-        borderPane.setCenter(progressBar);
-        this.borderPane.setCenter(borderPane);
+        rahmenBorderPane.setCenter(downloadFortschrittProgressBar);
+        this.geruestBorderPane.setCenter(rahmenBorderPane);
 
-        Downloader.setDownloadfortschrittProgressIndicator(progressBar);
+        Downloader.setDownloadfortschrittProgressIndicator(downloadFortschrittProgressBar);
 
-        return progressBar;
+        return downloadFortschrittProgressBar;
     }
 
+    //
     private void ladeErsterStartScene()
     {
-        menuHauptButton.setDisable(true);
-        ort.setText("Erster Start");
+        menueHauptbuttonButton.setDisable(true);
+        ortLabel.setText("Erster Start");
         
         try
         {
-            Node node=FXMLLoader.load(getClass().getResource("/View/ErsterStartView.fxml"));
-            Button zuDenEinstellungenButton=(Button) node.lookup("#losgehts");
+            Node szeneNode=FXMLLoader.load(getClass().getResource("/View/ErsterStartView.fxml"));
+            Button zuDenEinstellungenButton=(Button) szeneNode.lookup("#losgehts");
             zuDenEinstellungenButton.setDisable(true);
             zuDenEinstellungenButton.setOnAction((actionEvent)->
             {
-                menuHauptButton.setDisable(false);
+                menueHauptbuttonButton.setDisable(false);
                 oeffneScene();
             });
-            ((Label) node.lookup("#text")).setWrapText(true);
 
-            ProgressIndicator progressIndicator=(ProgressIndicator) node.lookup("#dropdownMenueLadenProgressBar");
-            progressIndicator.progressProperty().addListener((observable, oldValue, newValue) ->
+            ((Label) szeneNode.lookup("#text")).setWrapText(true);
+
+            ProgressIndicator initialisierungProgressIndicator=(ProgressIndicator) szeneNode.lookup("#dropdownMenueLadenProgressBar");
+            initialisierungProgressIndicator.progressProperty().addListener((observable, oldValue, newValue) ->
             {
                 if(newValue.doubleValue()==1)
                 {
                     zuDenEinstellungenButton.setDisable(false);
                 }
             });
-            Downloader.setDownloadfortschrittProgressIndicator(progressIndicator);
+            Downloader.setDownloadfortschrittProgressIndicator(initialisierungProgressIndicator);
 
-            borderPane.setCenter(node);
+            geruestBorderPane.setCenter(szeneNode);
 
             Downloader.dropdownMenueAbrufen();
-
-
         }
         catch(Exception keinGefahreException)
         {
@@ -520,41 +486,68 @@ public class GrundViewController implements Initializable
         }
     }
 
+
+    //
     public static void oeffneFehlenderStudiengangDialog()
     {
-        Alert alert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor Du diese Funktion nutzen kannst!");
-        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("/View/CSS/Application.css").toExternalForm());
-        alert.setTitle("Studiengang und -semester setzen");
-        alert.setHeaderText("Warnung");
-        alert.initOwner(Main.getPrimaryStage());
-        alert.showAndWait();
+        Alert fehlenderStudiengangAlert=new Alert(Alert.AlertType.WARNING, "Der Studiengang und das Studiensemester müssen gesetzt werden, bevor Du diese Funktion nutzen kannst!");
+        fehlenderStudiengangAlert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("/View/CSS/Application.css").toExternalForm());
+        fehlenderStudiengangAlert.setTitle("Studiengang und -semester setzen");
+        fehlenderStudiengangAlert.setHeaderText("Warnung");
+        fehlenderStudiengangAlert.initOwner(Main.getPrimaryStage());
+        fehlenderStudiengangAlert.showAndWait();
     }
 
-    public static void oeffneFehlendeInternetverbindungDialogDienst()
+    //
+    public static void oeffneFehlendeInternetverbindungAlertWarnung()
     {
-        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Dieser Dienst ist aktuell nicht verfügbar.");
+        oeffneFehlendeInternetverbindungAlert("Es besteht keine Verbindung zum Internet. Dieser Dienst ist aktuell nicht verfügbar.");
     }
 
-    public static void oeffneFehlendeInternetverbindungDialogDaten()
+    //
+    public static void oeffneFehlendeInternetverbindungAlertHinweis()
     {
-        oeffneFehlendeInternetverbindungDialog("Es besteht keine Verbindung zum Internet. Eventuell sind keine oder veraltete Daten vorhanden.");
+        oeffneFehlendeInternetverbindungAlert("Es besteht keine Verbindung zum Internet. Eventuell sind keine oder veraltete Daten vorhanden.");
     }
 
-    private static void oeffneFehlendeInternetverbindungDialog(String content)
+    //
+    private static void oeffneFehlendeInternetverbindungAlert(String inhalt)
     {
-        Alert alert=new Alert(Alert.AlertType.WARNING, content);
-        alert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("/View/CSS/Application.css").toExternalForm());
-        alert.getDialogPane().setStyle(Main.getRoot().getStyle());
-        alert.setTitle("Keine Internetverbindung");
-        alert.setHeaderText("Hinweis");
-        alert.initOwner(Main.getPrimaryStage());
-        alert.showAndWait();
+        Alert fehlendeInternetverbindungAlert=new Alert(Alert.AlertType.WARNING, inhalt);
+        fehlendeInternetverbindungAlert.getDialogPane().getStylesheets().add(GrundViewController.class.getResource("/View/CSS/Application.css").toExternalForm());
+        fehlendeInternetverbindungAlert.getDialogPane().setStyle(Main.getRoot().getStyle());
+        fehlendeInternetverbindungAlert.setTitle("Keine Internetverbindung");
+        fehlendeInternetverbindungAlert.setHeaderText("Hinweis");
+        fehlendeInternetverbindungAlert.initOwner(Main.getPrimaryStage());
+        fehlendeInternetverbindungAlert.showAndWait();
     }
 
-    //Hilfsmethoden für visuelle Effekte
-    private void fadeTransitionStandard(Node node, int dauer, Blende blende) {
-        FadeTransition ft = new FadeTransition(Duration.millis(dauer), node);
-        if(blende == Blende.EINBLENDEN)
+
+    //
+    public static void setThema(Thema neuerWert)
+    {
+        ColorAdjust farbwechselColorAdjust = new ColorAdjust();
+
+        if(neuerWert == Thema.DUNKEL) {
+            Main.getRoot().setStyle("-menubar-color: #676767;"+"-font-color: #ffffff;"+"-anwendung-bgr: #404040;"+"-accent-color: #318eb1;"+"-warn-color: #691c1c;"+"-menubar-text-color: white;"+"-accent-color-accent: #266e8c;"+"-anwendung-bgr-accent: #4f4f4f;"+"-menubar-titel-color: #45c8ff");
+            farbwechselColorAdjust.setBrightness(1);
+        } else {
+            Main.getRoot().setStyle("-menubar-color: white;"+"-font-color: #262626;"+"-anwendung-bgr: #e2e2e2;"+"-warn-color: #8a2828;"+"-menubar-text-color: black;"+"-accent-color-accent: #004a66;"+"-anwendung-bgr-accent: #ffffff;"+"-menubar-titel-color: #0072a0");
+            farbwechselColorAdjust.setBrightness(0);
+        }
+
+        hauptmenueGridPane.getChildren().forEach((item)->
+        {
+            item.setEffect(farbwechselColorAdjust);
+        });
+
+        getStaticMenuHauptbuttonButton().setEffect(farbwechselColorAdjust);
+    }
+
+    //
+    private void blenden(Node zielNode, int dauer, Blende artBlende) {
+        FadeTransition ft = new FadeTransition(Duration.millis(dauer), zielNode);
+        if(artBlende == Blende.EINBLENDEN)
         {
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
@@ -567,33 +560,36 @@ public class GrundViewController implements Initializable
         ft.play();
     }
 
-    private void hoverIconsEffect(Node button, ImageView imageView)
+    //
+    private void setHoverEffekt(Node zielNode, ImageView zielImageView)
     {
-        FadeTransition ftHoverEnter = new FadeTransition(Duration.millis(180), imageView);
-        ftHoverEnter.setFromValue(1.0);
-        ftHoverEnter.setToValue(0.7);
+        FadeTransition hoverStartFadeTransition = new FadeTransition(Duration.millis(180), zielImageView);
+        hoverStartFadeTransition.setFromValue(1.0);
+        hoverStartFadeTransition.setToValue(0.7);
 
-        FadeTransition ftHoverExit = new FadeTransition(Duration.millis(180), imageView);
-        ftHoverExit.setFromValue(0.7);
-        ftHoverExit.setToValue(1.0);
+        FadeTransition hoverEndeFadeTransition = new FadeTransition(Duration.millis(180), zielImageView);
+        hoverEndeFadeTransition.setFromValue(0.7);
+        hoverEndeFadeTransition.setToValue(1.0);
 
-        button.setOnMouseEntered((MouseEvent) -> {
-            ftHoverEnter.play();
+        zielNode.setOnMouseEntered((MouseEvent) -> {
+            hoverStartFadeTransition.play();
         });
 
-        button.setOnMouseExited((MouseEvent) -> {
-            ftHoverExit.play();
+        zielNode.setOnMouseExited((MouseEvent) -> {
+            hoverEndeFadeTransition.play();
         });
     }
 
-    //Weitere
+
+    //
     public static WebView getUglyWebview()
     {
-        return uglyWebView;
+        return staticDownloaderWebView;
     }
 
-    public static Button getUglyMenuHauptButton()
+    //
+    public static Button getStaticMenuHauptbuttonButton()
     {
-        return uglyMenuHauptButton;
+        return staticMenuHauptbuttonButton;
     }
 }

@@ -7,6 +7,14 @@ import Controller.Speicher.SchreiberLeser;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
 import Model.Tag;
+
+import java.net.URL;
+import java.text.NumberFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,13 +23,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
-
-import java.net.URL;
-import java.text.NumberFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
 import javafx.util.StringConverter;
 
 

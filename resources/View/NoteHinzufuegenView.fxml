@@ -36,7 +36,7 @@
          <children>
             <ChoiceBox fx:id="fachChoiceBox" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
             <Button fx:id="fachHinzufuegeButton" mnemonicParsing="false" text="Hinzufügen" />
-            <Button fx:id="fachLoeschButton" mnemonicParsing="false" text="Entfernen" />
+            <Button fx:id="fachLoeschenButton" mnemonicParsing="false" text="Entfernen" />
          </children>
       </HBox>
    </children>
