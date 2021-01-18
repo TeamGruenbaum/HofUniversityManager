@@ -9,18 +9,18 @@ import java.util.ArrayList;
 
 public class Modulhandbuch implements Serializable
 {
-    private ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
+	private final ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
 
 
 
-    public Modulhandbuch(ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
-    {
-        this.modulhandbuchFaecher=modulhandbuchFaecher;
-    }
+	public Modulhandbuch(ArrayList<ModulhandbuchFach> modulhandbuchFaecher)
+	{
+		this.modulhandbuchFaecher=modulhandbuchFaecher;
+	}
 
 
-    public ArrayList<ModulhandbuchFach> getModulhandbuchFaecher()
-    {
-        return modulhandbuchFaecher;
-    }
+	public ArrayList<ModulhandbuchFach> getModulhandbuchFaecher()
+	{
+		return modulhandbuchFaecher;
+	}
 }

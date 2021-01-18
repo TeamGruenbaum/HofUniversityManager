@@ -8,38 +8,39 @@ import java.io.Serializable;
 
 public abstract class Treffpunkt implements Serializable
 {
-    private String name;
-    private String ort;
-    private boolean wetterunabhaengig;
-    private String information;
+	private final String name;
+	private final String ort;
+	private final boolean wetterunabhaengig;
+	private final String information;
 
 
 
-    protected Treffpunkt(String name, String ort, boolean wetterunabhaengig, String information) {
-        this.name=name;
-        this.ort=ort;
-        this.wetterunabhaengig=wetterunabhaengig;
-        this.information=information;
-    }
+	protected Treffpunkt(String name, String ort, boolean wetterunabhaengig, String information)
+	{
+		this.name=name;
+		this.ort=ort;
+		this.wetterunabhaengig=wetterunabhaengig;
+		this.information=information;
+	}
 
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public String getOrt()
-    {
-        return ort;
-    }
+	public String getOrt()
+	{
+		return ort;
+	}
 
-    public boolean getWetterunabhaengig()
-    {
-        return wetterunabhaengig;
-    }
+	public boolean getWetterunabhaengig()
+	{
+		return wetterunabhaengig;
+	}
 
-    public String getInformation()
-    {
-        return information;
-    }
+	public String getInformation()
+	{
+		return information;
+	}
 }

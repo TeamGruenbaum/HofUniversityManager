@@ -8,5 +8,5 @@ import java.io.Serializable;
 
 public enum Thema implements Serializable
 {
-    HELL, DUNKEL;
+	HELL, DUNKEL
 }

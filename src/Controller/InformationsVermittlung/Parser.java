@@ -32,495 +32,406 @@ import org.jsoup.nodes.Element;
 
 public class Parser
 {
-    //Diese Methode parst das Modulhandbuch des ausgewählten Studiengangs und Semesters.
-    public static Modulhandbuch modulhandbuchParsen(ArrayList<Document> Documents)
-    {
-        ArrayList<ModulhandbuchFach> modulhandbuchFaecher=new ArrayList<>();
-
-        for(int i=0; i<Documents.size(); i++)
-        {
-            modulhandbuchFaecher.add(getModulhandbuchFach(Documents.get(i)));
-        }
-
-
-        return new Modulhandbuch(modulhandbuchFaecher);
-    }
-
-    //Diese Methode parst den Mensaplan des Studentenwerks Oberfranken.
-    public static Mensaplan mensaplanParsen(MensaplanTupel mensaplanTupel)
-    {
-        Tagesplan montagsTagesplan= getTagesplan(mensaplanTupel.getMontag().getDokument(), Tag.MONTAG, mensaplanTupel.getMontag().getDatum());
-        Tagesplan dienstagsTagesplan= getTagesplan(mensaplanTupel.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanTupel.getDienstag().getDatum());
-        Tagesplan mittwochsTagesplan= getTagesplan(mensaplanTupel.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanTupel.getMittwoch().getDatum());
-        Tagesplan donnerstagsTagesplan= getTagesplan(mensaplanTupel.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanTupel.getDonnerstag().getDatum());
-        Tagesplan freitagsTagesplan= getTagesplan(mensaplanTupel.getFreitag().getDokument(), Tag.FREITAG, mensaplanTupel.getFreitag().getDatum());
-        Tagesplan samstagsTagesplan= getTagesplan(mensaplanTupel.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanTupel.getSamstag().getDatum());
-
-        ArrayList<Tagesplan> tagesplaene=new ArrayList<Tagesplan>();
-        tagesplaene.addAll(Arrays.asList(montagsTagesplan, dienstagsTagesplan, mittwochsTagesplan, donnerstagsTagesplan, freitagsTagesplan, samstagsTagesplan));
-
-
-        return new Mensaplan(tagesplaene);
-    }
-
-    //Diese Methode parst die Treffpunkte aus einer auf einem Server bereitliegenden JSON Datei.
-    public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
-    {
-        ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
-
-        JSONArray restaurants=jsonObject.getJSONArray("restaurants");
-        for(int i=0; i<restaurants.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
-
-            treffpunkte.add(new Restaurant
-                    (
-                        aktuellesJsonObject.getString("name"),
-                        aktuellesJsonObject.getString("ort"),
-                        aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                        aktuellesJsonObject.getString("information"),
-                        aktuellesJsonObject.getString("art"),
-                        aktuellesJsonObject.getString("nationalitaet"),
-                        aktuellesJsonObject.getBoolean("lieferdienst")
-                    )
-            );
-        }
-
-        JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
-        for(int i=0; i<freizeitaktivitaeten.length(); i++)
-        {
-            JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
-
-            treffpunkte.add(new Freizeitaktivitaet
-                    (
-                        aktuellesJsonObject.getString("name"),
-                        aktuellesJsonObject.getString("ort"),
-                        aktuellesJsonObject.getBoolean("wetterunabhaengig"),
-                        aktuellesJsonObject.getString("information"),
-                        aktuellesJsonObject.getString("ambiente")
-                    )
-            );
-        }
-
-
-        return new Treffpunkte(treffpunkte);
-    }
-
-    //Diese Methode parst den Stundenplan des ausgewählten Studiengangs und Semesters.
-    public static ArrayList<Doppelstunde> stundenplanParsen(Document stundenplanDocument)
-    {
-        ArrayList<Doppelstunde> doppelstunden=new ArrayList<Doppelstunde>();
-
-        String wochentag="";
-        boolean letzteTabelle=false;
-
-        for(int i=0;i<stundenplanDocument.getElementsByTag("table").size();i++)
-        {
-            if(stundenplanDocument.getElementsByTag("table").get(i).select("thead").size()!=0)
-            {
-                wochentag=stundenplanDocument.getElementsByTag("table").get(i).select("thead").get(0).text();
-            }
-            else
-            {
-                break;
-            }
-
-            switch(wochentag)
-            {
-                case "Tag Beginn Ende Veranstaltung Dozent Typ Raum":
-                    if(stundenplanDocument.getElementsByTag("table").get(i).select("tbody").size()==1)
-                    {
-                        doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, null, i);
-                        letzteTabelle=true;
-                    }
-                    break;
-                case "Montag":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.MONTAG, i);
-                    break;
-                case "Dienstag":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.DIENSTAG, i);
-                    break;
-                case "Mittwoch":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.MITTWOCH, i);
-                    break;
-                case "Donnerstag":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.DONNERSTAG, i);
-                    break;
-                case "Freitag":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.FREITAG, i);
-                    break;
-                case "Samstag":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.SAMSTAG, i);
-                    break;
-                case "weitere Veranstaltungen":
-                    doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, null, i);
-                    letzteTabelle=true;
-                    break;
-            }
-
-            if((wochentag.compareTo("Freitag")==0 && stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").size()!=0 && stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("Samstag")!=0 && stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0) ||
-                (wochentag.compareTo("Samstag")==0 && stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").size()!=0 && stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0) ||
-                letzteTabelle)
-            {
-                break;
-            }
-        }
-
-
-        return doppelstunden;
-    }
-
-    //Diese Methode parst das Dropdownmenü der Studiengänge und die jeweils möglichen Semester.
-    public static DropdownMenue dropdownMenueParsen(ArrayList<NameKuerzelDocumentTripel> nameKuerzelDocumentTripel)
-    {
-        Document stundenplanDocument=null;
-        String studiengangkuerzel="";
-        String studiengangname="";
-
-        ArrayList<Studiengang> studiengaenge=new ArrayList<Studiengang>();
-        for(int i=0;i<nameKuerzelDocumentTripel.size();i++)
-        {
-            stundenplanDocument=nameKuerzelDocumentTripel.get(i).getStundenplanDokument();
-            studiengangname=nameKuerzelDocumentTripel.get(i).getStudiengangName();
-            studiengangkuerzel=nameKuerzelDocumentTripel.get(i).getStudiengangKuerzel();
-
-            ArrayList<Studiensemester> studiensemester=new ArrayList<Studiensemester>();
-            for(int j=1;j<stundenplanDocument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().size();j++)
-            {
-                studiensemester.add(new Studiensemester
-                (
-                    stundenplanDocument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().get(j).text(),
-                    stundenplanDocument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().get(j).attr("value")
-                ));
-            }
-
-            studiengaenge.add(new Studiengang
-            (
-                studiengangname, studiengangkuerzel, studiensemester
-            ));
-        }
-
-
-        return new DropdownMenue(studiengaenge);
-    }
-
-    //Diese Methode parst die Stundenplanaenderungen des ausgewählten Studiengangs und Semesters.
-    public static Stundenplanaenderungen stundenplanaenderungenParsen(Document stundenplanaenderungenDocument)
-    {
-        ArrayList<Stundenplanaenderung> stundenplanaenderungen=new ArrayList<Stundenplanaenderung>();
-
-        Element tabelleElement=stundenplanaenderungenDocument.getElementsByTag("table").get(0);
-        Element zeileElement=null;
-
-        if(tabelleElement.getElementsByTag("tbody").size()!=0)
-        {
-            for(int i=0; i<tabelleElement.select("tbody>tr").size(); i++)
-            {
-                zeileElement=tabelleElement.select("tbody>tr").get(i);
-                stundenplanaenderungen.add(new Stundenplanaenderung
-                (
-                        zeileElement.getElementsByTag("td").get(1).text(),
-                        zeileElement.getElementsByTag("td").get(2).text(),
-                        getTermin(zeileElement.getElementsByTag("td").get(3).text()),
-                        getTermin(zeileElement.getElementsByTag("td").get(4).text())
-                ));
-            }
-        }
-
-
-        return new Stundenplanaenderungen(stundenplanaenderungen);
-    }
-
-
-    //Diese Hilfsmethode parst nacheinander die Informationen für jedes Fach des Modulhandbuchs.
-    private static ModulhandbuchFach getModulhandbuchFach(Document modulhandbuchFachDocument)
-    {
-        Element tabelleElement=modulhandbuchFachDocument.getElementsByTag("tbody").first();
-
-
-        return new ModulhandbuchFach(
-                modulhandbuchFachDocument.select("h2:not([class])").text(),
-                tabelleElement.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(12).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(13).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(14).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(15).getElementsByTag("td").get(1).text(),
-                tabelleElement.getElementsByTag("tr").get(16).getElementsByTag("td").get(1).text()
-        );
-    }
-
-    //Diese Hilfsmethode parst die Gerichte an einem bestimmten Wochentag und Datum.
-    private static Tagesplan getTagesplan(Document tagesplanDocument, Tag tag, Datum datum)
-    {
-        ArrayList<Gericht> gerichte=new ArrayList<Gericht>();
-        Element gerichtElement=null;
-
-        //Hauptgerichte
-        if (tagesplanDocument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").size()!=0)
-        {
-            for(int i=0; i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr")).size(); i++)
-            {
-                gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr").get(i);
-                gerichte.add(
-                        new Gericht("Hauptgericht",
-                                gerichtElement.getElementsByTag("td").get(0).ownText(),
-                                getBeschreibung(gerichtElement.getElementsByTag("td").get(2)),
-                                Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
-                );
-            }
-        }
-
-        //Beilagen
-        if (tagesplanDocument.select("div.tx-bwrkspeiseplan__beilagen").size()!=0)
-        {
-            for(int i=0; i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr")).size(); i++)
-            {
-                gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr").get(i);
-                gerichte.add(
-                        new Gericht("Beilage",
-                                gerichtElement.getElementsByTag("td").get(0).ownText(),
-                                getBeschreibung(gerichtElement.getElementsByTag("td").get(2)),
-                                Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
-                );
-            }
-        }
-
-        //Nachspeisen
-        if (tagesplanDocument.select("div.tx-bwrkspeiseplan__desserts").size()!=0)
-        {
-            for(int i=0; i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr")).size(); i++)
-            {
-                gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr").get(i);
-                gerichte.add(
-                        new Gericht("Nachspeise",
-                                gerichtElement.getElementsByTag("td").get(0).ownText(),
-                                getBeschreibung(gerichtElement.getElementsByTag("td").get(2)),
-                                Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
-                );
-            }
-        }
-
-        //Snacks, Salate
-        if (tagesplanDocument.select("div.tx-bwrkspeiseplan__salatsuppen").size()!=0)
-        {
-            for(int i=0; i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr")).size(); i++)
-            {
-                gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr").get(i);
-                gerichte.add(
-                        new Gericht("Snack, Salat",
-                                gerichtElement.getElementsByTag("td").get(0).ownText(),
-                                getBeschreibung(gerichtElement.getElementsByTag("td").get(2)),
-                                Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2,6).replace(',', '.')))
-                );
-            }
-        }
-
-
-        return new Tagesplan(gerichte, tag, datum);
-    }
-
-    //Diese Hilfsmethode parst die Beschreibung für ein bestimmtes Gericht anhand seiner Icons auf der Seite des Studentenwerks Oberfranken.
-    private static String getBeschreibung(Element iconElement)
-    {
-        String beschreibung="";
-
-        for(int i=0; i<iconElement.childrenSize(); i++)
-        {
-            if ((iconElement.getElementsByTag("span")).size() != 0)
-            {
-                if (iconElement.child(i).getElementsByTag("span").get(0).attr("class").equals("icon__not-veggie"))
-                {
-                    beschreibung += "Tier (Lab/Gelatine/Honig)";
-                }
-            }
-            else if (iconElement.child(i).getElementsByTag("i").size() != 0)
-            {
-                switch (iconElement.child(i).getElementsByTag("i").get(0).attr("class"))
-                {
-                    case "icon icon-schwein":
-                        beschreibung += "Schwein";
-                        break;
-                    case "icon icon-hahn":
-                        beschreibung += "Geflügel";
-                        break;
-                    case "icon icon-blaetter":
-                        beschreibung += "Vegetarisch";
-                        break;
-                    case "icon icon-topf":
-                        beschreibung += "Hausgemacht";
-                        break;
-                    case "icon icon-kuh":
-                        beschreibung += "Rind";
-                        break;
-                    case "icon icon-fisch":
-                        beschreibung += "Fisch";
-                        break;
-                    case "icon icon-franken":
-                        beschreibung += "Regional";
-                        break;
-                    case "icon icon-schaf":
-                        beschreibung += "Schaf";
-                        break;
-                    case "icon icon-krabbe":
-                        beschreibung += "Meeresfrüchte";
-                        break;
-                    case "icon icon-hirsch":
-                        beschreibung += "Wild";
-                        break;
-                    default:
-                        beschreibung += "Nachhaltiger Fang";
-                        break;
-                }
-            }
-            else if (iconElement.getElementsByTag("img").size() != 0)
-            {
-                switch (iconElement.child(i).getElementsByTag("img").get(0).attr("src"))
-                {
-                    case "fileadmin/templates/default/img/icons/uEA03-karotte.png":
-                        beschreibung += "Vegan";
-                        break;
-                    case "fileadmin/templates/default/img/icons/uEA04-kraeuter.png":
-                        beschreibung += "Kräuterküche";
-                        break;
-                    case "fileadmin/templates/default/img/logos/icon_mensavital.png":
-                        beschreibung += "Mensa-Vital - eine Marke der Studentenwerke";
-                        break;
-                }
-            }
-
-            if(i<(iconElement.childrenSize()-1))
-            {
-                beschreibung+=", ";
-            }
-        }
-
-
-        return beschreibung;
-    }
-
-    //Diese Hilfsmethode parst nacheinander die Informationen für jede Doppelstunde des Stundenplans.
-    private static void doppelstundeHinzufuegen(ArrayList<Doppelstunde> doppelstunden, Document stundenplanDocument, Tag tag, int zaehler)
-    {
-        Element aktuelleDoppelstundeElement=null;
-        Datum doppelstundeDatum=null;
-        Tag datumsTag=tag;
-
-        for(int j=0;j<stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").size();j++)
-        {
-            aktuelleDoppelstundeElement=stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").get(j);
-            doppelstundeDatum=getDoppelstundenDatum(aktuelleDoppelstundeElement);
-
-            //Ermittle den Wochentag der Doppelstunde über ihr Datum; ignoriere hierbei "weitere Veranstaltungen", die kein Datum besitzen
-            if(tag==null && doppelstundeDatum!=null)
-            {
-                switch(LocalDate.of(doppelstundeDatum.getJahr(),doppelstundeDatum.getMonat(),doppelstundeDatum.getTag()).getDayOfWeek())
-                {
-                    case MONDAY:
-                        datumsTag=Tag.MONTAG;
-                        break;
-                    case TUESDAY:
-                        datumsTag=Tag.DIENSTAG;
-                        break;
-                    case WEDNESDAY:
-                        datumsTag=Tag.MITTWOCH;
-                        break;
-                    case THURSDAY:
-                        datumsTag=Tag.DONNERSTAG;
-                        break;
-                    case FRIDAY:
-                        datumsTag=Tag.FREITAG;
-                        break;
-                    case SATURDAY:
-                        datumsTag=Tag.SAMSTAG;
-                        break;
-                    case SUNDAY:
-                        datumsTag=Tag.SONNTAG;
-                        break;
-                }
-            }
-
-            doppelstunden.add(new Doppelstunde
-                    (
-                        datumsTag,
-                            doppelstundeDatum,
-                            getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,1),
-                            getDoppelstundenUhrzeit(aktuelleDoppelstundeElement,2),
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text().compareTo("")==0?null:aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text(),
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(3).text().replace("\n", "").replace("\r", ""),
-                            aktuelleDoppelstundeElement.getElementsByTag("td").get(4).text()
-
-                    )
-            );
-        };
-    }
-
-    //Diese Hilfsmethode parst das Datum einer Doppelstunde, wenn eins vorhanden ist.
-    private static Datum getDoppelstundenDatum(Element aktuelleDoppelstundeElement)
-    {
-        Datum datum=null;
-
-        if(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().compareTo("")!=0)
-        {
-            datum=new Datum
-                    (
-                            Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().substring(0,2)),
-                            Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().substring(3,5)),
-                            Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().substring(6,10))
-                    );
-        }
-
-
-        return datum;
-    }
-
-    //Diese Hilfsmethode parst die Uhrzeit des Beginns oder Endes einer Doppelstunde, wenn sie vorhanden ist.
-    private static Uhrzeit getDoppelstundenUhrzeit(Element aktuelleDoppelstundeElement, int index)
-    {
-        Uhrzeit uhrzeit=null;
-
-        if(aktuelleDoppelstundeElement.getElementsByTag("td").get(index).text().compareTo("")!=0)
-        {
-            uhrzeit=new Uhrzeit
-            (
-                    Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(index).text().substring(0,2)),
-                    Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(index).text().substring(3,5))
-            );
-        }
-
-        
-        return uhrzeit;
-    }
-
-    //Diese Hilfsmethode gibt einen Termin basierend auf einem String, der aus Datum, Uhrzeit und Raum besteht, zurück.
-    private static Termin getTermin(String termintext)
-    {
-        Pattern pattern=Pattern.compile("(^\\d{2}.\\d{2}.\\d{4}\\n)(\\d{2}:\\d{2}\\sUhr\\n)(.+)");
-        Matcher matcher=pattern.matcher(termintext);
-        matcher.matches();
-        Termin termin=null;
-
-        if(matcher.matches())
-        {
-            termin=new Termin
-            (
-                new Datum(Integer.parseInt(matcher.group(1).substring(0,2)),Integer.parseInt(matcher.group(1).substring(3,5)),Integer.parseInt(matcher.group(1).substring(6,10))),
-                new Uhrzeit(Integer.parseInt(matcher.group(2).substring(0,2)),Integer.parseInt(matcher.group(2).substring(3,5))),
-                matcher.group(3)
-            );
-        }
-
-
-        return termin;
-    }
+	//Diese Methode parst das Modulhandbuch des ausgewählten Studiengangs und Semesters.
+	public static Modulhandbuch modulhandbuchParsen(ArrayList<Document> Documents)
+	{
+		ArrayList<ModulhandbuchFach> modulhandbuchFaecher=new ArrayList<>();
+
+		for(int i=0;i<Documents.size();i++)
+		{
+			modulhandbuchFaecher.add(getModulhandbuchFach(Documents.get(i)));
+		}
+
+
+		return new Modulhandbuch(modulhandbuchFaecher);
+	}
+
+	//Diese Methode parst den Mensaplan des Studentenwerks Oberfranken.
+	public static Mensaplan mensaplanParsen(MensaplanTupel mensaplanTupel)
+	{
+		Tagesplan montagsTagesplan=getTagesplan(mensaplanTupel.getMontag().getDokument(), Tag.MONTAG, mensaplanTupel.getMontag().getDatum());
+		Tagesplan dienstagsTagesplan=getTagesplan(mensaplanTupel.getDienstag().getDokument(), Tag.DIENSTAG, mensaplanTupel.getDienstag().getDatum());
+		Tagesplan mittwochsTagesplan=getTagesplan(mensaplanTupel.getMittwoch().getDokument(), Tag.MITTWOCH, mensaplanTupel.getMittwoch().getDatum());
+		Tagesplan donnerstagsTagesplan=getTagesplan(mensaplanTupel.getDonnerstag().getDokument(), Tag.DONNERSTAG, mensaplanTupel.getDonnerstag().getDatum());
+		Tagesplan freitagsTagesplan=getTagesplan(mensaplanTupel.getFreitag().getDokument(), Tag.FREITAG, mensaplanTupel.getFreitag().getDatum());
+		Tagesplan samstagsTagesplan=getTagesplan(mensaplanTupel.getSamstag().getDokument(), Tag.SAMSTAG, mensaplanTupel.getSamstag().getDatum());
+
+		ArrayList<Tagesplan> tagesplaene=new ArrayList<Tagesplan>();
+		tagesplaene.addAll(Arrays.asList(montagsTagesplan, dienstagsTagesplan, mittwochsTagesplan, donnerstagsTagesplan, freitagsTagesplan, samstagsTagesplan));
+
+
+		return new Mensaplan(tagesplaene);
+	}
+
+	//Diese Methode parst die Treffpunkte aus einer auf einem Server bereitliegenden JSON Datei.
+	public static Treffpunkte treffpunkteParsen(JSONObject jsonObject)
+	{
+		ArrayList<Treffpunkt> treffpunkte=new ArrayList<Treffpunkt>();
+
+		JSONArray restaurants=jsonObject.getJSONArray("restaurants");
+		for(int i=0;i<restaurants.length();i++)
+		{
+			JSONObject aktuellesJsonObject=restaurants.getJSONObject(i);
+
+			treffpunkte.add(new Restaurant(aktuellesJsonObject.getString("name"), aktuellesJsonObject.getString("ort"), aktuellesJsonObject.getBoolean("wetterunabhaengig"), aktuellesJsonObject.getString("information"), aktuellesJsonObject.getString("art"), aktuellesJsonObject.getString("nationalitaet"), aktuellesJsonObject.getBoolean("lieferdienst")));
+		}
+
+		JSONArray freizeitaktivitaeten=jsonObject.getJSONArray("freizeitaktivitaeten");
+		for(int i=0;i<freizeitaktivitaeten.length();i++)
+		{
+			JSONObject aktuellesJsonObject=freizeitaktivitaeten.getJSONObject(i);
+
+			treffpunkte.add(new Freizeitaktivitaet(aktuellesJsonObject.getString("name"), aktuellesJsonObject.getString("ort"), aktuellesJsonObject.getBoolean("wetterunabhaengig"), aktuellesJsonObject.getString("information"), aktuellesJsonObject.getString("ambiente")));
+		}
+
+
+		return new Treffpunkte(treffpunkte);
+	}
+
+	//Diese Methode parst den Stundenplan des ausgewählten Studiengangs und Semesters.
+	public static ArrayList<Doppelstunde> stundenplanParsen(Document stundenplanDocument)
+	{
+		ArrayList<Doppelstunde> doppelstunden=new ArrayList<Doppelstunde>();
+
+		String wochentag="";
+		boolean letzteTabelle=false;
+
+		for(int i=0;i<stundenplanDocument.getElementsByTag("table").size();i++)
+		{
+			if(stundenplanDocument.getElementsByTag("table").get(i).select("thead").size()!=0)
+			{
+				wochentag=stundenplanDocument.getElementsByTag("table").get(i).select("thead").get(0).text();
+			}
+			else
+			{
+				break;
+			}
+
+			switch(wochentag)
+			{
+				case "Tag Beginn Ende Veranstaltung Dozent Typ Raum":
+					if(stundenplanDocument.getElementsByTag("table").get(i).select("tbody").size()==1)
+					{
+						doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, null, i);
+						letzteTabelle=true;
+					}
+					break;
+				case "Montag":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.MONTAG, i);
+					break;
+				case "Dienstag":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.DIENSTAG, i);
+					break;
+				case "Mittwoch":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.MITTWOCH, i);
+					break;
+				case "Donnerstag":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.DONNERSTAG, i);
+					break;
+				case "Freitag":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.FREITAG, i);
+					break;
+				case "Samstag":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, Tag.SAMSTAG, i);
+					break;
+				case "weitere Veranstaltungen":
+					doppelstundeHinzufuegen(doppelstunden, stundenplanDocument, null, i);
+					letzteTabelle=true;
+					break;
+			}
+
+			if((wochentag.compareTo("Freitag")==0&&stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").size()!=0&&stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("Samstag")!=0&&stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0)||(wochentag.compareTo("Samstag")==0&&stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").size()!=0&&stundenplanDocument.getElementsByTag("table").get(i+1).select("thead").get(0).text().compareTo("weitere Veranstaltungen")!=0)||letzteTabelle)
+			{
+				break;
+			}
+		}
+
+
+		return doppelstunden;
+	}
+
+	//Diese Methode parst das Dropdownmenü der Studiengänge und die jeweils möglichen Semester.
+	public static DropdownMenue dropdownMenueParsen(ArrayList<NameKuerzelDocumentTripel> nameKuerzelDocumentTripel)
+	{
+		Document stundenplanDocument=null;
+		String studiengangkuerzel="";
+		String studiengangname="";
+
+		ArrayList<Studiengang> studiengaenge=new ArrayList<Studiengang>();
+		for(int i=0;i<nameKuerzelDocumentTripel.size();i++)
+		{
+			stundenplanDocument=nameKuerzelDocumentTripel.get(i).getStundenplanDokument();
+			studiengangname=nameKuerzelDocumentTripel.get(i).getStudiengangName();
+			studiengangkuerzel=nameKuerzelDocumentTripel.get(i).getStudiengangKuerzel();
+
+			ArrayList<Studiensemester> studiensemester=new ArrayList<Studiensemester>();
+			for(int j=1;j<stundenplanDocument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().size();j++)
+			{
+				studiensemester.add(new Studiensemester(stundenplanDocument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().get(j).text(), stundenplanDocument.select("select[name='tx_stundenplan_stundenplan[semester]']").first().children().get(j).attr("value")));
+			}
+
+			studiengaenge.add(new Studiengang(studiengangname, studiengangkuerzel, studiensemester));
+		}
+
+
+		return new DropdownMenue(studiengaenge);
+	}
+
+	//Diese Methode parst die Stundenplanaenderungen des ausgewählten Studiengangs und Semesters.
+	public static Stundenplanaenderungen stundenplanaenderungenParsen(Document stundenplanaenderungenDocument)
+	{
+		ArrayList<Stundenplanaenderung> stundenplanaenderungen=new ArrayList<Stundenplanaenderung>();
+
+		Element tabelleElement=stundenplanaenderungenDocument.getElementsByTag("table").get(0);
+		Element zeileElement=null;
+
+		if(tabelleElement.getElementsByTag("tbody").size()!=0)
+		{
+			for(int i=0;i<tabelleElement.select("tbody>tr").size();i++)
+			{
+				zeileElement=tabelleElement.select("tbody>tr").get(i);
+				stundenplanaenderungen.add(new Stundenplanaenderung(zeileElement.getElementsByTag("td").get(1).text(), zeileElement.getElementsByTag("td").get(2).text(), getTermin(zeileElement.getElementsByTag("td").get(3).text()), getTermin(zeileElement.getElementsByTag("td").get(4).text())));
+			}
+		}
+
+
+		return new Stundenplanaenderungen(stundenplanaenderungen);
+	}
+
+
+	//Diese Hilfsmethode parst nacheinander die Informationen für jedes Fach des Modulhandbuchs.
+	private static ModulhandbuchFach getModulhandbuchFach(Document modulhandbuchFachDocument)
+	{
+		Element tabelleElement=modulhandbuchFachDocument.getElementsByTag("tbody").first();
+
+
+		return new ModulhandbuchFach(modulhandbuchFachDocument.select("h2:not([class])").text(), tabelleElement.getElementsByTag("tr").get(0).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(1).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(2).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(3).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(4).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(5).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(6).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(7).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(8).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(9).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(10).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(11).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(12).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(13).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(14).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(15).getElementsByTag("td").get(1).text(), tabelleElement.getElementsByTag("tr").get(16).getElementsByTag("td").get(1).text());
+	}
+
+	//Diese Hilfsmethode parst die Gerichte an einem bestimmten Wochentag und Datum.
+	private static Tagesplan getTagesplan(Document tagesplanDocument, Tag tag, Datum datum)
+	{
+		ArrayList<Gericht> gerichte=new ArrayList<Gericht>();
+		Element gerichtElement=null;
+
+		//Hauptgerichte
+		if(tagesplanDocument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").size()!=0)
+		{
+			for(int i=0;i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr")).size();i++)
+			{
+				gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__hauptgerichte tbody").get(0).getElementsByTag("tr").get(i);
+				gerichte.add(new Gericht("Hauptgericht", gerichtElement.getElementsByTag("td").get(0).ownText(), getBeschreibung(gerichtElement.getElementsByTag("td").get(2)), Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2, 6).replace(',', '.'))));
+			}
+		}
+
+		//Beilagen
+		if(tagesplanDocument.select("div.tx-bwrkspeiseplan__beilagen").size()!=0)
+		{
+			for(int i=0;i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr")).size();i++)
+			{
+				gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__beilagen tbody").get(0).getElementsByTag("tr").get(i);
+				gerichte.add(new Gericht("Beilage", gerichtElement.getElementsByTag("td").get(0).ownText(), getBeschreibung(gerichtElement.getElementsByTag("td").get(2)), Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2, 6).replace(',', '.'))));
+			}
+		}
+
+		//Nachspeisen
+		if(tagesplanDocument.select("div.tx-bwrkspeiseplan__desserts").size()!=0)
+		{
+			for(int i=0;i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr")).size();i++)
+			{
+				gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__desserts tbody").get(0).getElementsByTag("tr").get(i);
+				gerichte.add(new Gericht("Nachspeise", gerichtElement.getElementsByTag("td").get(0).ownText(), getBeschreibung(gerichtElement.getElementsByTag("td").get(2)), Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2, 6).replace(',', '.'))));
+			}
+		}
+
+		//Snacks, Salate
+		if(tagesplanDocument.select("div.tx-bwrkspeiseplan__salatsuppen").size()!=0)
+		{
+			for(int i=0;i<(tagesplanDocument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr")).size();i++)
+			{
+				gerichtElement=tagesplanDocument.select("div.tx-bwrkspeiseplan__salatsuppen tbody").get(0).getElementsByTag("tr").get(i);
+				gerichte.add(new Gericht("Snack, Salat", gerichtElement.getElementsByTag("td").get(0).ownText(), getBeschreibung(gerichtElement.getElementsByTag("td").get(2)), Float.parseFloat(gerichtElement.getElementsByTag("td").get(1).getElementsByTag("span").first().html().substring(2, 6).replace(',', '.'))));
+			}
+		}
+
+
+		return new Tagesplan(gerichte, tag, datum);
+	}
+
+	//Diese Hilfsmethode parst die Beschreibung für ein bestimmtes Gericht anhand seiner Icons auf der Seite des Studentenwerks Oberfranken.
+	private static String getBeschreibung(Element iconElement)
+	{
+		String beschreibung="";
+
+		for(int i=0;i<iconElement.childrenSize();i++)
+		{
+			if((iconElement.getElementsByTag("span")).size()!=0)
+			{
+				if(iconElement.child(i).getElementsByTag("span").get(0).attr("class").equals("icon__not-veggie"))
+				{
+					beschreibung+="Tier (Lab/Gelatine/Honig)";
+				}
+			}
+			else
+			{
+				if(iconElement.child(i).getElementsByTag("i").size()!=0)
+				{
+					switch(iconElement.child(i).getElementsByTag("i").get(0).attr("class"))
+					{
+						case "icon icon-schwein":
+							beschreibung+="Schwein";
+							break;
+						case "icon icon-hahn":
+							beschreibung+="Geflügel";
+							break;
+						case "icon icon-blaetter":
+							beschreibung+="Vegetarisch";
+							break;
+						case "icon icon-topf":
+							beschreibung+="Hausgemacht";
+							break;
+						case "icon icon-kuh":
+							beschreibung+="Rind";
+							break;
+						case "icon icon-fisch":
+							beschreibung+="Fisch";
+							break;
+						case "icon icon-franken":
+							beschreibung+="Regional";
+							break;
+						case "icon icon-schaf":
+							beschreibung+="Schaf";
+							break;
+						case "icon icon-krabbe":
+							beschreibung+="Meeresfrüchte";
+							break;
+						case "icon icon-hirsch":
+							beschreibung+="Wild";
+							break;
+						default:
+							beschreibung+="Nachhaltiger Fang";
+							break;
+					}
+				}
+				else
+				{
+					if(iconElement.getElementsByTag("img").size()!=0)
+					{
+						switch(iconElement.child(i).getElementsByTag("img").get(0).attr("src"))
+						{
+							case "fileadmin/templates/default/img/icons/uEA03-karotte.png":
+								beschreibung+="Vegan";
+								break;
+							case "fileadmin/templates/default/img/icons/uEA04-kraeuter.png":
+								beschreibung+="Kräuterküche";
+								break;
+							case "fileadmin/templates/default/img/logos/icon_mensavital.png":
+								beschreibung+="Mensa-Vital - eine Marke der Studentenwerke";
+								break;
+						}
+					}
+				}
+			}
+
+			if(i<(iconElement.childrenSize()-1))
+			{
+				beschreibung+=", ";
+			}
+		}
+
+
+		return beschreibung;
+	}
+
+	//Diese Hilfsmethode parst nacheinander die Informationen für jede Doppelstunde des Stundenplans.
+	private static void doppelstundeHinzufuegen(ArrayList<Doppelstunde> doppelstunden, Document stundenplanDocument, Tag tag, int zaehler)
+	{
+		Element aktuelleDoppelstundeElement=null;
+		Datum doppelstundeDatum=null;
+		Tag datumsTag=tag;
+
+		for(int j=0;j<stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").size();j++)
+		{
+			aktuelleDoppelstundeElement=stundenplanDocument.getElementsByTag("table").get(zaehler).select("tbody>tr").get(j);
+			doppelstundeDatum=getDoppelstundenDatum(aktuelleDoppelstundeElement);
+
+			//Ermittle den Wochentag der Doppelstunde über ihr Datum; ignoriere hierbei "weitere Veranstaltungen", die kein Datum besitzen
+			if(tag==null&&doppelstundeDatum!=null)
+			{
+				switch(LocalDate.of(doppelstundeDatum.getJahr(), doppelstundeDatum.getMonat(), doppelstundeDatum.getTag()).getDayOfWeek())
+				{
+					case MONDAY:
+						datumsTag=Tag.MONTAG;
+						break;
+					case TUESDAY:
+						datumsTag=Tag.DIENSTAG;
+						break;
+					case WEDNESDAY:
+						datumsTag=Tag.MITTWOCH;
+						break;
+					case THURSDAY:
+						datumsTag=Tag.DONNERSTAG;
+						break;
+					case FRIDAY:
+						datumsTag=Tag.FREITAG;
+						break;
+					case SATURDAY:
+						datumsTag=Tag.SAMSTAG;
+						break;
+					case SUNDAY:
+						datumsTag=Tag.SONNTAG;
+						break;
+				}
+			}
+
+			doppelstunden.add(new Doppelstunde(datumsTag, doppelstundeDatum, getDoppelstundenUhrzeit(aktuelleDoppelstundeElement, 1), getDoppelstundenUhrzeit(aktuelleDoppelstundeElement, 2), aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text().compareTo("")==0?null:aktuelleDoppelstundeElement.getElementsByTag("td").get(6).text(), aktuelleDoppelstundeElement.getElementsByTag("td").get(3).text().replace("\n", "").replace("\r", ""), aktuelleDoppelstundeElement.getElementsByTag("td").get(4).text()
+
+			));
+		}
+	}
+
+	//Diese Hilfsmethode parst das Datum einer Doppelstunde, wenn eins vorhanden ist.
+	private static Datum getDoppelstundenDatum(Element aktuelleDoppelstundeElement)
+	{
+		Datum datum=null;
+
+		if(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().compareTo("")!=0)
+		{
+			datum=new Datum(Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().substring(0, 2)), Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().substring(3, 5)), Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(0).text().substring(6, 10)));
+		}
+
+
+		return datum;
+	}
+
+	//Diese Hilfsmethode parst die Uhrzeit des Beginns oder Endes einer Doppelstunde, wenn sie vorhanden ist.
+	private static Uhrzeit getDoppelstundenUhrzeit(Element aktuelleDoppelstundeElement, int index)
+	{
+		Uhrzeit uhrzeit=null;
+
+		if(aktuelleDoppelstundeElement.getElementsByTag("td").get(index).text().compareTo("")!=0)
+		{
+			uhrzeit=new Uhrzeit(Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(index).text().substring(0, 2)), Integer.parseInt(aktuelleDoppelstundeElement.getElementsByTag("td").get(index).text().substring(3, 5)));
+		}
+
+
+		return uhrzeit;
+	}
+
+	//Diese Hilfsmethode gibt einen Termin basierend auf einem String, der aus Datum, Uhrzeit und Raum besteht, zurück.
+	private static Termin getTermin(String termintext)
+	{
+		Pattern pattern=Pattern.compile("(^\\d{2}.\\d{2}.\\d{4}\\n)(\\d{2}:\\d{2}\\sUhr\\n)(.+)");
+		Matcher matcher=pattern.matcher(termintext);
+		matcher.matches();
+		Termin termin=null;
+
+		if(matcher.matches())
+		{
+			termin=new Termin(new Datum(Integer.parseInt(matcher.group(1).substring(0, 2)), Integer.parseInt(matcher.group(1).substring(3, 5)), Integer.parseInt(matcher.group(1).substring(6, 10))), new Uhrzeit(Integer.parseInt(matcher.group(2).substring(0, 2)), Integer.parseInt(matcher.group(2).substring(3, 5))), matcher.group(3));
+		}
+
+
+		return termin;
+	}
 }

@@ -10,32 +10,32 @@ import java.io.Serializable;
 
 public class MenuepunktInformation implements Serializable
 {
-    private Anwendung zielanwendungAnwendung;
-    private String iconDateiname;
-    private String fxmlDateiname;
+	private final Anwendung zielanwendungAnwendung;
+	private final String iconDateiname;
+	private final String fxmlDateiname;
 
 
 
-    public MenuepunktInformation(Anwendung zielanwendungAnwendung, String iconDateiname, String fxmlDateiname)
-    {
-        this.zielanwendungAnwendung=zielanwendungAnwendung;
-        this.iconDateiname=iconDateiname;
-        this.fxmlDateiname=fxmlDateiname;
-    }
+	public MenuepunktInformation(Anwendung zielanwendungAnwendung, String iconDateiname, String fxmlDateiname)
+	{
+		this.zielanwendungAnwendung=zielanwendungAnwendung;
+		this.iconDateiname=iconDateiname;
+		this.fxmlDateiname=fxmlDateiname;
+	}
 
 
-    public Anwendung getZielanwendung()
-    {
-        return zielanwendungAnwendung;
-    }
+	public Anwendung getZielanwendung()
+	{
+		return zielanwendungAnwendung;
+	}
 
-    public String getIconDateiname()
-    {
-        return iconDateiname;
-    }
+	public String getIconDateiname()
+	{
+		return iconDateiname;
+	}
 
-    public String getFxmlDateiname()
-    {
-        return fxmlDateiname;
-    }
+	public String getFxmlDateiname()
+	{
+		return fxmlDateiname;
+	}
 }

@@ -8,18 +8,18 @@ import java.util.ArrayList;
 
 public class Stundenplanaenderungen
 {
-    private ArrayList<Stundenplanaenderung> stundenplanaenderungen;
+	private final ArrayList<Stundenplanaenderung> stundenplanaenderungen;
 
 
 
-    public Stundenplanaenderungen(ArrayList<Stundenplanaenderung> stundenplanaenderungen)
-    {
-        this.stundenplanaenderungen=stundenplanaenderungen;
-    }
+	public Stundenplanaenderungen(ArrayList<Stundenplanaenderung> stundenplanaenderungen)
+	{
+		this.stundenplanaenderungen=stundenplanaenderungen;
+	}
 
 
-    public ArrayList<Stundenplanaenderung> getStundenplanaenderungen()
-    {
-        return stundenplanaenderungen;
-    }
+	public ArrayList<Stundenplanaenderung> getStundenplanaenderungen()
+	{
+		return stundenplanaenderungen;
+	}
 }

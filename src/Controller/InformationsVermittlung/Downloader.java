@@ -11,6 +11,7 @@ import Model.Datum;
 
 import Model.ModulhandbuchModel.Modulhandbuch;
 import Model.ModulhandbuchModel.ModulhandbuchFach;
+
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -67,8 +68,7 @@ public class Downloader
 
 					Task<Void> task=new Task<Void>()
 					{
-						@Override
-						protected Void call()
+						@Override protected Void call()
 						{
 							Platform.runLater(()->
 							{
@@ -79,7 +79,8 @@ public class Downloader
 							try
 							{
 								Thread.sleep((getDownloadzeit()));
-							}catch(Exception keineGefahrExcpetion)
+							}
+							catch(Exception keineGefahrExcpetion)
 							{
 								//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
 								keineGefahrExcpetion.printStackTrace();
@@ -94,7 +95,8 @@ public class Downloader
 							try
 							{
 								Thread.sleep((getDownloadzeit()*2));
-							}catch(Exception keineGefahrExcpetion)
+							}
+							catch(Exception keineGefahrExcpetion)
 							{
 								//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
 								keineGefahrExcpetion.printStackTrace();
@@ -102,7 +104,7 @@ public class Downloader
 
 							Platform.runLater(()->
 							{
-								SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) downloadWebEnginge.executeScript("document.documentElement.outerHTML"))));
+								SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String)downloadWebEnginge.executeScript("document.documentElement.outerHTML"))));
 								downloadfortschrittProgressIndicator.setProgress(1);
 							});
 
@@ -142,8 +144,7 @@ public class Downloader
 
 					Task<Void> downloadTask=new Task<Void>()
 					{
-						@Override
-						protected Void call() throws Exception
+						@Override protected Void call() throws Exception
 						{
 							Platform.runLater(()->
 							{
@@ -154,7 +155,8 @@ public class Downloader
 							try
 							{
 								Thread.sleep((getDownloadzeit()));
-							}catch(Exception keineGefahrExcpetion)
+							}
+							catch(Exception keineGefahrExcpetion)
 							{
 								//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
 								keineGefahrExcpetion.printStackTrace();
@@ -173,7 +175,8 @@ public class Downloader
 							try
 							{
 								Thread.sleep((getDownloadzeit()));
-							}catch(Exception keineGefahrExcpetion)
+							}
+							catch(Exception keineGefahrExcpetion)
 							{
 								//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
 								keineGefahrExcpetion.printStackTrace();
@@ -190,7 +193,8 @@ public class Downloader
 							try
 							{
 								Thread.sleep((getDownloadzeit()));
-							}catch(Exception keineGefahrExcpetion)
+							}
+							catch(Exception keineGefahrExcpetion)
 							{
 								//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
 								keineGefahrExcpetion.printStackTrace();
@@ -202,7 +206,7 @@ public class Downloader
 
 								if(modulübersichtDocument.select("tbody").size()!=0)
 								{
-									for(int i=0; i<modulübersichtDocument.select("tbody>tr").size(); i++)
+									for(int i=0;i<modulübersichtDocument.select("tbody>tr").size();i++)
 									{
 										System.out.println(i+" von "+modulübersichtDocument.select("tbody>tr").size());
 
@@ -217,7 +221,7 @@ public class Downloader
 											downloadfortschrittProgressIndicator.setProgress(1);
 											return;
 										}
-										downloadfortschrittProgressIndicator.setProgress(0.3+(((double) i)/(modulübersichtDocument.select("tbody>tr").size()-1))*0.6);
+										downloadfortschrittProgressIndicator.setProgress(0.3+(((double)i)/(modulübersichtDocument.select("tbody>tr").size()-1))*0.6);
 									}
 								}
 							});
@@ -229,10 +233,10 @@ public class Downloader
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
-								System.out.println(333);
+							System.out.println(333);
 
-								SchreiberLeser.modulhandbuchNeuSetzen(Parser.modulhandbuchParsen(module));
-								Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
+							SchreiberLeser.modulhandbuchNeuSetzen(Parser.modulhandbuchParsen(module));
+							Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 						}
 					}));
 					new Thread(downloadTask).start();
@@ -259,10 +263,10 @@ public class Downloader
 		naechsterMontagDatumCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
 		ArrayList<DatumDocumentPaar> mensatage=new ArrayList<>();
-		for(int i=0; i<6; i++)
+		for(int i=0;i<6;i++)
 		{
 			int finalI=i;
-			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress((((double) finalI)/5)*0.9));
+			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress((((double)finalI)/5)*0.9));
 
 			Document mensaplanDocument=null;
 			try
@@ -318,22 +322,22 @@ public class Downloader
 
 					Task<Void> downloadTask=new Task<Void>()
 					{
-						@Override
-						protected Void call()
+						@Override protected Void call()
 						{
 							int studiengaengeDropdownEintraegeLaenge=0;
 
 							try
 							{
 								studiengaengeDropdownEintraegeLaenge=Jsoup.connect("https://www.hof-university.de/studierende/info-service/stundenplaene.html").get().select("[name='tx_stundenplan_stundenplan[studiengang]']").get(0).childNodeSize();
-							}catch(Exception keineGefahrException)
+							}
+							catch(Exception keineGefahrException)
 							{
 								//Die Gefahr ist gebannt, da vor dem Aufruf dieser Methode die Internetverbindung überprüft wird
 								keineGefahrException.printStackTrace();
 							}
 							Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(0.1));
 
-							for(int i=1; i<studiengaengeDropdownEintraegeLaenge; i++)
+							for(int i=1;i<studiengaengeDropdownEintraegeLaenge;i++)
 							{
 								int finalI=i;
 								Platform.runLater(()->webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].selected='selected';"+"document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0].dispatchEvent(new Event('change'));"));
@@ -341,23 +345,23 @@ public class Downloader
 								try
 								{
 									Thread.sleep((getDownloadzeit()));
-								}catch(Exception keineGefahrExcpetion)
+								}
+								catch(Exception keineGefahrExcpetion)
 								{
 									//Die Gefahr ist gebannt, da der Thread nicht unterbrochen werden kann
 									keineGefahrExcpetion.printStackTrace();
-
 								}
 
 								Platform.runLater(()->
 								{
-									arrayList.add(new NameKuerzelDocumentTripel((String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Downloader.webengineZuJSoupDocument(webEngine)));
+									arrayList.add(new NameKuerzelDocumentTripel((String)webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String)webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Downloader.webengineZuJSoupDocument(webEngine)));
 								});
 
-								downloadfortschrittProgressIndicator.setProgress(0.1 + (((double) i)/studiengaengeDropdownEintraegeLaenge) * 0.8 );
+								downloadfortschrittProgressIndicator.setProgress(0.1+(((double)i)/studiengaengeDropdownEintraegeLaenge)*0.8);
 							}
 
-								return null;
-							}
+							return null;
+						}
 					};
 
 					downloadTask.stateProperty().addListener(((observable1, oldValue1, newValue1)->
@@ -399,6 +403,6 @@ public class Downloader
 	//Diese Methode macht aus der Website, welche gerade in der übergebenen WebEnginge geladen ist, ein Document-Objekt der JSoup-Bibliotheken.
 	private static Document webengineZuJSoupDocument(WebEngine webEngine)
 	{
-		return Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"));
+		return Jsoup.parse((String)webEngine.executeScript("document.documentElement.outerHTML"));
 	}
 }

@@ -9,18 +9,18 @@ import java.util.ArrayList;
 
 public final class Treffpunkte implements Serializable
 {
-    private ArrayList<Treffpunkt> treffpunkte;
+	private final ArrayList<Treffpunkt> treffpunkte;
 
 
 
-    public Treffpunkte(ArrayList<Treffpunkt> treffpunkte)
-    {
-        this.treffpunkte=treffpunkte;
-    }
+	public Treffpunkte(ArrayList<Treffpunkt> treffpunkte)
+	{
+		this.treffpunkte=treffpunkte;
+	}
 
 
-    public ArrayList<Treffpunkt> getTreffpunkte()
-    {
-        return treffpunkte;
-    }
+	public ArrayList<Treffpunkt> getTreffpunkte()
+	{
+		return treffpunkte;
+	}
 }

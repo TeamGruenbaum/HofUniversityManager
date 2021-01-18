@@ -27,89 +27,82 @@ import javax.imageio.ImageIO;
 
 public class Main extends Application
 {
-    private static Parent root;
-    private static HostServices hostServices;
-    private static Stage primaryStage;
+	private static Parent root;
+	private static HostServices hostServices;
+	private static Stage primaryStage;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception
-    {
+	@Override public void start(Stage primaryStage) throws Exception
+	{
         /*if(System.getProperty("os.name").contentEquals("Mac OS X"))
         {
             Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("Grafiken/HUM_Icon_Short.png")));
         }*/
 
-        if(SchreiberLeser.isErsterStart())
-        {
-            if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de/"))
-            {
-                SchreiberLeser.alleDatenLoeschen();
-                SchreiberLeser.alleZuruecksetzen();
-            }
-            else
-            {
-                Alert alert=new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText("Internetverbindung notwendig");
-                alert.setContentText("Beim ersten Start des Programmes ist es zwingend notwendig, dass Du eine Verbindung zum Internet hast. Starte das Programm erneut, wenn Du eine Verbindung zum Internet hergestellt hast.");
-                alert.getDialogPane().getStylesheets().add(getClass().getResource("View/CSS/Application.css").toExternalForm());
-                alert.showAndWait().ifPresentOrElse(
-                    (item)->
-                    {
-                        Platform.exit();
-                        System.exit(0);
-                    },
-                    ()->
-                    {
-                        Platform.exit();
-                        System.exit(0);
-                    }
-                );
-            }
-        }
-        else
-        {
-            try
-            {
-                SchreiberLeser.alleLaden();
+		if(SchreiberLeser.isErsterStart())
+		{
+			if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden("https://www.hof-university.de/"))
+			{
+				SchreiberLeser.alleDatenLoeschen();
+				SchreiberLeser.alleZuruecksetzen();
+			}
+			else
+			{
+				Alert alert=new Alert(Alert.AlertType.WARNING);
+				alert.setHeaderText("Internetverbindung notwendig");
+				alert.setContentText("Beim ersten Start des Programmes ist es zwingend notwendig, dass Du eine Verbindung zum Internet hast. Starte das Programm erneut, wenn Du eine Verbindung zum Internet hergestellt hast.");
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("View/CSS/Application.css").toExternalForm());
+				alert.showAndWait().ifPresentOrElse((item)->
+				{
+					Platform.exit();
+					System.exit(0);
+				}, ()->
+				{
+					Platform.exit();
+					System.exit(0);
+				});
+			}
+		}
+		else
+		{
+			try
+			{
+				SchreiberLeser.alleLaden();
 
-                if(SchreiberLeser.getDropdownMenue()==null)
-                {
-                    throw new Exception();
-                }
-            }
-            catch(Exception keineGefahrException)
-            {
-                keineGefahrException.printStackTrace();
+				if(SchreiberLeser.getDropdownMenue()==null)
+				{
+					throw new Exception();
+				}
+			}
+			catch(Exception keineGefahrException)
+			{
+				keineGefahrException.printStackTrace();
 
-                Alert alert=new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Daten korrupt");
-                alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");
-                alert.getDialogPane().getStylesheets().add(getClass().getResource("View/CSS/Application.css").toExternalForm());
-                alert.showAndWait().ifPresentOrElse(
-                    (item)->
-                    {
-                        SchreiberLeser.alleDatenLoeschen();
-                        Platform.exit();
-                        System.exit(0);
-                    },
-                    ()->
-                    {
-                        SchreiberLeser.alleDatenLoeschen();
-                        Platform.exit();
-                        System.exit(0);
-                    }
-                );
-            }
-        }
+				Alert alert=new Alert(Alert.AlertType.ERROR);
+				alert.setHeaderText("Daten korrupt");
+				alert.setContentText("Die gespeicherten Daten wurden manipuliert. Deshalb wir das Programm nach dem Schließen des Fensters zurückgesetzt.");
+				alert.getDialogPane().getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
+				alert.showAndWait().ifPresentOrElse((item)->
+				{
+					SchreiberLeser.alleDatenLoeschen();
+					Platform.exit();
+					System.exit(0);
+				}, ()->
+				{
+					SchreiberLeser.alleDatenLoeschen();
+					Platform.exit();
+					System.exit(0);
+				});
+			}
+		}
 
-        hostServices=getHostServices();
+		hostServices=getHostServices();
 
-        root = FXMLLoader.load(getClass().getResource("/View/GrundView.fxml"));
-        primaryStage.setTitle("HofUniversityManager");
-        primaryStage.setScene(new Scene(root, 900, 600));
-        root.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
-        Font.loadFont(Main.class.getResource("/Schriften/Rubik-Regular.ttf").toExternalForm(), 10);
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/Grafiken/HUM_Icon_Short.png")));
+		root=FXMLLoader.load(getClass().getResource("/View/GrundView.fxml"));
+		primaryStage.setTitle("HofUniversityManager");
+		primaryStage.setScene(new Scene(root, 900, 600));
+		root.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
+		Font.loadFont(Main.class.getResource("/Schriften/Rubik-Regular.ttf").toExternalForm(), 10);
+		primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/Grafiken/HUM_Icon_Short.png")));
 
         /*final URL imageResource = Main.class.getClassLoader().getResource("../Ressourcen/Grafiken/HUM_Icon_Short.png");
         final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
@@ -117,47 +110,47 @@ public class Main extends Application
         final Taskbar taskbar = Taskbar.getTaskbar();
         taskbar.setIconImage(image);*/
 
-        GrundViewController.setThema(SchreiberLeser.getNutzerdaten().getAktuellesThema());
+		GrundViewController.setThema(SchreiberLeser.getNutzerdaten().getAktuellesThema());
 
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(900);
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		primaryStage.setMinHeight(600);
+		primaryStage.setMinWidth(900);
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+		{
 
-            @Override
-            public void handle(WindowEvent t)
-            {
-                SchreiberLeser.alleSpeichern();
+			@Override public void handle(WindowEvent t)
+			{
+				SchreiberLeser.alleSpeichern();
 
-                if(SchreiberLeser.isErsterStart())
-                {
-                    SchreiberLeser.isErsterStartSetzen();
-                }
+				if(SchreiberLeser.isErsterStart())
+				{
+					SchreiberLeser.isErsterStartSetzen();
+				}
 
-                Platform.exit();
-                System.exit(0);
-            }
-        });
-        Main.primaryStage=primaryStage;
-        primaryStage.show();
-    }
+				Platform.exit();
+				System.exit(0);
+			}
+		});
+		Main.primaryStage=primaryStage;
+		primaryStage.show();
+	}
 
-    public static Stage getPrimaryStage()
-    {
-        return primaryStage;
-    }
+	public static Stage getPrimaryStage()
+	{
+		return primaryStage;
+	}
 
-    public static Parent getRoot()
-    {
-        return root;
-    }
+	public static Parent getRoot()
+	{
+		return root;
+	}
 
-    public static void oeffneLinkInBrowser(String url)
-    {
-        hostServices.showDocument(url);
-    }
+	public static void oeffneLinkInBrowser(String url)
+	{
+		hostServices.showDocument(url);
+	}
 
-    public static void main(String[] args)
-    {
-        launch(args);
-    }
+	public static void main(String[] args)
+	{
+		launch(args);
+	}
 }

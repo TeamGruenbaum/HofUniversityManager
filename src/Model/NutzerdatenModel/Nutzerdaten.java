@@ -17,19 +17,17 @@ public class Nutzerdaten implements Serializable
 	//nullable
 	private Studiensemester ausgewaehltesStudiensemesterStudiensemester;
 	private ArrayList<Doppelstunde> doppelstunden;
-	private ArrayList<Aufgabe> aufgaben;
-	private ArrayList<Notiz> notizen;
-	private ArrayList<Note> noten;
+	private final ArrayList<Aufgabe> aufgaben;
+	private final ArrayList<Notiz> notizen;
+	private final ArrayList<Note> noten;
 	private ArrayList<String> faecher;
-	private Login ssoLogin;
+	private final Login ssoLogin;
 	private Thema aktuellesThema;
 	private MenuepunktInformation letzterGeoeffneterMenuepunkt;
 
 
 
-	public Nutzerdaten(Studiengang ausgewaehlterStudiengangStudiengang, Studiensemester studiensemester,
-					   ArrayList<Doppelstunde> doppelstunden, ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notizen, ArrayList<Note> noten, ArrayList<String> faecher, Login ssoLogin,
-					   Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
+	public Nutzerdaten(Studiengang ausgewaehlterStudiengangStudiengang, Studiensemester studiensemester, ArrayList<Doppelstunde> doppelstunden, ArrayList<Aufgabe> aufgaben, ArrayList<Notiz> notizen, ArrayList<Note> noten, ArrayList<String> faecher, Login ssoLogin, Thema aktuellesThema, MenuepunktInformation letzterGeoeffneterMenuepunkt)
 	{
 		this.ausgewaehlterStudiengangStudiengang=ausgewaehlterStudiengangStudiengang;
 		this.ausgewaehltesStudiensemesterStudiensemester=studiensemester;

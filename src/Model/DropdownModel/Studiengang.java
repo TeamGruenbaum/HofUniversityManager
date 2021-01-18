@@ -9,32 +9,32 @@ import java.util.ArrayList;
 
 public class Studiengang implements Serializable
 {
-    private String name;
-    private String kuerzel;
-    private ArrayList<Studiensemester> studiensemester;
+	private final String name;
+	private final String kuerzel;
+	private final ArrayList<Studiensemester> studiensemester;
 
 
 
-    public Studiengang(String name, String kuerzel, ArrayList<Studiensemester> studiensemester)
-    {
-        this.name=name;
-        this.kuerzel=kuerzel;
-        this.studiensemester=studiensemester;
-    }
+	public Studiengang(String name, String kuerzel, ArrayList<Studiensemester> studiensemester)
+	{
+		this.name=name;
+		this.kuerzel=kuerzel;
+		this.studiensemester=studiensemester;
+	}
 
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public String getKuerzel()
-    {
-        return kuerzel;
-    }
+	public String getKuerzel()
+	{
+		return kuerzel;
+	}
 
-    public ArrayList<Studiensemester> getStudiensemester()
-    {
-        return studiensemester;
-    }
+	public ArrayList<Studiensemester> getStudiensemester()
+	{
+		return studiensemester;
+	}
 }
