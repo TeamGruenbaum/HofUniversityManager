@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 public class Restaurant extends Treffpunkt implements Serializable
 {
-	private final String art;
-	private final String nationalitaet;
-	private final boolean lieferdienst;
+	private String art;
+	private String nationalitaet;
+	private boolean lieferdienst;
 
 
 

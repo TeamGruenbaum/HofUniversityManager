@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public abstract class Treffpunkt implements Serializable
 {
-	private final String name;
-	private final String ort;
-	private final boolean wetterunabhaengig;
-	private final String information;
+	private String name;
+	private String ort;
+	private boolean wetterunabhaengig;
+	private String information;
 
 
 

@@ -14,8 +14,8 @@ public class Aufgabe implements Serializable
 	private String name;
 	private String inhalt;
 	private Datum faelligkeitsdatumDatum;
-	private final Uhrzeit faelligkeitsuhrzeitUhrzeit;
-	private final String fach;
+	private Uhrzeit faelligkeitsuhrzeitUhrzeit;
+	private String fach;
 
 
 

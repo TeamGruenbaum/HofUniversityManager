@@ -9,8 +9,8 @@ import java.io.Serializable;
 public class Datum implements Serializable
 {
 	private int tag;
-	private final int monat;
-	private final int jahr;
+	private int monat;
+	private int jahr;
 
 
 

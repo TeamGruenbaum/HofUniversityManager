@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class Freizeitaktivitaet extends Treffpunkt implements Serializable
 {
-	private final String ambiente;
+	private String ambiente;
 
 
 

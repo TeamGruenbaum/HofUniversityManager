@@ -8,9 +8,9 @@ import org.jsoup.nodes.Document;
 
 public class NameKuerzelDocumentTripel
 {
-	private final String studiengangName;
-	private final String studiengangKuerzel;
-	private final Document stundenplanDokument;
+	private String studiengangName;
+	private String studiengangKuerzel;
+	private Document stundenplanDokument;
 
 
 

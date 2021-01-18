@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 public class Notiz implements Serializable
 {
-	private final String titel;
+	private String titel;
 	private String inhalt;
-	private final String fach;
+	private String fach;
 
 
 

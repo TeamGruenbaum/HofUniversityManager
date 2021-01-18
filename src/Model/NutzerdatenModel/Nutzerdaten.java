@@ -15,11 +15,11 @@ public class Nutzerdaten implements Serializable
 	private Studiengang ausgewaehlterStudiengangStudiengang;
 	private Studiensemester ausgewaehltesStudiensemesterStudiensemester;
 	private ArrayList<Doppelstunde> doppelstunden;
-	private final ArrayList<Aufgabe> aufgaben;
-	private final ArrayList<Notiz> notizen;
-	private final ArrayList<Note> noten;
+	private ArrayList<Aufgabe> aufgaben;
+	private ArrayList<Notiz> notizen;
+	private ArrayList<Note> noten;
 	private ArrayList<String> faecher;
-	private final Login ssoLogin;
+	private Login ssoLogin;
 	private Thema aktuellesThema;
 	private MenuepunktInformation letzterGeoeffneterMenuepunkt;
 

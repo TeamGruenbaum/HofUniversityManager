@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public class Gericht implements Serializable
 {
-	private final String gang;
-	private final String name;
-	private final String beschreibung;
-	private final float preis;
+	private String gang;
+	private String name;
+	private String beschreibung;
+	private float preis;
 
 
 

@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 public class Uhrzeit implements Serializable, Comparable<Uhrzeit>
 {
-	private final int stunde;
-	private final int minute;
+	private int stunde;
+	private int minute;
 
 
 

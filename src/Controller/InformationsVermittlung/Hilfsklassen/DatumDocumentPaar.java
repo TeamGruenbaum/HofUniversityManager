@@ -9,8 +9,8 @@ import org.jsoup.nodes.Document;
 
 public class DatumDocumentPaar
 {
-	private final Datum datum;
-	private final Document tag;
+	private Datum datum;
+	private Document tag;
 
 
 

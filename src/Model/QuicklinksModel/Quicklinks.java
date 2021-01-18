@@ -4,12 +4,12 @@ package Model.QuicklinksModel;
 
 public final class Quicklinks
 {
-	private static final String nextcloudLink="https://nextcloud.hof-university.de";
-	private static final String moodleLink="https://moodle.hof-university.de/auth/shibboleth/index.php";
-	private static final String panoptoLink="https://panopto.hof-university.de";
-	private static final String primussLink="https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh";
-	private static final String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
-	private static final String campusSportLink="https://sport.aiv.hfoed.de";
+	private static String nextcloudLink="https://nextcloud.hof-university.de";
+	private static String moodleLink="https://moodle.hof-university.de/auth/shibboleth/index.php";
+	private static String panoptoLink="https://panopto.hof-university.de";
+	private static String primussLink="https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh";
+	private static String bayernfahrplanLink="https://www.bayern-fahrplan.de/m5/de/#trips";
+	private static String campusSportLink="https://sport.aiv.hfoed.de";
 
 
 

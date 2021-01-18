@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public final class Treffpunkte implements Serializable
 {
-	private final ArrayList<Treffpunkt> treffpunkte;
+	private ArrayList<Treffpunkt> treffpunkte;
 
 
 

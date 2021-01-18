@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Modulhandbuch implements Serializable
 {
-	private final ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
+	private ArrayList<ModulhandbuchFach> modulhandbuchFaecher;
 
 
 

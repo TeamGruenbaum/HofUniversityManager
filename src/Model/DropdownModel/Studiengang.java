@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class Studiengang implements Serializable
 {
-	private final String name;
-	private final String kuerzel;
-	private final ArrayList<Studiensemester> studiensemester;
+	private String name;
+	private String kuerzel;
+	private ArrayList<Studiensemester> studiensemester;
 
 
 

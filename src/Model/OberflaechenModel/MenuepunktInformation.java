@@ -10,9 +10,9 @@ import java.io.Serializable;
 
 public class MenuepunktInformation implements Serializable
 {
-	private final Anwendung zielanwendungAnwendung;
-	private final String iconDateiname;
-	private final String fxmlDateiname;
+	private Anwendung zielanwendungAnwendung;
+	private String iconDateiname;
+	private String fxmlDateiname;
 
 
 

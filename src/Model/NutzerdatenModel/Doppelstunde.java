@@ -14,9 +14,9 @@ public class Doppelstunde implements Serializable
 {
 	private Tag doppelstundentagTag;
 	private Datum doppelstundendatumDatum;
-	private final Uhrzeit beginnUhrzeit;
-	private final Uhrzeit endeUhrzeit;
-	private final String raum;
+	private Uhrzeit beginnUhrzeit;
+	private Uhrzeit endeUhrzeit;
+	private String raum;
 	private String name;
 	private String dozent;
 

@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Schluesselmeister
 {
-	private static final SecretKey schluesselSecretKey=new SecretKeySpec(new byte[]{3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5}, "AES");
+	private static  SecretKey schluesselSecretKey=new SecretKeySpec(new byte[]{3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5, 3, 7, 4, 5}, "AES");
 
 
 

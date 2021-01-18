@@ -9,9 +9,9 @@ import Model.Uhrzeit;
 
 public class Termin
 {
-	private final Datum ausfalldatumDatum;
-	private final Uhrzeit ausfalluhrzeitUhrzeit;
-	private final String raum;
+	private Datum ausfalldatumDatum;
+	private Uhrzeit ausfalluhrzeitUhrzeit;
+	private String raum;
 
 
 

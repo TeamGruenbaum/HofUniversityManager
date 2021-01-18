@@ -4,10 +4,10 @@ package Model.StundenplanaenderungModel;
 
 public class Stundenplanaenderung
 {
-	private final String veranstaltung;
-	private final String dozent;
-	private final Termin entfallenerTermin;
-	private final Termin ersatztermin;
+	private String veranstaltung;
+	private String dozent;
+	private Termin entfallenerTermin;
+	private Termin ersatztermin;
 
 
 

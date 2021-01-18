@@ -8,24 +8,24 @@ import java.io.Serializable;
 
 public class ModulhandbuchFach implements Serializable
 {
-	private final String name;
-	private final String dozent;
-	private final String zweitpruefer;
-	private final String studienjahr;
-	private final String art;
-	private final String ECTS;
-	private final String semesterwochenstunden;
-	private final String praesenzzeit;
-	private final String pruefungsvorbereitung;
-	private final String sprache;
-	private final String lehrinhalte;
-	private final String lernziel;
-	private final String voraussetzung;
-	private final String literaturliste;
-	private final String pruefungsdurchfuehrung;
-	private final String hilfsmittel;
-	private final String medienformen;
-	private final String haeufigkeit;
+	private String name;
+	private String dozent;
+	private String zweitpruefer;
+	private String studienjahr;
+	private String art;
+	private String ECTS;
+	private String semesterwochenstunden;
+	private String praesenzzeit;
+	private String pruefungsvorbereitung;
+	private String sprache;
+	private String lehrinhalte;
+	private String lernziel;
+	private String voraussetzung;
+	private String literaturliste;
+	private String pruefungsdurchfuehrung;
+	private String hilfsmittel;
+	private String medienformen;
+	private String haeufigkeit;
 
 
 

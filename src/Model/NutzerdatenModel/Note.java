@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public class Note implements Serializable
 {
-	private final String herkunft;
+	private String herkunft;
 	private String note;
-	private final String bemerkung;
-	private final String fach;
+	private String bemerkung;
+	private String fach;
 
 
 

@@ -22,19 +22,19 @@ import org.apache.commons.io.FileUtils;
 public class SchreiberLeser
 {
 	private static Modulhandbuch modulhandbuch;
-	private static final String modulhandbuchDateiname="Modulhandbuch.sva";
+	private static String modulhandbuchDateiname="Modulhandbuch.sva";
 
 	private static Treffpunkte treffpunkte;
-	private static final String treffpunkteDateiname="Treffpunkte.sva";
+	private static String treffpunkteDateiname="Treffpunkte.sva";
 
 	private static Mensaplan mensaplan;
-	private static final String mensaplanDateiname="Mensaplan.sva";
+	private static String mensaplanDateiname="Mensaplan.sva";
 
 	private static Nutzerdaten nutzerdaten;
-	private static final String nutzerdatenDateiname="Nutzerdaten.sva";
+	private static String nutzerdatenDateiname="Nutzerdaten.sva";
 
 	private static DropdownMenue dropdownMenue;
-	private static final String dropdownMenueDateiname="Dropdownmenue.sva";
+	private static String dropdownMenueDateiname="Dropdownmenue.sva";
 
 
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Mensaplan implements Serializable
 {
-	private final ArrayList<Tagesplan> tagesplaene;
+	private ArrayList<Tagesplan> tagesplaene;
 
 
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class DropdownMenue implements Serializable
 {
-	private final ArrayList<Studiengang> studiengaenge;
+	private ArrayList<Studiengang> studiengaenge;
 
 
 

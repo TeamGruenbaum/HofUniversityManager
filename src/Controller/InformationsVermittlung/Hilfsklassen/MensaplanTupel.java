@@ -4,12 +4,12 @@ package Controller.InformationsVermittlung.Hilfsklassen;
 
 public class MensaplanTupel
 {
-	private final DatumDocumentPaar montag;
-	private final DatumDocumentPaar dienstag;
-	private final DatumDocumentPaar mittwoch;
-	private final DatumDocumentPaar donnerstag;
-	private final DatumDocumentPaar freitag;
-	private final DatumDocumentPaar samstag;
+	private DatumDocumentPaar montag;
+	private DatumDocumentPaar dienstag;
+	private DatumDocumentPaar mittwoch;
+	private DatumDocumentPaar donnerstag;
+	private DatumDocumentPaar freitag;
+	private DatumDocumentPaar samstag;
 
 	public MensaplanTupel(DatumDocumentPaar montag, DatumDocumentPaar dienstag, DatumDocumentPaar mittwoch, DatumDocumentPaar donnerstag, DatumDocumentPaar freitag, DatumDocumentPaar samstag)
 	{

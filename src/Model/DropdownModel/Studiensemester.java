@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 public class Studiensemester implements Serializable
 {
-	private final String name;
-	private final String kuerzel;
+	private String name;
+	private String kuerzel;
 
 
 

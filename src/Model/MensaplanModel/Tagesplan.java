@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class Tagesplan implements Serializable
 {
-	private final ArrayList<Gericht> gerichte;
-	private final Tag tagesplanTag;
-	private final Datum tagesplanDatum;
+	private ArrayList<Gericht> gerichte;
+	private Tag tagesplanTag;
+	private Datum tagesplanDatum;
 
 	public Tagesplan(ArrayList<Gericht> gerichte, Tag tagesplanTag, Datum tagesplanDatum)
 	{

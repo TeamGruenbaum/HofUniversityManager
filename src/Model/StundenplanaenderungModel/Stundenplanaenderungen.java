@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Stundenplanaenderungen
 {
-	private final ArrayList<Stundenplanaenderung> stundenplanaenderungen;
+	private ArrayList<Stundenplanaenderung> stundenplanaenderungen;
 
 
 
