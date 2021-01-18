@@ -77,10 +77,10 @@ public class TreffpunktViewController implements Initializable
 			ArrayList<Label> treffpunktTextzeilen=new ArrayList<>();
 			treffpunktTextzeilen.add(new Label("Ort: "+item.getOrt()));
 			treffpunktTextzeilen.add(new Label("Information: "+item.getInformation()));
-			treffpunktTextzeilen.add(new Label("Art: "+((Restaurant)item).getArt()));
-			treffpunktTextzeilen.add(new Label("Nationalität: "+((Restaurant)item).getNationalitaet()));
+			treffpunktTextzeilen.add(new Label("Art: "+((Restaurant) item).getArt()));
+			treffpunktTextzeilen.add(new Label("Nationalität: "+((Restaurant) item).getNationalitaet()));
 			treffpunktTextzeilen.add(new Label((item.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
-			treffpunktTextzeilen.add(new Label((((Restaurant)item).getLieferdienst())?"Liefert: ja":"Liefert: nein"));
+			treffpunktTextzeilen.add(new Label((((Restaurant) item).getLieferdienst())?"Liefert: ja":"Liefert: nein"));
 			ObservableList<Label> oaL=FXCollections.observableArrayList(treffpunktTextzeilen);
 
 			vB.getChildren().addAll(oaL);
@@ -100,7 +100,7 @@ public class TreffpunktViewController implements Initializable
 			ArrayList<Label> aL=new ArrayList<>();
 			aL.add(new Label("Ort: "+item.getOrt()));
 			aL.add(new Label("Information: "+item.getInformation()));
-			aL.add(new Label("Ambiente: "+((Freizeitaktivitaet)item).getAmbiente()));
+			aL.add(new Label("Ambiente: "+((Freizeitaktivitaet) item).getAmbiente()));
 			aL.add(new Label((item.getWetterunabhaengig())?"Wetterabhängig: nein":"Wetterabhängig: ja"));
 			ObservableList<Label> oaL=FXCollections.observableArrayList(aL);
 

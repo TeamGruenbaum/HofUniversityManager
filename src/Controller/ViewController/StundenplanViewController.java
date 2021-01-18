@@ -398,14 +398,14 @@ public class StundenplanViewController implements Initializable
 		}
 		doppelstundeHinzufuegenDialogPane.setMinSize(300, 200);
 		doppelstundeHinzufuegenDialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		((Button)doppelstundeHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
-		((Button)doppelstundeHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		((Button) doppelstundeHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) doppelstundeHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		doppelstundeHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
 
-		TextField nameTextField=(TextField)doppelstundeHinzufuegenDialogPane.lookup("#nameTextField");
-		TextField dozentTextField=(TextField)doppelstundeHinzufuegenDialogPane.lookup("#dozentTextField");
-		TextField raumTextField=(TextField)doppelstundeHinzufuegenDialogPane.lookup("#raumTextField");
+		TextField nameTextField=(TextField) doppelstundeHinzufuegenDialogPane.lookup("#nameTextField");
+		TextField dozentTextField=(TextField) doppelstundeHinzufuegenDialogPane.lookup("#dozentTextField");
+		TextField raumTextField=(TextField) doppelstundeHinzufuegenDialogPane.lookup("#raumTextField");
 
 		ChangeListener<String> changeListener=(observable, oldValue, newValue)->doppelstundeHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(nameTextField.getText().trim().isEmpty()||dozentTextField.getText().trim().isEmpty()||raumTextField.getText().trim().isEmpty());
 		nameTextField.textProperty().addListener(changeListener);
@@ -417,7 +417,7 @@ public class StundenplanViewController implements Initializable
 		raumTextField.setText(raumVorschau);
 
 
-		ChoiceBox<Tag> tagChoiceBox=(ChoiceBox<Tag>)doppelstundeHinzufuegenDialogPane.lookup("#tagChoiceBox");
+		ChoiceBox<Tag> tagChoiceBox=(ChoiceBox<Tag>) doppelstundeHinzufuegenDialogPane.lookup("#tagChoiceBox");
 		tagChoiceBox.setItems(FXCollections.observableArrayList(List.of(Tag.values())));
 		tagChoiceBox.getSelectionModel().select(0);
 		tagChoiceBox.setConverter(new StringConverter<Tag>()
@@ -435,19 +435,19 @@ public class StundenplanViewController implements Initializable
 		});
 		tagChoiceBox.setValue(tagVorschau);
 
-		Spinner<Integer> beginnStundeUhrzeitSpinner=(Spinner<Integer>)doppelstundeHinzufuegenDialogPane.lookup("#beginnStundeUhrzeitSpinner");
+		Spinner<Integer> beginnStundeUhrzeitSpinner=(Spinner<Integer>) doppelstundeHinzufuegenDialogPane.lookup("#beginnStundeUhrzeitSpinner");
 		beginnStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, beginnVorschauUhrzeit.getStunde()));
 		beginnStundeUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> beginnMinuteUhrzeitSpinner=(Spinner<Integer>)doppelstundeHinzufuegenDialogPane.lookup("#beginnMinuteUhrzeitSpinner");
+		Spinner<Integer> beginnMinuteUhrzeitSpinner=(Spinner<Integer>) doppelstundeHinzufuegenDialogPane.lookup("#beginnMinuteUhrzeitSpinner");
 		beginnMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, beginnVorschauUhrzeit.getMinute()));
 		beginnMinuteUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> endeStundeUhrzeitSpinner=(Spinner<Integer>)doppelstundeHinzufuegenDialogPane.lookup("#endeStundeUhrzeitSpinner");
+		Spinner<Integer> endeStundeUhrzeitSpinner=(Spinner<Integer>) doppelstundeHinzufuegenDialogPane.lookup("#endeStundeUhrzeitSpinner");
 		endeStundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, endeVorschauUhrzeit.getStunde()));
 		endeStundeUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> endeMinuteUhrzeitSpinner=(Spinner<Integer>)doppelstundeHinzufuegenDialogPane.lookup("#endeMinuteUhrzeitSpinner");
+		Spinner<Integer> endeMinuteUhrzeitSpinner=(Spinner<Integer>) doppelstundeHinzufuegenDialogPane.lookup("#endeMinuteUhrzeitSpinner");
 		endeMinuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, endeVorschauUhrzeit.getMinute()));
 		endeMinuteUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
@@ -517,45 +517,45 @@ public class StundenplanViewController implements Initializable
 		}
 		aufgabeHinzufuegenDialogPane.setMinSize(300, 200);
 		aufgabeHinzufuegenDialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		((Button)aufgabeHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
-		((Button)aufgabeHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		((Button) aufgabeHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) aufgabeHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		aufgabeHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
-		TextField nameTextField=(TextField)aufgabeHinzufuegenDialogPane.lookup("#nameTextField");
-		TextField inhaltTextField=(TextField)aufgabeHinzufuegenDialogPane.lookup("#inhaltTextField");
+		TextField nameTextField=(TextField) aufgabeHinzufuegenDialogPane.lookup("#nameTextField");
+		TextField inhaltTextField=(TextField) aufgabeHinzufuegenDialogPane.lookup("#inhaltTextField");
 		ChangeListener<String> changeListener=(observable, oldValue, newValue)->aufgabeHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(nameTextField.getText().trim().isEmpty()||inhaltTextField.getText().trim().isEmpty());
 		nameTextField.textProperty().addListener(changeListener);
 		inhaltTextField.textProperty().addListener(changeListener);
 		nameTextField.setText(nameVorschau);
 		inhaltTextField.setText(inhaltVorschau);
 
-		Spinner<Integer> tagDatumSpinner=(Spinner<Integer>)aufgabeHinzufuegenDialogPane.lookup("#tagDatumSpinner");
+		Spinner<Integer> tagDatumSpinner=(Spinner<Integer>) aufgabeHinzufuegenDialogPane.lookup("#tagDatumSpinner");
 		tagDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 31, datumVorschau.getTag()));
 		tagDatumSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> monatDatumSpinner=(Spinner<Integer>)aufgabeHinzufuegenDialogPane.lookup("#monatDatumSpinner");
+		Spinner<Integer> monatDatumSpinner=(Spinner<Integer>) aufgabeHinzufuegenDialogPane.lookup("#monatDatumSpinner");
 		monatDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 12, datumVorschau.getMonat()));
 		monatDatumSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> jahrDatumSpinner=(Spinner<Integer>)aufgabeHinzufuegenDialogPane.lookup("#jahrDatumSpinner");
+		Spinner<Integer> jahrDatumSpinner=(Spinner<Integer>) aufgabeHinzufuegenDialogPane.lookup("#jahrDatumSpinner");
 		jahrDatumSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2402, datumVorschau.getJahr()));
 		jahrDatumSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> stundeUhrzeitSpinner=(Spinner<Integer>)aufgabeHinzufuegenDialogPane.lookup("#stundeUhrzeitSpinner");
+		Spinner<Integer> stundeUhrzeitSpinner=(Spinner<Integer>) aufgabeHinzufuegenDialogPane.lookup("#stundeUhrzeitSpinner");
 		stundeUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, uhrzeitVorschau.getStunde()));
 		stundeUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		Spinner<Integer> minuteUhrzeitSpinner=(Spinner<Integer>)aufgabeHinzufuegenDialogPane.lookup("#minuteUhrzeitSpinner");
+		Spinner<Integer> minuteUhrzeitSpinner=(Spinner<Integer>) aufgabeHinzufuegenDialogPane.lookup("#minuteUhrzeitSpinner");
 		minuteUhrzeitSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, uhrzeitVorschau.getMinute()));
 		minuteUhrzeitSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 
-		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>)aufgabeHinzufuegenDialogPane.lookup("#fachChoiceBox");
+		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) aufgabeHinzufuegenDialogPane.lookup("#fachChoiceBox");
 		fachnameHinzufuegen(fachVorschau, faecherChoiceBox);
 		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
 		faecherChoiceBox.getSelectionModel().select(0);
 		faecherChoiceBox.setValue(fachVorschau);
 
-		Button fachHinzufuegeButton=(Button)aufgabeHinzufuegenDialogPane.lookup("#fachHinzufuegeButton");
+		Button fachHinzufuegeButton=(Button) aufgabeHinzufuegenDialogPane.lookup("#fachHinzufuegeButton");
 		fachHinzufuegeButton.setOnAction((actionEvent)->
 		{
 			fachnameHinzufuegenDialogOeffnen().ifPresent((item)->
@@ -564,7 +564,7 @@ public class StundenplanViewController implements Initializable
 			});
 		});
 
-		Button fachLoeschenButton=(Button)aufgabeHinzufuegenDialogPane.lookup("#fachLoeschenButton");
+		Button fachLoeschenButton=(Button) aufgabeHinzufuegenDialogPane.lookup("#fachLoeschenButton");
 		fachLoeschenButton.setOnAction((actionEvent)->
 		{
 			fachnameLoeschen(faecherChoiceBox);
@@ -603,13 +603,13 @@ public class StundenplanViewController implements Initializable
 		}
 		noteHinzufuegenDialogPane.setMinSize(300, 200);
 		noteHinzufuegenDialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		((Button)noteHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
-		((Button)noteHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		((Button) noteHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) noteHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		noteHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
-		TextField noteTextField=(TextField)noteHinzufuegenDialogPane.lookup("#noteTextField");
-		TextField herkunftTextField=(TextField)noteHinzufuegenDialogPane.lookup("#herkunftTextField");
-		TextField bemerkungTextField=(TextField)noteHinzufuegenDialogPane.lookup("#bemerkungTextField");
+		TextField noteTextField=(TextField) noteHinzufuegenDialogPane.lookup("#noteTextField");
+		TextField herkunftTextField=(TextField) noteHinzufuegenDialogPane.lookup("#herkunftTextField");
+		TextField bemerkungTextField=(TextField) noteHinzufuegenDialogPane.lookup("#bemerkungTextField");
 		ChangeListener<String> changeListener=(observable, oldValue, newValue)->noteHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(noteTextField.getText().trim().isEmpty()||herkunftTextField.getText().trim().isEmpty());
 		noteTextField.textProperty().addListener(changeListener);
 		herkunftTextField.textProperty().addListener(changeListener);
@@ -618,13 +618,13 @@ public class StundenplanViewController implements Initializable
 		herkunftTextField.setText(artVorschau);
 		bemerkungTextField.setText(bemerkungVorschau);
 
-		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>)noteHinzufuegenDialogPane.lookup("#fachChoiceBox");
+		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) noteHinzufuegenDialogPane.lookup("#fachChoiceBox");
 		fachnameHinzufuegen(fachVorschau, faecherChoiceBox);
 		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
 		faecherChoiceBox.getSelectionModel().select(0);
 		faecherChoiceBox.setValue(fachVorschau);
 
-		Button fachHinzufuegeButton=(Button)noteHinzufuegenDialogPane.lookup("#fachHinzufuegeButton");
+		Button fachHinzufuegeButton=(Button) noteHinzufuegenDialogPane.lookup("#fachHinzufuegeButton");
 		fachHinzufuegeButton.setOnAction((actionEvent)->
 		{
 			fachnameHinzufuegenDialogOeffnen().ifPresent((item)->
@@ -633,7 +633,7 @@ public class StundenplanViewController implements Initializable
 			});
 		});
 
-		Button fachLoeschenButton=(Button)noteHinzufuegenDialogPane.lookup("#fachLoeschenButton");
+		Button fachLoeschenButton=(Button) noteHinzufuegenDialogPane.lookup("#fachLoeschenButton");
 		fachLoeschenButton.setOnAction((actionEvent)->
 		{
 			fachnameLoeschen(faecherChoiceBox);
@@ -675,25 +675,25 @@ public class StundenplanViewController implements Initializable
 
 		notizHinzufuegenDialogPane.setMinSize(300, 200);
 		notizHinzufuegenDialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		((Button)notizHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
-		((Button)notizHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
+		((Button) notizHinzufuegenDialogPane.lookupButton(ButtonType.OK)).setText(buttonTitel);
+		((Button) notizHinzufuegenDialogPane.lookupButton(ButtonType.CANCEL)).setText("Abbrechen");
 		notizHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(true);
 
-		TextField nameTextField=(TextField)notizHinzufuegenDialogPane.lookup("#nameTextField");
-		TextArea inhaltTextArea=(TextArea)notizHinzufuegenDialogPane.lookup("#inhaltTextField");
+		TextField nameTextField=(TextField) notizHinzufuegenDialogPane.lookup("#nameTextField");
+		TextArea inhaltTextArea=(TextArea) notizHinzufuegenDialogPane.lookup("#inhaltTextField");
 		ChangeListener<String> changeListener=(observable, oldValue, newValue)->notizHinzufuegenDialogPane.lookupButton(ButtonType.OK).setDisable(nameTextField.getText().trim().isEmpty()||inhaltTextArea.getText().trim().isEmpty());
 		nameTextField.textProperty().addListener(changeListener);
 		inhaltTextArea.textProperty().addListener(changeListener);
 		nameTextField.setText(ueberschriftVorschau);
 		inhaltTextArea.setText(inhaltVorschau);
 
-		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>)notizHinzufuegenDialogPane.lookup("#fachChoiceBox");
+		ChoiceBox<String> faecherChoiceBox=(ChoiceBox<String>) notizHinzufuegenDialogPane.lookup("#fachChoiceBox");
 		fachnameHinzufuegen(fachVorschau, faecherChoiceBox);
 		faecherChoiceBox.setItems(FXCollections.observableArrayList(SchreiberLeser.getNutzerdaten().getFaecher()));
 		faecherChoiceBox.getSelectionModel().select(0);
 		faecherChoiceBox.setValue(fachVorschau);
 
-		Button fachHinzufuegeButton=(Button)notizHinzufuegenDialogPane.lookup("#fachHinzufuegeButton");
+		Button fachHinzufuegeButton=(Button) notizHinzufuegenDialogPane.lookup("#fachHinzufuegeButton");
 		fachHinzufuegeButton.setOnAction((actionEvent)->
 		{
 			fachnameHinzufuegenDialogOeffnen().ifPresent((item)->
@@ -702,7 +702,7 @@ public class StundenplanViewController implements Initializable
 			});
 		});
 
-		Button fachLoeschenButton=(Button)notizHinzufuegenDialogPane.lookup("#fachLoeschenButton");
+		Button fachLoeschenButton=(Button) notizHinzufuegenDialogPane.lookup("#fachLoeschenButton");
 		fachLoeschenButton.setOnAction((actionEvent)->
 		{
 			fachnameLoeschen(faecherChoiceBox);
@@ -732,7 +732,7 @@ public class StundenplanViewController implements Initializable
 		TextInputDialog hinzufuegenDialog=new TextInputDialog();
 		hinzufuegenDialog.setGraphic(null);
 		hinzufuegenDialog.setHeaderText(null);
-		((Button)hinzufuegenDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Hinzufügen");
+		((Button) hinzufuegenDialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Hinzufügen");
 		hinzufuegenDialog.setTitle("Fach hinzufügen");
 		hinzufuegenDialog.setContentText("Fachname");
 		hinzufuegenDialog.getEditor().textProperty().addListener(((observable, oldValue, newValue)->hinzufuegenDialog.getDialogPane().lookupButton(ButtonType.OK).setDisable(hinzufuegenDialog.getEditor().textProperty().getValue().trim().isEmpty())));

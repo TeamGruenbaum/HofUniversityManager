@@ -165,7 +165,7 @@ public class SchreiberLeser
 		FileInputStream leserFileInputStream=new FileInputStream(new File(getSpeicherPfad()+dateiname));
 		ObjectInputStream leserObjectInputStream=new ObjectInputStream(leserFileInputStream);
 
-		T gelesenesT=(T)leserObjectInputStream.readObject();
+		T gelesenesT=(T) leserObjectInputStream.readObject();
 
 		leserObjectInputStream.close();
 		leserFileInputStream.close();

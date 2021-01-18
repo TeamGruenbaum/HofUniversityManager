@@ -65,10 +65,10 @@ public class MensaplanViewController implements Initializable
 		kategorienAccordion.setPrefWidth(700);
 		contentVBox.getChildren().add(1, kategorienAccordion);
 
-        if(contentVBox.getChildren().size()>2)
-        {
-            contentVBox.getChildren().remove(2);
-        }
+		if(contentVBox.getChildren().size()>2)
+		{
+			contentVBox.getChildren().remove(2);
+		}
 
 		if(!gerichte.isEmpty())
 		{

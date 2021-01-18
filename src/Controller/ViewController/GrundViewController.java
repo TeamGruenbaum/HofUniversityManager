@@ -448,7 +448,7 @@ public class GrundViewController implements Initializable
 		try
 		{
 			Node szeneNode=FXMLLoader.load(getClass().getResource("/View/ErsterStartView.fxml"));
-			Button zuDenEinstellungenButton=(Button)szeneNode.lookup("#losgehts");
+			Button zuDenEinstellungenButton=(Button) szeneNode.lookup("#losgehts");
 			zuDenEinstellungenButton.setDisable(true);
 			zuDenEinstellungenButton.setOnAction((actionEvent)->
 			{
@@ -456,9 +456,9 @@ public class GrundViewController implements Initializable
 				oeffneScene();
 			});
 
-			((Label)szeneNode.lookup("#text")).setWrapText(true);
+			((Label) szeneNode.lookup("#text")).setWrapText(true);
 
-			ProgressIndicator initialisierungProgressIndicator=(ProgressIndicator)szeneNode.lookup("#dropdownMenueLadenProgressBar");
+			ProgressIndicator initialisierungProgressIndicator=(ProgressIndicator) szeneNode.lookup("#dropdownMenueLadenProgressBar");
 			initialisierungProgressIndicator.progressProperty().addListener((observable, oldValue, newValue)->
 			{
 				if(newValue.doubleValue()==1)

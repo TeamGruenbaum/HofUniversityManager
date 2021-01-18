@@ -102,7 +102,7 @@ public class Downloader
 
 							Platform.runLater(()->
 							{
-								SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String)downloadWebEnginge.executeScript("document.documentElement.outerHTML"))));
+								SchreiberLeser.getNutzerdaten().setDoppelstunden(Parser.stundenplanParsen(Jsoup.parse((String) downloadWebEnginge.executeScript("document.documentElement.outerHTML"))));
 								downloadfortschrittProgressIndicator.setProgress(1);
 							});
 
@@ -217,7 +217,7 @@ public class Downloader
 											downloadfortschrittProgressIndicator.setProgress(1);
 											return;
 										}
-										downloadfortschrittProgressIndicator.setProgress(0.3+(((double)i)/(modulübersichtDocument.select("tbody>tr").size()-1))*0.6);
+										downloadfortschrittProgressIndicator.setProgress(0.3+(((double) i)/(modulübersichtDocument.select("tbody>tr").size()-1))*0.6);
 									}
 								}
 							});
@@ -259,7 +259,7 @@ public class Downloader
 		for(int i=0;i<6;i++)
 		{
 			int finalI=i;
-			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress((((double)finalI)/5)*0.9));
+			Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress((((double) finalI)/5)*0.9));
 
 			Document mensaplanDocument=null;
 			try
@@ -345,10 +345,10 @@ public class Downloader
 
 								Platform.runLater(()->
 								{
-									arrayList.add(new NameKuerzelDocumentTripel((String)webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String)webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Downloader.webengineZuJSoupDocument(webEngine)));
+									arrayList.add(new NameKuerzelDocumentTripel((String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].innerText;"), (String) webEngine.executeScript("document.getElementsByName('tx_stundenplan_stundenplan[studiengang]')[0]["+finalI+"].value;"), Downloader.webengineZuJSoupDocument(webEngine)));
 								});
 
-								downloadfortschrittProgressIndicator.setProgress(0.1+(((double)i)/studiengaengeDropdownEintraegeLaenge)*0.8);
+								downloadfortschrittProgressIndicator.setProgress(0.1+(((double) i)/studiengaengeDropdownEintraegeLaenge)*0.8);
 							}
 
 							return null;
@@ -392,6 +392,6 @@ public class Downloader
 
 	private static Document webengineZuJSoupDocument(WebEngine webEngine)
 	{
-		return Jsoup.parse((String)webEngine.executeScript("document.documentElement.outerHTML"));
+		return Jsoup.parse((String) webEngine.executeScript("document.documentElement.outerHTML"));
 	}
 }
