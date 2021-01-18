@@ -12,9 +12,7 @@ import java.util.ArrayList;
 
 public class Nutzerdaten implements Serializable
 {
-	//nullable
 	private Studiengang ausgewaehlterStudiengangStudiengang;
-	//nullable
 	private Studiensemester ausgewaehltesStudiensemesterStudiensemester;
 	private ArrayList<Doppelstunde> doppelstunden;
 	private final ArrayList<Aufgabe> aufgaben;

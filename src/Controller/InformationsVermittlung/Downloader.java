@@ -38,11 +38,9 @@ public class Downloader
 {
 	private static ProgressIndicator downloadfortschrittProgressIndicator;
 	private static long messStartzeit, messEndzeit;
-	//nullable
 	private static ChangeListener<Worker.State> letzteListenerChangeListener=null;
 
 
-	//Hiermit wird der für den Downloader benötigte DownloadfortschrittProgressIndicator gesetzt.
 	public static void setDownloadfortschrittProgressIndicator(ProgressIndicator neuerWertProgressIndicator)
 	{
 		downloadfortschrittProgressIndicator=neuerWertProgressIndicator;
@@ -208,8 +206,6 @@ public class Downloader
 								{
 									for(int i=0;i<modulübersichtDocument.select("tbody>tr").size();i++)
 									{
-										System.out.println(i+" von "+modulübersichtDocument.select("tbody>tr").size());
-
 										try
 										{
 											module.add(Jsoup.connect("https://www.hof-university.de"+modulübersichtDocument.select("tbody>tr").get(i).select("a").get(0).attr("href")).get());
@@ -233,8 +229,6 @@ public class Downloader
 					{
 						if(newValue1==Worker.State.SUCCEEDED)
 						{
-							System.out.println(333);
-
 							SchreiberLeser.modulhandbuchNeuSetzen(Parser.modulhandbuchParsen(module));
 							Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 						}
@@ -251,7 +245,6 @@ public class Downloader
 		});
 	}
 
-	//Mit diesr Methode wird der Mensaplan als Html-Datei abgerufen, geparst und im SchreiberLeser in Form eines Mensaplan-Objekt als Attribut gespeichert.
 	public static void mensaplanAbrufen()
 	{
 		Calendar naechsterMontagDatumCalendar=Calendar.getInstance();
@@ -289,7 +282,6 @@ public class Downloader
 		Platform.runLater(()->downloadfortschrittProgressIndicator.setProgress(1));
 	}
 
-	//Mit diese Methode werden die Treffpunkte als Json-Datei abgerufen, geparst und im SchreiberLeser in Form eines Treffpunkte-Objekt als Attribut gespeichert.
 	public static void treffpunkteAbrufen()
 	{
 		try
@@ -304,7 +296,6 @@ public class Downloader
 		}
 	}
 
-	//Damit werden alle Studiengänge samt deren Semestern auf Basis des Dropdownmenüs von https://www.hof-university.de/studierende/info-service/stundenplaene.html abgerufen, geparst und als DropdownMenue-Objekt als Attribut im SpeicherLeser gesichert.
 	public static void dropdownMenueAbrufen()
 	{
 		Platform.runLater(()->
@@ -385,13 +376,12 @@ public class Downloader
 		});
 	}
 
-	//Mit dieser Methode kann die ungefähr geschätzte Downloadzeit auf Basis von einer vorherig gemessenen Downloaddauer berechnet werden.
+
 	private static long getDownloadzeit()
 	{
 		return (((messEndzeit-messStartzeit)/1000000)/2);
 	}
 
-	//Hiermit wird von der übergebenen WebEnginge der im Attribut letzteListenerChangeListener gespeicherte ChangeListener entfernt.
 	private static void entferneLetztenListener(WebEngine webEngine)
 	{
 		if(letzteListenerChangeListener!=null)
@@ -400,7 +390,6 @@ public class Downloader
 		}
 	}
 
-	//Diese Methode macht aus der Website, welche gerade in der übergebenen WebEnginge geladen ist, ein Document-Objekt der JSoup-Bibliotheken.
 	private static Document webengineZuJSoupDocument(WebEngine webEngine)
 	{
 		return Jsoup.parse((String)webEngine.executeScript("document.documentElement.outerHTML"));

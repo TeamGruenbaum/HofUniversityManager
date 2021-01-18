@@ -12,15 +12,10 @@ import java.io.Serializable;
 
 public class Doppelstunde implements Serializable
 {
-	//nullable
 	private Tag doppelstundentagTag;
-	//nullable
 	private Datum doppelstundendatumDatum;
-	//nullable
 	private final Uhrzeit beginnUhrzeit;
-	//nullable
 	private final Uhrzeit endeUhrzeit;
-	//nullable
 	private final String raum;
 	private String name;
 	private String dozent;

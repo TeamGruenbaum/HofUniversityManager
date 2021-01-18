@@ -6,9 +6,7 @@ public class Stundenplanaenderung
 {
 	private final String veranstaltung;
 	private final String dozent;
-	//nullable
 	private final Termin entfallenerTermin;
-	//nullable
 	private final Termin ersatztermin;
 
 

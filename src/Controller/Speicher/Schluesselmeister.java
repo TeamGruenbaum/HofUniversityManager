@@ -17,7 +17,6 @@ public class Schluesselmeister
 
 
 
-	//Mit dieser Methode wird mithilfe eines hartkodierten Schlüssels ein String in ein byte-Array verschlüsselt.
 	public static byte[] verschluesseln(String wert)
 	{
 		Cipher cipher=null;
@@ -41,7 +40,6 @@ public class Schluesselmeister
 		return verschluesseltesErgebnis;
 	}
 
-	//Hiermit wird aus dem hartkodiertem Schlüssel und dem übergebenem byte-Array ein String entschlüsselt.
 	public static String entschluesseln(byte[] wert)
 	{
 		Cipher verschluesslerCipher=null;

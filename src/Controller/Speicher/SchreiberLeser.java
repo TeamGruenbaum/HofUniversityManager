@@ -38,13 +38,11 @@ public class SchreiberLeser
 
 
 
-	//Solange die Datei "nichtErsterStart" im Speicherordner nicht vorhanden ist, gibt diese Methode true zurück.
 	public static boolean isErsterStart()
 	{
 		return !(new File(getSpeicherPfad(), "nichtErsterStart").exists());
 	}
 
-	//Damit wird im Speicherodner die Datei "nichtErsterStart" erstellt
 	public static void isErsterStartSetzen()
 	{
 		File file=new File(getSpeicherPfad(), "nichtErsterStart");
@@ -64,7 +62,6 @@ public class SchreiberLeser
 	}
 
 
-	//Diese Methode setzt alle Attribute, auf welchen im Laufe der Programmnutzung dauernd zugegriffen wird, auf einen sinnvollen "leeren" Zustand zurück.
 	public static void alleZuruecksetzen()
 	{
 		modulhandbuch=new Modulhandbuch(new ArrayList<ModulhandbuchFach>());
@@ -76,7 +73,6 @@ public class SchreiberLeser
 		nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>(), faecherNamen, new Login("", ""), Thema.HELL, Menue.getMenuepunktInformationen().get(Menue.getMenuepunktInformationen().size()-1));
 	}
 
-	//Diese Methode lädt alle persistent gespeicherten Daten in die entsprechenden Attribute.
 	public static void alleLaden() throws Exception
 	{
 		modulhandbuch=SchreiberLeser.lesen(modulhandbuchDateiname);
@@ -86,7 +82,6 @@ public class SchreiberLeser
 		dropdownMenue=SchreiberLeser.lesen(dropdownMenueDateiname);
 	}
 
-	//alleSpeichern() speichert alle Attribute, auf welche im Laufe der Programmnutzung dauernd zugegriffen wird, in den persistenten Speicher.
 	public static void alleSpeichern()
 	{
 		SchreiberLeser.schreiben(modulhandbuch, modulhandbuchDateiname);
@@ -96,7 +91,6 @@ public class SchreiberLeser
 		SchreiberLeser.schreiben(dropdownMenue, dropdownMenueDateiname);
 	}
 
-	//Hiermit werden alle persistent gespeicherten Daten gelöscht.
 	public static void alleDatenLoeschen()
 	{
 		try
@@ -110,7 +104,6 @@ public class SchreiberLeser
 		}
 	}
 
-	//Alle folgenden Methoden dienen dazu die Attribute abzurufen oder sie komplett neu zu besetzen
 	public static Modulhandbuch getModulhandbuch()
 	{
 		return modulhandbuch;
@@ -166,7 +159,6 @@ public class SchreiberLeser
 	}
 
 
-	//Diese Methode speichert ein Objekt beliebigen Typs unter einem dem entsprechendem Dateinamen im Speicherordner.
 	//Falls einzelne Daten verändert oder gelöscht werden, wird die Exception geworfen, darauf muss an entsprechender Stelle reagiert werden.
 	private static <T extends Serializable> T lesen(String dateiname) throws Exception
 	{
@@ -181,7 +173,6 @@ public class SchreiberLeser
 		return gelesenesT;
 	}
 
-	//Hiermit wird ein Objekt beliebigen Typs unter einem entsprechenden Dateinamen im Speicherordner gespeichert.
 	private static <T extends Serializable> void schreiben(T objekt, String dateiname)
 	{
 		File zielFile=new File(getSpeicherPfad()+dateiname);
@@ -203,7 +194,6 @@ public class SchreiberLeser
 		}
 	}
 
-	//Diese Methode gibt den Speicherordner abhängig vom Betriebsystem zurück, die Methode funktioniert bei Windows als auch unxiodien bzw. unix-ähnlichen Betriebsystemen
 	private static String getSpeicherPfad()
 	{
 		String nutzerpfad=System.getProperty("user.home");

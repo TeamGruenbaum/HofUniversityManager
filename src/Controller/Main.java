@@ -116,7 +116,6 @@ public class Main extends Application
 		primaryStage.setMinWidth(900);
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
 		{
-
 			@Override public void handle(WindowEvent t)
 			{
 				SchreiberLeser.alleSpeichern();
