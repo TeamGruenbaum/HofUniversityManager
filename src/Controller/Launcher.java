@@ -1,4 +1,4 @@
-package Controller.ViewController;
+package Controller;
 
 import Controller.Main;
 
