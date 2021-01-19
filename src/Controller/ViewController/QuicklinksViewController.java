@@ -3,6 +3,7 @@ package Controller.ViewController;
 
 
 import Controller.Main;
+import Controller.Speicher.Schluesselmeister;
 import Controller.Speicher.SchreiberLeser;
 import Model.QuicklinksModel.Quicklinks;
 
@@ -118,7 +119,7 @@ public class QuicklinksViewController implements Initializable
 				try
 				{
 					anzeigeWebEngine.executeScript("document.getElementById('username').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getName()+"'");
-					anzeigeWebEngine.executeScript("document.getElementById('password').value='"+SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort()+"'");
+					anzeigeWebEngine.executeScript("document.getElementById('password').value='"+Schluesselmeister.entschluesseln(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort())+"'");
 					anzeigeWebEngine.executeScript("document.getElementsByName('_eventId_proceed')[0].click()");
 				}
 				catch(Exception exception)

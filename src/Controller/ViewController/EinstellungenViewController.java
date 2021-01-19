@@ -2,6 +2,7 @@ package Controller.ViewController;
 
 
 
+import Controller.Speicher.Schluesselmeister;
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
@@ -50,10 +51,10 @@ public class EinstellungenViewController implements Initializable
 			SchreiberLeser.getNutzerdaten().getSsoLogin().setName(newValue);
 		});
 
-		passwortPasswordField.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort());
+		passwortPasswordField.setText(Schluesselmeister.entschluesseln(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort()));
 		passwortPasswordField.textProperty().addListener((observable, oldValue, newValue)->
 		{
-			SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort(newValue);
+			SchreiberLeser.getNutzerdaten().getSsoLogin().setPasswort(Schluesselmeister.verschluesseln(newValue));
 		});
 
 		studiengangChoicebox.setConverter(new StringConverter<Studiengang>()

@@ -11,7 +11,6 @@ import Model.MensaplanModel.*;
 import Model.ModulhandbuchModel.Modulhandbuch;
 import Model.ModulhandbuchModel.ModulhandbuchFach;
 import Model.NutzerdatenModel.Doppelstunde;
-import Model.StundenplanaenderungModel.*;
 import Model.Tag;
 import Model.TreffpunktModel.*;
 import Model.Uhrzeit;
@@ -171,27 +170,6 @@ public class Parser
 
 		return new DropdownMenue(studiengaenge);
 	}
-
-	public static Stundenplanaenderungen stundenplanaenderungenParsen(Document stundenplanaenderungenDocument)
-	{
-		ArrayList<Stundenplanaenderung> stundenplanaenderungen=new ArrayList<Stundenplanaenderung>();
-
-		Element tabelleElement=stundenplanaenderungenDocument.getElementsByTag("table").get(0);
-		Element zeileElement=null;
-
-		if(tabelleElement.getElementsByTag("tbody").size()!=0)
-		{
-			for(int i=0;i<tabelleElement.select("tbody>tr").size();i++)
-			{
-				zeileElement=tabelleElement.select("tbody>tr").get(i);
-				stundenplanaenderungen.add(new Stundenplanaenderung(zeileElement.getElementsByTag("td").get(1).text(), zeileElement.getElementsByTag("td").get(2).text(), getTermin(zeileElement.getElementsByTag("td").get(3).text()), getTermin(zeileElement.getElementsByTag("td").get(4).text())));
-			}
-		}
-
-
-		return new Stundenplanaenderungen(stundenplanaenderungen);
-	}
-
 
 	private static ModulhandbuchFach getModulhandbuchFach(Document modulhandbuchFachDocument)
 	{
@@ -399,21 +377,5 @@ public class Parser
 
 
 		return uhrzeit;
-	}
-
-	private static Termin getTermin(String termintext)
-	{
-		Pattern pattern=Pattern.compile("(^\\d{2}.\\d{2}.\\d{4}\\n)(\\d{2}:\\d{2}\\sUhr\\n)(.+)");
-		Matcher matcher=pattern.matcher(termintext);
-		matcher.matches();
-		Termin termin=null;
-
-		if(matcher.matches())
-		{
-			termin=new Termin(new Datum(Integer.parseInt(matcher.group(1).substring(0, 2)), Integer.parseInt(matcher.group(1).substring(3, 5)), Integer.parseInt(matcher.group(1).substring(6, 10))), new Uhrzeit(Integer.parseInt(matcher.group(2).substring(0, 2)), Integer.parseInt(matcher.group(2).substring(3, 5))), matcher.group(3));
-		}
-
-
-		return termin;
 	}
 }

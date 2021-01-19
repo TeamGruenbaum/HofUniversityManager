@@ -2,7 +2,7 @@ package Model.OberflaechenModel;
 
 
 
-import Model.NutzerdatenModel.Anwendung;
+import Model.Anwendung;
 
 import java.io.Serializable;
 

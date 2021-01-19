@@ -10,35 +10,35 @@ import java.io.Serializable;
 
 public class Login implements Serializable
 {
-	private byte[] benutzername;
+	private String benutzername;
 	private byte[] passwort;
 
 
 
-	public Login(String benutzername, String passwort)
+	public Login(String benutzername, byte[] passwort)
 	{
-		this.benutzername=Schluesselmeister.verschluesseln(benutzername);
-		this.passwort=Schluesselmeister.verschluesseln(passwort);
+		this.benutzername=benutzername;
+		this.passwort=passwort;
 	}
 
 
 	public String getName()
 	{
-		return Schluesselmeister.entschluesseln(benutzername);
+		return benutzername;
 	}
 
 	public void setName(String neuerWert)
 	{
-		benutzername=Schluesselmeister.verschluesseln(neuerWert);
+		benutzername=neuerWert;
 	}
 
-	public String getPasswort()
+	public byte[] getPasswort()
 	{
-		return Schluesselmeister.entschluesseln(passwort);
+		return passwort;
 	}
 
-	public void setPasswort(String neuerWert)
+	public void setPasswort(byte[] neuerWert)
 	{
-		this.passwort=Schluesselmeister.verschluesseln(neuerWert);
+		this.passwort=neuerWert;
 	}
 }

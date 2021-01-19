@@ -5,7 +5,7 @@ package Controller.ViewController;
 import Controller.InformationsVermittlung.Downloader;
 import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
 import Controller.Main;
-import Controller.Sonstiges.TextHelfer;
+import Controller.Speicher.Schluesselmeister;
 import Controller.Speicher.SchreiberLeser;
 import Model.DropdownModel.Studiengang;
 import Model.DropdownModel.Studiensemester;
@@ -107,7 +107,7 @@ public class GrundViewController implements Initializable
 
 				oeffneScene();
 			});
-			menuepunktButton.setTooltip(new Tooltip(TextHelfer.grossschreiben(Menue.getMenuepunktInformationen().get(i).getZielanwendung().toString())));
+			menuepunktButton.setTooltip(new Tooltip(Menue.getMenuepunktInformationen().get(i).getZielanwendung().toString().substring(0, 1).toUpperCase()+Menue.getMenuepunktInformationen().get(i).getZielanwendung().toString().substring(1).toLowerCase()));
 			menuepunktButton.getTooltip().getStyleClass().add("breadcrumb-menu");
 
 			menuepunktButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -160,7 +160,7 @@ public class GrundViewController implements Initializable
 
 	private void oeffneScene()
 	{
-		aktuellAusgewaehlterMenuepunktTextLabel.setText(TextHelfer.grossschreiben(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString()));
+		aktuellAusgewaehlterMenuepunktTextLabel.setText(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString().substring(0,1).toUpperCase()+SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung().toString().substring(1).toLowerCase());
 
 		switch(SchreiberLeser.getNutzerdaten().getLetzterGeoeffneterMenuepunkt().getZielanwendung())
 		{
@@ -266,7 +266,7 @@ public class GrundViewController implements Initializable
 			{
 				if(Internetverbindungskontrolleur.isInternetVerbindungVorhanden(Quicklinks.getMoodleLink()))
 				{
-					if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort().compareTo("")==0)
+					if(SchreiberLeser.getNutzerdaten().getSsoLogin().getName().compareTo("")==0||Schluesselmeister.entschluesseln(SchreiberLeser.getNutzerdaten().getSsoLogin().getPasswort()).compareTo("")==0)
 					{
 						Alert alert=new Alert(Alert.AlertType.INFORMATION, "Du solltest Deine Login-Daten in den Einstellungen hinterlegen!");
 						alert.getDialogPane().getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());

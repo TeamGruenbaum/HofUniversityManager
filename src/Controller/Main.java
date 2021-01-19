@@ -8,7 +8,6 @@ import Controller.ViewController.GrundViewController;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,7 +18,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import javax.imageio.ImageIO;
 
@@ -33,10 +31,10 @@ public class Main extends Application
 
 	@Override public void start(Stage primaryStage) throws Exception
 	{
-		if(System.getProperty("os.name").contentEquals("Mac OS X"))
-		{
-			Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("Grafiken/HUM_Icon_Short.png")));
-		}
+        if(System.getProperty("os.name").contentEquals("Mac OS X"))
+        {
+            Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResource("/Grafiken/HUM_Icon_Short.png")));
+        }
 
 		if(SchreiberLeser.isErsterStart())
 		{

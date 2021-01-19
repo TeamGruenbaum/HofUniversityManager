@@ -70,7 +70,7 @@ public class SchreiberLeser
 		ArrayList<String> faecherNamen=new ArrayList<String>();
 		faecherNamen.add("Allgemein");
 
-		nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>(), faecherNamen, new Login("", ""), Thema.HELL, Menue.getMenuepunktInformationen().get(Menue.getMenuepunktInformationen().size()-1));
+		nutzerdaten=new Nutzerdaten(null, null, new ArrayList<Doppelstunde>(), new ArrayList<Aufgabe>(), new ArrayList<Notiz>(), new ArrayList<Note>(), faecherNamen, new Login("", Schluesselmeister.verschluesseln("")), Thema.HELL, Menue.getMenuepunktInformationen().get(Menue.getMenuepunktInformationen().size()-1));
 	}
 
 	public static void alleLaden() throws Exception
@@ -197,11 +197,11 @@ public class SchreiberLeser
 		String speicherpfad;
 		if(betriebsystemart.contains("Windows"))
 		{
-			speicherpfad="\\Studentenverwaltungsanwendung\\";
+			speicherpfad="\\HofUniversityManager\\";
 		}
 		else
 		{
-			speicherpfad="/.studentenverwaltungsanwendung/";
+			speicherpfad="/.HofUniversityManager/";
 		}
 
 		return nutzerpfad+speicherpfad;

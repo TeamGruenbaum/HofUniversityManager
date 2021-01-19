@@ -183,25 +183,6 @@
                   </BorderPane>
                     </content>
                 </Tab>
-                <Tab text="Stundenplanänderung">
-                    <content>
-                  <BorderPane>
-                     <center>
-                                <TableView prefHeight="506.0" prefWidth="598.0" BorderPane.alignment="CENTER">
-                                    <columns>
-                                        <TableColumn fx:id="veranstaltungTableColumn" prefWidth="75.0" text="Veranstaltung" />
-                                        <TableColumn prefWidth="75.0" text="Dozent" />
-                                        <TableColumn prefWidth="75.0" text="enfallener Termin" />
-                                        <TableColumn prefWidth="75.0" text="Ersatztermin" />
-                                    </columns>
-                                    <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                    </columnResizePolicy>
-                                </TableView>
-                     </center>
-                  </BorderPane>
-                    </content>
-                </Tab>
             </tabs>
          <BorderPane.margin>
             <Insets />

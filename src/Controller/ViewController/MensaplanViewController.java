@@ -2,7 +2,6 @@ package Controller.ViewController;
 
 
 
-import Controller.Sonstiges.TextHelfer;
 import Controller.Speicher.SchreiberLeser;
 import Model.MensaplanModel.Gericht;
 import Model.MensaplanModel.Tagesplan;
@@ -44,7 +43,7 @@ public class MensaplanViewController implements Initializable
 		{
 			@Override public String toString(Tag object)
 			{
-				return TextHelfer.grossschreiben(object.toString());
+				return object.toString().substring(0, 1).toUpperCase()+object.toString().substring(1).toLowerCase();
 			}
 
 			@Override public Tag fromString(String string)

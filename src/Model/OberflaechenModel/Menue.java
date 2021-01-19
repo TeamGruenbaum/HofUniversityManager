@@ -2,9 +2,9 @@ package Model.OberflaechenModel;
 
 
 
-import static Model.NutzerdatenModel.Anwendung.EINSTELLUNGEN;
+import static Model.Anwendung.EINSTELLUNGEN;
 
-import Model.NutzerdatenModel.Anwendung;
+import Model.Anwendung;
 
 import java.io.Serializable;
 import java.util.ArrayList;

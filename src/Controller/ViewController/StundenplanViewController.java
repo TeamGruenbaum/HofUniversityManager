@@ -3,8 +3,8 @@ package Controller.ViewController;
 
 
 import Controller.InformationsVermittlung.Downloader;
-import Controller.Main;
 import Controller.InformationsVermittlung.Internetverbindungskontrolleur;
+import Controller.Main;
 import Controller.Speicher.SchreiberLeser;
 import Model.Datum;
 import Model.NutzerdatenModel.*;
@@ -387,7 +387,7 @@ public class StundenplanViewController implements Initializable
 		DialogPane doppelstundeHinzufuegenDialogPane=new DialogPane();
 		try
 		{
-			doppelstundeHinzufuegenDialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/DoppelstundenHinzufuegeView.fxml")));
+			doppelstundeHinzufuegenDialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/DoppelstundenHinzufuegenView.fxml")));
 			doppelstundeHinzufuegenDialogPane.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 			doppelstundeHinzufuegenDialogPane.setStyle(Main.getRoot().getStyle());
 		}
@@ -663,7 +663,7 @@ public class StundenplanViewController implements Initializable
 		DialogPane notizHinzufuegenDialogPane=new DialogPane();
 		try
 		{
-			notizHinzufuegenDialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/NotizHinzufuegeView.fxml")));
+			notizHinzufuegenDialogPane.setContent(FXMLLoader.load(getClass().getResource("/View/NotizHinzufuegenView.fxml")));
 			notizHinzufuegenDialogPane.getStylesheets().add(getClass().getResource("/View/CSS/Application.css").toExternalForm());
 			notizHinzufuegenDialogPane.setStyle(Main.getRoot().getStyle());
 		}
