@@ -470,7 +470,7 @@ public class GrundViewController implements Initializable
 
 			geruestBorderPane.setCenter(szeneNode);
 
-			Downloader.dropdownMenueAbrufen();
+			Downloader.dropdownAbrufen();
 		}
 		catch(Exception keinGefahreException)
 		{
@@ -573,7 +573,7 @@ public class GrundViewController implements Initializable
 	}
 
 
-	public static WebView getUglyWebview()
+	public static WebView getStaticDownloaderWebView()
 	{
 		return staticDownloaderWebView;
 	}

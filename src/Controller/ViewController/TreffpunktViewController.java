@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 
 public class TreffpunktViewController implements Initializable
 {
-	@FXML private ChoiceBox treffpunktTypChoiceBox;
+	@FXML private ChoiceBox treffpunkttypChoiceBox;
 	@FXML private VBox inhaltVBox;
 	@FXML private Hyperlink emailHyperlink;
 
@@ -39,8 +39,8 @@ public class TreffpunktViewController implements Initializable
 		listOriginal.add("Restaurants");
 		listOriginal.add("Freizeitaktivitäten");
 		ObservableList<String> list=FXCollections.observableArrayList(listOriginal);
-		treffpunktTypChoiceBox.setItems(list);
-		treffpunktTypChoiceBox.getSelectionModel().selectFirst();
+		treffpunkttypChoiceBox.setItems(list);
+		treffpunkttypChoiceBox.getSelectionModel().selectFirst();
 
 		Accordion contentAccordion=new Accordion();
 		contentAccordion.setPrefWidth(700);
@@ -51,7 +51,7 @@ public class TreffpunktViewController implements Initializable
 
 		zeigeRestaurants(contentAccordion, alleTreffpunkte);
 
-		treffpunktTypChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->
+		treffpunkttypChoiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue)->
 		{
 			if(newValue.equals(0))
 			{

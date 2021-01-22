@@ -4,50 +4,50 @@ package Controller.InformationsVermittlung.Hilfsklassen;
 
 public class MensaplanTupel
 {
-	private DatumDocumentPaar montag;
-	private DatumDocumentPaar dienstag;
-	private DatumDocumentPaar mittwoch;
-	private DatumDocumentPaar donnerstag;
-	private DatumDocumentPaar freitag;
-	private DatumDocumentPaar samstag;
+	private DatumDocumentPaar montagDatumDocumentPaar;
+	private DatumDocumentPaar dienstagDatumDocumentPaar;
+	private DatumDocumentPaar mittwochDatumDocumentPaar;
+	private DatumDocumentPaar donnerstagDatumDocumentPaar;
+	private DatumDocumentPaar freitagDatumDocumentPaar;
+	private DatumDocumentPaar samstagDatumDocumentPaar;
 
-	public MensaplanTupel(DatumDocumentPaar montag, DatumDocumentPaar dienstag, DatumDocumentPaar mittwoch, DatumDocumentPaar donnerstag, DatumDocumentPaar freitag, DatumDocumentPaar samstag)
+	public MensaplanTupel(DatumDocumentPaar montagDatumDocumentPaar, DatumDocumentPaar dienstagDatumDocumentPaar, DatumDocumentPaar mittwochDatumDocumentPaar, DatumDocumentPaar donnerstagDatumDocumentPaar, DatumDocumentPaar freitagDatumDocumentPaar, DatumDocumentPaar samstagDatumDocumentPaar)
 	{
-		this.montag=montag;
-		this.dienstag=dienstag;
-		this.mittwoch=mittwoch;
-		this.donnerstag=donnerstag;
-		this.freitag=freitag;
-		this.samstag=samstag;
+		this.montagDatumDocumentPaar=montagDatumDocumentPaar;
+		this.dienstagDatumDocumentPaar=dienstagDatumDocumentPaar;
+		this.mittwochDatumDocumentPaar=mittwochDatumDocumentPaar;
+		this.donnerstagDatumDocumentPaar=donnerstagDatumDocumentPaar;
+		this.freitagDatumDocumentPaar=freitagDatumDocumentPaar;
+		this.samstagDatumDocumentPaar=samstagDatumDocumentPaar;
 	}
 
 	public DatumDocumentPaar getMontag()
 	{
-		return montag;
+		return montagDatumDocumentPaar;
 	}
 
 	public DatumDocumentPaar getDienstag()
 	{
-		return dienstag;
+		return dienstagDatumDocumentPaar;
 	}
 
 	public DatumDocumentPaar getMittwoch()
 	{
-		return mittwoch;
+		return mittwochDatumDocumentPaar;
 	}
 
 	public DatumDocumentPaar getDonnerstag()
 	{
-		return donnerstag;
+		return donnerstagDatumDocumentPaar;
 	}
 
 	public DatumDocumentPaar getFreitag()
 	{
-		return freitag;
+		return freitagDatumDocumentPaar;
 	}
 
 	public DatumDocumentPaar getSamstag()
 	{
-		return samstag;
+		return samstagDatumDocumentPaar;
 	}
 }

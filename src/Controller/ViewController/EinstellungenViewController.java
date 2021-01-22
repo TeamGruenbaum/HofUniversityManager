@@ -29,7 +29,7 @@ import javafx.util.StringConverter;
 
 public class EinstellungenViewController implements Initializable
 {
-	@FXML private BorderPane ansichtBorderPane;
+	@FXML private BorderPane inhaltBorderPane;
 
 	@FXML private TextField benutzernameTextField;
 	@FXML private PasswordField passwortPasswordField;
@@ -43,7 +43,7 @@ public class EinstellungenViewController implements Initializable
 
 	public void initialize(URL location, ResourceBundle resources)
 	{
-		ansichtBorderPane.addEventHandler(MouseEvent.MOUSE_CLICKED, e->ansichtBorderPane.requestFocus());
+		inhaltBorderPane.addEventHandler(MouseEvent.MOUSE_CLICKED, e->inhaltBorderPane.requestFocus());
 
 		benutzernameTextField.setText(SchreiberLeser.getNutzerdaten().getSsoLogin().getName());
 		benutzernameTextField.textProperty().addListener((observable, oldValue, newValue)->

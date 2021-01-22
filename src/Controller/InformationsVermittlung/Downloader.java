@@ -38,7 +38,7 @@ public class Downloader
 {
 	private static ProgressIndicator downloadfortschrittProgressIndicator;
 	private static long messStartzeit, messEndzeit;
-	private static ChangeListener<Worker.State> letzteListenerChangeListener=null;
+	private static ChangeListener<Worker.State> letzterListenerChangeListener=null;
 
 
 	public static void setDownloadfortschrittProgressIndicator(ProgressIndicator neuerWert)
@@ -53,7 +53,7 @@ public class Downloader
 		{
 			downloadfortschrittProgressIndicator.setProgress(0);
 
-			WebEngine downloadWebEnginge=GrundViewController.getUglyWebview().getEngine();
+			WebEngine downloadWebEnginge=GrundViewController.getStaticDownloaderWebView().getEngine();
 			entferneLetztenListener(downloadWebEnginge);
 
 			ChangeListener<Worker.State> downloadChangeListener=(observable, oldValue, newValue)->
@@ -114,7 +114,7 @@ public class Downloader
 				}
 			};
 			downloadWebEnginge.getLoadWorker().stateProperty().addListener(downloadChangeListener);
-			letzteListenerChangeListener=downloadChangeListener;
+			letzterListenerChangeListener=downloadChangeListener;
 
 			messStartzeit=System.nanoTime();
 			downloadWebEnginge.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
@@ -129,7 +129,7 @@ public class Downloader
 		{
 			downloadfortschrittProgressIndicator.setProgress(0);
 
-			WebEngine downloadWebEngine=GrundViewController.getUglyWebview().getEngine();
+			WebEngine downloadWebEngine=GrundViewController.getStaticDownloaderWebView().getEngine();
 			entferneLetztenListener(downloadWebEngine);
 
 			ChangeListener<Worker.State> downloadChangeListener=((observable, oldValue, newValue)->
@@ -238,7 +238,7 @@ public class Downloader
 			});
 			downloadWebEngine.getLoadWorker().stateProperty().addListener(downloadChangeListener);
 
-			letzteListenerChangeListener=downloadChangeListener;
+			letzterListenerChangeListener=downloadChangeListener;
 
 			messStartzeit=System.nanoTime();
 			downloadWebEngine.load("https://www.hof-university.de/studierende/info-service/modulhandbuecher.html");
@@ -296,13 +296,13 @@ public class Downloader
 		}
 	}
 
-	public static void dropdownMenueAbrufen()
+	public static void dropdownAbrufen()
 	{
 		Platform.runLater(()->
 		{
 			ArrayList<NameKuerzelDocumentTripel> arrayList=new ArrayList<NameKuerzelDocumentTripel>();
 
-			WebEngine webEngine=GrundViewController.getUglyWebview().getEngine();
+			WebEngine webEngine=GrundViewController.getStaticDownloaderWebView().getEngine();
 			entferneLetztenListener(webEngine);
 
 			ChangeListener<Worker.State> downloadChangeListener=((observable, oldValue, newValue)->
@@ -369,7 +369,7 @@ public class Downloader
 			});
 			webEngine.getLoadWorker().stateProperty().addListener(downloadChangeListener);
 
-			letzteListenerChangeListener=downloadChangeListener;
+			letzterListenerChangeListener=downloadChangeListener;
 
 			messStartzeit=System.nanoTime();
 			webEngine.load("https://www.hof-university.de/studierende/info-service/stundenplaene.html");
@@ -384,9 +384,9 @@ public class Downloader
 
 	private static void entferneLetztenListener(WebEngine webEngine)
 	{
-		if(letzteListenerChangeListener!=null)
+		if(letzterListenerChangeListener!=null)
 		{
-			webEngine.getLoadWorker().stateProperty().removeListener(letzteListenerChangeListener);
+			webEngine.getLoadWorker().stateProperty().removeListener(letzterListenerChangeListener);
 		}
 	}
 

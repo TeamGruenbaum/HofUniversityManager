@@ -27,9 +27,8 @@ import org.codefx.libfx.control.webview.WebViews;
 public class QuicklinksViewController implements Initializable
 {
 	@FXML private WebView anzeigeWebView;
-	@FXML private ProgressIndicator websiteLadeProgressIndicator;
-
 	private WebEngine anzeigeWebEngine;
+	@FXML private ProgressIndicator websiteLadeProgressIndicator;
 	private String letztGeklickteURL;
 	private boolean ersterLoginVersuch=true;
 

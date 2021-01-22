@@ -18,7 +18,7 @@
                   <Insets />
                </opaqueInsets>
                <children>
-                  <ChoiceBox fx:id="treffpunktTypChoiceBox" prefWidth="150.0" />
+                  <ChoiceBox fx:id="treffpunkttypChoiceBox" prefWidth="150.0" />
                </children>
             </VBox>
          </center>

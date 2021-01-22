@@ -19,12 +19,11 @@ import javafx.scene.layout.*;
 
 public class ModulhandbuchViewController implements Initializable
 {
-
-	@FXML private VBox inhaltVBox;
 	@FXML private Label studiengangtitelLabel;
+	@FXML private VBox inhaltVBox;
 
 
-
+	
 	public void initialize(URL location, ResourceBundle resources)
 	{
 		if(SchreiberLeser.getModulhandbuch().getModulhandbuchFaecher().size()==0)
