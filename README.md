@@ -9,7 +9,7 @@
 
 
 ## Introduction
-**HofUniversityManager** is an application to manage everyday student life. It was specially made for the various services such as mensa or timetables of Hof University. However, the application can be used freely as a basis for student administration programs of other universities.
+**HofUniversityManager** is an application to manage everyday student life. It is specially made for the various services such as mensa or timetables of Hof University. However, the application can be used freely as a basis for student administration programs of other universities.
 
 The application was developed as part of the Software Engineering 2 module in a group work in the third semester of our studies. It is written in Java with the JavaFX framework. Due to being the first larger programming project of the group members it still contains some bugs and offers many optimization options.
 
@@ -41,6 +41,13 @@ Developed by the members of this school project:
 - [Vincent Tischler](https://github.com/Schnowflake)
 - [Marcel Stürzenberger](https://github.com/1M4rc3l1)
 <br>
+
+## Libraries
+Following libraries were used:
+- [LibFX](https://github.com/nipafx/LibFX)
+- [CommonsIO](https://commons.apache.org/proper/commons-io/)
+- [jsoup](https://jsoup.org/)
+- [JSON-java](https://github.com/stleary/JSON-java)
 
 ## Get in contact
 Feel free to get in contact and share your experience with **HofUniversityManager**. Bug reports are also very appreciated.
