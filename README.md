@@ -18,10 +18,10 @@ The application was developed as part of the Software Engineering 2 module in a 
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/settings.png" width="45%" border=0>
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/menu.png" width="45%" border=0>
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/time_table.png" width="45%" border=0>
-<img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/add_task.png" width="45%" border=0>
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/canteen_menu.png" width="45%" border=0>
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/module_manual.png" width="45%" border=0>
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/train_schedule.png" width="45%" border=0>
+<img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/campus_sports.png" width="45%" border=0>
 </p>
 
 
