@@ -7,7 +7,7 @@
 ![Linux](https://img.shields.io/badge/Linux-untested-blue)
 
 ## Introduction
-**HofUniversityManager** is an application to manage everyday student life. It is specially made for the various services such as mensa or timetables of Hof University. However, the application can be used freely as a basis for student administration programs of other universities.
+**HofUniversityManager** is an application to manage everyday student life. It is specially made for the various services such as mensa or timetables of Hof University.
 
 The application was developed as part of the Software Engineering 2 module in a group work in the third semester of our studies. It is written in Java 15 with the JavaFX framework in version 11. It runs on Windows and on macOS and it should run on Linux but we couldn't test it. Due to being the first larger programming project of the group members it still contains some bugs and offers many optimization options.
 
@@ -29,12 +29,25 @@ The application was developed as part of the Software Engineering 2 module in a 
 <img src="https://github.com/TeamGruenbaum/HofUniversityManager/blob/main/screenshots/add_task_dark.png" width="45%" border=0>
 </p>
 
+## Developers
+- [Steven Solleder](https://github.com/stevensolleder): Mainly responsible for architecture, controller and also some UI parts
+- [Patrick Dressel](https://github.com/patdre): Mainly responsible for the UI, especially the darkmode and view controllers
+- [Isabell Waas](https://github.com/isabellwaas): Mainly responsible for parsing data and some model parts
+- [Vincent Tischler](https://github.com/Schnowflake): Mainly responsible for downloading and packaging
+- [Marcel Stürzenberger](https://github.com/1M4rc3l1): Mainly responsible for creating some model parts
+<br>
+
 ## Libraries
 Following libraries were used:
 - [LibFX](https://github.com/nipafx/LibFX)
 - [CommonsIO](https://commons.apache.org/proper/commons-io/)
 - [jsoup](https://jsoup.org/)
 - [JSON-java](https://github.com/stleary/JSON-java)
+<br>
+
+## Licensing
+The application can be used as a basis for student administration programs of other universities but these projects have to refer explicitly to this repository and its developers.
+<br>
 <br>
 
 ## Get in contact
