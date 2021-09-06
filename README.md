@@ -38,7 +38,6 @@ The application was developed as part of the Software Engineering 2 module in a 
 <br>
 
 ## Libraries
-Following libraries were used:
 - [LibFX](https://github.com/nipafx/LibFX)
 - [CommonsIO](https://commons.apache.org/proper/commons-io/)
 - [jsoup](https://jsoup.org/)
